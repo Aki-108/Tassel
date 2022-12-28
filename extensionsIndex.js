@@ -42,3 +42,24 @@ let extensionsIndex = [
             "author": "aki108"
         }
     ];
+
+/* Template
+
+  {
+    "name": "",
+    "id": 0,
+    "version": "",
+    "author": "",
+    "icon": "",
+    "description": "",
+    "src": "",
+    "post": "",
+    "features": [
+      {
+        "name": "",
+        "version": "",
+        "URL": ""
+      }
+    ]
+  }
+*/
