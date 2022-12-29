@@ -1,4 +1,4 @@
-.tasselModalSidebar {
+.tasselModalSidebarEntry {
   height: 40px;
   font-size: 18px;
   font-weight: bold;
@@ -7,6 +7,6 @@
   box-shadow: -20px 0px 10px -10px lightgrey inset;
 }
 
-.tasselModalSidebar:hover {
+.tasselModalSidebarEntry:hover {
   background: lightgrey;
 }
