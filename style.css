@@ -1,7 +1,3 @@
-.tasselSidebarSmall {
-	cursor: pointer;
-}
-
 .tasselSidebarSmall div {
 	height: 40px;
 }
@@ -28,7 +24,7 @@
 	padding: 10px;
 	border-top: 5px var(--linkColor) solid;
 	cursor: pointer;
-	line-height: 1em;
+	line-height: 1.2em;
 }
 
 #tasselModalDialog1 {
