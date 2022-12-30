@@ -1,12 +1,101 @@
-.tasselModalSidebarEntry {
-  height: 40px;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 10px;
-  border-bottom: .5px lightgrey solid;
-  box-shadow: -20px 0px 10px -10px lightgrey inset;
+.tasselSidebarSmall {
+	cursor: pointer;
 }
 
-.tasselModalSidebarEntry:hover {
-  background: lightgrey;
+.tasselSidebarSmall div {
+	height: 40px;
+}
+
+.tassleSidebarSmall svg {
+	padding: 7px 12px;
+	width: 100%;
+	height: 100%;
+	filter: var(--iconColor);
+}
+
+#tasselToast {
+	height: max-content;
+	max-width: 200px;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 20px;
+}
+
+#tasselToast div {
+	background: var(--postBgColor);
+	color: var(--postFontColor);
+	padding: 10px;
+	border-top: 5px var(--linkColor) solid;
+	cursor: pointer;
+	line-height: 1em;
+}
+
+#tasselModalDialog1 {
+	width: 800px;
+	max-width: 90%;
+	max-height: 70%;
+	margin-top: 100px;
+	z-index: 4;
+}
+
+#tasselModalDialog2 {
+	overflow: hidden;
+	margin-top: 0;
+	height: 70vh;
+}
+
+#tasselModalGrid {
+	display: grid;
+	grid-template-columns: 200px auto;
+	grid-template-rows: calc(70vh - 48px);
+}
+
+#tasselModalSidebar {
+	border-right: 1px grey solid;
+}
+
+#tasselModalContent {
+	overflow: auto;
+	padding: 10px;
+}
+
+.tasselModalSidebarEntry {
+	height: 40px;
+	fontSize: 18px;
+	font-weight: bold;
+	padding: 10px;
+	border-bottom: .5px lightgrey solid;
+	cursor: pointer;
+}
+
+.tasselModalSidebarEntry .active {
+	box-shadow: 0 0 5px 0 grey inset;
+}
+
+#tasselModalContent p {
+	margin: 0 0 15px;
+}
+
+#tasselModalContent h4 {
+	margin: 0 0 5px;
+}
+
+.tasselExtension {
+	margin: 20px 10px 0;
+	padding: 10px;
+	box-shadow: grey 0 0 5px 0;
+}
+
+.tasselToggle {
+	margin-bottom: 10px;
+}
+
+.tasselToggle input {
+	margin: 5px 10px 5px 15px;
+}
+
+.tasselToggle label {
+	font-weight: normal;
+	cursor: pointer;
 }
