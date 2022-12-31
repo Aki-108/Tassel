@@ -9,35 +9,23 @@ let extensionsIndex = [
             "description": "View Images in Full Screen",
             "src": "https://cdn.rawgit.com/Aki-108/pf-lightbox/9c022cb26bda5ac2ec57ef3179c1edde6d18ff69/main.js",
             "post": "https://www.pillowfort.social/posts/2841345",
-            "features": [
-                {
-                        "name": "+ view images in full screen"
-                },
-                {
-                        "name": "+ dedicated button for embedded links"
-                }
+            "features": ["+ view images in full screen",
+                         "+ dedicated button for embedded links"
             ]
         },
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "1.3",
+            "version": "1.5",
             "created": 1661764440000,
-            "updated": 1668446760000,
+            "updated": 1672490820000,
             "author": "aki108",
             "description": "Get notified when there are new comments in a post.",
-            "src": "https://cdn.rawgit.com/Aki-108/pf-post-subscriber/08385e8dba54ce5a9a06e2de64aa1a5312b54c0a/main.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/blob/949d45038d29958a171f47bc458be70811743600/extensions/PostSubscriber.js",
             "post": "https://www.pillowfort.social/posts/2878877",
-            "features": [
-                {
-                        "name": "+ subscribe to posts"
-                },
-                {
-                        "name": "+ notifications for new comments in the sidebar"
-                },
-                {
-                        "name": "+ highlight new comments"
-                }
+            "features": ["+ subscribe to posts",
+                         "+ notifications for new comments in the sidebar",
+                         "+ highlight new comments"
             ]
         },
         {
@@ -50,16 +38,9 @@ let extensionsIndex = [
             "description": "Shows where a post has been liked/reblogged to.",
             "src": "https://cdn.rawgit.com/Aki-108/pf-reblogged-to-community/b287c3cb88ae9cb65280aef1cd3b7c75eb7d5713/main.js",
             "post": "https://www.pillowfort.social/posts/3057985",
-            "features": [
-                {
-                        "name": "+ show where a post has been reblogged to"
-                },
-                {
-                        "name": "+ show where a post has been liked from"
-                },
-                {
-                        "name": "* makes notes actually dark in dark mode"
-                }
+            "features": ["+ show where a post has been reblogged to",
+                         "+ show where a post has been liked from",
+                         "* makes notes actually dark in dark mode"
             ]
         },
         {
@@ -96,11 +77,6 @@ let extensionsIndex = [
     "src": "",
     "post": "",
     "features": [
-      {
-        "name": "",
-        "version": "",
-        "URL": ""
-      }
     ]
   }
 */
