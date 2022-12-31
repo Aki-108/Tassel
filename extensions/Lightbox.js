@@ -5,8 +5,8 @@
 // @author       aki108
 // @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
-// @updateURL    https://raw.githubusercontent.com/Aki-108/pf-lightbox/main/main.js
-// @downloadURL  https://raw.githubusercontent.com/Aki-108/pf-lightbox/main/main.js
+// @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/Lightbox.js
+// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/Lightbox.js
 // @supportURL   https://www.pillowfort.social/posts/2841345
 // @grant        none
 // ==/UserScript==
@@ -20,10 +20,10 @@
     var styleObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (loadingIndicator.style.display == "none") {//for home-feed and blogs
-                loadImgs();
+                loadImgs_kpeyutgp();
             }
             if (commentContainer) {//for single posts
-                loadComments();
+                loadComments_kpeyutgp();
             }
         });
     });
@@ -36,10 +36,10 @@
         blurElements.push(document.getElementById("user-sidebar-expanded"));
         blurElements.push(document.getElementById("sidebar-collapsed"));
     }
-    document.addEventListener("keydown", keyWatch);
+    document.addEventListener("keydown", keyWatch_kpeyutgp);
 
-    init();
-    function init() {
+    init_kpeyutgp();
+    function init_kpeyutgp() {
         if (loadingIndicator) {
             styleObserver.observe(loadingIndicator, {
                 attributes: true,
@@ -51,11 +51,11 @@
                 childList: true
             });
         }
-        window.addEventListener("visibilitychange", loadImgs);
+        window.addEventListener("visibilitychange", loadImgs_kpeyutgp);
     }
 
     /* Find all images in posts. */
-    function loadImgs() {
+    function loadImgs_kpeyutgp() {
         let posts = document.getElementsByClassName("post-container");
         for (let post of posts) {
             let images = post.getElementsByTagName("img");
@@ -63,7 +63,7 @@
             for (let image of images) {
                 if (image.classList.contains("fullscreenprocessed")) continue;
                 if (!((image.classList.contains("full") || image.classList.contains("half") || image.classList.contains("fr-draggable") || image.classList.contains("fr-fic")) && image.src != "")) continue;
-                formatImage(image);
+                formatImage_kpeyutgp(image);
                 image.setAttribute("imageindex", index);
                 index++;
             }
@@ -71,14 +71,14 @@
     }
 
     /* Find all images in comments. */
-    function loadComments() {
+    function loadComments_kpeyutgp() {
         let comments = document.getElementsByClassName("display-comment");
         for (let comment of comments) {
             let images = comment.getElementsByTagName("img");
             let index = 0;
             for (let image of images) {
                 if (image.classList.contains("fullscreenprocessed")) continue;
-                formatImage(image);
+                formatImage_kpeyutgp(image);
                 image.setAttribute("imageindex", index);
                 image.classList.add("commentimage");
                 index++;
@@ -87,7 +87,7 @@
     }
 
     /* Add formating and click-event to images. */
-    function formatImage(image) {
+    function formatImage_kpeyutgp(image) {
         image.classList.add("fullscreenprocessed");
         if (image.parentNode.href) {
             if (image.parentNode.href.search("pillowfort.social") == 13) {
@@ -108,8 +108,8 @@
                 linkIcon.style.position = "absolute";
                 linkIcon.style.padding = "2px";
                 linkIcon.src = "https://www.pillowfort.social/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg";
-                linkIcon.addEventListener("mouseenter", function(){hoverIn(this)});
-                linkIcon.addEventListener("mouseleave", function(){hoverOut(this)});
+                linkIcon.addEventListener("mouseenter", function(){hoverIn_kpeyutgp(this)});
+                linkIcon.addEventListener("mouseleave", function(){hoverOut_kpeyutgp(this)});
                 linkA.appendChild(linkIcon);
                 linkDiv.appendChild(linkA);
                 image.parentNode.insertBefore(linkDiv, image);
@@ -120,11 +120,11 @@
         }
         image.parentNode.removeAttribute("href");
         image.style.cursor = "zoom-in";
-        image.addEventListener("click", function(){display(this)});
+        image.addEventListener("click", function(){display_kpeyutgp(this)});
     }
 
     /* Generate lightbox. */
-    function display(element) {
+    function display_kpeyutgp(element) {
         if (document.getElementById("fullimagebackground")) document.getElementById("fullimagebackground").remove();
 
         // Find relevant images.
@@ -172,9 +172,9 @@
             button.id = "fullimage"+a;
             button.setAttribute("imageindex", newId);
             button.classList.add("fullimagebutton");
-            button.addEventListener("click", function(){display(this)});
-            button.addEventListener("mouseenter", function(){hoverIn(this)});
-            button.addEventListener("mouseleave", function(){hoverOut(this)});
+            button.addEventListener("click", function(){display_kpeyutgp(this)});
+            button.addEventListener("mouseenter", function(){hoverIn_kpeyutgp(this)});
+            button.addEventListener("mouseleave", function(){hoverOut_kpeyutgp(this)});
             button.style.position = "fixed";
             button.style.top = "50%";
             if (a == 0) {
@@ -213,7 +213,7 @@
         img.style.width = "100%";
         img.style.height = "100%";
         img.style.objectFit = "contain";
-        img.addEventListener("click", close);
+        img.addEventListener("click", close_kpeyutgp);
         bg.appendChild(img);
 
         // Generate link button
@@ -230,8 +230,8 @@
         link.style.width = "40px";
         link.style.height = "40px";
         link.style.opacity = "0.5";
-        link.addEventListener("mouseenter", function(){hoverIn(this)});
-        link.addEventListener("mouseleave", function(){hoverOut(this)});
+        link.addEventListener("mouseenter", function(){hoverIn_kpeyutgp(this)});
+        link.addEventListener("mouseleave", function(){hoverOut_kpeyutgp(this)});
         bg.appendChild(link);
 
         document.getElementsByTagName("body")[0].appendChild(bg);
@@ -239,27 +239,27 @@
     }
 
     /* Remove lightbox. */
-    function close() {
+    function close_kpeyutgp() {
         activeImages = [];
         for (let element of blurElements) element.style.filter = "none";
         document.getElementById("fullimagebackground").remove();
     }
 
-    function hoverIn(el) {
+    function hoverIn_kpeyutgp(el) {
         el.style.opacity = "1";
     }
 
-    function hoverOut(el) {
+    function hoverOut_kpeyutgp(el) {
         el.style.opacity = "0.5";
     }
 
-    function keyWatch(e) {
+    function keyWatch_kpeyutgp(e) {
         if (e.key === "ArrowRight" && document.getElementById("fullimage1")) {
             document.getElementById("fullimage1").click();
         } else if (e.key === "ArrowLeft" && document.getElementById("fullimage0")) {
             document.getElementById("fullimage0").click();
         } else if (e.key === "Escape" && document.getElementById("fullimagebackground")) {
-            close();
+            close_kpeyutgp();
         }
     }
 })();
