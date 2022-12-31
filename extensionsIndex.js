@@ -36,7 +36,7 @@ let extensionsIndex = [
             "updated": 1672504980000,
             "author": "aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/b9ccab405a7a3dcb761866005299027a90826efa/extensions/RebloggedToCommunity.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/bf4b70c41f04ee4dcb17593ab08f4990eedc1541/extensions/RebloggedToCommunity.js",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["+ show where a post has been reblogged to",
                          "+ show where a post has been liked from",
