@@ -9,7 +9,6 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/PostSubscriber.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/PostSubscriber.js
 // @supportURL   https://www.pillowfort.social/posts/2878877
-// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
 // ==/UserScript==
 
