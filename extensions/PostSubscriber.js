@@ -57,9 +57,9 @@
         });
     });
 
-    init_ltapluah();//start initialization
+    waitForKeyElements(".sidebar-expanded", init_ltapluah);//start initialization
     function init_ltapluah() {
-        waitForKeyElements(".sidebar-expanded", initSidebar_ltapluah);
+        initSidebar_ltapluah();
         initTassel_ltapluah();
         initSinglePost_ltapluah();
 
