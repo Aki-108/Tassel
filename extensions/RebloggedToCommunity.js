@@ -17,6 +17,7 @@
     /* Wait for the page to load before initializing the script. */
     waitForKeyElements("#post-comments-section", addEventListener_tlfevnlu);
     initTassel_tlfevnlu();
+    GM_addStyle(".reblog-note, .like-note {background-color: transparent;}");
     var reblogPageButtons;
     var likePageButtons;
     var dataJSON;
@@ -167,7 +168,6 @@
         let notes = Object.values(document.getElementById("reblogs").getElementsByClassName("reblog-note"));
         for (let index in notes) {
             let note = notes[index];
-            note.style.backgroundColor = "transparent";//fix for dark mode
             note.classList.add("rtcsourcedisplayingreblogs");
             let link = note.getElementsByTagName("a")[1];
             let postId = link.href.substring(link.href.search("/posts/")+7);
@@ -248,7 +248,6 @@
         let notes = Object.values(document.getElementById("likes").getElementsByClassName("like-note"));
         for (let index in notes) {
             let note = notes[index];
-            note.style.backgroundColor = "transparent";//fix for dark mode
             note.classList.add("rtcsourcedisplayinglikes");
             let postId = Object.values(dataJSON)[0][index].liked_via_reblog_id;
 
@@ -329,11 +328,11 @@
 
         //add settings
         content.appendChild(createSwitch_tlfevnlu("Show where Reblogs went to", "checked"));
-        content.lastChild.addEventListener("click", function() {
+        content.lastChild.children[0].addEventListener("change", function() {
             localStorage.setItem("rtcdisablereblog", !this.checked);
         });
         content.appendChild(createSwitch_tlfevnlu("Show where Likes are from", "checked"));
-        content.lastChild.addEventListener("click", function() {
+        content.lastChild.children[0].addEventListener("change", function() {
             localStorage.setItem("rtcdisablelike", !this.checked);
         });
     }
