@@ -46,7 +46,12 @@
     });
 
     console.log("Post Subscriber has begun");
-    waitForKeyElements(".sidebar-expanded", init_ltapluah);//start initialization
+    //start initialization
+    if (document.getElementsByClassName("sidebar-expanded").length > 0) {
+        init_ltapluah();
+    } else {
+        waitForKeyElements(".sidebar-expanded", init_ltapluah);
+    }
     function init_ltapluah() {
         console.log("Post Subscriber: start init");
         initSidebar_ltapluah();
@@ -232,6 +237,7 @@
     function initTassel_ltapluah() {
         console.log("Post Subscriber: init Tassel");
         let tasselSidebar = document.getElementById("tasselModalSidebar");
+        if (tasselSidebar == null) return;
         let button = document.createElement("div");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarPostSubscriber";
