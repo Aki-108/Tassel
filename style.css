@@ -51,8 +51,11 @@
 	padding: 10px;
 }
 
+#tasselModalContent hr {
+	border-top: 0.5px solid lightgray;
+}
+
 .tasselModalSidebarEntry {
-	fontSize: 18px;
 	font-weight: bold;
 	padding: 10px;
 	border-bottom: .5px lightgrey solid;
