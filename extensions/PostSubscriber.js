@@ -6,8 +6,8 @@
 // @author       aki108
 // @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
-// @updateURL    
-// @downloadURL  
+// @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/PostSubscriber.js
+// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/PostSubscriber.js
 // @supportURL   https://www.pillowfort.social/posts/2878877
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
