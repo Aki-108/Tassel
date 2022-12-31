@@ -5,8 +5,8 @@
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
-// @updateURL    https://raw.githubusercontent.com/Aki-108/pf-reblogged-to-community/main/main.js
-// @downloadURL  https://raw.githubusercontent.com/Aki-108/pf-reblogged-to-community/main/main.js
+// @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
+// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
 // ==/UserScript==
@@ -24,6 +24,7 @@
 
     /* Initialize the script by adding event listeners to necessary buttons for user interaction. */
     function addEventListener_tlfevnlu() {
+        if (document.getElementById("tasselModalSidebar") != null) return;
         //reblogs-tab and reblog-pagination buttons events
         let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
         reblogButton.addEventListener("click", runReblog_tlfevnlu);
@@ -326,11 +327,11 @@
         //add settings
         content.appendChild(createSwitch_tlfevnlu("Show where Reblogs went to", "checked"));
         content.lastChild.addEventListener("click", function() {
-            localStorage.setItem("rtcdisablereblog", !this.selected);
+            localStorage.setItem("rtcdisablereblog", !this.checked);
         });
         content.appendChild(createSwitch_tlfevnlu("Show where Likes are from", "checked"));
         content.lastChild.addEventListener("click", function() {
-            localStorage.setItem("rtcdisablelike", !this.selected);
+            localStorage.setItem("rtcdisablelike", !this.checked);
         });
     }
 
