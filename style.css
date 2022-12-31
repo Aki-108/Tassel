@@ -43,6 +43,7 @@
 
 #tasselModalSidebar {
 	border-right: 1px grey solid;
+	overflow-y: auto;
 }
 
 #tasselModalContent {
@@ -51,12 +52,15 @@
 }
 
 .tasselModalSidebarEntry {
-	height: 40px;
 	fontSize: 18px;
 	font-weight: bold;
 	padding: 10px;
 	border-bottom: .5px lightgrey solid;
 	cursor: pointer;
+}
+
+.tasselModalSidebarEntry p {
+	margin: 0;
 }
 
 #tasselModalSidebar .active {
