@@ -8,7 +8,7 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
-// @grant        none
+// @grant        GM_addStyle
 // ==/UserScript==
 
 (function() {
@@ -327,11 +327,11 @@
         content.appendChild(document.createElement("hr"));
 
         //add settings
-        content.appendChild(createSwitch_tlfevnlu("Show where Reblogs went to", "checked"));
+        content.appendChild(createSwitch_tlfevnlu("Show where Reblogs went to", localStorage.getItem("rtcdisablereblog") == "true" ? "" : "checked"));
         content.lastChild.children[0].addEventListener("change", function() {
             localStorage.setItem("rtcdisablereblog", !this.checked);
         });
-        content.appendChild(createSwitch_tlfevnlu("Show where Likes are from", "checked"));
+        content.appendChild(createSwitch_tlfevnlu("Show where Likes are from", localStorage.getItem("rtcdisablelike") == "true" ? "" : "checked"));
         content.lastChild.children[0].addEventListener("change", function() {
             localStorage.setItem("rtcdisablelike", !this.checked);
         });
