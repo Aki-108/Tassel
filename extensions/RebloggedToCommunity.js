@@ -8,7 +8,7 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
-// @grant        GM_addStyle
+// @grant        none
 // ==/UserScript==
 
 (function() {
@@ -17,7 +17,6 @@
     /* Wait for the page to load before initializing the script. */
     waitForKeyElements("#post-comments-section", addEventListener_tlfevnlu);
     initTassel_tlfevnlu();
-    GM_addStyle(".reblog-note, .like-note {background-color: transparent;}");
     var reblogPageButtons;
     var likePageButtons;
     var dataJSON;
@@ -28,6 +27,7 @@
         //reblogs-tab and reblog-pagination buttons events
         let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
         reblogButton.addEventListener("click", runReblog_tlfevnlu);
+        reblogButton.addEventListener("click", fixDarkMode_tlfevnlu);
         reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
         reblogPageButtons.addEventListener("click", runReblog_tlfevnlu);
 
@@ -54,6 +54,7 @@
         //likes-tab and like-pagination buttons events
         let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
         likeButton.addEventListener("click", runLike_tlfevnlu);
+        likeButton.addEventListener("click", fixDarkMode_tlfevnlu);
         likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
         likePageButtons.addEventListener("click", runLike_tlfevnlu);
 
@@ -76,6 +77,14 @@
             likeInfo.innerHTML = "<div style='background:var(--postHeaderFooter);color:var(--postHeaderFont);width:max-content;max-width:50%;height:max-content;padding:4px;border:1px #2C405A solid;z-index:1;margin-top:-65px;line-height:1em;'>Hiding data will only effect changes from the Reblogged to Community Extension regarding the Likes-tab.<br>Hiding data will reduce network activity.</div>";
             document.getElementById("likes").insertBefore(likeInfo, document.getElementById("likes").firstChild);
         }
+
+        //Dark Mode fix for no reblogs and no likes
+        Object.values(document.getElementById("reblogs").children).find(function(child) {
+            return child.innerText == "There\n    are no reblogs for this post."
+        }).style.backgroundColor = "transparent";
+        Object.values(document.getElementById("likes").children).find(function(child) {
+            return child.innerText == "There are no likes for this post."
+        }).style.backgroundColor = "transparent";
     }
 
 
@@ -153,6 +162,7 @@
             timeouts.push(setTimeout(runReblog_tlfevnlu, 200));
             return;
         }
+        fixDarkMode_tlfevnlu();
 
         //fetch new data
         let page = 1;
@@ -233,6 +243,7 @@
             timeouts.push(setTimeout(runLike_tlfevnlu, 200));
             return;
         }
+        fixDarkMode_tlfevnlu();
 
         //fetch new data
         let page = 1;
@@ -331,7 +342,7 @@
         content.lastChild.children[0].addEventListener("change", function() {
             localStorage.setItem("rtcdisablereblog", !this.checked);
         });
-        content.appendChild(createSwitch_tlfevnlu("Show where Likes are from", localStorage.getItem("rtcdisablelike") == "true" ? "" : "checked"));
+        content.appendChild(createSwitch_tlfevnlu("Show where Likes came from", localStorage.getItem("rtcdisablelike") == "true" ? "" : "checked"));
         content.lastChild.children[0].addEventListener("change", function() {
             localStorage.setItem("rtcdisablelike", !this.checked);
         });
@@ -346,5 +357,13 @@
           <label for="${id}">${title}</label>
         `;
         return toggle;
+    }
+
+    function fixDarkMode_tlfevnlu() {
+        console.log("fix");
+        let notes = document.querySelectorAll(".reblog-note, .like-note")
+        notes.forEach(function(note) {
+            note.style.backgroundColor = "transparent";
+        });
     }
 })();
