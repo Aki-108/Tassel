@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.1
+// @version      2.2
 // @description  Shows where a post has been liked/reblogged to.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -81,10 +81,10 @@
         //Dark Mode fix for no reblogs and no likes
         Object.values(document.getElementById("reblogs").children).find(function(child) {
             return child.innerText == "There\n    are no reblogs for this post."
-        }).style.backgroundColor = "transparent";
+        }).style.backgroundColor = "var(--tag_bg)";
         Object.values(document.getElementById("likes").children).find(function(child) {
             return child.innerText == "There are no likes for this post."
-        }).style.backgroundColor = "transparent";
+        }).style.backgroundColor = "var(--tag_bg)";
     }
 
 
@@ -363,7 +363,7 @@
         console.log("fix");
         let notes = document.querySelectorAll(".reblog-note, .like-note")
         notes.forEach(function(note) {
-            note.style.backgroundColor = "transparent";
+            note.style.backgroundColor = "var(--tag_bg)";
         });
     }
 })();
