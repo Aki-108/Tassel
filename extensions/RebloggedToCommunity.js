@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.1
+// @version      2.2
 // @description  Shows where a post has been liked/reblogged to.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -15,15 +15,17 @@
     'use strict';
 
     /* Wait for the page to load before initializing the script. */
-    waitForKeyElements("#post-comments-section", addEventListener_tlfevnlu);
-    initTassel_tlfevnlu();
     var reblogPageButtons;
     var likePageButtons;
     var dataJSON;
     var timeouts = [];
 
+    waitForKeyElements("#post-comments-section", addEventListener_tlfevnlu);
+    initTassel_tlfevnlu();
+
     /* Initialize the script by adding event listeners to necessary buttons for user interaction. */
     function addEventListener_tlfevnlu() {
+        if (document.URL.search("www.pillowfort.social/posts/") == -1) return;
         //reblogs-tab and reblog-pagination buttons events
         let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
         reblogButton.addEventListener("click", runReblog_tlfevnlu);
@@ -360,7 +362,6 @@
     }
 
     function fixDarkMode_tlfevnlu() {
-        console.log("fix");
         let notes = document.querySelectorAll(".reblog-note, .like-note")
         notes.forEach(function(note) {
             note.style.backgroundColor = "transparent";
