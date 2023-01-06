@@ -4,12 +4,13 @@
 
 #tasselToast {
 	height: max-content;
-	max-width: 250px;
+	max-width: 230px;
 	position: fixed;
 	bottom: 0;
 	right: 0;
-	padding: 20px;
+	margin: 20px;
 	font-size: 14px;
+	box-shadow: 0 0 5px 0 black;
 }
 
 #tasselToast div {
@@ -19,6 +20,18 @@
 	border-top: 5px var(--linkColor) solid;
 	cursor: pointer;
 	line-height: 1.2em;
+}
+
+#tasselToast .fade-out {
+	transition: all 1.5s ease-out 0s,
+		opacity 0.5s linear 1s,
+		border-width 0.5s linear 1s
+	height: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	overflow: hidden;
+	opacity: 0;
+	border-width: 0px;
 }
 
 #tasselModalDialog1 {
