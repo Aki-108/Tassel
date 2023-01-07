@@ -1,5 +1,16 @@
+.tasselSidebarSmall {
+	cursor: pointer;
+}
+
 .tasselSidebarSmall div {
 	height: 40px;
+}
+
+.tasselSidebarSmall svg {
+	padding: 7px 12px;
+	width: 100%;
+	height: 100%;
+	filter: var(--iconColor);
 }
 
 #tasselToast {
@@ -34,6 +45,11 @@
 	border-width: 0px;
 }
 
+#tasselModal {
+	display: none;
+	overflow: auto;
+}
+
 #tasselModalDialog1 {
 	width: 800px;
 	max-width: 90%;
@@ -60,7 +76,7 @@
 }
 
 #tasselModalContent {
-	overflow: auto;
+	overflow: hidden scroll;
 	padding: 10px;
 }
 
