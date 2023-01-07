@@ -45,7 +45,6 @@
         });
     });
 
-    console.log("Post Subscriber has begun");
     //start initialization
     if (document.getElementsByClassName("sidebar-expanded").length > 0) {
         init_ltapluah();
@@ -53,7 +52,6 @@
         waitForKeyElements(".sidebar-expanded", init_ltapluah);
     }
     function init_ltapluah() {
-        console.log("Post Subscriber: start init");
         initSidebar_ltapluah();
         initTassel_ltapluah();
         initSinglePost_ltapluah();
@@ -78,7 +76,6 @@
 
     //when viewing a post in the modal
     function initModal_ltapluah() {
-        console.log("Post Subscriber: init Modal");
         let navigation = postModal.getElementsByClassName("post-nav-left")[0];
 
         //wait before editing the modal because Pillowfort changes its content asynchronous
@@ -123,7 +120,6 @@
 
     //runs everytime the comment section is loaded
     function initComments_ltapluah() {
-        console.log("Post Subscriber: init Comments");
         if (subscribed) {
             highlightComments_ltapluah();
 
@@ -144,7 +140,6 @@
 
     //add elements when viewing a post with its perma-link
     function initSinglePost_ltapluah() {
-        console.log("Post Subscriber: init Single Post");
         getData_ltapluah();
         if (document.URL.search("/posts/") != 29) return;
 
@@ -183,7 +178,6 @@
 
     //add elements to the sidebar
     function initSidebar_ltapluah() {
-        console.log("Post Subscriber: init Sidebar");
         if (document.getElementsByClassName("postSubscriberIcon").length > 0) return;
 
         //add button to collapsed sidebar
@@ -235,7 +229,6 @@
 
     //add elements to the Tassel menu
     function initTassel_ltapluah() {
-        console.log("Post Subscriber: init Tassel");
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar == null) return;
         let button = document.createElement("div");
