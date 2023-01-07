@@ -37,7 +37,7 @@
 }
 
 #tasselToast .fade-out {
-	height: 0px;
+	height: 0px !important;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	overflow: hidden;
