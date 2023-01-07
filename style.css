@@ -22,9 +22,6 @@
 	margin: 20px;
 	font-size: 14px;
 	box-shadow: 0 0 5px 0 black;
-	transition: all 1.5s ease-out 0s,
-		opacity 0.5s linear 1s,
-		border-width 0.5s linear 1s;
 }
 
 #tasselToast div {
@@ -34,6 +31,9 @@
 	border-top: 5px var(--linkColor) solid;
 	cursor: pointer;
 	line-height: 1.2em;
+	transition: all 1.5s ease-out 0s,
+		opacity 0.5s linear 1s,
+		border-width 0.5s linear 1s;
 }
 
 #tasselToast .fade-out {
