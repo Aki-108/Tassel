@@ -9,8 +9,8 @@ let extensionsIndex = [
             "description": "View Images in Full Screen",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/1b0fe547356d9c6c62c22cb39c5a0f8c80e5be09/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
-            "features": ["+ view images in full screen",
-                         "+ dedicated button for embedded links"
+            "features": ["View images in full screen.",
+                         "Adds a dedicated button for embedded links."
             ]
         },
         {
@@ -23,9 +23,9 @@ let extensionsIndex = [
             "description": "Get notified when there are new comments in a post.",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/de1a4228979a5c476cbbf763db3dbdd50607f3ef/extensions/PostSubscriber.js",
             "post": "https://www.pillowfort.social/posts/2878877",
-            "features": ["+ subscribe to posts",
-                         "+ notifications for new comments in the sidebar",
-                         "+ highlight new comments"
+            "features": ["Subscribe to posts.",
+                         "Get notifications for new comments in the sidebar.",
+                         "Highlight new comments."
             ]
         },
         {
@@ -38,9 +38,9 @@ let extensionsIndex = [
             "description": "Shows where a post has been liked/reblogged to.",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/d4c6b9fed601f52b66d91e3397b85bbd4b6f002a/extensions/RebloggedToCommunity.js",
             "post": "https://www.pillowfort.social/posts/3057985",
-            "features": ["+ show where a post has been reblogged to",
-                         "+ show where a post has been liked from",
-                         "* makes notes actually dark in dark mode"
+            "features": ["Show where a post has been reblogged to.",
+                         "Show where a post has been liked from.",
+                         "Makes notes actually dark in dark mode."
             ]
         },
         {
