@@ -183,6 +183,10 @@
         //add button to collapsed sidebar
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
         let subscriptionSmall = document.createElement("a");
+        subscriptionSmall.href = "";//add a link to comply with accessibility requirements but don't open the link
+        subscriptionSmall.addEventListener("click", function(event) {
+            event.preventDefault();
+        });
         subscriptionSmall.classList.add("postSubscriberIcon", "sidebar-icon");
         subscriptionSmall.title = "Subscriptions";
         subscriptionSmall.style.cursor = "pointer";
@@ -202,6 +206,10 @@
         let sidebarBig = document.getElementsByClassName("sidebar-expanded")[1];
         sidebarBig.children[8].firstChild.style.paddingBottom = "0";
         let subscriptionBigWrapper = document.createElement("a");
+        subscriptionBigWrapper.href = "";//add a link to comply with accessibility requirements but don't open the link
+        subscriptionBigWrapper.addEventListener("click", function(event) {
+            event.preventDefault();
+        });
         subscriptionBigWrapper.addEventListener("click", showPopup_ltapluah);
         subscriptionBigWrapper.style.cursor = "pointer";
         let subscriptionBig = document.createElement("div");
