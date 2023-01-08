@@ -87,12 +87,11 @@
 .tasselModalSidebarEntry {
 	font-weight: bold;
 	padding: 10px;
+	border: none;
 	border-bottom: .5px lightgrey solid;
-	cursor: pointer;
-}
-
-.tasselModalSidebarEntry p {
-	margin: 0;
+	width: 100%;
+	text-align: left;
+	background: none;
 }
 
 #tasselModalSidebar .active {
