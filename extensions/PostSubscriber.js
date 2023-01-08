@@ -239,10 +239,10 @@
     function initTassel_ltapluah() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar == null) return;
-        let button = document.createElement("div");
+        let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarPostSubscriber";
-        button.innerHTML = "<p>Post Subscriber</p>";
+        button.innerHTML = "Post Subscriber";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarPostSubscriber").addEventListener("click", tasselDisplaySettings_ltapluah);
     }
