@@ -314,10 +314,10 @@
     function initTassel_tlfevnlu() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar == null) return;
-        let button = document.createElement("div");
+        let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarRebloggedToCommunity";
-        button.innerHTML = "<p>Reblogged to Community</p>";
+        button.innerHTML = "Reblogged to Community";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarRebloggedToCommunity").addEventListener("click", tasselDisplaySettings_tlfevnlu);
     }
