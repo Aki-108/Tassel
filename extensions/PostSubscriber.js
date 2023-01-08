@@ -265,9 +265,8 @@
         content.appendChild(document.createElement("hr"));
 
         //selection of update interval
-        let info1 = document.createElement("span");
+        let info1 = document.createElement("label");
         info1.innerHTML = "Check for new Comments every ";
-        content.appendChild(info1);
         let select1 = document.createElement("select");
         select1.id = "tasselPostSubscriberInterval";
         select1.innerHTML = `
@@ -279,7 +278,8 @@
           <option value="7200000">2 Hours</option>
           <option value="86400000">1 Day</option>
         `;
-        content.appendChild(select1);
+        info1.appendChild(select1);
+        content.appendChild(info1);
         content.appendChild(document.createElement("br"));
         //save settings when changed
         document.getElementById("tasselPostSubscriberInterval").addEventListener("change", function() {
@@ -294,9 +294,8 @@
         }
 
         //selection of accent color
-        let info2 = document.createElement("span");
+        let info2 = document.createElement("label");
         info2.innerHTML = "Accent Color ";
-        content.appendChild(info2);
         let select2 = document.createElement("select");
         select2.id = "tasselPostSubscriberColorSelect";
         select2.innerHTML = `
@@ -305,13 +304,14 @@
           <option value="" selected>Custom</option>
           <option value="var(--linkColor)">Link Color</option>
         `;
-        content.appendChild(select2);
+        info2.appendChild(select2);
         let color2 = document.createElement("input");
         color2.id = "tasselPostSubscriberColor";
         color2.type = "color";
         color2.value = localStorage.getItem("postSubscriberColor");
         color2.style = "font-size:inherit;height:2.4em;width:2.4em;background:none;vertical-align:bottom;border:1px black solid;border-radius:.5em;margin:10px 0 0 5px;";
-        content.appendChild(color2);
+        info2.appendChild(color2);
+        content.appendChild(info2);
         document.getElementById("tasselPostSubscriberColorSelect").addEventListener("click", selectColor_ltapluah);
         document.getElementById("tasselPostSubscriberColor").addEventListener("change", selectColor_ltapluah);
 
