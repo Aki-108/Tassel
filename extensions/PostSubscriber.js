@@ -321,7 +321,7 @@ color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;verti
         
         content.appendChild(createSwitch_ltapluah("Enable loading indicator", localStorage.getItem("tasselPostSubLoadingIndicator") == "true" ? "" : "checked"));
         content.lastChild.children[0].addEventListener("change", function() {
-            localStorage.setItem("tasselPostSubLoadingIndicator", !this.checked);
+            localStorage.setItem("tasselPostSubLoadingIndicator", this.checked);
         });
 
         //show the selected option in the menu, not the default
@@ -418,16 +418,19 @@ color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;verti
         let now = new Date().getTime();
         if (now-lastCheck < interval) return;//skip if not enough time has passed
 
-        //loading spinner
-        Object.values(document.getElementsByClassName("postSubscriberSpinner")).forEach(function(data) {
-            let angle = data.style.transform.split("(")[1].split("d")[0]*1 + 360;
-            data.style.transform = `rotate(${angle}deg)`;
-        });
         localStorage.setItem("postSubscriberTime", now);
         subscriptionList.forEach(function(data, index) {
             window.setTimeout(function() {
                 checkPost_ltapluah(data[0]);
             }, 3000*index);
+        });
+        
+        //loading spinner
+        let setting = localStorage.getItem("tasselPostSubLoadingIndicator") || true;
+        if (!setting) return;
+        Object.values(document.getElementsByClassName("postSubscriberSpinner")).forEach(function(data) {
+            let angle = data.style.transform.split("(")[1].split("d")[0]*1 + 360;
+            data.style.transform = `rotate(${angle}deg)`;
         });
     }
 
