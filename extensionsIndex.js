@@ -21,7 +21,7 @@ let extensionsIndex = [
             "updated": 1672490820000,
             "author": "aki108",
             "description": "Get notified when there are new comments in a post.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/026b05edf071ab67a0cfdbde11cf77c3532162e5/extensions/PostSubscriber.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/1bce35a4f183ada64c982f6c7cc5316c7ffb161b/extensions/PostSubscriber.js",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["+ subscribe to posts",
                          "+ notifications for new comments in the sidebar",
