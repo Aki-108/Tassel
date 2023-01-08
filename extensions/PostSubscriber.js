@@ -266,6 +266,7 @@
 
         //selection of update interval
         let info1 = document.createElement("label");
+info1.style.fontWeight = "normal";
         info1.innerHTML = "Check for new Comments every ";
         let select1 = document.createElement("select");
         select1.id = "tasselPostSubscriberInterval";
@@ -295,8 +296,11 @@
 
         //selection of accent color
         let info2 = document.createElement("label");
+info2.style.fontWeight = "normal";
         info2.innerHTML = "Accent Color ";
         let select2 = document.createElement("select");
+select2.style.borderRight = "none";
+select2.style.borderRadius = ".5em 0 0 .5em";
         select2.id = "tasselPostSubscriberColorSelect";
         select2.innerHTML = `
           <option value="#ff7fc5">Pillowfort Pink</option>
@@ -306,10 +310,14 @@
         `;
         info2.appendChild(select2);
         let color2 = document.createElement("input");
+color2.style.height = "2.5em";
+color2.style.borderRadius = "0 .5em .5em 0";
+color2.style.margin = "10px 0 0 0";
+color2.style.borderLeft = "1px lightgrey solid";
         color2.id = "tasselPostSubscriberColor";
         color2.type = "color";
         color2.value = localStorage.getItem("postSubscriberColor");
-        color2.style = "font-size:inherit;height:2.4em;width:2.4em;background:none;vertical-align:bottom;border:1px black solid;border-radius:.5em;margin:10px 0 0 5px;";
+color2.style = "font-size:inherit;height:2.4em;width:2.4em;background:none;vertical-align:bottom;border:1px black solid;border-radius:.5em;margin:10px 0 0 5px;";
         info2.appendChild(color2);
         content.appendChild(info2);
         document.getElementById("tasselPostSubscriberColorSelect").addEventListener("click", selectColor_ltapluah);
