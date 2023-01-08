@@ -97,9 +97,9 @@
 #tasselModalSidebar .active,
 .tasselModalSidebarEntry:active,
 .tasselModalSidebarEntry:focus {
-	box-shadow: 0 0 5px 0 grey inset;
-	border: none;
-	border-bottom: .5px lightgrey solid;
+	box-shadow: 0 0 5px 0 grey inset !important;
+	border: none !important;
+	border-bottom: .5px lightgrey solid !important;
 }
 
 #tasselModalContent p {
