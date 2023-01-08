@@ -322,6 +322,11 @@ color2.style = "font-size:inherit;height:2.4em;width:2.4em;background:none;verti
         content.appendChild(info2);
         document.getElementById("tasselPostSubscriberColorSelect").addEventListener("click", selectColor_ltapluah);
         document.getElementById("tasselPostSubscriberColor").addEventListener("change", selectColor_ltapluah);
+        
+        content.appendChild(createSwitch_ltapluah("Enable loading indicator", localStorage.getItem("tasselPostSubLoadingIndicator") == "true" ? "" : "checked"));
+        content.lastChild.children[0].addEventListener("change", function() {
+            localStorage.setItem("tasselPostSubLoadingIndicator", !this.checked);
+        });
 
         //show the selected option in the menu, not the default
         let selector2 = document.getElementById("tasselPostSubscriberColorSelect");
@@ -562,5 +567,16 @@ color2.style = "font-size:inherit;height:2.4em;width:2.4em;background:none;verti
                 comments[a].children[0].appendChild(newIcon);
             }
         }
+    }
+
+    function createSwitch_ltapluah(title="", state="") {
+        let id = "tasselSwitch" + Math.random();
+        let toggle = document.createElement("div");
+        toggle.classList.add("tasselToggle");
+        toggle.innerHTML = `
+          <input id="${id}" type="checkbox" ${state}>
+          <label for="${id}">${title}</label>
+        `;
+        return toggle;
     }
 })();
