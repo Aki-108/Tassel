@@ -313,7 +313,7 @@ select2.style.borderRadius = ".5em 0 0 .5em";
         color2.id = "tasselPostSubscriberColor";
         color2.type = "color";
         color2.value = localStorage.getItem("postSubscriberColor");
-color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;vertical-align:bottom;border:1px black solid;border-radius:0 .5em .5em 0;margin:10px 0 0 0;border-left:1px lightgrey solid;";
+color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;vertical-align:bottom;border:1px black solid;border-radius:0 .5em .5em 0;margin:0 0 0 0;border-left:1px lightgrey solid;";
         info2.appendChild(color2);
         content.appendChild(info2);
         document.getElementById("tasselPostSubscriberColorSelect").addEventListener("click", selectColor_ltapluah);
