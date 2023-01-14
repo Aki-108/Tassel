@@ -189,7 +189,6 @@
         });
         subscriptionSmall.classList.add("postSubscriberIcon", "sidebar-icon");
         subscriptionSmall.title = "Subscriptions";
-        subscriptionSmall.style.cursor = "pointer";
         subscriptionSmall.appendChild(icon.cloneNode(true));
         subscriptionSmall.children[0].style.height = "40px";
         subscriptionSmall.children[0].children[0].style.transition = "all 2s";
@@ -211,8 +210,11 @@
             event.preventDefault();
         });
         subscriptionBigWrapper.addEventListener("click", showPopup_ltapluah);
-        subscriptionBigWrapper.style.cursor = "pointer";
         let subscriptionBig = document.createElement("div");
+        if (localStorage.getItem("tasselSettings")[4] == "1") {
+            subscriptionBig.style.marginTop = "8px";
+            subscriptionBig.style.marginBottom = "8px";
+        }
         subscriptionBig.classList.add("postSubscriberIcon", "sidebar-topic");
         subscriptionBig.appendChild(icon.cloneNode(true).children[0]);
         subscriptionBig.children[0].style.transition = "all 2s";
