@@ -224,6 +224,7 @@
         let counter = document.createElement("div");
         counter.classList.add("sidebar-num");
         counter.style.paddingTop = "7px";
+        if (localStorage.getItem("tasselSettings")[5] == "1") counter.style.display = "none";
         counter.id = "postSubscriberNotificationCounter";
         counter.innerHTML = "0";
         subscriptionBig.appendChild(counter);
@@ -452,6 +453,7 @@ color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;verti
                 }
             });
             document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
+            if (counter > 0) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
             setData_ltapluah();
         });
     }
