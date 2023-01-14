@@ -36,6 +36,16 @@
 		border-width 0.5s linear 1s;
 }
 
+#tasselToast h6 {
+	font-weight: bold;
+	line-height: 1em;
+	margin-bottom: 4px;
+}
+
+#tasselToast a {
+	text-decoration: underline;
+}
+
 #tasselToast .fade-out {
 	height: 0px !important;
 	padding-top: 0px;
@@ -62,6 +72,12 @@
 	overflow: hidden;
 	margin-top: 0;
 	height: 70vh;
+}
+
+#tasselModalHeader {
+	padding: 10px 15px 0 40px;
+	border-bottom: 2px solid #e3e3e3;
+	box-shadow: 0 0 5px 0 black;
 }
 
 #tasselModalGrid {
@@ -110,11 +126,49 @@
 	margin: 0 0 5px;
 }
 
+#tasselModalContentExtensionsHeader {
+	display: grid;
+	grid-template-columns: auto 205px;
+}
+
+#tasselModalContentExtensionsHeader p {
+	margin: 0;
+}
+
+#tasselModalContentExtensionsHeader label {
+	font-weight: normal;
+	padding-left: 10px;
+	margin-left: 10px;
+	border-left: .5px lightgrey solid;
+}
+
+#tasselModalContentExtensionsHeader select {
+	margin-left: 5px;
+	height: 2.5em;
+}
+
 .tasselExtension {
 	margin: 20px 10px 0;
 	padding: 10px;
 	box-shadow: grey 0 0 5px 0;
 	overflow: hidden;
+}
+
+.tasselExtension div {
+	display: inline-block;
+	max-width: calc(100% - 30px);
+}
+
+.tasselExtension input {
+	display: inline-block;
+	transform: scale(1.5);
+	margin: 1px 10px 0 4px;
+	vertical-align: text-top;
+}
+
+.tasselExtension a {
+	float: right;
+	width: 25px;
 }
 
 .tasselExtension label {
