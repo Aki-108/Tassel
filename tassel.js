@@ -1,11 +1,14 @@
 // ==UserScript==
 // @name         Tassel
-// @version      0.2
-// @description  -
+// @version      0.3
+// @description  Pillowfort Extension Manager
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
-// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/7166f0c1be002e5cf99fbeb0cfbab8544d162a65/style.css
+// @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
+// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
+// @supportURL   https://www.pillowfort.social/Tassel
+// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/3c680115ef20cb66034a60e6281a9028a4bea481/style.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -28,7 +31,7 @@
         <circle cx="10" fill="none" stroke-width="1.2px" r="3" stroke="#58b6dd" cy="5"/>
       </svg>`;
 
-    let settings = localStorage.getItem("tasselSettings") || "1110001";
+    let settings = localStorage.getItem("tasselSettings") || "11100010";
     /* settings ids
     0  Get Notifications for Active Extensions
     1  Get Notifications for Inactive Extensions
@@ -37,6 +40,7 @@
     4  Shorten Expended Sidebar
     5  Hide 0 Notification Counter
     6  Sticky Text Toolbar
+    7  Highlight Linked Comments
     */
     let sortOrder = "new";//order in which to display extensions in the list
     let loadedExtensions = [];
@@ -265,12 +269,31 @@
         });
     }
 
-    /* Open modal when URL parameters say so */
+    /* Open modal when URL parameters say so and highlight specific elements */
     function evaluateURLParameter_xcajbuzn() {
         let queryString = new URLSearchParams(window.location.search.substring(1));
         for (let pair of queryString.entries()) {
             if (pair[0] == "tassel") {
                 openModal_xcajbuzn(pair[1]);
+            } else if (pair[0] == "tExtension") {
+                let extension = document.getElementById(pair[1]);
+                extension.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                extension.style.animationDuration = "2s";
+                extension.style.animationIterationCount = "2";
+                extension.style.animationName = "blink";
+            } else if (pair[0] == "tSwitch") {
+                let setting = document.getElementsByClassName(pair[1])[0].parentNode;
+                setting.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
+                setting.style.animationDuration = "2s";
+                setting.style.animationIterationCount = "2";
+                setting.style.animationName = "blink";
+            } else if (pair[0] == "comment" && settings[7] == "1") {
+                window.setTimeout(function() {
+                    let comment = document.getElementById(pair[1]);
+                    comment.style.animationDuration = "2s";
+                    comment.style.animationIterationCount = "2";
+                    comment.style.animationName = "blink";
+                }, 2000);
             }
         }
     }
@@ -348,12 +371,13 @@
             }
         });
         let extensionsList = document.createElement("div");
-extensionsList.style.display = "grid";
-extensionsList.style.gridTemplateColumns = "50% 50%";
+        extensionsList.style.display = "grid";
+        extensionsList.style.gridTemplateColumns = "50% 50%";
 
         //create extension entries in modal
         extensionsIndex.forEach(function(data, index) {
             let frame = document.createElement("div");
+            frame.id = "extension"+data.id;
             frame.classList.add("tasselExtension");
                 let checkboxID = "checkbox"+data.name;
                 let info = document.createElement("div");
@@ -380,19 +404,19 @@ extensionsList.style.gridTemplateColumns = "50% 50%";
 
                     let description = document.createElement("p");
                     description.innerHTML = data.description;
-description.style.margin = "0";
+                    description.style.margin = "0";
                 info.appendChild(description);
 
                 if (data.features != null && data.features.length > 0) {
                     let details = document.createElement("details");
-details.style.margin = "10px 0 0 10px";
+                    details.style.margin = "10px 0 0 10px";
                         let summary = document.createElement("summary");
                         summary.innerHTML = "Features...";
-summary.style.marginBottom = ".5em";
+                        summary.style.marginBottom = ".5em";
                     details.appendChild(summary);
                     let list = document.createElement("ul");
-list.style.paddingLeft = "14px";
-list.style.margin = "0";
+                    list.style.paddingLeft = "14px";
+                    list.style.margin = "0";
                     data.features.forEach(function(feature) {
                         let text = document.createElement("li");
                         text.innerHTML = feature;
@@ -415,12 +439,11 @@ list.style.margin = "0";
         });
         content.appendChild(extensionsList);
 
-        if (settings[3] == "1") {
-            content.appendChild(document.createElement("hr"));
-            let info2 = document.createElement("p");
-            info2.innerHTML = "Extensions that are greyed out are currently in development and might not work as intended. Use at own risk.";
-            content.appendChild(info2);
-        }
+        content.appendChild(document.createElement("hr"));
+        let info2 = document.createElement("p");
+        info2.innerHTML = "If you enjoy an extension, consider commenting / reblogging / liking the corresponding announcement post by opening the link of the extension."
+        if (settings[3] == "1") info2.innerHTML += "<br><br>Extensions that are greyed out are currently in development and might not work as intended. Use at own risk.";
+        content.appendChild(info2);
     }
 
     /* Create the About page in the modal */
@@ -488,6 +511,8 @@ list.style.margin = "0";
         content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
         /*content.appendChild(createSwitch_xcajbuzn("Sticky Text Toolbar", "disabled checked", "tasselSetting6"));
         content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);*/
+        content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", "", "tasselSetting7"));
+        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
 
         //Other
         content.appendChild(document.createElement("hr"));
@@ -531,9 +556,12 @@ list.style.margin = "0";
     /* Write Tassel Settings to local storage */
     function saveSettings_xcajbuzn() {
         let data = "";
-        for (let a = 0; /*check all that exist*/; a++) {
+        for (let a = 0; a < 100; a++) {
             let setting = document.getElementsByClassName("tasselSetting"+a)[0];
-            if (setting == undefined) break;
+            if (setting == undefined) {
+                data += "-";
+                continue;
+            }
             data += setting.checked ? "1" : "0";
         }
         settings = data;
