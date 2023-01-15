@@ -6,7 +6,7 @@ Tassel provides you with a list of extensions to choose from. You can activate a
 In the Tassel modal you have all settings from different extensions conveniently in one place with explanations of what they actually mean.
 
 ## How do you install Tassel?
-Simply open GreasyFork and click "Install this script". If you don't already have a script-manager installed, GreasyFork will provide you with instructions on how to get one.
+Simply open [GreasyFork](https://greasyfork.org/de/scripts/458254-tassel) and click "Install this script". If you don't already have a script-manager installed, GreasyFork will provide you with instructions on how to get one.
 
 ## How does Tassel work?
 Tassel only loads the extensions you activate. Extensions that are not active do not use any memory or network bandwidth.
