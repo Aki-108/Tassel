@@ -192,3 +192,8 @@
 	font-weight: normal;
 	cursor: pointer;
 }
+
+@keyframes blink {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
