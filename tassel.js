@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Tassel
-// @version      0.3
+// @version      0.4
 // @description  Pillowfort Extension Manager
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
-// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
+// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/f211144933e121ace248206a5b79ac41b848c545/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
 // @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/3c680115ef20cb66034a60e6281a9028a4bea481/style.css
 // @grant        GM_getResourceText
