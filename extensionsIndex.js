@@ -42,24 +42,6 @@ let extensionsIndex = [
                          "Show where a post has been liked from.",
                          "Makes notes actually dark in dark mode."
             ]
-        },
-        {
-            "name": "Advanced Blacklist",
-            "id": 4,
-            "version": "0.1",
-            "author": "aki108"
-        },
-        {
-            "name": "Read More Inplace",
-            "id": 5,
-            "version": "0.0",
-            "author": "aki108"
-        },
-        {
-            "name": "User Info",
-            "id": 6,
-            "version": "0.0",
-            "author": "aki108"
         }
     ];
 
