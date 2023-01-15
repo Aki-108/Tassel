@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Tassel
-// @version      0.4
+// @version      1.0
 // @description  Pillowfort Extension Manager
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
-// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/f211144933e121ace248206a5b79ac41b848c545/tassel.js
+// @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
 // @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/3c680115ef20cb66034a60e6281a9028a4bea481/style.css
 // @grant        GM_getResourceText
@@ -16,7 +16,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/2dea53361cf29fbeb68902e88a0ff47af3893563/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/1397f3a8d6618c376fa07541f68c2e71cb587179/extensionsIndex.js";
     let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/4924e0d91b9f8b7f1c0b4c26cfc5f4c12199e854/toasts.js";
 
     let icon = document.createElement("div");
