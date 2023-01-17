@@ -321,6 +321,9 @@ color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;verti
         content.appendChild(info2);
         document.getElementById("tasselPostSubscriberColorSelect").addEventListener("click", selectColor_ltapluah);
         document.getElementById("tasselPostSubscriberColor").addEventListener("change", selectColor_ltapluah);
+        document.getElementById("tasselPostSubscriberColor").addEventListener("click", function() {
+            document.getElementById("tasselPostSubscriberColorSelect").selectedIndex = 2
+        });
         
         content.appendChild(createSwitch_ltapluah("Enable loading indicator", localStorage.getItem("tasselPostSubLoadingIndicator") == "true" ? "" : "checked"));
         content.lastChild.children[0].addEventListener("change", function() {
