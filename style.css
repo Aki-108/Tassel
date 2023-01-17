@@ -198,3 +198,7 @@
 	50% {opacity: 0;}
 	100% {opacity: 1;}
 }
+
+.sidebar-num {
+	display: none;
+}
