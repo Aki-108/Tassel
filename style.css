@@ -78,6 +78,8 @@
 	padding: 10px 15px 0 40px;
 	border-bottom: 2px solid #e3e3e3;
 	box-shadow: 0 0 5px 0 black;
+	z-index: 10;
+	position: inherit;
 }
 
 #tasselModalGrid {
