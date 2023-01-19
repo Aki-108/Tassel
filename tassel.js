@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.0
+// @version      1.1
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -8,7 +8,7 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
-// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/3c680115ef20cb66034a60e6281a9028a4bea481/style.css
+// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/63ba51e09ff2257b1c8132dbdbfc4b00bdbc6190/style.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // ==/UserScript==
