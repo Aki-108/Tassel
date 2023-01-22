@@ -130,7 +130,7 @@
 
 #tasselModalContentExtensionsHeader {
 	display: grid;
-	grid-template-columns: auto 205px;
+	grid-template-columns: auto 210px;
 }
 
 #tasselModalContentExtensionsHeader p {
