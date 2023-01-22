@@ -4,7 +4,7 @@ let toasts = [
     "extension": 0,
     "title": "Thanks for using Tassel",
     "text": "Click on the Tassel button in the sidebar to start using extensions. Click this message to hide it.",
-    "timestamp": 0,
+    "timestamp": 10,
     "new": false
   }
 ];
