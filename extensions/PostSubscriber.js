@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Post Subscriber V2
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.7
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
