@@ -211,7 +211,7 @@
         });
         subscriptionBigWrapper.addEventListener("click", showPopup_ltapluah);
         let subscriptionBig = document.createElement("div");
-        if (localStorage.getItem("tasselSettings")[4] != null && localStorage.getItem("tasselSettings")[4] == "1") {
+        if (localStorage.getItem("tasselSettings") != null && localStorage.getItem("tasselSettings")[4] == "1") {
             subscriptionBig.style.marginTop = "8px";
             subscriptionBig.style.marginBottom = "8px";
         }
@@ -224,7 +224,7 @@
         let counter = document.createElement("div");
         counter.classList.add("sidebar-num");
         counter.style.paddingTop = "7px";
-        if (localStorage.getItem("tasselSettings")[5] == "1") counter.style.display = "none";
+        if (localStorage.getItem("tasselSettings") != null && localStorage.getItem("tasselSettings")[5] == "1") counter.style.display = "none";
         counter.id = "postSubscriberNotificationCounter";
         counter.innerHTML = "0";
         subscriptionBig.appendChild(counter);
