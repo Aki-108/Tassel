@@ -211,7 +211,7 @@
         });
         subscriptionBigWrapper.addEventListener("click", showPopup_ltapluah);
         let subscriptionBig = document.createElement("div");
-        if (localStorage.getItem("tasselSettings")[4] == "1") {
+        if (localStorage.getItem("tasselSettings")[4] != null && localStorage.getItem("tasselSettings")[4] == "1") {
             subscriptionBig.style.marginTop = "8px";
             subscriptionBig.style.marginBottom = "8px";
         }
