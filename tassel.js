@@ -132,7 +132,7 @@
         //hide 0 notifications
         if (settings[5] == "1") {
             Object.values(document.getElementsByClassName("sidebar-num")).forEach(function(el) {
-                if (el.innerHTML = "0") el.style.display = "none"
+                if (el.innerHTML == "0") el.style.display = "none"
             });
         }
     }
