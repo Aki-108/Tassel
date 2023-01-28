@@ -42,7 +42,22 @@ let extensionsIndex = [
                          "Show where a post has been liked from.",
                          "Makes notes actually dark in dark mode."
             ]
-        }
+        },
+        {
+            "name": "Advanced Blacklist",
+            "id": 4,
+            "version": "0.2",
+            "created": 1674907200000,
+            "updated": 1674907200000,
+            "author": "aki108",
+            "description": "New and improved Blacklist with lots of Settings.",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/9720c3c912438c76d0dfba3bcd15394e2b5c3dcb/extensions/AdvancedBlacklist.js",
+            "features": [
+                "Block posts by tag, content, username or community.",
+                "Block specific posts and their reblogs.",
+                "Show the original tags of a reblog."
+            ]
+  }
     ];
 
 /* Template
