@@ -33,7 +33,6 @@
     const mutationObserver = new MutationObserver(mutationCallback);
     if (loadingIndicator != null) mutationObserver.observe(loadingIndicator, mutationConfig);
 
-    //window.setTimeout(init_skdasoyk, 10000);
     init_skdasoyk();
 
     function init_skdasoyk() {
@@ -263,7 +262,7 @@
             position: sticky;
             top: -10px;
             padding: 10px 10px 0;
-            background: white;
+            background: var(--postBgColor);
             box-shadow: 0 7px 7px -7px black;
             text-align: center;
             width: fit-content;
