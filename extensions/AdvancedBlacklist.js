@@ -237,7 +237,7 @@
         content.appendChild(title1);
         content.appendChild(createSwitch_skdasoyk("Show Original Tags", settings[0] == "1" ? "checked" : "", "tasselSetting0"));
         content.lastChild.children[0].addEventListener("change", saveSettings_skdasoyk);
-        content.appendChild(createSwitch_skdasoyk("Show why a Post was blocked", settings[1] == "1" ? "checked" : "", "tasselSetting0"));
+        content.appendChild(createSwitch_skdasoyk("Show why a Post was blocked", settings[1] == "1" ? "checked" : "", "tasselSetting1"));
         content.lastChild.children[0].addEventListener("change", saveSettings_skdasoyk);
 
         //Blacklist
