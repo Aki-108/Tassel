@@ -6,7 +6,7 @@ let extensionsIndex = [
             "created": 1660385280000,
             "updated": 1672501320000,
             "author": "aki108",
-            "description": "View Images in Full Screen",
+            "description": "View images in full screen",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/1b0fe547356d9c6c62c22cb39c5a0f8c80e5be09/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
             "features": ["View images in full screen.",
@@ -50,14 +50,28 @@ let extensionsIndex = [
             "created": 1674907200000,
             "updated": 1674907200000,
             "author": "aki108",
-            "description": "New and improved Blacklist with lots of Settings.",
+            "description": "New and improved blacklist with lots of settings.",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/ce340369443855409c76a1758eedb32892121396/extensions/AdvancedBlacklist.js",
             "features": [
                 "Block posts by tag, content, username or community.",
                 "Block specific posts and their reblogs.",
                 "Show the original tags of a reblog."
             ]
-        }
+        },
+        {
+            "name": "Collapsible Threads",
+            "id": 5,
+            "version": "1.1",
+            "created": 1674985800000,
+            "updated": 1674988260000,
+            "author": "aki108",
+            "description": "Collapse comments and threads.",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/22cdbfcc44ced98afa254a23626b21da6b0fda9c/extensions/CollapsibleThreads.js",
+            "features": [
+                "Collapse comments.",
+                "Collapse comment threads."
+            ]
+  }
     ];
 
 /* Template
