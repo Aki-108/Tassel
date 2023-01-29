@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Collapsible Threads
-// @version      1.0
+// @version      1.1
 // @description  Collapse Comments and Threads
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -37,12 +37,21 @@
             buttonComment.addEventListener("click", function() {
                 let comment = this.parentNode.parentNode.parentNode;
                 if (this.classList.contains("toggled")) {
-                    comment.style.height = "auto";
+                    //show
+                    Object.values(comment.children).forEach(function(item){
+                        if (!item.classList.contains("header")) {
+                            item.style.display = "block";
+                        }
+                    });
                     this.children[0].style.transform = "rotate(0deg)";
                     this.classList.remove("toggled");
                 } else {
-                    comment.style.height = "38px";
-                    comment.style.overflow = "hidden";
+                    //hide
+                    Object.values(comment.children).forEach(function(item){
+                        if (!item.classList.contains("header")) {
+                            item.style.display = "none";
+                        }
+                    });
                     this.children[0].style.transform = "rotate(180deg)";
                     this.classList.add("toggled");
                 }
@@ -63,17 +72,26 @@
             buttonThread.addEventListener("click", function() {
                 let comments = this.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("comment");
                 if (this.classList.contains("toggled")) {
+                    //show
                     for (let comment of comments) {
-                        comment.style.height = "auto";
+                        Object.values(comment.children).forEach(function(item){
+                            if (!item.classList.contains("header")) {
+                                item.style.display = "block";
+                            }
+                        });
                         Object.values(comment.getElementsByClassName("collapseButton")).forEach(function(item) {
                             item.classList.remove("toggled");
                             item.children[0].style.transform = "rotate(0deg)";
                         });
                     }
                 } else {
+                    //hide
                     for (let comment of comments) {
-                        comment.style.height = "38px";
-                        comment.style.overflow = "hidden";
+                        Object.values(comment.children).forEach(function(item){
+                            if (!item.classList.contains("header")) {
+                                item.style.display = "none";
+                            }
+                        });
                         Object.values(comment.getElementsByClassName("collapseButton")).forEach(function(item) {
                             item.classList.add("toggled");
                             item.children[0].style.transform = "rotate(180deg)";
