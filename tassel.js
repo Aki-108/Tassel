@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.3
+// @version      1.2.1
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
