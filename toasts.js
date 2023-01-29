@@ -6,17 +6,25 @@ let toasts = [
     "text": "Click on the Tassel button in the sidebar to start using extensions. Click this message to hide it.",
     "timestamp": 10,
     "new": false
+  },
+  {
+    "id": 1,
+    "extension": 5,
+    "title": "New Extension",
+    "text": "Collapsible Threads is now available for activation.",
+    "timestamp": 16749882600000,
+    "new": true
   }
 ];
 
 /* Template
 
-{
-  "id": 0,
-  "extension": 0,
-  "title": "",
-  "text": "",
-  "timestamp": 0,
-  "new": false
-}
+  {
+    "id": 0,
+    "extension": 0,
+    "title": "",
+    "text": "",
+    "timestamp": 0,
+    "new": false
+  }
 */
