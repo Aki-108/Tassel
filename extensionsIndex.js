@@ -61,12 +61,12 @@ let extensionsIndex = [
         {
             "name": "Collapsible Threads",
             "id": 5,
-            "version": "1.1",
+            "version": "1.2",
             "created": 1674985800000,
-            "updated": 1674988260000,
+            "updated": 1675023763255,
             "author": "aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/22cdbfcc44ced98afa254a23626b21da6b0fda9c/extensions/CollapsibleThreads.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/8a300d23d8a9481b4e86c7f8bd561cc648ae928a/extensions/CollapsibleThreads.js",
             "post": "https://www.pillowfort.social/posts/3161577"
   }
     ];
