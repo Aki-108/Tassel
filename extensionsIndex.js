@@ -66,11 +66,7 @@ let extensionsIndex = [
             "updated": 1674988260000,
             "author": "aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/22cdbfcc44ced98afa254a23626b21da6b0fda9c/extensions/CollapsibleThreads.js",
-            "features": [
-                "Collapse comments.",
-                "Collapse comment threads."
-            ]
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/22cdbfcc44ced98afa254a23626b21da6b0fda9c/extensions/CollapsibleThreads.js"
   }
     ];
 
