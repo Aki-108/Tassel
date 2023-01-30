@@ -17,7 +17,7 @@
     'use strict';
 
     let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/f49b40e78c22fa6cfa506fa03be7a51fa346a512/extensionsIndex.js";
-    let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/4253d4d5f2692603ce236238e5e04c9e9befbf3e/toasts.js";
+    let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/0bd379e1a095f9ce44c7be739aaf8e559a6de761/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
