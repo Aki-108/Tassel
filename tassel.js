@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.2.3
+// @version      1.2.4
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -209,6 +209,7 @@
     /* Check which toasts to display */
     function loadToasts_xcajbuzn() {
         let read = localStorage.getItem("tasselToastRead") || -1;
+        if (read === "16749882600000") localStorage.setItem("tasselToastRead", "1674988270000");//TEMPORARY FIX: safe to remove at 12.02.2023
         if (toasts != null && toasts.length > 0) {
             toasts.forEach(function(toast, index) {
                 if (toast.timestamp > read) {//only show new toasts
