@@ -14,6 +14,14 @@ let toasts = [
     "text": "Collapsible Threads is now available for activation.",
     "timestamp": 16749882600000,
     "new": true
+  },
+  {
+    "id": 2,
+    "extension": 6,
+    "title": "New Extension",
+    "text": "Blocklist Annotations is now available for activation. Activate <a linkRel='?tassel=extensions&tExtension=extension6'>here</a>",
+    "timestamp": 1675279440000,
+    "new": true
   }
 ];
 
