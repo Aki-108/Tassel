@@ -19,7 +19,7 @@ let toasts = [
     "id": 2,
     "extension": 6,
     "title": "New Extension",
-    "text": "Blocklist Annotations is now available for activation. Activate <a linkRel='?tassel=extensions&tExtension=extension6'>here</a>",
+    "text": "Blocklist Annotations is now available for activation. Activate <a linkRel='extensions&tExtension=extension6'>here</a>",
     "timestamp": 1675279440000,
     "new": true
   }
