@@ -8,7 +8,7 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
-// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/1b28fc496bb9e40e466eac6b1958e3b5919078b3/style.css
+// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/22884666e4fce466a3bdfee01184b46818dc49bb/style.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // ==/UserScript==
