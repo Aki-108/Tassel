@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Advanced Blacklist
-// @version      0.2
+// @name         Advanced Blacklist V2
+// @version      0.3
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -16,7 +16,7 @@
     var lastTime = "";
     var postData;
     var permaLinks;
-    var settings = localStorage.getItem("tasselAdvancedBlacklist") || "11";
+    var settings = localStorage.getItem("tasselAdvancedBlacklist") || "110";
 
     const loadingIndicator =
        document.getElementById("home_loading")
@@ -67,6 +67,8 @@
 
     function processPost_skdasoyk() {
         for (let post of postData) {
+            let foundTags = [];
+            let hide = false;
             next_post: {
                 if (post.original_post && settings[0] == "1") addTags_skdasoyk(post);
 
@@ -74,10 +76,19 @@
                 for (let blackItem of blacklist) {
                     let evaluation = shouldBlock_skdasoyk(post, blackItem);
                     if (evaluation.blocked) {
-                        blockPost_skdasoyk(post, evaluation, blackItem);
-                        break next_post;
+                        if (blackItem[2][4] === "1") {
+                            hide = true;
+                        }
+                        foundTags.push(evaluation);
+                        if (settings[2] !== "1") {
+                            break next_post;
+                        }
                     }
                 }
+            }
+            if (foundTags.length > 0) {
+                console.log(foundTags);
+                blockPost_skdasoyk(post, foundTags, hide);
             }
         }
     }
@@ -91,33 +102,31 @@
         }
 
         let blackWord = blackItem[0].toLowerCase();
-        //block by original tags
+        //block by reblog tags
         if (blackItem[2][0] == "1")
             for (let tag of post.tags)
                 if (tag.toLowerCase() === blackWord)
-                    return {blocked: true, tag: tag, type: "in the Original Tags"};
-        //block by reblog tags
+                    return {blocked: true, tag: tag, type: "in the tags"};
+        //block by original tags
         if (blackItem[2][0] == "1" && post.original_post)
             for (let tag of post.original_post.tag_list)
                 if (tag.toLowerCase() === blackWord)
-                    return {blocked: true, tag: tag, type: "in the Tags"};
+                    return {blocked: true, tag: tag, type: "in the original tags"};
         //block by body
         if (blackItem[2][1] == "1") {
             let postBody = post.content.toLowerCase();
             if (postBody.search(blackWord) >= 0)
-                return {blocked: true, tag: blackItem[0], type: "in the Post Body"};
+                return {blocked: true, tag: blackItem[0], type: "in the post body"};
         }
         //block by username of reblogger/poster
         if (blackItem[2][2] == "1") {
-            let username = post.username.toLowerCase();
-            if (username.search(blackWord) >= 0)
-                return {blocked: true, tag: blackItem[0], type: "in the Username"};
+            if (post.username.toLowerCase() == blackWord)
+                return {blocked: true, tag: blackItem[0], type: "in the username"};
         }
         //block by username of poster
         if (blackItem[2][2] == "1" && post.original_username) {
-            let username = post.original_username.toLowerCase();
-            if (username.search(blackWord) >= 0)
-                return {blocked: true, tag: blackItem[0], type: "in the Username"};
+            if (post.original_username.toLowerCase() == blackWord)
+                return {blocked: true, tag: blackItem[0], type: "in the username"};
         }
         //block by ID
         if (blackItem[2][3] == "1") {
@@ -130,13 +139,13 @@
     }
 
     /* Block post */
-    function blockPost_skdasoyk(post, evaluation, blackItem) {
+    function blockPost_skdasoyk(post, words, hide) {
         let postId = post.original_post_id || post.id;
         let postElement = Object.values(permaLinks).find(function(item) {
             return item.href.substring(item.href.search("/posts/")+7) == postId;
         }).parentNode.parentNode.parentNode.parentNode;
 
-        if (blackItem[2][4] == "1") {
+        if (hide) {
             postElement.parentNode.parentNode.style.display = "none";
             return;
         }
@@ -144,7 +153,7 @@
         for (let el of postElement.getElementsByClassName("title")) el.classList.add("advancedBlacklistHidden");
         for (let el of postElement.getElementsByClassName("media")) el.classList.add("advancedBlacklistHidden");
         for (let el of postElement.getElementsByClassName("content")) el.classList.add("advancedBlacklistHidden");
-        for (let el of postElement.getElementsByClassName("tags-container")) el.classList.add("advancedBlacklistHidden");
+        //for (let el of postElement.getElementsByClassName("tags-container")) el.classList.add("advancedBlacklistHidden");
         for (let el of postElement.getElementsByClassName("post-nav")) el.classList.add("advancedBlacklistHidden");
 
         for (let el of postElement.getElementsByClassName("advancedBlacklistHidden")) el.style.display = "none";
@@ -154,11 +163,20 @@
         frame.style.padding = "5px 15px";
         frame.style.lineHeight = "35px";
         if (settings[1] == "1") {
-            frame.innerHTML = `This post is hidden because of "${evaluation.tag}" ${evaluation.type}.`;
+            if (settings[2] === "1") {
+                frame.innerHTML = `Blocked for: `;
+                for (let index in words) {
+                    frame.innerHTML += "\"" + words[index].tag + "\"";
+                    if (index < words.length - 1) frame.innerHTML += ", ";
+                }
+            } else {
+                console.log(words[0]);
+                frame.innerHTML = `This post is hidden because of "${words[0].tag}" ${words[0].type}.`;
+            }
         } else {
             frame.innerHTML = "This post is hidden.";
         }
-        if (evaluation.type == "ID") frame.innerHTML = "You blocked this Post.";
+        if (words[0].type == "ID") frame.innerHTML = "You blocked this Post.";
         let button = document.createElement("button");
         button.style = "float:right;background:white;border:1px solid var(--postFontColor);border-radius:1.5px;width:4em;margin:6px 0";
         button.innerHTML = "Show";
@@ -237,6 +255,8 @@
         content.appendChild(createSwitch_skdasoyk("Show Original Tags", settings[0] == "1" ? "checked" : "", "tasselSetting0"));
         content.lastChild.children[0].addEventListener("change", saveSettings_skdasoyk);
         content.appendChild(createSwitch_skdasoyk("Show why a Post was blocked", settings[1] == "1" ? "checked" : "", "tasselSetting1"));
+        content.lastChild.children[0].addEventListener("change", saveSettings_skdasoyk);
+        content.appendChild(createSwitch_skdasoyk("Show all Reasons a Post was blocked (this will slow the extension down)", settings[2] == "1" ? "checked" : "", "tasselSetting2"));
         content.lastChild.children[0].addEventListener("change", saveSettings_skdasoyk);
 
         //Blacklist
