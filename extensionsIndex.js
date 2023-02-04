@@ -72,12 +72,12 @@ let extensionsIndex = [
         {
             "name": "Blocklist Annotations",
             "id": 6,
-            "version": "1.0",
+            "version": "1.1",
             "created": 1675279440000,
-            "updated": 1675279440000,
+            "updated": 1675538698629,
             "author": "aki108",
             "description": "Remember the reason you blocked someone.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/ae6bf6555ce9a39d9eb30dce0bc3c1927d9927ef/extensions/BlocklistAnnotations.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
             "post": "https://www.pillowfort.social/posts/3167192"
         }
     ];
