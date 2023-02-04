@@ -68,7 +68,18 @@ let extensionsIndex = [
             "description": "Collapse comments and threads.",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/8a300d23d8a9481b4e86c7f8bd561cc648ae928a/extensions/CollapsibleThreads.js",
             "post": "https://www.pillowfort.social/posts/3161577"
-  }
+        },
+        {
+            "name": "Blocklist Annotations",
+            "id": 6,
+            "version": "1.0",
+            "created": 1675279440000,
+            "updated": 1675279440000,
+            "author": "aki108",
+            "description": "Remember the reason you blocked someone.",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/ae6bf6555ce9a39d9eb30dce0bc3c1927d9927ef/extensions/BlocklistAnnotations.js",
+            "post": "https://www.pillowfort.social/posts/3167192"
+        }
     ];
 
 /* Template
