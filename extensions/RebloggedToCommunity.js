@@ -22,6 +22,8 @@
     let settings = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
     if (settings.rebloggedToCommunity) {
         settings = settings.rebloggedToCommunity;
+        localStorage.removeItem("rtcdisablelike");
+        localStorage.removeItem("rtcdisablereblog");
     } else {
         settings = {
             "showLikes": localStorage.getItem("rtcdisablelike") === "true" ? false : true,
@@ -30,8 +32,6 @@
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.rebloggedToCommunity = settings;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
-        localStorage.removeItem("rtcdisablelike");
-        localStorage.removeItem("rtcdisablereblog");
     }
 
     waitForKeyElements("#post-comments-section", addEventListener_tlfevnlu);
