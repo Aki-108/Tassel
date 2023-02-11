@@ -90,7 +90,11 @@
     });
 
     //start initialization
-    waitForKeyElements(".sidebar-expanded", init_ltapluah);
+    if (document.getElementsByClassName("sidebar-expanded").length > 0) {
+        init_ltapluah();
+    } else {
+        waitForKeyElements(".sidebar-expanded", init_ltapluah);
+    }
     function init_ltapluah() {
         if (document.getElementsByClassName("postSubscriberIcon").length > 0) return;
         initSidebar_ltapluah();
