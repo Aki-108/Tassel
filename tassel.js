@@ -16,7 +16,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/6f0da04b35d7c7b04dce3317c6f3c2d16eb55c77/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/9d5eaeeeb1192038c5e08d752babd7b021185bf4/extensionsIndex.js";
     let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/baab4bb29c0e961cc1d5e893875ac252fa29b3b0/toasts.js";
 
     let icon = document.createElement("div");
@@ -409,8 +409,22 @@
                 case "z": return one.name < two.name ? 1 : -1;
                 case "new": return one.updated < two.updated ? 1 : -1;
                 case "old": return one.updated > two.updated ? 1 : -1;
-                case "1.0": return one.version < two.version ? 1 : -1;
-                case "0.1": return one.version > two.version ? 1 : -1;
+                case "1.0": {
+                    let one_ = one.version.split(".");
+                    let two_ = two.version.split(".");
+                    if (one_[0]*1 === two_[0]*1)
+                        if (one_[1]*1 === two_[1]*1) return two_[2] - one_[2];
+                        else return two_[1] - one_[1];
+                    else return two_[0] - one_[0];
+                }
+                case "0.1": {
+                    let one_ = one.version.split(".");
+                    let two_ = two.version.split(".");
+                    if (one_[0]*1 === two_[0]*1)
+                        if (one_[1]*1 === two_[1]*1) return one_[2] - two_[2];
+                        else return one_[1] - two_[1];
+                    else return one_[0] - two_[0];
+                }
                 default: return one.updated < two.updated ? 1 : -1;
             }
         });
@@ -605,13 +619,17 @@
 
     /* Activate / deactivate extensions */
     function toggleExtension_xcajbuzn(id) {
-        let entry = settings2.extensions.find(function(data) {
-            return data.id == id;
+        let index = -1;
+        let entry = settings2.extensions.find(function(item, index_) {
+            if (item.id === id*1) {
+                index = index_;
+                return true;
+            }
         });
-        if (entry == null) {//activate
+        if (index === -1) {//activate
             settings2.extensions.push({"id": id*1, "since": Date.now()});
         } else {//deactivate
-            settings2.extensions.splice(settings2.extensions.indexOf(entry));
+            settings2.extensions.splice(index, 1);
         }
         saveSettings_xcajbuzn();
     }
