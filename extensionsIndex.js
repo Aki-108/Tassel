@@ -43,7 +43,7 @@ let extensionsIndex = [
                          "Makes notes actually dark in dark mode."
             ]
         },
-        {
+        /*{
             "name": "Advanced Blacklist",
             "id": 4,
             "version": "0.2",
@@ -57,7 +57,7 @@ let extensionsIndex = [
                 "Block specific posts and their reblogs.",
                 "Show the original tags of a reblog."
             ]
-        },
+        },*/
         {
             "name": "Collapsible Threads",
             "id": 5,
