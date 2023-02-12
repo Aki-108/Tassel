@@ -20,7 +20,7 @@ let toasts = [
     "extension": 6,
     "title": "New Extension",
     "text": "Blocklist Annotations is now available for activation.",
-    "timestamp": 1675279440000,
+    "timestamp": 1676199117382,
     "new": true
   }
 ];
