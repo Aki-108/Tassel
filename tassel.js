@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.2.4
+// @version      1.3.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/f49b40e78c22fa6cfa506fa03be7a51fa346a512/extensionsIndex.js";
-    let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/0bd379e1a095f9ce44c7be739aaf8e559a6de761/toasts.js";
+    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/9d5eaeeeb1192038c5e08d752babd7b021185bf4/extensionsIndex.js";
+    let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/baab4bb29c0e961cc1d5e893875ac252fa29b3b0/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -31,7 +31,7 @@
         <circle cx="10" fill="none" stroke-width="1.2px" r="3" stroke="#58b6dd" cy="5"/>
       </svg>`;
 
-    let settings = localStorage.getItem("tasselSettings") || "11100010";
+    let settings = localStorage.getItem("tasselSettings");
     /* settings ids
     0  Get Notifications for Active Extensions
     1  Get Notifications for Inactive Extensions
@@ -42,8 +42,22 @@
     6  Sticky Text Toolbar
     7  Highlight Linked Comments
     */
+    let settings2 = (JSON.parse(localStorage.getItem("tasselSettings2")) || {
+        "tassel": {
+            "extensions": [],
+            "hideZero": false,
+            "highlightComments": false,
+            "notify": {
+                "active": true,
+                "inactive": true,
+                "new": true
+            },
+            "shortenSidebar": false,
+            "showWIP": false,
+            "toastRead": -1
+        }
+    }).tassel;
     let sortOrder = "new";//order in which to display extensions in the list
-    let loadedExtensions = [];
 
     //src: https://aaronsmith.online/easily-load-an-external-script-using-javascript/
     const loadScript_xcajbuzn = src => {
@@ -68,12 +82,31 @@
 
     /* Initialize */
     function init_xcajbuzn() {
+        //convert old settings
+        if (settings) {
+            settings2.notify.active = settings[0] === "1";
+            settings2.notify.inactive = settings[1] === "1";
+            settings2.notify.new = settings[2] === "1";
+            settings2.showWIP = settings[3] === "1";
+            settings2.shortenSidebar = settings[4] === "1";
+            settings2.hideZero = settings[5] === "1";
+            settings2.highlightComments = settings[7] === "1";
+            settings2.toastRead = localStorage.getItem("tasselToastRead")*1 || -1;
+            if (settings2.toastRead == 16749882600000) settings2.toastRead = 1674988270000;//TEMPORARY FIX: safe to remove at 12.02.2023
+
+            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+            file.tassel = settings2;
+            localStorage.setItem("tasselSettings2", JSON.stringify(file));
+            localStorage.removeItem("tasselSettings");
+            localStorage.removeItem("tasselToastRead");
+        }
+
         GM_addStyle(GM_getResourceText("tasselCSS"));
+        loadData_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
             .then().then(() => loadExtensions_xcajbuzn());
         initToast_xcajbuzn();
         createModal_xcajbuzn();
-        loadData_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
     }
 
@@ -116,7 +149,7 @@
         sidebarBig.appendChild(settingsBigWrapper);
 
         //shorten the expended sidebar
-        if (settings[4] == "1") {
+        if (settings2.shortenSidebar) {
             let sidebarItems = document.getElementsByClassName("sidebar-topic");
             Object.values(sidebarItems).forEach(function(item) {
                 item.style.marginTop = "8px";
@@ -130,7 +163,7 @@
         }
 
         //hide 0 notifications
-        if (settings[5] == "1") {
+        if (settings2.hideZero) {
             Object.values(document.getElementsByClassName("sidebar-num")).forEach(function(el) {
                 if (el.innerHTML == "0") el.style.display = "none"
             });
@@ -174,24 +207,37 @@
     /* Load the selection of active extension */
     function loadData_xcajbuzn() {
         let data = localStorage.getItem("tasselActive");
-        if (data == null) return;
-        data = data.split(",");
-        loadedExtensions = [];
-        data.forEach(function(value){
-            value = value.split(";");
-            value[0] = value[0]*1;
-            value[1] = value[1]*1;
-            loadedExtensions.push(value);
-        });
+        if (data) {
+            //convert to new format
+            data = data.split(",");
+            let loadedExtensions = [];
+            data.forEach(function(value){
+                value = value.split(";");
+                value[0] = value[0]*1;
+                value[1] = value[1]*1;
+                loadedExtensions.push(value);
+            });
+
+            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{\"tassel\":{}}");
+            file.tassel.extensions = [];
+            loadedExtensions.forEach(function(item) {
+                if (item[0] > 0 && !isNaN(item[1])) {
+                    file.tassel.extensions.push({"id": item[0], "since": item[1]});
+                }
+            });
+            settings2.extensions = file.tassel.extensions;
+            localStorage.setItem("tasselSettings2", JSON.stringify(file));
+            localStorage.removeItem("tasselActive");
+        }
     }
 
     /* Load extensions from external file */
     function loadExtensions_xcajbuzn() {
-        loadedExtensions.forEach(function(value) {
+        settings2.extensions.forEach(function(value) {
             let extension = extensionsIndex.find(function(data) {
-                return data.id == value[0];
+                return data.id == value.id;
             });
-            if (extension != undefined) loadScript_xcajbuzn(extension.src);
+            if (extension) loadScript_xcajbuzn(extension.src);
         });
         evaluateURLParameter_xcajbuzn();
     }
@@ -208,38 +254,34 @@
 
     /* Check which toasts to display */
     function loadToasts_xcajbuzn() {
-        let read = localStorage.getItem("tasselToastRead") || -1;
-        if (read === "16749882600000") localStorage.setItem("tasselToastRead", "1674988270000");//TEMPORARY FIX: safe to remove at 12.02.2023
-        if (toasts != null && toasts.length > 0) {
-            toasts.forEach(function(toast, index) {
-                if (toast.timestamp > read) {//only show new toasts
-                    let extension = loadedExtensions.find(function(value) {
-                        return value[0] == toast.extension;
-                    });
-                    if (
-                        //show toast for active extensions
-                        (extension//only when the extension is active
-                          && settings[0] == "1"//only when active is wanted
-                          && extension[1] < toast.timestamp//only if it's been active before the toast
-                          && !toast.new)//only if the extension is not new
-                        ||
-                        //show toast for inactive extensions
-                        (!extension//only when the extension is inactive
-                          && settings[1] == "1"//only when inactive is wanted
-                          && !toast.new)//only when the extension is not new
-                        ||
-                        //show toast for new extensions
-                        (toast.new//only when the extension is new
-                          && settings[2] == "1")//only when new is wanted
-                        ||
-                        //show toast that don't belong to an extension
-                        (toast.extension == "0")
-                        ) {
-                        pushToast_xcajbuzn(toast);
-                    }
-                }
+        if (!toasts) return;
+        toasts.forEach(function(toast, index) {
+            if (toast.timestamp <= settings2.toastRead) return;//only show new toasts
+            let extension = settings2.extensions.find(function(item) {
+                return item.id == toast.extension;
             });
-        }
+            if (
+                //show toast for active extensions
+                (extension//only when the extension is active
+                 && settings2.notify.active//only when active is wanted
+                 && extension.since < toast.timestamp//only if it's been active before the toast
+                 && !toast.new)//only if the extension is not new
+                ||
+                //show toast for inactive extensions
+                (!extension//only when the extension is inactive
+                 && settings2.notify.inactive//only when inactive is wanted
+                 && !toast.new)//only when the extension is not new
+                ||
+                //show toast for new extensions
+                (toast.new//only when the extension is new
+                 && settings2.notify.new)//only when new is wanted
+                ||
+                //show toast that don't belong to an extension
+                (toast.extension == "0")
+            ) {
+                pushToast_xcajbuzn(toast);
+            }
+        });
     }
 
     /* Create toast */
@@ -265,7 +307,8 @@
         document.getElementById("tasselToast").lastChild.style.height = document.getElementById("tasselToast").lastChild.clientHeight + "px";
         //mark as read when clicked
         document.getElementById("tasselToast").lastChild.addEventListener("click", function() {
-            if (this.getAttribute("timestamp") > (localStorage.getItem("tasselToastRead") || -1)) localStorage.setItem("tasselToastRead", this.getAttribute("timestamp"));
+            if (this.getAttribute("timestamp") > settings2.toastRead) settings2.toastRead = this.getAttribute("timestamp")*1;
+            saveSettings_xcajbuzn();
             this.classList.add("fade-out");
         });
     }
@@ -288,7 +331,7 @@
                 setting.style.animationDuration = "2s";
                 setting.style.animationIterationCount = "2";
                 setting.style.animationName = "blink";
-            } else if (pair[0] == "comment" && settings[7] == "1") {
+            } else if (pair[0] == "comment" && settings2.hightlightComments) {
                 window.setTimeout(function() {
                     let comment = document.getElementById(pair[1]);
                     comment.style.animationDuration = "2s";
@@ -366,8 +409,22 @@
                 case "z": return one.name < two.name ? 1 : -1;
                 case "new": return one.updated < two.updated ? 1 : -1;
                 case "old": return one.updated > two.updated ? 1 : -1;
-                case "1.0": return one.version < two.version ? 1 : -1;
-                case "0.1": return one.version > two.version ? 1 : -1;
+                case "1.0": {
+                    let one_ = one.version.split(".");
+                    let two_ = two.version.split(".");
+                    if (one_[0]*1 === two_[0]*1)
+                        if (one_[1]*1 === two_[1]*1) return two_[2] - one_[2];
+                        else return two_[1] - one_[1];
+                    else return two_[0] - one_[0];
+                }
+                case "0.1": {
+                    let one_ = one.version.split(".");
+                    let two_ = two.version.split(".");
+                    if (one_[0]*1 === two_[0]*1)
+                        if (one_[1]*1 === two_[1]*1) return one_[2] - two_[2];
+                        else return one_[1] - two_[1];
+                    else return one_[0] - two_[0];
+                }
                 default: return one.updated < two.updated ? 1 : -1;
             }
         });
@@ -390,8 +447,8 @@
                     checkbox.addEventListener("click", function() {
                         toggleExtension_xcajbuzn(this.getAttribute("extension"));
                     });
-                    let entry = loadedExtensions.find(function(value) {
-                        return value[0] == data.id;
+                    let entry = settings2.extensions.find(function(value) {
+                        return value.id == data.id;
                     });
                     if (entry != null) {
                         checkbox.checked = true;
@@ -436,14 +493,14 @@
             links.innerHTML = `<img style="width:100%;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">`;
             if (data.post) frame.appendChild(links);
 
-            if (settings[3] == "1" || data.version >= 1) extensionsList.appendChild(frame);//only display extension if it's a full version or WIPs are wanted
+            if (settings2.showWIP || data.version >= 1) extensionsList.appendChild(frame);//only display extension if it's a full version or WIPs are wanted
         });
         content.appendChild(extensionsList);
 
         content.appendChild(document.createElement("hr"));
         let info2 = document.createElement("p");
         info2.innerHTML = "If you enjoy an extension, consider commenting / reblogging / liking the corresponding announcement post by opening the link of the extension."
-        if (settings[3] == "1") info2.innerHTML += "<br><br>Extensions that are greyed out are currently in development and might not work as intended. Use at own risk.";
+        if (settings2.showWIP) info2.innerHTML += "<br><br>Extensions that are greyed out are currently in development and might not work as intended. Use at own risk.";
         content.appendChild(info2);
     }
 
@@ -494,34 +551,55 @@
         let info1 = document.createElement("p");
         info1.innerHTML = "Notifications will show up in the bottom right corner on any Pillowfort page. They can be marked as 'read' by clicking on them.";
         content.appendChild(info1);
-        content.appendChild(createSwitch_xcajbuzn("Get Notifications for Active Extensions", "checked", "tasselSetting0"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
-        content.appendChild(createSwitch_xcajbuzn("Get Notifications for Inactive Extensions", "checked", "tasselSetting1"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
-        content.appendChild(createSwitch_xcajbuzn("Get Notifications for New Extensions", "checked", "tasselSetting2"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
+        content.appendChild(createSwitch_xcajbuzn("Get Notifications for Active Extensions", settings2.notify.active ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.notify.active = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Get Notifications for Inactive Extensions", settings2.notify.inactive ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.notify.inactive = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Get Notifications for New Extensions", settings2.notify.new ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.notify.new = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Appearance
         content.appendChild(document.createElement("hr"));
         let title2 = document.createElement("h4");
         title2.innerHTML = "Appearance";
         content.appendChild(title2);
-        content.appendChild(createSwitch_xcajbuzn("Shorten Expended Sidebar", "", "tasselSetting4"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
-        content.appendChild(createSwitch_xcajbuzn("Hide 0 Notification Counter", "", "tasselSetting5"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
+        content.appendChild(createSwitch_xcajbuzn("Shorten Expended Sidebar", settings2.shortenSidebar ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.shortenSidebar = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Hide 0 Notification Counter", settings2.hideZero ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.hideZero = this.checked;
+            saveSettings_xcajbuzn();
+        });
         /*content.appendChild(createSwitch_xcajbuzn("Sticky Text Toolbar", "disabled checked", "tasselSetting6"));
         content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);*/
-        content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", "", "tasselSetting7"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
+        content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", settings2.highlightComments ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.highlightComments = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Other
         content.appendChild(document.createElement("hr"));
         let title4 = document.createElement("h4");
         title4.innerHTML = "Other";
         content.appendChild(title4);
-        content.appendChild(createSwitch_xcajbuzn("Show Experimental Extensions in the List", "", "tasselSetting3"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);
+        content.appendChild(createSwitch_xcajbuzn("Show Experimental Extensions in the List", settings2.showWIP ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.showWIP = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Reset
         content.appendChild(document.createElement("hr"));
@@ -537,59 +615,31 @@
         button3.style.backgroundColor = "#B30000";
         button3.addEventListener("click", reset_xcajbuzn);
         content.appendChild(button3);
-
-        loadSettings_xcajbuzn();
-    }
-
-    /* Load Tassel Setting from local storage */
-    function loadSettings_xcajbuzn() {
-        let data = settings;
-        for (let a = 0; a < data.length; a++) {
-            let setting = document.getElementsByClassName("tasselSetting"+a)[0];
-            if (data[a] == "1") {
-                setting.checked = true;
-            } else if (data[a] == "0") {
-                setting.checked = false;
-            }
-        }
-    }
-
-    /* Write Tassel Settings to local storage */
-    function saveSettings_xcajbuzn() {
-        let data = "";
-        for (let a = 0; a < 100; a++) {
-            let setting = document.getElementsByClassName("tasselSetting"+a)[0];
-            if (setting == undefined) {
-                data += "-";
-                continue;
-            }
-            data += setting.checked ? "1" : "0";
-        }
-        settings = data;
-        localStorage.setItem("tasselSettings", data);
     }
 
     /* Activate / deactivate extensions */
     function toggleExtension_xcajbuzn(id) {
-        let entry = loadedExtensions.find(function(data) {
-            return data[0] == id;
+        let index = -1;
+        let entry = settings2.extensions.find(function(item, index_) {
+            if (item.id === id*1) {
+                index = index_;
+                return true;
+            }
         });
-        if (entry == null) {//activate
-            loadedExtensions.push([id, Date.now()]);
+        if (index === -1) {//activate
+            settings2.extensions.push({"id": id*1, "since": Date.now()});
         } else {//deactivate
-            loadedExtensions.splice(loadedExtensions.indexOf(entry));
+            settings2.extensions.splice(index, 1);
         }
-        saveData_xcajbuzn();
+        saveSettings_xcajbuzn();
     }
 
     /* Save list of active extensions to local storage */
-    function saveData_xcajbuzn() {
-        let data = [];
-        loadedExtensions.forEach(function(value) {
-            data.push(value.toString().replaceAll(",",";"));
-        });
-        data = data.toString();
-        localStorage.setItem("tasselActive", data);
+    function saveSettings_xcajbuzn() {
+        let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+        file.tassel = settings2;
+        localStorage.setItem("tasselSettings2", JSON.stringify(file));
+        console.log(settings2);
     }
 
     /* Create an HTML element of a checkbox with lable */
