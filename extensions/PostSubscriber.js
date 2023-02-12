@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.0
+// @version      2.1
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -184,16 +184,12 @@
             highlightComments_ltapluah();
 
             //remeber when the comments were viewed to detect new ones accordingly
-            //source: https://stackoverflow.com/a/14746878
-            window.addEventListener("beforeunload", function(evt) {
-                evt.returnValue = '';
-                let subscription = subscriptions.subscriptions.find(function(item) {
-                    return item.id === thisPost.id;
-                });
-                subscription.comments = subscription.commentsSeen = thisPost.comments;
-                subscription.visited = thisPost.visited;
-                saveSubscriptions_ltapluah();
+            let subscription = subscriptions.subscriptions.find(function(item) {
+                return item.id === thisPost.id;
             });
+            subscription.comments = subscription.commentsSeen = thisPost.comments;
+            subscription.visited = thisPost.visited;
+            saveSubscriptions_ltapluah();
         }
     }
 
