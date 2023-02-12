@@ -190,6 +190,7 @@
                     return item.id === thisPost.id;
                 });
                 subscription.comments = subscription.commentsSeen = thisPost.comments;
+		subscription.visited = thisPost.visited;
                 saveSubscriptions_ltapluah();
             });
         }
