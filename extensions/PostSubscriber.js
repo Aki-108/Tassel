@@ -127,6 +127,7 @@
 
     /* Save list of active extensions to local storage */
     function saveSubscriptions_ltapluah() {
+        console.log(subscriptions);
         localStorage.setItem("tasselPostSubscriber", JSON.stringify(subscriptions));
     }
 
@@ -190,7 +191,7 @@
                     return item.id === thisPost.id;
                 });
                 subscription.comments = subscription.commentsSeen = thisPost.comments;
-		subscription.visited = thisPost.visited;
+                subscription.visited = thisPost.visited;
                 saveSubscriptions_ltapluah();
             });
         }
