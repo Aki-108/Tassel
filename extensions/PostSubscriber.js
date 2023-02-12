@@ -357,23 +357,18 @@
         let info2 = document.createElement("label");
 		info2.style.fontWeight = "normal";
         info2.innerHTML = "Accent Color ";
-        let select2 = document.createElement("select");
-		select2.style.borderRight = "none";
-		select2.style.borderRadius = ".5em 0 0 .5em";
-        select2.id = "tasselPostSubscriberColorSelect";
-        select2.innerHTML = `
-          <option value="#ff7fc5">Pillowfort Pink</option>
-          <option value="#232b40">Pillowfort Blue</option>
-          <option value="" selected>Custom</option>
-          <option value="var(--linkColor)">Link Color</option>
+        let options2 = document.createElement("div");
+        options2.style = "display:inline-block;border:1px solid black;border-radius:.5em;height:min-content;";
+        options2.innerHTML = `
+            <select id="tasselPostSubscriberColorSelect" style="border:none;">
+                <option value="#ff7fc5">Pillowfort Pink</option>
+                <option value="#232b40">Pillowfort Blue</option>
+                <option value="" selected>Custom</option>
+                <option value="var(--linkColor)">Link Color</option>
+            </select>
+            <input id="tasselPostSubscriberColor" type="color" value="${settings.color}" style="font-size:inherit;height:2.5em;width:2.4em;background:none;vertical-align:bottom;border:1px transparent solid;border-radius:0 .5em .5em 0;margin:0 0 0 0;border-left:1px lightgrey solid;">
         `;
-        info2.appendChild(select2);
-        let color2 = document.createElement("input");
-        color2.id = "tasselPostSubscriberColor";
-        color2.type = "color";
-        color2.value = settings.color;
-		color2.style = "font-size:inherit;height:2.5em;width:2.4em;background:none;vertical-align:bottom;border:1px black solid;border-radius:0 .5em .5em 0;margin:0 0 0 0;border-left:1px lightgrey solid;";
-        info2.appendChild(color2);
+        info2.appendChild(options2);
         content.appendChild(info2);
         document.getElementById("tasselPostSubscriberColorSelect").addEventListener("click", selectColor_ltapluah);
         document.getElementById("tasselPostSubscriberColor").addEventListener("change", selectColor_ltapluah);
