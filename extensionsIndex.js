@@ -7,7 +7,7 @@ let extensionsIndex = [
             "updated": 1672501320000,
             "author": "aki108",
             "description": "View images in full screen",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/1b0fe547356d9c6c62c22cb39c5a0f8c80e5be09/extensions/Lightbox.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0b19d974426f3154896fa6447efc58f471b77355/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
             "features": ["View images in full screen.",
                          "Adds a dedicated button for embedded links."
