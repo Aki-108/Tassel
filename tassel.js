@@ -331,7 +331,7 @@
                 setting.style.animationDuration = "2s";
                 setting.style.animationIterationCount = "2";
                 setting.style.animationName = "blink";
-            } else if (pair[0] == "comment" && settings2.hightlightComments) {
+            } else if (pair[0] == "comment" && settings2.highlightComments) {
                 window.setTimeout(function() {
                     let comment = document.getElementById(pair[1]);
                     comment.style.animationDuration = "2s";
