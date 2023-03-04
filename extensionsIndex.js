@@ -51,7 +51,7 @@ let extensionsIndex = [
             "updated": 1677911340000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/1a27c0c081a0d2ed7745de3b9cf004f35b1c7773/extensions/AdvancedBlacklist.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0a929b1c1bb3bc18df13a8c5fd74c3b93c2dc393/extensions/AdvancedBlacklist.js",
             "post": "https://www.pillowfort.social/posts/3215881",
             "features": [
                 "Block posts by tag, content, username or community.",
