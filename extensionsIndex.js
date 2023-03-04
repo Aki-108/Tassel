@@ -4,10 +4,10 @@ let extensionsIndex = [
             "id": 1,
             "version": "1.4",
             "created": 1660385280000,
-            "updated": 1672501320000,
-            "author": "aki108",
+            "updated": 1676186820000,
+            "author": "Aki108",
             "description": "View images in full screen",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/1b0fe547356d9c6c62c22cb39c5a0f8c80e5be09/extensions/Lightbox.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0b19d974426f3154896fa6447efc58f471b77355/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
             "features": ["View images in full screen.",
                          "Adds a dedicated button for embedded links."
@@ -16,12 +16,12 @@ let extensionsIndex = [
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "1.7",
+            "version": "2.1",
             "created": 1661764440000,
-            "updated": 1674663180000,
-            "author": "aki108",
+            "updated": 1676196720000,
+            "author": "Aki108",
             "description": "Get notified when there are new comments in a post.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/34d8bcd0a4566854f4644f1fce014451b9b6e249/extensions/PostSubscriber.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/6630ccab2b0b19ffc32399519530b234e77d2ac0/extensions/PostSubscriber.js",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -31,12 +31,12 @@ let extensionsIndex = [
         {
             "name": "Reblogged to Community",
             "id": 3,
-            "version": "2.2",
+            "version": "2.3",
             "created": 1653984960000,
             "updated": 1672861800000,
-            "author": "aki108",
+            "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/d4c6b9fed601f52b66d91e3397b85bbd4b6f002a/extensions/RebloggedToCommunity.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/aeafb71abc67a4bb06b7f4488df63acbb1aee066/extensions/RebloggedToCommunity.js",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show where a post has been reblogged to.",
                          "Show where a post has been liked from.",
@@ -51,7 +51,7 @@ let extensionsIndex = [
             "updated": 1677911340000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/9991b27e02568f0b2395cd6e8f05355a8cb2f5bc/extensions/AdvancedBlacklist.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/dfd4c2ca500a5cf46562212325ed7e3ccef59ce7/extensions/AdvancedBlacklist.js",
             "post": "https://www.pillowfort.social/posts/3215881",
             "features": [
                 "Block posts by tag, content, username or community.",
@@ -62,14 +62,25 @@ let extensionsIndex = [
         {
             "name": "Collapsible Threads",
             "id": 5,
-            "version": "1.2",
+            "version": "1.3",
             "created": 1674985800000,
-            "updated": 1675023763255,
-            "author": "aki108",
+            "updated": 1676147520000,
+            "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/8a300d23d8a9481b4e86c7f8bd561cc648ae928a/extensions/CollapsibleThreads.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/74ace6a11a2ee0a6595bda6071583eaa259a42f0/extensions/CollapsibleThreads.js",
             "post": "https://www.pillowfort.social/posts/3161577"
-  }
+        },
+        {
+            "name": "Blocklist Annotations",
+            "id": 6,
+            "version": "1.1",
+            "created": 1675279440000,
+            "updated": 1675538640000,
+            "author": "Aki108",
+            "description": "Remember the reason you blocked someone.",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
+            "post": "https://www.pillowfort.social/posts/3167192"
+        }
     ];
 
 /* Template
