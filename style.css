@@ -197,12 +197,6 @@
 	line-height: 1em;
 }
 
-.side-info.sticky {
-	position: sticky;
-	top: 60px;
-	margin-bottom: 10px;
-}
-
 @keyframes blink {
 	0% {opacity: 1;}
 	50% {opacity: 0;}
