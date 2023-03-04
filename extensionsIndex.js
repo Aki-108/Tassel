@@ -48,7 +48,7 @@ let extensionsIndex = [
             "id": 4,
             "version": "0.5",
             "created": 1674907200000,
-            "updated": 1677911340000,
+            "updated": 1677918660000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/0a929b1c1bb3bc18df13a8c5fd74c3b93c2dc393/extensions/AdvancedBlacklist.js",
