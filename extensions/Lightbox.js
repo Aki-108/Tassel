@@ -45,6 +45,7 @@
                 attributes: true,
                 attributeFilter: ["style"]
             });
+            if (loadingIndicator.style.display == "none") loadImgs_kpeyutgp();
         }
         if (commentContainer) {
             styleObserver.observe(commentContainer, {

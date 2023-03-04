@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Collapsible Threads
-// @version      1.2
+// @version      1.3
 // @description  Collapse Comments and Threads
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -28,8 +28,9 @@
             let buttonComment = document.createElement("button");
             buttonComment.title = "collapse comment";
             buttonComment.classList.add("collapseButton");
+            buttonComment.style.filter = "var(--iconColor)";
             buttonComment.innerHTML = `
-                <svg class="svg-blue-dark" style="transition:.2s transform;filter:var(--iconColor);" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <svg class="svg-blue-dark" style="transition:.2s transform;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                     <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
                         M 1 14   L 10 5   L 19 14
                     "/>
@@ -62,8 +63,9 @@
             let buttonThread = document.createElement("button");
             buttonThread.title = "collapse thread";
             buttonThread.classList.add("collapseButton");
+            buttonThread.style.filter = "var(--iconColor)";
             buttonThread.innerHTML = `
-                <svg class="svg-blue-dark" style="transition:.2s transform;filter:var(--iconColor);" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <svg class="svg-blue-dark" style="transition:.2s transform;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                     <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
                         M 1 12   L 10 3   L 19 12
                         M 1 20   L 10 11   L 19 20
