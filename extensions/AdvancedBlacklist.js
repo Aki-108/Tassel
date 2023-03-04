@@ -592,6 +592,8 @@
             if (page) url += page.firstChild.innerHTML;
             else url += "1";
         }
+        console.log(locationType);
+        console.log(permaLinks);
 
         if (locationType === "post") {
             posts.push({
