@@ -187,12 +187,14 @@
 }
 
 .tasselToggle input {
-	margin: 5px 10px 5px 5px;
+	margin: 1px 10px 5px 5px;
 }
 
 .tasselToggle label {
 	font-weight: normal;
 	cursor: pointer;
+	max-width: 90%;
+	line-height: 1em;
 }
 
 @keyframes blink {

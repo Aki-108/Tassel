@@ -43,22 +43,22 @@ let extensionsIndex = [
                          "Makes notes actually dark in dark mode."
             ]
         },
-        /*{
+        {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "0.2",
+            "version": "0.5",
             "created": 1674907200000,
-            "updated": 1674907200000,
-            "author": "Aki108",
+            "updated": 1677918660000,
+            "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/ce340369443855409c76a1758eedb32892121396/extensions/AdvancedBlacklist.js",
-            "post": "https://www.pillowfort.social/posts/3215881"
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0a929b1c1bb3bc18df13a8c5fd74c3b93c2dc393/extensions/AdvancedBlacklist.js",
+            "post": "https://www.pillowfort.social/posts/3215881",
             "features": [
                 "Block posts by tag, content, username or community.",
                 "Block specific posts and their reblogs.",
                 "Show the original tags of a reblog."
             ]
-        },*/
+        },
         {
             "name": "Collapsible Threads",
             "id": 5,
