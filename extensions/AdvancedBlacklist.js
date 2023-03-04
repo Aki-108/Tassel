@@ -35,8 +35,10 @@
         }
     };
     const mutationObserver = new MutationObserver(mutationCallback);
-    if (loadingIndicator != null) mutationObserver.observe(loadingIndicator, mutationConfig);
-    console.log(loadingIndicator);
+    if (loadingIndicator != null) {
+	    if (loadingIndicator.style.display == "none") loadPostData_skdasoyk();
+	    mutationObserver.observe(loadingIndicator, mutationConfig);
+    }
 
     createPage_skdasoyk();
     function createPage_skdasoyk() {
