@@ -36,6 +36,7 @@
     };
     const mutationObserver = new MutationObserver(mutationCallback);
     if (loadingIndicator != null) mutationObserver.observe(loadingIndicator, mutationConfig);
+    console.log(loadingIndicator);
 
     createPage_skdasoyk();
     function createPage_skdasoyk() {
