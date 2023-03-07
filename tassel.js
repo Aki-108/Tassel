@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/2256e77bf996e2374623b7d10308c0dbd6008be1/extensionsIndex.js";
-    let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/56f2cdb037e493c595801cba168c5b97b23a70b6/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2256e77bf996e2374623b7d10308c0dbd6008be1/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@56f2cdb037e493c595801cba168c5b97b23a70b6/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -75,7 +75,7 @@
     var waitForJQuery = setInterval(function () {
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
-            loadScript_xcajbuzn("https://cdn.rawgit.com/vnausea/waitForKeyElements/f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
+            loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
                 .then().then(() => init_xcajbuzn());
         }
     }, 10);
