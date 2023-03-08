@@ -89,7 +89,7 @@ let extensionsIndex = [
             "updated": 1678300260000,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0b48aaaabd30beba5f0b95c8c0107846613a9da3/extensions/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c940b354ce3ab0802abe5867cc1544498c6871a2/extensions/TaggingTools/TaggingTools.css",
             "post": "",
             "features": [
