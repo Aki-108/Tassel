@@ -28,7 +28,7 @@
 
     init();
     function init() {
-        loadStyles();
+        //loadStyles();
         creatSuggestionBox();
         addEventListenerSubmit();
         addEventListenerInput();
