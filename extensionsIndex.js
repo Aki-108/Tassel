@@ -80,6 +80,22 @@ let extensionsIndex = [
             "description": "Remember the reason you blocked someone.",
             "src": "https://cdn.rawgit.com/Aki-108/Tassel/af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
             "post": "https://www.pillowfort.social/posts/3167192"
+        },
+        {
+            "name": "Tagging Tools",
+            "id": 7,
+            "version": "1.0",
+            "created": 1678300260000,
+            "updated": 1678300260000,
+            "author": "Aki108",
+            "description": "Makes consistent tagging easier.",
+            "src": "",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c940b354ce3ab0802abe5867cc1544498c6871a2/extensions/TaggingTools/TaggingTools.css",
+            "post": "",
+            "features": [
+                "Suggests tags based on your previous posts.",
+                "Adds a button for copying tags when reblogging."
+            ]
         }
     ];
 
@@ -95,6 +111,7 @@ let extensionsIndex = [
     "icon": "",
     "description": "",
     "src": "",
+    "css": "",
     "post": "",
     "features": [
     ]
