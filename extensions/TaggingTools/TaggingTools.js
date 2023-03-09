@@ -119,7 +119,7 @@
         let suggestionOutput = document.getElementById("tasselTaggingToolsSuggestionBox");
         suggestionOutput.innerHTML = "";
         addCopyButton_dshcgkhy();
-        for (let a = 0; a < 20; a++) {
+        for (let a = 0; a < 20 && a < matches.length; a++) {
             let item = matches[a];
             let button = document.createElement("button");
             button.setAttribute("value", item.tag);
