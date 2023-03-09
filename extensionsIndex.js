@@ -85,13 +85,13 @@ let extensionsIndex = [
             "name": "Tagging Tools",
             "id": 7,
             "version": "1.0",
-            "created": 1678300260000,
-            "updated": 1678300260000,
+            "created": 1678386060000,
+            "updated": 1678386060000,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0b48aaaabd30beba5f0b95c8c0107846613a9da3/extensions/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@881e260fca0a3ba0880e81d7d36e2a0b70c25358/extensions/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c940b354ce3ab0802abe5867cc1544498c6871a2/extensions/TaggingTools/TaggingTools.css",
-            "post": "",
+            "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
                 "Adds a button for copying tags when reblogging."
