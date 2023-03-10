@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.1
+// @version      2.2
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -83,9 +83,6 @@
             if (commentContainer) {//for single posts
                 initComments_ltapluah();
             }
-            if (postModal != null && postModal.classList.contains("in")) {
-                initModal_ltapluah();
-            }
         });
     });
 
@@ -94,6 +91,11 @@
         init_ltapluah();
     } else {
         waitForKeyElements(".sidebar-expanded", init_ltapluah);
+    }
+    if (document.getElementById("post-view-modal")) {
+        initModal_ltapluah();
+    } else {
+        waitForKeyElements("#post-view-modal", initModal_ltapluah);
     }
     function init_ltapluah() {
         if (document.getElementsByClassName("postSubscriberIcon").length > 0) return;
@@ -105,12 +107,7 @@
             styleObserver.observe(commentContainer, {
                 childList: true
             });
-        }
-        if (postModal) {
-            styleObserver.observe(postModal, {
-                attributes: true,
-                attributeFilter: ["style"]
-            });
+            initComments_ltapluah();
         }
 
         //start checking for new comments
@@ -127,7 +124,6 @@
 
     /* Save list of active extensions to local storage */
     function saveSubscriptions_ltapluah() {
-        console.log(subscriptions);
         localStorage.setItem("tasselPostSubscriber", JSON.stringify(subscriptions));
     }
 
@@ -136,11 +132,14 @@
         let navigation = postModal.getElementsByClassName("post-nav-left")[0];
 
         //wait before editing the modal because Pillowfort changes its content asynchronous
-        //TODO waitforkeyelement
         modalTimeout = setTimeout(function() {
 
             //check if this post is subscribed
             thisPost.id = postModal.getElementsByClassName("link_post")[0].href.substring(36)*1;
+            if (thisPost.id === "0") {
+                initModal_ltapluah();
+                return;
+            }
             subscribed = subscriptions.subscriptions.find(function(item) {
                 return item.id === thisPost.id;
             }) ? true : false;
@@ -153,6 +152,10 @@
                 thisPost.timestamp = new Date(data.created_at).getTime() || null;
                 thisPost.edited = data.last_edited_at || null;
                 thisPost.visited = new Date().getTime();
+
+                //switch from loading circle to subscribe button
+                document.getElementById("postSubscriberPostModal").style.display = "inline-block";
+                document.getElementById("postSubscriberPostModalLoading").style.display = "none";
             });
 
             if (subscribed) {
@@ -165,10 +168,16 @@
 
         }, 500);
 
-        if (document.getElementById("postSubscriberPostModal")) return;
+        //switch from subscribe button to loading circle
+        if (document.getElementById("postSubscriberPostModal")) {
+            document.getElementById("postSubscriberPostModal").style.display = "none";
+            document.getElementById("postSubscriberPostModalLoading").style.display = "inline-block";
+            return;
+        }
         //add button to post navigation
         let subscriptionNav = document.createElement("span");
         subscriptionNav.id = "postSubscriberPostModal";
+        subscriptionNav.style.display = "none";
         subscriptionNav.title = subscribed ? "unsubscribe" : "subscribe";
         subscriptionNav.classList.add("nav-tab");
         subscriptionNav.style.cursor = "pointer";
@@ -176,6 +185,11 @@
         subscriptionNav.firstChild.firstChild.style.width = "22px";
         subscriptionNav.addEventListener("click", toggleSubscription_ltapluah);
         navigation.appendChild(subscriptionNav);
+        let subscriptionLoading = document.createElement("div");
+        subscriptionLoading.id = "postSubscriberPostModalLoading";
+        subscriptionLoading.classList.add("nav-tab");
+        subscriptionLoading.innerHTML = `<i class="fa fa-circle-notch fa-spin fa-3x fa-fw" style="color:#58b6dd;filter:var(--iconColor);"></i>`;
+        navigation.appendChild(subscriptionLoading);
     }
 
     //runs everytime the comment section is loaded
@@ -195,7 +209,8 @@
 
     //add elements when viewing a post with its perma-link
     function initSinglePost_ltapluah() {
-        if (document.URL.search("/posts/") != 29) return;
+        if (document.URL.search("/posts/") !== 29) return;
+        if (document.URL.search("/posts/new") === 29) return;
 
         //check if this post is subscribed
         let postID = document.URL.substring(36);
@@ -499,6 +514,7 @@
             document.getElementById("postSubscriberNotificationBubble").style.display = "none";
             subscriptions.subscriptions.forEach(function(item, index) {
                 if (item.id === id) item.comments = json.comments_count;
+                if (!item.commentsSeen) item.commentsSeen = 0;
                 if (item.commentsSeen < item.comments) {
                     document.getElementById("postSubscriberNotificationBubble").style.display = "block";
                     counter += item.comments - item.commentsSeen;
@@ -506,6 +522,7 @@
             });
             document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
 			if (counter > 0) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
+            else if (tasselSettings.hideZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
             saveSubscriptions_ltapluah();
         });
     }
