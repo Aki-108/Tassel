@@ -8,19 +8,19 @@ let toasts = [
     "new": false
   },
   {
-    "id": 1,
-    "extension": 5,
-    "title": "New Extension",
-    "text": "Collapsible Threads is now available for activation.",
-    "timestamp": 1674988260000,
-    "new": true
-  },
-  {
     "id": 2,
     "extension": 6,
     "title": "New Extension",
     "text": "Blocklist Annotations is now available for activation.",
     "timestamp": 1676199117382,
+    "new": true
+  },
+  {
+    "id": 3,
+    "extension": 7,
+    "title": "New Extension",
+    "text": "Tagging Tools is now available for activation.",
+    "timestamp": 1678386060000,
     "new": true
   }
 ];

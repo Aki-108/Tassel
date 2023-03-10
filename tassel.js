@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.3.1
+// @version      1.3.2
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.rawgit.com/Aki-108/Tassel/2256e77bf996e2374623b7d10308c0dbd6008be1/extensionsIndex.js";
-    let toastsURL = "https://cdn.rawgit.com/Aki-108/Tassel/56f2cdb037e493c595801cba168c5b97b23a70b6/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ef04ed86dfedaaf74b5197abf8015876e6f7f41a/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@428a1d20de168a825d210f0c3eb6253905045182/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
