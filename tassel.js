@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.3.1
+// @version      1.4.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -639,7 +639,6 @@
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.tassel = settings2;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
-        console.log(settings2);
     }
 
     /* Create an HTML element of a checkbox with lable */
