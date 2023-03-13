@@ -22,6 +22,14 @@ let toasts = [
     "text": "Tagging Tools is now available for activation.",
     "timestamp": 1678386060000,
     "new": true
+  },
+  {
+    "id": 4,
+    "extension": 2,
+    "title": "Bug Fix",
+    "text": "Post Subscriber has undergone several bug fixes.",
+    "timestamp": 1678476223662,
+    "new": false
   }
 ];
 
