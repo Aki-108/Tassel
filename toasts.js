@@ -30,6 +30,14 @@ let toasts = [
     "text": "Post Subscriber has undergone several bug fixes.",
     "timestamp": 1678476223662,
     "new": false
+  },
+  {
+    "id": 5,
+    "extension": 7,
+    "title": "Tagging Tools: Bug Fix",
+    "text": "Styling loads now.",
+    "timestamp": 1679751117531,
+    "new": false
   }
 ];
 
