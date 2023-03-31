@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2256e77bf996e2374623b7d10308c0dbd6008be1/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@56f2cdb037e493c595801cba168c5b97b23a70b6/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7ef24c9ab340cab7d1dec533d6079d0c9caa4e59/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@75b103dfd4fb202ee7e1f3278be0cdd0a0702ae9/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -31,17 +31,6 @@
         <circle cx="10" fill="none" stroke-width="1.2px" r="3" stroke="#58b6dd" cy="5"/>
       </svg>`;
 
-    let settings = localStorage.getItem("tasselSettings");
-    /* settings ids
-    0  Get Notifications for Active Extensions
-    1  Get Notifications for Inactive Extensions
-    2  Get Notifications for New Extensions
-    3  Show Experimental Extensions in the List
-    4  Shorten Expended Sidebar
-    5  Hide 0 Notification Counter
-    6  Sticky Text Toolbar
-    7  Highlight Linked Comments
-    */
     let settings2 = (JSON.parse(localStorage.getItem("tasselSettings2")) || {
         "tassel": {
             "extensions": [],
@@ -54,6 +43,8 @@
             },
             "shortenSidebar": false,
             "showWIP": false,
+            "stickyIcons": false,
+            "stickyToolbar": false,
             "toastRead": -1
         }
     }).tassel;
@@ -71,37 +62,31 @@
         })
     }
 
+    const loadStyle_xcajbuzn = src => {
+        return new Promise((resolve, reject) => {
+            const style = document.createElement('link')
+            style.type = 'text/css'
+            style.rel = "stylesheet"
+            style.onload = resolve
+            style.onerror = reject
+            style.href = src
+            document.head.append(style)
+        })
+    }
+
     //source: https://stackoverflow.com/a/43027791
     var waitForJQuery = setInterval(function () {
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
-            loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
+            loadScript_xcajbuzn("https://cdn.rawgit.com/vnausea/waitForKeyElements/f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
                 .then().then(() => init_xcajbuzn());
         }
     }, 10);
 
     /* Initialize */
     function init_xcajbuzn() {
-        //convert old settings
-        if (settings) {
-            settings2.notify.active = settings[0] === "1";
-            settings2.notify.inactive = settings[1] === "1";
-            settings2.notify.new = settings[2] === "1";
-            settings2.showWIP = settings[3] === "1";
-            settings2.shortenSidebar = settings[4] === "1";
-            settings2.hideZero = settings[5] === "1";
-            settings2.highlightComments = settings[7] === "1";
-            settings2.toastRead = localStorage.getItem("tasselToastRead")*1 || -1;
-            if (settings2.toastRead == 16749882600000) settings2.toastRead = 1674988270000;//TEMPORARY FIX: safe to remove at 12.02.2023
-
-            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
-            file.tassel = settings2;
-            localStorage.setItem("tasselSettings2", JSON.stringify(file));
-            localStorage.removeItem("tasselSettings");
-            localStorage.removeItem("tasselToastRead");
-        }
-
         GM_addStyle(GM_getResourceText("tasselCSS"));
+        loadAppearance_xcajbuzn();
         loadData_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
             .then().then(() => loadExtensions_xcajbuzn());
@@ -237,9 +222,17 @@
             let extension = extensionsIndex.find(function(data) {
                 return data.id == value.id;
             });
-            if (extension) loadScript_xcajbuzn(extension.src);
+            if (!extension) return;
+            if (extension.css) loadStyle_xcajbuzn(extension.css);
+            if (extension.src) loadScript_xcajbuzn(extension.src);
         });
         evaluateURLParameter_xcajbuzn();
+    }
+
+    /* Load selected appearance changes */
+    function loadAppearance_xcajbuzn() {
+        if (settings2.stickyIcons) GM_addStyle(".side-info{position:sticky;top:70px;margin-bottom:10px;}");
+        if (settings2.stickyToolbar) GM_addStyle(".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}");
     }
 
     /* Create the basis for toasts */
@@ -582,11 +575,19 @@
             settings2.hideZero = this.checked;
             saveSettings_xcajbuzn();
         });
-        /*content.appendChild(createSwitch_xcajbuzn("Sticky Text Toolbar", "disabled checked", "tasselSetting6"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);*/
         content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", settings2.highlightComments ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.highlightComments = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Sticky Icons", settings2.stickyIcons ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.stickyIcons = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Sticky Toolbars", settings2.stickyToolbar ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.stickyToolbar = this.checked;
             saveSettings_xcajbuzn();
         });
 
