@@ -78,7 +78,7 @@
     var waitForJQuery = setInterval(function () {
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
-            loadScript_xcajbuzn("https://cdn.rawgit.com/vnausea/waitForKeyElements/f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
+            loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
                 .then().then(() => init_xcajbuzn());
         }
     }, 10);
@@ -87,7 +87,6 @@
     function init_xcajbuzn() {
         GM_addStyle(GM_getResourceText("tasselCSS"));
         loadAppearance_xcajbuzn();
-        loadData_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
             .then().then(() => loadExtensions_xcajbuzn());
         initToast_xcajbuzn();
@@ -189,33 +188,6 @@
         document.getElementById("tasselModalClose").addEventListener("click", closeModal_xcajbuzn);
     }
 
-    /* Load the selection of active extension */
-    function loadData_xcajbuzn() {
-        let data = localStorage.getItem("tasselActive");
-        if (data) {
-            //convert to new format
-            data = data.split(",");
-            let loadedExtensions = [];
-            data.forEach(function(value){
-                value = value.split(";");
-                value[0] = value[0]*1;
-                value[1] = value[1]*1;
-                loadedExtensions.push(value);
-            });
-
-            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{\"tassel\":{}}");
-            file.tassel.extensions = [];
-            loadedExtensions.forEach(function(item) {
-                if (item[0] > 0 && !isNaN(item[1])) {
-                    file.tassel.extensions.push({"id": item[0], "since": item[1]});
-                }
-            });
-            settings2.extensions = file.tassel.extensions;
-            localStorage.setItem("tasselSettings2", JSON.stringify(file));
-            localStorage.removeItem("tasselActive");
-        }
-    }
-
     /* Load extensions from external file */
     function loadExtensions_xcajbuzn() {
         settings2.extensions.forEach(function(value) {
@@ -233,6 +205,7 @@
     function loadAppearance_xcajbuzn() {
         if (settings2.stickyIcons) GM_addStyle(".side-info{position:sticky;top:70px;margin-bottom:10px;}");
         if (settings2.stickyToolbar) GM_addStyle(".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}");
+        if (settings2.stickyCommentHeader) GM_addStyle(".comment .header{position:sticky;top:50px;z-index:3;}");
     }
 
     /* Create the basis for toasts */
@@ -590,6 +563,11 @@
             settings2.stickyToolbar = this.checked;
             saveSettings_xcajbuzn();
         });
+        content.appendChild(createSwitch_xcajbuzn("Sticky Comment Headers", settings2.stickyCommentHeader ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.stickyCommentHeader = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Other
         content.appendChild(document.createElement("hr"));
@@ -608,12 +586,25 @@
         title3.innerHTML = "Reset";
         content.appendChild(title3);
         let info3 = document.createElement("p");
-        info3.innerHTML = "Caution! Resetting your data will remove the all settings and personal information of any Tassel extension. This includes all extentions, active or not. Even those that have been manually installed.";
+        info3.innerHTML = "Select what data to delete.";
         content.appendChild(info3);
+        let select3 = document.createElement("select");
+        select3.id = "tasselResetSelect";
+        select3.style.marginRight = "1em";
+        select3.innerHTML = `
+            <option value="tasselSettings2">Tassel Settings</option>
+            <option value="tasselAdvancedBlacklist">Advanced Blacklist</option>
+            <option value="tasselBlocklistAnnotations">Blocklist Annotations</option>
+            <option value="tasselPostSubscriber">Post Subscriber</option>
+            <option value="tasselTaggingTools">Tagging Tools</option>
+        `;
+        content.appendChild(select3);
         let button3 = document.createElement("button");
         button3.innerHTML = "Reset";
         button3.classList.add("delete-button");
         button3.style.backgroundColor = "#B30000";
+        button3.style.width = "200px";
+        button3.style.borderRadius = "0.5em";
         button3.addEventListener("click", reset_xcajbuzn);
         content.appendChild(button3);
     }
@@ -656,21 +647,7 @@
 
     /* Remove local storage items that belong to Tassel and its extensions */
     function reset_xcajbuzn() {
-        localStorage.removeItem("tasselActive");//which extensions are selected
-        localStorage.removeItem("tasselSettings");
-
-        //Post Subscriber
-        localStorage.removeItem("postSubscriberColor");//accent color
-        localStorage.removeItem("postSubscriberInterval");//time between updates
-        localStorage.removeItem("postSubscriberTime");//last update timestamp
-        localStorage.removeItem("postsubscriptiondata");//subscribed post titles
-        localStorage.removeItem("postsubscriptions");//subscribed post ids
-        localStorage.removeItem("tasselPostSubLoadingIndicator");//use loading indicator or not
-
-        //Reblogged to Community
-        localStorage.removeItem("rtcdisablelike");//disable for likes
-        localStorage.removeItem("rtcdisablereblog");//disable for reblogs
-
+        localStorage.removeItem(document.getElementById("tasselResetSelect").value);
         window.location.reload()
     }
 })();
