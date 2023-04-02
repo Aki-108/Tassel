@@ -160,7 +160,6 @@
 }
 
 .tasselExtension input {
-	transform: scale(1.5);
 	margin: 5px 6px;
 	accent-color: var(--pageBg);
 }
@@ -168,7 +167,7 @@
 .tasselExtension a {
 	width: 25px;
 	display: block;
-	margin: 3px 0.5px 0 1px;
+	margin: 3px 0.5px 0 0;
 	padding: 1px;
 }
 
@@ -211,6 +210,8 @@
 
 .tasselToggle input {
 	margin: 1px 10px 5px 5px;
+	transform: scale(1.6);
+	accent-color: var(--pageBg);
 }
 
 .tasselToggle label {
