@@ -154,23 +154,46 @@
 	padding: 10px;
 	box-shadow: grey 0 1.5px 5px 0;
 	overflow: hidden;
-}
-
-.tasselExtension div {
-	display: inline-block;
-	max-width: calc(100% - 30px);
+	display: grid;
+	grid-template-columns: auto 25px;
+	grid-gap: 10px;
 }
 
 .tasselExtension input {
-	display: inline-block;
 	transform: scale(1.5);
-	margin: 1px 10px 0 4px;
-	vertical-align: text-top;
+	margin: 5px 6px;
+	accent-color: var(--pageBg);
 }
 
 .tasselExtension a {
-	float: right;
 	width: 25px;
+	display: block;
+	margin: 3px 0.5px 0 1px;
+	padding: 1px;
+}
+
+.tasselExtensionVersion {
+	width: 25px;
+	display: grid;
+	align-content: center;
+	text-align: center;
+	margin-top: 5px;
+	cursor: help;
+}
+
+.tasselExtensionWIP {
+	width: 25px;
+	height: 25px;
+	display: grid;
+	align-content: center;
+	text-align: center;
+	font-size: 10px;
+	border: 1.5px solid black;
+	border-radius: 3px;
+	padding-top: 2px;
+	font-weight: bold;
+	cursor: help;
+	margin-top: 5px;
 }
 
 .tasselExtension label {
