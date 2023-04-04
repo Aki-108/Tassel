@@ -52,7 +52,7 @@ let extensionsIndex = [
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d708bd0c22e1e1a782b6e303466f98c22b10831b/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@503d1b42ab6fcf213b4798bdaa864badc7031a59/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@03a739c5228fa065b3525c0401b165ecf3dbbc97/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3215881",
             "features": [
                 "Block posts by tag, content, username or community.",
