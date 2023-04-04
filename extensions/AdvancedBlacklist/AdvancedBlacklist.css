@@ -53,6 +53,7 @@
     text-align: left;
     margin-top: 20px;
     box-shadow: 0 1px 5px 0 grey;
+    height: max-content;
 }
 
 .tasselAdvancedBlacklistShadow {
