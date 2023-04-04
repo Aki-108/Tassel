@@ -58,7 +58,6 @@
 
         let blacklistView = document.createElement("div");
         blacklistView.id = "tasselBlacklistView";
-        blacklistView.style = "display:grid;grid-template-columns:25% 25% auto auto auto auto 20% 30px;padding:10px;background:var(--postBgColor);grid-gap:5px;";
         body.insertBefore(blacklistView, body.getElementsByClassName("bottom-submit-section")[0]);
 
         let titles = ["Blacklist", "Whitelist", "Tags", "Body", "ID", "Hide", "Source", ""];
@@ -75,26 +74,23 @@
             header.classList.add("tasselAdvancedBlacklistHeader");
             header.innerHTML = `
                 <div>
-                    <div style="background:var(--postBgColor);width:calc(100% + 5px);height:1em;position:absolute;bottom:0;"></div>
-                    <div style="z-index:2;position:relative;height:10px">${titles[a]}
-                        <div style="overflow:hidden;height:0;width:0;margin-left:50%;">
-                            <div style="width: 200px;margin-left: -100px;padding: 5px;background: var(--postBgColor);font-weight: normal;line-height: 1.2;text-align: left;margin-top:20px;box-shadow:0 1px 5px 0 grey;">
-                                ${infos[a]}
-                            </div>
+                    <div class="tasselAdvancedBlacklistShadowCover"></div>
+                    <div class="tasselAdvancedBlacklistHeaderTitle">${titles[a]}
+                        <div>
+                            <div>${infos[a]}</div>
                         </div>
                     </div>
                 </div>
             `;
             header.setAttribute("info", infos[a]);
-            header.style = "position:sticky;top:50px;text-align:center;display:grid;align-items:center;height:2em;font-weight:bold;background:var(--postBgColor);z-index:1;";
             blacklistView.appendChild(header);
         }
         blacklistView.lastChild.children[0].children[0].style.width = "100%";
         blacklistView.lastChild.children[0].children[1].children[0].style.display = "none";
         for (let a = 0; a < 8; a++) {
             let shadow = document.createElement("div");
-            shadow.style = "height:0;position:sticky;top:98px;";
-            shadow.innerHTML = "<div style='height:1em;position:relative;top:-1em;z-index:0;width:calc(100% + 5px);box-shadow:0 10px 5px -10px grey inset;'></div>";
+            shadow.classList.add("tasselAdvancedBlacklistShadow");
+            shadow.innerHTML = "<div></div>";
             blacklistView.appendChild(shadow);
         }
         blacklistView.lastChild.children[0].style.width = "100%";
@@ -105,9 +101,7 @@
         addBlacklistRow_skdasoyk(blacklist.length);
 
         let settingsArea = document.createElement("div");
-        settingsArea.style.background = "var(--postBgColor)";
-        settingsArea.style.padding = "10px";
-        settingsArea.style.borderBottom = "1px solid grey";
+        settingsArea.id = "tasselAdvancedBlacklistSettings";
         body.insertBefore(settingsArea, blacklistView);
 
         let switch1 = createSwitch_skdasoyk("Show Original Tags", settings.showTags ? "checked" : "");
@@ -127,7 +121,6 @@
 
         let filterButton = document.createElement("button");
         filterButton.classList.add("btn");
-        filterButton.style = "background:lightgrey;color:#2b2b2b;width:auto;margin:10px 0;";
         if (document.body.classList.contains("dark-theme")) filterButton.style.filter = "invert()";
         filterButton.innerHTML = "Pillowfort Filters & Blacklist";
         filterButton.addEventListener("click", function(event){
@@ -138,7 +131,6 @@
 
         let pillowfortExport = document.createElement("button");
         pillowfortExport.classList.add("btn");
-        pillowfortExport.style = "background:lightgrey;color:#2b2b2b;width:auto;margin:10px 0;";
         if (document.body.classList.contains("dark-theme")) pillowfortExport.style.filter = "invert()";
         pillowfortExport.innerHTML = "export from Pillowfort to file";
         pillowfortExport.addEventListener("click", function(event){
@@ -183,7 +175,6 @@
 
         let tasselExport = document.createElement("button");
         tasselExport.classList.add("btn");
-        tasselExport.style = "background:lightgrey;color:#2b2b2b;width:auto;margin:10px 0;";
         if (document.body.classList.contains("dark-theme")) tasselExport.style.filter = "invert()";
         tasselExport.innerHTML = "export from Tassel to file";
         tasselExport.addEventListener("click", function(event){
@@ -195,7 +186,6 @@
 
         let tasselImport = document.createElement("button");
         tasselImport.classList.add("btn");
-        tasselImport.style = "background:lightgrey;color:#2b2b2b;width:auto;margin:10px 0;";
         if (document.body.classList.contains("dark-theme")) tasselImport.style.filter = "invert()";
         tasselImport.innerHTML = "import to Tassel from file";
         tasselImport.addEventListener("click", function(event){
@@ -207,8 +197,7 @@
             input.placeholder = "Past the contents of a file export here.";
             inputFrame.appendChild(input);
             let add = document.createElement("button");
-            add.classList.add("btn");
-            add.style = "background:lightgrey;color:#2b2b2b;width:auto;margin:10px 0;display:inline;";
+            add.classList.add("btn", "inline");
             add.innerHTML = "add to list";
             add.addEventListener("click", function(event) {
                 event.preventDefault();
@@ -224,8 +213,7 @@
             });
             inputFrame.appendChild(add);
             let replace = document.createElement("button");
-            replace.classList.add("btn");
-            replace.style = "background:lightgrey;color:#2b2b2b;width:auto;margin:10px;display:inline;";
+            replace.classList.add("btn", "inline");
             replace.innerHTML = "replace list";
             replace.addEventListener("click", function(event) {
                 event.preventDefault();
@@ -408,10 +396,8 @@
 
         let addLine = document.createElement("div");
         addLine.id = "tasselBlacklistInput-add-" + index;
-        addLine.style = "display: grid;align-content: center;";
-        addLine.innerHTML = `
-            <button title="add a new line below" style="background: var(--pageBg);width: 25px;height: 25px;border-radius: 100%;display: grid;align-content: center;color: white;font-size: 2em;font-weight: bold;padding: 0px 3px 2px 3px;cursor:pointer;margin-left: 5px;border:none;">+</button>
-        `;
+        addLine.classList.add("tasselAdvancedBlacklistAddLine");
+        addLine.innerHTML = `<button title="add a new line below">+</button>`;
         addLine.addEventListener("click", insertNewRow_skdasoyk);
         blacklistView.appendChild(addLine);
     }
@@ -708,27 +694,6 @@
             localStorage.setItem("tasselAdvancedBlacklist", JSON.stringify(file));
         });
         postElement.getElementsByClassName("post-nav-right")[0].appendChild(button);
-        /*postElement.getElementsByClassName("post-nav-right")[0].innerHTML = button.outerHTML + postElement.getElementsByClassName("post-nav-right")[0].innerHTML;
-        postElement.getElementsByClassName("post-nav-right")[0].children[0].children[0].addEventListener("click", function(event) {
-            event.preventDefault();
-
-            this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.display = "none";
-
-            blacklist.push({
-                blacklist: [this.getAttribute("post-id")],
-                whitelist: [],
-                apply: {
-                    tags: false,
-                    body: false,
-                    id: true
-                },
-                hide: true,
-                source: ""
-            });
-            let file = JSON.parse(localStorage.getItem("tasselAdvancedBlacklist") || "{}");
-            file.blacklist = blacklist;
-            localStorage.setItem("tasselAdvancedBlacklist", JSON.stringify(file));
-        });*/
     }
 
     function shouldBeBlocked_skdasoyk(post) {
