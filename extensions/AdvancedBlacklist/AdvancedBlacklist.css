@@ -36,14 +36,14 @@
     height: 10px;
 }
 
-.tasselAdvancedBlacklistHeaderTitle + div {
+.tasselAdvancedBlacklistHeaderTitle div {
     overflow: hidden;
     height: 0;
     width: 0;
     margin-left: 50%;
 }
 
-.tasselAdvancedBlacklistHeaderTitle + div + div {
+.tasselAdvancedBlacklistHeaderTitle div div {
     width: 200px;
     margin-left: -100px;
     padding: 5px;
