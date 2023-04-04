@@ -1,3 +1,109 @@
+.tasselAdvancedBlacklistHeader {
+    position: sticky;
+    top: 50px;
+    text-align: center;
+    display: grid;
+    align-items: center;
+    height: 2em;
+    font-weight: bold;
+    background: var(--postBgColor);
+    z-index: 1;
+}
+
 .tasselAdvancedBlacklistHeader:hover div {
-  overflow: visible !important;
+    overflow: visible !important;
+}
+
+#tasselBlacklistView {
+    display: grid;
+    grid-template-columns: 25% 25% auto auto auto auto 20% 30px;
+    padding: 10px;
+    background: var(--postBgColor);
+    grid-gap: 5px;
+}
+
+.tasselAdvancedBlacklistShadowCover {
+    background: var(--postBgColor);
+    width: calc(100% + 5px);
+    height: 1em;
+    position: absolute;
+    bottom: 0;
+}
+
+.tasselAdvancedBlacklistHeaderTitle {
+    z-index: 2;
+    position: relative;
+    height: 10px;
+}
+
+.tasselAdvancedBlacklistHeaderTitle + div {
+    overflow: hidden;
+    height: 0;
+    width: 0;
+    margin-left: 50%;
+}
+
+.tasselAdvancedBlacklistHeaderTitle + div + div {
+    width: 200px;
+    margin-left: -100px;
+    padding: 5px;
+    background: var(--postBgColor);
+    font-weight: normal;
+    line-height: 1.2;
+    text-align: left;
+    margin-top: 20px;
+    box-shadow: 0 1px 5px 0 grey;
+}
+
+.tasselAdvancedBlacklistShadow {
+    height: 0;
+    position: sticky;
+    top: 98px;
+}
+
+.tasselAdvancedBlacklistShadow + div {
+    height: 1em;
+    position: relative;
+    top: -1em;
+    z-index: 0;
+    width: calc(100% + 5px);
+    box-shadow: 0 10px 5px -10px grey inset;
+}
+
+#tasselAdvancedBlacklistSettings {
+    background: var(--postBgColor);
+    padding: 10px;
+    border-bottom: 1px solid grey;
+}
+
+#tasselAdvancedBlacklistSettings .btn {
+    background: lightgrey;
+    color: #2b2b2b;
+    width: auto;
+    margin: 10px 0;
+}
+
+#tasselAdvancedBlacklistSettings .inline {
+    display: inline;
+}
+
+.tasselAdvancedBlacklistAddLine {
+    display: grid;
+    align-content: center;
+}
+
+.tasselAdvancedBlacklistAddLine button {
+    background: var(--pageBg);
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    display: grid;
+    align-content: center;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 0px 3px 2px 3px;
+    cursor: pointer;
+    margin-left: 5px;
+    border: none;
 }
