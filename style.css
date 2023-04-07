@@ -1,3 +1,4 @@
+/*/////////////////// common page elements ///////////////////*/
 .tasselSidebarSmall {
 	cursor: pointer;
 }
@@ -55,6 +56,7 @@
 	border-width: 0px;
 }
 
+/*//////////////// Modal //////////////////////////*/
 #tasselModal {
 	display: none;
 	overflow: auto;
@@ -195,6 +197,10 @@
 	margin-top: 5px;
 }
 
+body.dark-theme .tasselExtensionWIP {
+	border: 1.5px solid #d9dbe0;
+}
+
 .tasselExtension label {
 	display: inline;
 	margin: 0 0 5px;
@@ -202,6 +208,23 @@
 	font-weight: 500;
 	line-height: 1.2;
 	cursor: pointer;
+}
+
+#tasselJSONView {
+    margin-top: 10px; 
+    background: var(--postBgColor); 
+    color: var(--postFontColor);
+}
+
+.tasselButton {
+    height: 38px; 
+    margin-right: 1em;
+    border: 1px solid transparent; 
+    border-radius: 0.5em; 
+    background-color: var(--pageBg); 
+    color: var(--postHeaderFont); 
+    font-size: 16px; 
+    text-transform: uppercase; 
 }
 
 .tasselToggle {
