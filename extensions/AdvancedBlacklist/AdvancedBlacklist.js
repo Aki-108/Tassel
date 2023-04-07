@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      0.7
+// @version      1.0
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -17,9 +17,9 @@
 		showTags: true,
 		showReason: true
 	};
-    let lastTime;
-    let permaLinks;
-    let locationType = "home"
+    let lastTime; //time of the oldest loaded post
+    let permaLinks; //array of perma-link elements
+    let locationType = "home" //type of webpage
 
 	const loadingIndicator =
        document.getElementById("home_loading")
@@ -50,6 +50,7 @@
     }
 
     addSidebarButton_skdasoyk();
+    /* Replace the Filters & Blacklist button in the sidebar with an Advanced Blacklist button */
     function addSidebarButton_skdasoyk() {
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
         let buttonSmall = Object.values(sidebarSmall.children).find(function(item) {
@@ -71,7 +72,7 @@
 
 	/* Get Home Feed Data */
 	function loadPostData_skdasoyk() {
-        let url;
+        let url; //where to get the correct post data
         let address = document.URL.split("/");
         let posts = [];
         if (address.length === 4 && address[3] === "") {//home feed
@@ -173,6 +174,7 @@
         }
     }
 
+    /* Add the "Blacklist this Post" button to the post navigation */
     function addBlockButton_skdasoyk(post) {
         if (!permaLinks) return;
         let postElement = Object.values(permaLinks).find(function(item) {
@@ -211,6 +213,7 @@
         postElement.getElementsByClassName("post-nav-right")[0].appendChild(button);
     }
 
+    /* Show original tags on a post */
     function addTags_skdasoyk(post) {
         if (!post.original_post) return;
         let tags = post.original_post.tag_list;
@@ -247,6 +250,7 @@
         }
     }
 
+    /* Check if a post should be blocked or not */
     function shouldBeBlocked_skdasoyk(post) {
         let block = {
             block: false,
@@ -260,6 +264,7 @@
             let indicatorWhite = -1;
 
             // source ///////////////////////////////////////////////////////////////////
+            // check if the source tag applies here
             if (entry.source && entry.source.length > 0) {
                 indicatorSource = 1;
                 //ignore when the post is not by the source
@@ -272,8 +277,10 @@
                 block.blockFor.push(entry.source);
             }
 
+            // get title and body content
             let body = [];
             if (entry.apply.body) {
+                // remove symbols and formating
                 let _body = post.content + " " + (post.original_post ? post.original_post.title : post.title);
                 _body = _body.replaceAll(".", " ");
                 _body = _body.replaceAll("!", " ");
@@ -298,6 +305,7 @@
                 body = _body.split(" ");
             }
 
+            // get tag content
             let tags = [];
             tags.push(...post.tags);
             if (post.original_post) tags.push(...post.original_post.tag_list);
@@ -374,6 +382,7 @@
         return block;
     }
 
+    /* Display why a post was blocked */
     function showReason_skdasoyk(post, blockResult) {
         if (!permaLinks) return;
         let postElement = Object.values(permaLinks).find(function(item) {
@@ -419,6 +428,7 @@
     }
 
     createPage_skdasoyk();
+    /* Create the Advanced Blacklist settings page */
     function createPage_skdasoyk() {
         if (document.URL !== "https://www.pillowfort.social/settings?blacklist") return;
         document.title = "Advanced Blacklist";
@@ -606,6 +616,7 @@
         settingsArea.appendChild(tasselImport);
     }
 
+    /* Save data from input fields to local storage */
     function saveBlacklist_skdasoyk() {
         blacklist = [];
         let index = 0;
@@ -667,12 +678,14 @@
         return toggle;
     }
 
+    /* Save user settings to local storage */
     function saveSettings_skdasoyk() {
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.advancedBlacklist = settings;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
+    /* Open Pillowfort's Filters & Blacklist modal */
     function showFilters_skdasoyk() {
         let modal = document.getElementById("filtersModal");
         modal.style.display = "block";
@@ -687,6 +700,7 @@
         document.body.classList.add("modal-open");
     }
 
+    /* Close Pillowfort's Filters & Blacklist modal */
     function hideFilters_skdasoyk() {
         let modal = document.getElementById("filtersModal");
         modal.style.display = "none";
@@ -708,6 +722,7 @@
         document.body.removeChild(elem);
     }
 
+    /* Create a new row at the bottom of the Advanced Blacklist settings */
     function addBlacklistRow_skdasoyk(index, item) {
         let blacklistView = document.getElementById("tasselAdvancedBlacklistView");
 
@@ -766,12 +781,14 @@
         blacklistView.appendChild(addLine);
     }
 
+    /* Add a new row if the last row in the Advanced Blacklist settings has data in it */
     function checkNewRow_skdasoyk() {
         let index = this.id.split("-")[2]*1 + 1;
         if (document.getElementById("tasselAdvancedBlacklistInput-black-" + index)) return;
         addBlacklistRow_skdasoyk(index);
     }
 
+    /* Add a new row at the bottom and shift data down */
     function insertNewRow_skdasoyk() {
         event.preventDefault();
         let index = this.id.split("-")[2]*1 + 1;
