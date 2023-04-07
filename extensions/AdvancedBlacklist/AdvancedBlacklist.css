@@ -1,10 +1,30 @@
+/*////////////////// Blacklist View ////////////////////*/
+#tasselAdvancedBlacklistView {
+    display: grid;
+    grid-template-columns: 25% 25% auto auto auto auto 20% 30px;
+    grid-gap: 5px;
+    padding: 10px;
+    background: var(--postBgColor);
+}
+
+#tasselAdvancedBlacklistView input[type="checkbox"] {
+    width: 1.5em;
+    margin: 2px auto;
+    transform: none;
+    accent-color: var(--pageBg);
+}
+
+#tasselAdvancedBlacklistView input[type="text"] {
+    width: auto;
+}
+
 .tasselAdvancedBlacklistHeader {
     position: sticky;
     top: 50px;
-    text-align: center;
+    height: 2em;
     display: grid;
     align-items: center;
-    height: 2em;
+    text-align: center;
     font-weight: bold;
     background: var(--postBgColor);
     z-index: 1;
@@ -14,74 +34,70 @@
     overflow: visible !important;
 }
 
-#tasselBlacklistView {
-    display: grid;
-    grid-template-columns: 25% 25% auto auto auto auto 20% 30px;
-    padding: 10px;
-    background: var(--postBgColor);
-    grid-gap: 5px;
-}
-
-.tasselAdvancedBlacklistShadowCover {
-    background: var(--postBgColor);
-    width: calc(100% + 5px);
-    height: 1em;
-    position: absolute;
-    bottom: 0;
-}
-
 .tasselAdvancedBlacklistHeaderTitle {
-    z-index: 2;
     position: relative;
     height: 10px;
+    z-index: 2;
 }
 
 .tasselAdvancedBlacklistHeaderTitle div {
-    overflow: hidden;
-    height: 0;
     width: 0;
+    height: 0;
     margin-left: 50%;
+    overflow: hidden;
 }
 
 .tasselAdvancedBlacklistHeaderTitle div div {
     width: 200px;
+    height: max-content;
+    margin-top: 20px;
     margin-left: -100px;
     padding: 5px;
     background: var(--postBgColor);
     font-weight: normal;
     line-height: 1.2;
     text-align: left;
-    margin-top: 20px;
     box-shadow: 0 1px 5px 0 grey;
-    height: max-content;
+}
+
+.tasselAdvancedBlacklistShadowCover {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% + 5px);
+    height: 1em;
+    background: var(--postBgColor);
 }
 
 .tasselAdvancedBlacklistShadow {
-    height: 0;
     position: sticky;
     top: 98px;
+    height: 0;
 }
 
-.tasselAdvancedBlacklistShadow + div {
-    height: 1em;
+.tasselAdvancedBlacklistShadow div {
     position: relative;
+    width: calc(100% + 5px);
+    height: 1em;
     top: -1em;
     z-index: 0;
-    width: calc(100% + 5px);
     box-shadow: 0 10px 5px -10px grey inset;
 }
 
 #tasselAdvancedBlacklistSettings {
-    background: var(--postBgColor);
     padding: 10px;
     border-bottom: 1px solid grey;
+    background: var(--postBgColor);
 }
 
 #tasselAdvancedBlacklistSettings .btn {
-    background: lightgrey;
-    color: #2b2b2b;
     width: auto;
     margin: 10px 0;
+    background: lightgrey;
+    color: #2b2b2b;
+}
+
+body.dark-theme #tasselAdvancedBlacklistSettings .btn {
+    filter: invert();
 }
 
 #tasselAdvancedBlacklistSettings .inline {
@@ -94,17 +110,39 @@
 }
 
 .tasselAdvancedBlacklistAddLine button {
-    background: var(--pageBg);
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
     display: grid;
     align-content: center;
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+    padding: 0px 3px 2px 3px;
+    border: none;
+    border-radius: 100%;
     color: white;
     font-size: 2em;
     font-weight: bold;
-    padding: 0px 3px 2px 3px;
     cursor: pointer;
-    margin-left: 5px;
-    border: none;
+    background: var(--pageBg);
+}
+
+/*////////////////////////// Blocked Post //////////////////////*/
+.tasselAdvancedBlacklistBlockedHeader {
+    background: var(--tag_bg);
+    padding: 5px 15px;
+    line-height: 35px;
+}
+
+.tasselAdvancedBlacklistBlockedHeader button {
+    float: right;
+    width: 4em;
+    margin: 6px 0px;
+    border: 1px solid var(--postFontColor);
+    border-radius: 1.5px;
+    background: var(--postBgColor);
+}
+
+.tasselAdvancedBlacklistBlockedHeader div {
+    width: calc(100% - 4em - 10px);
+    margin: 6px 0;
+    line-height: 1.4em;
 }
