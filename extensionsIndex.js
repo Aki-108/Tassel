@@ -46,14 +46,14 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "0.7",
+            "version": "1.0",
             "created": 1674907200000,
-            "updated": 1680845765078,
+            "updated": 1680855960000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e17b9bcb54ea02770a3050cd20d9759a56924b0c/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@92ac6da0a3d253f9cc3157f3bf7f3945e512b1c0/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
-            "post": "https://www.pillowfort.social/posts/3215881",
+            "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
                 "Block posts by tag, content, username or community.",
                 "Block specific posts and their reblogs.",
