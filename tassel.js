@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@37430940bf9867f717aa9328bd435ec2c36378bd/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@064626a69b50df2ad954a1af1ec4af8ea90f7fd4/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a5862f27cc658fe97b80e0eb89343f75d85fe83c/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a2aeed077804bcd440d67c8587ba968b6f4d01ea/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
