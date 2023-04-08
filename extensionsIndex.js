@@ -51,7 +51,7 @@ let extensionsIndex = [
             "updated": 1680855960000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@684e749f1cd5571497b431a013aa929bcb15422a/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cd51bb8df7622f939cafe6dbfc5a52188c82f629/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@92ac6da0a3d253f9cc3157f3bf7f3945e512b1c0/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
