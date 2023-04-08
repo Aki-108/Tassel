@@ -38,6 +38,22 @@ let toasts = [
     "text": "Styling loads now.",
     "timestamp": 1679751117531,
     "new": false
+  },
+  {
+    "id": 6,
+    "extension": 4,
+    "title": "Advanced Blacklist",
+    "text": "Advanced Blacklist is now available as a full release.",
+    "timestamp": 1680855960000,
+    "new": true
+  },
+  {
+    "id": 7,
+    "extension": 0,
+    "title": "Tassel Update",
+    "text": "New Appearance Settings have been added to Tassel.",
+    "timestamp": 1680855960000,
+    "new": false
   }
 ];
 

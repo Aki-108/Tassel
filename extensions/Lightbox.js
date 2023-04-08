@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Lightbox
-// @version      1.4
+// @version      1.5
 // @description  Adds a lightbox to Pillowfort.social.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -63,6 +63,7 @@
             let index = 0;
             for (let image of images) {
                 if (image.classList.contains("fullscreenprocessed")) continue;
+                if (image.classList.contains("tasselLightboxImageLink")) continue;
                 if (!((image.classList.contains("full") || image.classList.contains("half") || image.classList.contains("fr-draggable") || image.classList.contains("fr-fic")) && image.src != "")) continue;
                 formatImage_kpeyutgp(image);
                 image.setAttribute("imageindex", index);
@@ -79,6 +80,7 @@
             let index = 0;
             for (let image of images) {
                 if (image.classList.contains("fullscreenprocessed")) continue;
+                if (image.classList.contains("tasselLightboxImageLink")) continue;
                 formatImage_kpeyutgp(image);
                 image.setAttribute("imageindex", index);
                 image.classList.add("commentimage");
@@ -100,14 +102,16 @@
                 let linkA = document.createElement("a");
                 linkA.style.position = "absolute";
                 linkA.style.left = "0";
+                linkA.style.width = "30px";
                 linkA.href = image.parentNode.href;
                 linkA.target = "_blank";
                 let linkIcon = document.createElement("img");
-                linkIcon.style.background = "white";
                 linkIcon.style.opacity = "0.5";
                 linkIcon.style.width = "30px";
                 linkIcon.style.position = "absolute";
                 linkIcon.style.padding = "2px";
+                linkIcon.style.filter = "none";
+                linkIcon.classList.add("tasselLightboxImageLink");
                 linkIcon.src = "https://www.pillowfort.social/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg";
                 linkIcon.addEventListener("mouseenter", function(){hoverIn_kpeyutgp(this)});
                 linkIcon.addEventListener("mouseleave", function(){hoverOut_kpeyutgp(this)});

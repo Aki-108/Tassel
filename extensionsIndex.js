@@ -2,12 +2,12 @@ let extensionsIndex = [
         {
             "name": "Lightbox",
             "id": 1,
-            "version": "1.4",
+            "version": "1.5",
             "created": 1660385280000,
-            "updated": 1676186820000,
+            "updated": 1680462960000,
             "author": "Aki108",
             "description": "View images in full screen",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0b19d974426f3154896fa6447efc58f471b77355/extensions/Lightbox.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f5fe346083392cb0469325761d1078f828c940a7/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
             "features": ["View images in full screen.",
                          "Adds a dedicated button for embedded links."
@@ -36,7 +36,7 @@ let extensionsIndex = [
             "updated": 1672861800000,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/aeafb71abc67a4bb06b7f4488df63acbb1aee066/extensions/RebloggedToCommunity.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@aeafb71abc67a4bb06b7f4488df63acbb1aee066/extensions/RebloggedToCommunity.js",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show where a post has been reblogged to.",
                          "Show where a post has been liked from.",
@@ -46,13 +46,14 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "0.5",
+            "version": "1.0",
             "created": 1674907200000,
-            "updated": 1677918660000,
+            "updated": 1680855960000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0a929b1c1bb3bc18df13a8c5fd74c3b93c2dc393/extensions/AdvancedBlacklist.js",
-            "post": "https://www.pillowfort.social/posts/3215881",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5d2620f0c3e2171191fbb8ed82bf064258865fbf/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
+            "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
                 "Block posts by tag, content, username or community.",
                 "Block specific posts and their reblogs.",
@@ -67,7 +68,7 @@ let extensionsIndex = [
             "updated": 1676147520000,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/74ace6a11a2ee0a6595bda6071583eaa259a42f0/extensions/CollapsibleThreads.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@74ace6a11a2ee0a6595bda6071583eaa259a42f0/extensions/CollapsibleThreads.js",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
         {
@@ -78,7 +79,7 @@ let extensionsIndex = [
             "updated": 1675538640000,
             "author": "Aki108",
             "description": "Remember the reason you blocked someone.",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
             "post": "https://www.pillowfort.social/posts/3167192"
         },
         {
