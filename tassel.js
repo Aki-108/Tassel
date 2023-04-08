@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.3.4
+// @version      1.4.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -31,17 +31,6 @@
         <circle cx="10" fill="none" stroke-width="1.2px" r="3" stroke="#58b6dd" cy="5"/>
       </svg>`;
 
-    let settings = localStorage.getItem("tasselSettings");
-    /* settings ids
-    0  Get Notifications for Active Extensions
-    1  Get Notifications for Inactive Extensions
-    2  Get Notifications for New Extensions
-    3  Show Experimental Extensions in the List
-    4  Shorten Expended Sidebar
-    5  Hide 0 Notification Counter
-    6  Sticky Text Toolbar
-    7  Highlight Linked Comments
-    */
     let settings2 = (JSON.parse(localStorage.getItem("tasselSettings2")) || {
         "tassel": {
             "extensions": [],
@@ -54,6 +43,8 @@
             },
             "shortenSidebar": false,
             "showWIP": false,
+            "stickyIcons": false,
+            "stickyToolbar": false,
             "toastRead": -1
         }
     }).tassel;
@@ -87,34 +78,15 @@
     var waitForJQuery = setInterval(function () {
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
-            loadScript_xcajbuzn("https://cdn.rawgit.com/vnausea/waitForKeyElements/f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
+            loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
                 .then().then(() => init_xcajbuzn());
         }
     }, 10);
 
     /* Initialize */
     function init_xcajbuzn() {
-        //convert old settings
-        if (settings) {
-            settings2.notify.active = settings[0] === "1";
-            settings2.notify.inactive = settings[1] === "1";
-            settings2.notify.new = settings[2] === "1";
-            settings2.showWIP = settings[3] === "1";
-            settings2.shortenSidebar = settings[4] === "1";
-            settings2.hideZero = settings[5] === "1";
-            settings2.highlightComments = settings[7] === "1";
-            settings2.toastRead = localStorage.getItem("tasselToastRead")*1 || -1;
-            if (settings2.toastRead == 16749882600000) settings2.toastRead = 1674988270000;//TEMPORARY FIX: safe to remove at 12.02.2023
-
-            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
-            file.tassel = settings2;
-            localStorage.setItem("tasselSettings2", JSON.stringify(file));
-            localStorage.removeItem("tasselSettings");
-            localStorage.removeItem("tasselToastRead");
-        }
-
         GM_addStyle(GM_getResourceText("tasselCSS"));
-        loadData_xcajbuzn();
+        loadAppearance_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
             .then().then(() => loadExtensions_xcajbuzn());
         initToast_xcajbuzn();
@@ -216,33 +188,6 @@
         document.getElementById("tasselModalClose").addEventListener("click", closeModal_xcajbuzn);
     }
 
-    /* Load the selection of active extension */
-    function loadData_xcajbuzn() {
-        let data = localStorage.getItem("tasselActive");
-        if (data) {
-            //convert to new format
-            data = data.split(",");
-            let loadedExtensions = [];
-            data.forEach(function(value){
-                value = value.split(";");
-                value[0] = value[0]*1;
-                value[1] = value[1]*1;
-                loadedExtensions.push(value);
-            });
-
-            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{\"tassel\":{}}");
-            file.tassel.extensions = [];
-            loadedExtensions.forEach(function(item) {
-                if (item[0] > 0 && !isNaN(item[1])) {
-                    file.tassel.extensions.push({"id": item[0], "since": item[1]});
-                }
-            });
-            settings2.extensions = file.tassel.extensions;
-            localStorage.setItem("tasselSettings2", JSON.stringify(file));
-            localStorage.removeItem("tasselActive");
-        }
-    }
-
     /* Load extensions from external file */
     function loadExtensions_xcajbuzn() {
         settings2.extensions.forEach(function(value) {
@@ -254,6 +199,13 @@
             if (extension.src) loadScript_xcajbuzn(extension.src);
         });
         evaluateURLParameter_xcajbuzn();
+    }
+
+    /* Load selected appearance changes */
+    function loadAppearance_xcajbuzn() {
+        if (settings2.stickyIcons) GM_addStyle(".side-info{position:sticky;top:70px;margin-bottom:10px;}");
+        if (settings2.stickyToolbar) GM_addStyle(".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}");
+        if (settings2.stickyCommentHeader) GM_addStyle(".comment .header{position:sticky;top:50px;z-index:3;}");
     }
 
     /* Create the basis for toasts */
@@ -596,11 +548,24 @@
             settings2.hideZero = this.checked;
             saveSettings_xcajbuzn();
         });
-        /*content.appendChild(createSwitch_xcajbuzn("Sticky Text Toolbar", "disabled checked", "tasselSetting6"));
-        content.lastChild.children[0].addEventListener("change", saveSettings_xcajbuzn);*/
         content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", settings2.highlightComments ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.highlightComments = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Sticky Icons", settings2.stickyIcons ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.stickyIcons = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Sticky Toolbars", settings2.stickyToolbar ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.stickyToolbar = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Sticky Comment Headers", settings2.stickyCommentHeader ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.stickyCommentHeader = this.checked;
             saveSettings_xcajbuzn();
         });
 
@@ -621,12 +586,25 @@
         title3.innerHTML = "Reset";
         content.appendChild(title3);
         let info3 = document.createElement("p");
-        info3.innerHTML = "Caution! Resetting your data will remove the all settings and personal information of any Tassel extension. This includes all extentions, active or not. Even those that have been manually installed.";
+        info3.innerHTML = "Select what data to delete.";
         content.appendChild(info3);
+        let select3 = document.createElement("select");
+        select3.id = "tasselResetSelect";
+        select3.style.marginRight = "1em";
+        select3.innerHTML = `
+            <option value="tasselSettings2">Tassel Settings</option>
+            <option value="tasselAdvancedBlacklist">Advanced Blacklist</option>
+            <option value="tasselBlocklistAnnotations">Blocklist Annotations</option>
+            <option value="tasselPostSubscriber">Post Subscriber</option>
+            <option value="tasselTaggingTools">Tagging Tools</option>
+        `;
+        content.appendChild(select3);
         let button3 = document.createElement("button");
         button3.innerHTML = "Reset";
         button3.classList.add("delete-button");
         button3.style.backgroundColor = "#B30000";
+        button3.style.width = "200px";
+        button3.style.borderRadius = "0.5em";
         button3.addEventListener("click", reset_xcajbuzn);
         content.appendChild(button3);
     }
@@ -653,7 +631,6 @@
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.tassel = settings2;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
-        console.log(settings2);
     }
 
     /* Create an HTML element of a checkbox with lable */
@@ -670,21 +647,7 @@
 
     /* Remove local storage items that belong to Tassel and its extensions */
     function reset_xcajbuzn() {
-        localStorage.removeItem("tasselActive");//which extensions are selected
-        localStorage.removeItem("tasselSettings");
-
-        //Post Subscriber
-        localStorage.removeItem("postSubscriberColor");//accent color
-        localStorage.removeItem("postSubscriberInterval");//time between updates
-        localStorage.removeItem("postSubscriberTime");//last update timestamp
-        localStorage.removeItem("postsubscriptiondata");//subscribed post titles
-        localStorage.removeItem("postsubscriptions");//subscribed post ids
-        localStorage.removeItem("tasselPostSubLoadingIndicator");//use loading indicator or not
-
-        //Reblogged to Community
-        localStorage.removeItem("rtcdisablelike");//disable for likes
-        localStorage.removeItem("rtcdisablereblog");//disable for reblogs
-
+        localStorage.removeItem(document.getElementById("tasselResetSelect").value);
         window.location.reload()
     }
 })();
