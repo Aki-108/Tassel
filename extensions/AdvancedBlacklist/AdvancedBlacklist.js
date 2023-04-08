@@ -393,7 +393,7 @@
         }).parentNode.parentNode.parentNode.parentNode;
 
         //hide post completly
-        if (blockResult.hide) {
+        if (blockResult.hide && locationType !== "post") {
             postElement.parentNode.parentNode.style.display = "none";
             return;
         }
