@@ -92,12 +92,10 @@
 #tasselAdvancedBlacklistSettings .btn {
     width: auto;
     margin: 10px 0;
-    background: lightgrey;
-    color: #2b2b2b;
 }
 
-body.dark-theme #tasselAdvancedBlacklistSettings .btn {
-    filter: invert();
+#tasselAdvancedBlacklistSettings .btn:hover {
+    color: var(--postHeaderFont);
 }
 
 #tasselAdvancedBlacklistSettings .inline {
