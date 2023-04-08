@@ -2,12 +2,12 @@ let extensionsIndex = [
         {
             "name": "Lightbox",
             "id": 1,
-            "version": "1.4",
+            "version": "1.5",
             "created": 1660385280000,
-            "updated": 1676186820000,
+            "updated": 1680462960000,
             "author": "Aki108",
             "description": "View images in full screen",
-            "src": "https://cdn.rawgit.com/Aki-108/Tassel/0b19d974426f3154896fa6447efc58f471b77355/extensions/Lightbox.js",
+            "src": "https://cdn.rawgit.com/Aki-108/Tassel/f5fe346083392cb0469325761d1078f828c940a7/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
             "features": ["View images in full screen.",
                          "Adds a dedicated button for embedded links."
