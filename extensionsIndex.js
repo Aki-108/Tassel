@@ -16,12 +16,12 @@ let extensionsIndex = [
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "2.1",
+            "version": "2.2",
             "created": 1661764440000,
-            "updated": 1676196720000,
+            "updated": 1678476223662,
             "author": "Aki108",
             "description": "Get notified when there are new comments in a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6630ccab2b0b19ffc32399519530b234e77d2ac0/extensions/PostSubscriber.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dc14b8a29e8e66c7806951e9d4ffdaae1b8f8c5a/extensions/PostSubscriber.js",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -46,13 +46,14 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "0.5",
+            "version": "1.0",
             "created": 1674907200000,
-            "updated": 1677918660000,
+            "updated": 1680855960000,
             "author": "aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0a929b1c1bb3bc18df13a8c5fd74c3b93c2dc393/extensions/AdvancedBlacklist.js",
-            "post": "https://www.pillowfort.social/posts/3215881",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@684e749f1cd5571497b431a013aa929bcb15422a/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@92ac6da0a3d253f9cc3157f3bf7f3945e512b1c0/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
+            "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
                 "Block posts by tag, content, username or community.",
                 "Block specific posts and their reblogs.",
@@ -80,6 +81,22 @@ let extensionsIndex = [
             "description": "Remember the reason you blocked someone.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
             "post": "https://www.pillowfort.social/posts/3167192"
+        },
+        {
+            "name": "Tagging Tools",
+            "id": 7,
+            "version": "1.0",
+            "created": 1678386060000,
+            "updated": 1678386060000,
+            "author": "Aki108",
+            "description": "Makes consistent tagging easier.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@938aed7faa3540bd2ddc12aa692929a079e04a5e/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c940b354ce3ab0802abe5867cc1544498c6871a2/extensions/TaggingTools/TaggingTools.css",
+            "post": "https://www.pillowfort.social/posts/3228885",
+            "features": [
+                "Suggests tags based on your previous posts.",
+                "Adds a button for copying tags when reblogging."
+            ]
         }
     ];
 
@@ -95,6 +112,7 @@ let extensionsIndex = [
     "icon": "",
     "description": "",
     "src": "",
+    "css": "",
     "post": "",
     "features": [
     ]
