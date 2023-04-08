@@ -205,7 +205,7 @@
     function loadAppearance_xcajbuzn() {
         if (settings2.stickyIcons) GM_addStyle(".side-info{position:sticky;top:70px;margin-bottom:10px;}");
         if (settings2.stickyToolbar) GM_addStyle(".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}");
-        if (settings2.stickyCommentHeader) GM_addStyle(".comment .header{position:sticky;top:50px;z-index:3;}");
+        if (settings2.stickyCommentHeader) GM_addStyle(".comments-container .header{position:sticky;top:50px;z-index:3;}");
     }
 
     /* Create the basis for toasts */
@@ -405,24 +405,9 @@
             frame.classList.add("tasselExtension");
                 let checkboxID = "checkbox"+data.name;
                 let info = document.createElement("div");
-                if (data.version < 1) info.style.opacity = "0.6";
-                    let checkbox = document.createElement("input");
-                    checkbox.id = checkboxID;
-                    checkbox.type = "checkbox";
-                    checkbox.setAttribute("extension", data.id);
-                    checkbox.addEventListener("click", function() {
-                        toggleExtension_xcajbuzn(this.getAttribute("extension"));
-                    });
-                    let entry = settings2.extensions.find(function(value) {
-                        return value.id == data.id;
-                    });
-                    if (entry != null) {
-                        checkbox.checked = true;
-                    }
-                info.appendChild(checkbox);
 
                     let title = document.createElement("label");
-                    title.innerHTML = `${data.name}<span style="opacity:.6;font-size:14px;padding:10px;vertical-align:middle;">${data.version}</span>`;
+                    title.innerHTML = data.name;
                     title.setAttribute("for", checkboxID);
                 info.appendChild(title);
 
@@ -451,13 +436,40 @@
                 }
             frame.appendChild(info);
 
-            let links = document.createElement("a");
-            links.classList.add("link_post", "svg-blue");
-            links.target = "_blank";
-            links.title = "link to post";
-            links.href = data.post;
-            links.innerHTML = `<img style="width:100%;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">`;
-            if (data.post) frame.appendChild(links);
+            let sidebar = document.createElement("div");
+            let checkbox = document.createElement("input");
+              checkbox.id = checkboxID;
+              checkbox.title = "activate";
+              checkbox.type = "checkbox";
+              checkbox.setAttribute("extension", data.id);
+              checkbox.addEventListener("click", function() {
+                toggleExtension_xcajbuzn(this.getAttribute("extension"));
+              });
+              let entry = settings2.extensions.find(function(value) {
+                return value.id == data.id;
+              });
+              if (entry != null) {
+                checkbox.checked = true;
+              }
+            sidebar.appendChild(checkbox);
+            let link = document.createElement("a");
+              link.classList.add("link_post");
+              link.target = "_blank";
+              link.title = "link to post";
+              link.href = data.post;
+              link.innerHTML = `<img style="width:100%;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">`;
+            if (data.post) sidebar.appendChild(link);
+            let version = document.createElement("span");
+              version.classList.add("tasselExtensionVersion");
+              version.innerHTML = data.version;
+              version.title = `version ${data.version}, published ${new Date(data.created).toLocaleDateString()}, updated ${new Date(data.updated).toLocaleDateString()}`;
+            sidebar.appendChild(version);
+            let wip = document.createElement("span");
+              wip.classList.add("tasselExtensionWIP");
+              wip.innerHTML = "WIP";
+              wip.title = "This extension is currently in development and might not work as intended. It might be removed in the future. Use at your own risk.";
+            if (data.version.split(".")[0] < 1) sidebar.appendChild(wip);
+            frame.appendChild(sidebar);
 
             if (settings2.showWIP || data.version >= 1) extensionsList.appendChild(frame);//only display extension if it's a full version or WIPs are wanted
         });
@@ -466,7 +478,6 @@
         content.appendChild(document.createElement("hr"));
         let info2 = document.createElement("p");
         info2.innerHTML = "If you enjoy an extension, consider commenting / reblogging / liking the corresponding announcement post by opening the link of the extension."
-        if (settings2.showWIP) info2.innerHTML += "<br><br>Extensions that are greyed out are currently in development and might not work as intended. Use at own risk.";
         content.appendChild(info2);
     }
 
@@ -586,7 +597,7 @@
         title3.innerHTML = "Reset";
         content.appendChild(title3);
         let info3 = document.createElement("p");
-        info3.innerHTML = "Select what data to delete.";
+        info3.innerHTML = "Select what data to view or delete.";
         content.appendChild(info3);
         let select3 = document.createElement("select");
         select3.id = "tasselResetSelect";
@@ -599,13 +610,32 @@
             <option value="tasselTaggingTools">Tagging Tools</option>
         `;
         content.appendChild(select3);
+        let button2 = document.createElement("button");
+        button2.innerHTML = "View";
+        button2.classList.add("tasselButton");
+        button2.style = "width: 150px;";
+        button2.addEventListener("click", function() {
+            let viewFrame = document.getElementById("tasselJSONView");
+            if (viewFrame) {
+                viewFrame.innerHTML = JSON.stringify(JSON.parse(localStorage.getItem(document.getElementById("tasselResetSelect").value)), null, 2);
+            } else {
+                viewFrame = document.createElement("pre");
+                viewFrame.id = "tasselJSONView";
+                viewFrame.innerHTML = JSON.stringify(JSON.parse(localStorage.getItem(document.getElementById("tasselResetSelect").value)), null, 2);
+                document.getElementById("tasselModalContent").appendChild(viewFrame);
+            }
+        });
+        content.appendChild(button2);
         let button3 = document.createElement("button");
         button3.innerHTML = "Reset";
         button3.classList.add("delete-button");
         button3.style.backgroundColor = "#B30000";
-        button3.style.width = "200px";
+        button3.style.width = "150px";
         button3.style.borderRadius = "0.5em";
-        button3.addEventListener("click", reset_xcajbuzn);
+        button3.addEventListener("click", function() {
+            localStorage.removeItem(document.getElementById("tasselResetSelect").value);
+            window.location.reload()
+        });
         content.appendChild(button3);
     }
 
@@ -643,11 +673,5 @@
           <label for="${id}">${title}</label>
         `;
         return toggle;
-    }
-
-    /* Remove local storage items that belong to Tassel and its extensions */
-    function reset_xcajbuzn() {
-        localStorage.removeItem(document.getElementById("tasselResetSelect").value);
-        window.location.reload()
     }
 })();
