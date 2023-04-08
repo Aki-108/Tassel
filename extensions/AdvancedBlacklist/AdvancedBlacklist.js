@@ -508,7 +508,7 @@
         settingsArea.appendChild(document.createElement("hr"));
 
         let filterButton = document.createElement("button");
-        filterButton.classList.add("btn");
+        filterButton.classList.add("btn", "tasselButton");
         filterButton.innerHTML = "Pillowfort Filters & Blacklist";
         filterButton.addEventListener("click", function(event){
             event.preventDefault();
@@ -517,7 +517,7 @@
         settingsArea.appendChild(filterButton);
 
         let pillowfortExport = document.createElement("button");
-        pillowfortExport.classList.add("btn");
+        pillowfortExport.classList.add("btn", "tasselButton");
         pillowfortExport.innerHTML = "export from Pillowfort to file";
         pillowfortExport.addEventListener("click", function(event){
             event.preventDefault();
@@ -560,7 +560,7 @@
         settingsArea.appendChild(pillowfortExport);
 
         let tasselExport = document.createElement("button");
-        tasselExport.classList.add("btn");
+        tasselExport.classList.add("btn", "tasselButton");
         tasselExport.innerHTML = "export from Tassel to file";
         tasselExport.addEventListener("click", function(event){
             event.preventDefault();
@@ -570,7 +570,7 @@
         settingsArea.appendChild(tasselExport);
 
         let tasselImport = document.createElement("button");
-        tasselImport.classList.add("btn");
+        tasselImport.classList.add("btn", "tasselButton");
         tasselImport.innerHTML = "import to Tassel from file";
         tasselImport.addEventListener("click", function(event){
             event.preventDefault();
@@ -581,7 +581,7 @@
             input.placeholder = "Past the contents of a file export here.";
             inputFrame.appendChild(input);
             let add = document.createElement("button");
-            add.classList.add("btn", "inline");
+            add.classList.add("btn", "inline", "tasselButton");
             add.style.marginRight = "10px";
             add.innerHTML = "add to list";
             add.addEventListener("click", function(event) {
@@ -598,7 +598,7 @@
             });
             inputFrame.appendChild(add);
             let replace = document.createElement("button");
-            replace.classList.add("btn", "inline");
+            replace.classList.add("btn", "inline", "tasselButton");
             replace.innerHTML = "replace list";
             replace.addEventListener("click", function(event) {
                 event.preventDefault();
