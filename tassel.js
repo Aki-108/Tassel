@@ -8,7 +8,7 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
-// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/22884666e4fce466a3bdfee01184b46818dc49bb/style.css
+// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/17d030f9e2f0da8f76a4206c0a16918816bd34b7/style.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -16,8 +16,8 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7ef24c9ab340cab7d1dec533d6079d0c9caa4e59/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@75b103dfd4fb202ee7e1f3278be0cdd0a0702ae9/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@40137dbf537f6b39b16265d8e7dd1a1b570ad37f/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@064626a69b50df2ad954a1af1ec4af8ea90f7fd4/toasts.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
