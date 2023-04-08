@@ -574,6 +574,7 @@
         tasselImport.innerHTML = "import to Tassel from file";
         tasselImport.addEventListener("click", function(event){
             event.preventDefault();
+            this.style.display = "none";
             let inputFrame = document.createElement("div");
             this.after(inputFrame);
             let input = document.createElement("textarea");
