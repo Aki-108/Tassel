@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.2
+// @version      2.3
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -434,7 +434,7 @@
             let modal = document.createElement("div");
             modal.id = "postSubscriberModal";
             modal.classList.add("modal", "in");
-            modal.setAttribute("style", "display:block;z-index:3;overflow:auto;");
+            modal.setAttribute("style", "display:block;z-index:10;overflow:auto;");
             //set the header
             modal.innerHTML = "<div class='modal-dialog'><div class='modal-content' id='postSubscriberModalContent'><div style='padding:10px 15px 0 40px;border-bottom:2px solid #e3e3e3;'><button class='close' type='button' title='Close'><span style='color:var(--postFontColor);'>x</span></button><div style='float:right;margin:10px 20px 0 0;color:var(--postFontColor);cursor:pointer;' id='postSubscriberClear'>unsubscribe all</div><h4 class='modal-title'>Subscriptions</h4></div></div></div>";
             document.getElementsByTagName("body")[0].appendChild(modal);
