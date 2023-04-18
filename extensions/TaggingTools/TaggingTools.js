@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.0
+// @version      1.1
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -35,12 +35,14 @@
 
     /* Add the events to the tag input field to suggest new tags when typing */
     function addEventListenerInput_dshcgkhy() {
+        if (!tagInput) return;
         tagInput.addEventListener("click", suggest_dshcgkhy);
         tagInput.addEventListener("keyup", suggest_dshcgkhy);
     }
 
     /* Add the event for updating the database */
     function addEventListenerSubmit_dshcgkhy() {
+        if (!submitButton) return;
         submitButton.addEventListener("click", function() {
             //load database
             let file = JSON.parse(localStorage.getItem("tasselTaggingTools")) || {};
@@ -71,6 +73,7 @@
 
     /* Create the page element that holds tag suggestions */
     function creatSuggestionBox_dshcgkhy() {
+        if (!tagInput) return;
         let box = document.createElement("div");
         box.id = "tasselTaggingToolsSuggestionBox";
         tagInput.before(box);

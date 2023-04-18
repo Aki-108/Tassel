@@ -67,7 +67,7 @@
 	max-width: 90%;
 	max-height: 70%;
 	margin-top: 100px;
-	z-index: 4;
+	z-index: 10;
 }
 
 #tasselModalDialog2 {

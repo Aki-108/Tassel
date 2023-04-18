@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.0
+// @version      1.4.1
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -8,7 +8,7 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
-// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/17d030f9e2f0da8f76a4206c0a16918816bd34b7/style.css
+// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/9b661d602e4ba24f5c5eee952c5be625c7f13180/style.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -16,7 +16,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a5862f27cc658fe97b80e0eb89343f75d85fe83c/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ca12d23e9084d029c1ad19dd0051bc1e467166d1/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a2aeed077804bcd440d67c8587ba968b6f4d01ea/toasts.js";
 
     let icon = document.createElement("div");
@@ -138,6 +138,7 @@
             Object.values(sidebarItems).forEach(function(item) {
                 item.style.marginTop = "8px";
                 item.style.marginBottom = "8px";
+                item.style.paddingBottom = "0";
             });
             let sidebarBottom = document.getElementsByClassName("sidebar-bottom-left");
             Object.values(sidebarBottom).forEach(function(item) {
@@ -206,6 +207,7 @@
         if (settings2.stickyIcons) GM_addStyle(".side-info{position:sticky;top:70px;margin-bottom:10px;}");
         if (settings2.stickyToolbar) GM_addStyle(".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}");
         if (settings2.stickyCommentHeader) GM_addStyle(".comments-container .header{position:sticky;top:50px;z-index:3;}");
+        if (settings2.goldToBlue) GM_addStyle(".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}");
     }
 
     /* Create the basis for toasts */
@@ -577,6 +579,11 @@
         content.appendChild(createSwitch_xcajbuzn("Sticky Comment Headers", settings2.stickyCommentHeader ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.stickyCommentHeader = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Turn Golden Icons Blue", settings2.goldToBlue ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.goldToBlue = this.checked;
             saveSettings_xcajbuzn();
         });
 
