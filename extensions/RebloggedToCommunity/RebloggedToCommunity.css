@@ -1,0 +1,14 @@
+body.dark-theme .reblog-note,
+body.dark-theme .like-note {
+  background-color: var(--postBgColor);
+  border-color: var(--postBorderColor);
+}
+
+.tasselRebloggedToCommunityTags {
+    margin-top: .5em;
+    margin-bottom: 0;
+    padding: 5px 15px;
+    background-color: var(--tag_bg);
+    font-family: "Nunito";
+    font-size: 12px;
+}
