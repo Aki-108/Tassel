@@ -1,4 +1,7 @@
 #tasselTaggingToolsSuggestionBox {
+    position: relative;
+    left: -4px;
+    width: calc(100% + 4px);
     height: 32px;
     overflow: hidden;
     margin-top: 5px;
