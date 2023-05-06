@@ -86,17 +86,18 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "1.1",
+            "version": "1.2",
             "created": 1678386060000,
-            "updated": 1681650660000,
+            "updated": 1683375780000,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f9140b2638e1982bda79c7c7b7d23c3d1565ad9e/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c940b354ce3ab0802abe5867cc1544498c6871a2/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1959d27a4a08312050483c7da19d6f28b736bb53/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@45a52798eab8c5650efd95b0916747f0c07c02b1/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
-                "Adds a button for copying tags when reblogging."
+                "Adds a button for copying tags when reblogging.",
+                "Set default tags that automatically apply to posts you make/reblog"
             ]
         }
     ];
