@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.1
+// @version      1.2
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -10,6 +10,9 @@
 
 (function() {
     'use strict';
+
+    let settings = JSON.parse(localStorage.getItem("tasselSettings2")).taggingTools || {};
+    if (!settings.tagPreset) settings.tagPreset = {textPost: "", photoPost: "", videoPost: "", linkPost: "", selfReblog: "", otherReblog: ""};
 
     //get page elements
     let tagInput = document.getElementById("tags") || document.getElementById("post_tag_list");
@@ -25,19 +28,104 @@
     let tags = (JSON.parse(localStorage.getItem("tasselTaggingTools")) || {tags: []}).tags;
 
     let cursorPos = -1;
+    let newPostType = "text";
+
+    let styleObserver;
 
     init_dshcgkhy();
     function init_dshcgkhy() {
         creatSuggestionBox_dshcgkhy();
+        initNewPostPage_dshcgkhy();
+        initReblogPage_dshcgkhy();
+        initReblogModal_dshcgkhy();
         addEventListenerSubmit_dshcgkhy();
         addEventListenerInput_dshcgkhy();
+        initTassel_dshcgkhy();
     }
 
-    /* Add the events to the tag input field to suggest new tags when typing */
-    function addEventListenerInput_dshcgkhy() {
-        if (!tagInput) return;
-        tagInput.addEventListener("click", suggest_dshcgkhy);
-        tagInput.addEventListener("keyup", suggest_dshcgkhy);
+    /* Get post type for the reblog modal */
+    function initReblogModal_dshcgkhy() {
+        if (!document.getElementById("post-view-modal")) return;
+        let postModalLink = document.getElementById("post-view-modal").getElementsByClassName("link_post")[0];
+        //update again everytime the post URL changes
+        styleObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                if (mutationRecord.attributeName === "href") {
+                    let postId = mutationRecord.target.href;
+                    postId = postId.substring(postId.search("/posts/")+7);
+                    if (postId === "") return;
+                    $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+                        newPostType = data.post_type;
+                        if (newPostType === "picture") newPostType = "photo";
+                        else if (newPostType === "embed") newPostType = "link";
+                        togglePostType_dshcgkhy(newPostType);
+                        if (data.mine) {
+                            tagInput.value += ", " + settings.tagPreset.selfReblog;
+                        } else {
+                            tagInput.value += ", " + settings.tagPreset.otherReblog;
+                        }
+                        if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
+                    });
+                }
+            });
+        });
+        styleObserver.observe(postModalLink, {
+            attributes: true,
+            attributeFilter: ["href"]
+        });
+    }
+
+    /* Add eventlisteners for creating a new post */
+    function initNewPostPage_dshcgkhy() {
+        if (document.URL !== "https://www.pillowfort.social/posts/new") return;
+        togglePostType_dshcgkhy("text");
+        document.getElementById("text").addEventListener("click", function() {togglePostType_dshcgkhy("text")});
+        document.getElementById("picture_select").addEventListener("click", function() {togglePostType_dshcgkhy("photo")});
+        document.getElementById("video").addEventListener("click", function() {togglePostType_dshcgkhy("video")});
+        document.getElementById("embed").addEventListener("click", function() {togglePostType_dshcgkhy("link")});
+    }
+
+    /* Get post type for the static reblog page */
+    function initReblogPage_dshcgkhy() {
+        if (document.URL.substring(0,37) !== "https://www.pillowfort.social/reblog/") return;
+        let postId = document.URL.split("/")[4];
+        $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+            newPostType = data.post_type;
+            if (newPostType === "picture") newPostType = "photo";
+            else if (newPostType === "embed") newPostType = "link";
+            togglePostType_dshcgkhy(newPostType);
+            if (data.mine) {
+                tagInput.value += ", " + settings.tagPreset.selfReblog;
+            } else {
+                tagInput.value += ", " + settings.tagPreset.otherReblog;
+            }
+            if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
+        });
+    }
+
+    /* Remove previous default tag and add new one */
+    function togglePostType_dshcgkhy(type) {
+        //find previous tag
+        let oldTag = "";
+        switch (newPostType) {
+            case "text": oldTag = settings.tagPreset.textPost; break;
+            case "photo": oldTag = settings.tagPreset.photoPost; break;
+            case "video": oldTag = settings.tagPreset.videoPost; break;
+            case "link": oldTag = settings.tagPreset.linkPost; break;
+        }
+        if (oldTag !== "") tagInput.value = tagInput.value.substring(oldTag.length);
+        else tagInput.value = "," + tagInput.value;
+        //place new tag
+        let newTag = "";
+        switch (type) {
+            case "text": newTag = settings.tagPreset.textPost; break;
+            case "photo": newTag = settings.tagPreset.photoPost; break;
+            case "video": newTag = settings.tagPreset.videoPost; break;
+            case "link": newTag = settings.tagPreset.linkPost; break;
+        }
+        if (newTag !== "") tagInput.value = newTag + tagInput.value;
+        else tagInput.value = tagInput.value.substring(tagInput.value.search(",")+1);
+        newPostType = type;
     }
 
     /* Add the event for updating the database */
@@ -69,6 +157,13 @@
             file.tags = fileTags;
             localStorage.setItem("tasselTaggingTools", JSON.stringify(file));
         });
+    }
+
+    /* Add the events to the tag input field to suggest new tags when typing */
+    function addEventListenerInput_dshcgkhy() {
+        if (!tagInput) return;
+        tagInput.addEventListener("click", suggest_dshcgkhy);
+        tagInput.addEventListener("keyup", suggest_dshcgkhy);
     }
 
     /* Create the page element that holds tag suggestions */
@@ -224,5 +319,150 @@
         for (let a = first.length - 1; a >= 0; a--)
             if (second != "" || first[a] != " ") second += first[a];
         return second;
+    }
+
+    /* Add elements to the Tassel menu */
+    function initTassel_dshcgkhy() {
+        let tasselSidebar = document.getElementById("tasselModalSidebar");
+        if (tasselSidebar == null) return;
+        let button = document.createElement("button");
+        button.classList.add("tasselModalSidebarEntry");
+        button.id = "tasselModalSidebarTaggingTools";
+        button.innerHTML = "Tagging Tools";
+        tasselSidebar.appendChild(button);
+        document.getElementById("tasselModalSidebarTaggingTools").addEventListener("click", displaySettings_dshcgkhy);
+    }
+
+    /* Create Tassel settings menu */
+    function displaySettings_dshcgkhy() {
+        //deselect other menu items and select this one
+        let content = document.getElementById("tasselModalContent");
+        content.innerHTML = "";
+        let sidebarEntries = document.getElementsByClassName("tasselModalSidebarEntry");
+        Object.values(sidebarEntries).forEach(function(data, index) {
+            data.classList.remove("active");
+        });
+        document.getElementById("tasselModalSidebarTaggingTools").classList.add("active");
+
+        //add a little note
+        let info0 = document.createElement("p");
+        info0.innerHTML = "Changes will become active after a page reload.";
+        content.appendChild(info0);
+        content.appendChild(document.createElement("hr"));
+
+        //add settings
+        content.appendChild(createSwitch_dshcgkhy("Auto-copy tags when reblogging", settings.autoCopy ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.autoCopy = this.checked;
+            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+            file.taggingTools = settings;
+            localStorage.setItem("tasselSettings2", JSON.stringify(file));
+        });
+        content.appendChild(document.createElement("hr"));
+
+        let title1 = document.createElement("h4");
+        title1.innerHTML = "Default Tags";
+        content.appendChild(title1);
+
+        let info1 = document.createElement("label");
+		info1.style.fontWeight = "normal";
+        info1.innerHTML = "Text Posts";
+        let input1 = document.createElement("input");
+        input1.id = "tasselTaggingToolsTagText";
+        input1.value = settings.tagPreset.textPost || "";
+        info1.appendChild(input1);
+        content.appendChild(info1);
+        content.appendChild(document.createElement("br"));
+
+        let info2 = document.createElement("label");
+		info2.style.fontWeight = "normal";
+        info2.innerHTML = "Photo Posts";
+        let input2 = document.createElement("input");
+        input2.id = "tasselTaggingToolsTagPhoto";
+        input2.value = settings.tagPreset.photoPost || "";
+        info2.appendChild(input2);
+        content.appendChild(info2);
+        content.appendChild(document.createElement("br"));
+
+        let info3 = document.createElement("label");
+		info3.style.fontWeight = "normal";
+        info3.innerHTML = "Video Posts";
+        let input3 = document.createElement("input");
+        input3.id = "tasselTaggingToolsTagVideo";
+        input3.value = settings.tagPreset.videoPost || "";
+        info3.appendChild(input3);
+        content.appendChild(info3);
+        content.appendChild(document.createElement("br"));
+
+        let info4 = document.createElement("label");
+		info4.style.fontWeight = "normal";
+        info4.innerHTML = "Link Posts";
+        let input4 = document.createElement("input");
+        input4.id = "tasselTaggingToolsTagLink";
+        input4.value = settings.tagPreset.linkPost || "";
+        info4.appendChild(input4);
+        content.appendChild(info4);
+        content.appendChild(document.createElement("br"));
+
+        let info5 = document.createElement("label");
+		info5.style.fontWeight = "normal";
+        info5.innerHTML = "Self-Reblogs";
+        let input5 = document.createElement("input");
+        input5.id = "tasselTaggingToolsTagSelfReblog";
+        input5.value = settings.tagPreset.selfReblog || "";
+        info5.appendChild(input5);
+        content.appendChild(info5);
+        content.appendChild(document.createElement("br"));
+
+        let info6 = document.createElement("label");
+		info6.style.fontWeight = "normal";
+        info6.innerHTML = "Other-Reblogs";
+        let input6 = document.createElement("input");
+        input6.id = "tasselTaggingToolsTagOtherReblog";
+        input6.value = settings.tagPreset.otherReblog || "";
+        info6.appendChild(input6);
+        content.appendChild(info6);
+        content.appendChild(document.createElement("br"));
+
+        let frame7 = document.createElement("div");
+        frame7.id = "tasselTaggingToolsSaveFrame";
+        frame7.innerHTML = `
+            <div>
+                <div></div>
+            </div>
+        `;
+        let button7 = document.createElement("button");
+        button7.id = "tasselTaggingToolsSaveTags";
+        button7.classList.add("btn", "btn-success");
+        button7.innerHTML = "Save";
+        button7.addEventListener("click", saveTags_dshcgkhy);
+        frame7.appendChild(button7);
+        content.appendChild(frame7);
+    }
+
+    /* Save settings to local storage */
+    function saveTags_dshcgkhy() {
+        if (!settings.tagPreset) settings.tagPreset = {};
+        settings.tagPreset.textPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagText").value);
+        settings.tagPreset.photoPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagPhoto").value);
+        settings.tagPreset.videoPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagVideo").value);
+        settings.tagPreset.linkPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagLink").value);
+        settings.tagPreset.selfReblog = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagSelfReblog").value);
+        settings.tagPreset.otherReblog = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagOtherReblog").value);
+
+        let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+        file.taggingTools = settings;
+        localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    function createSwitch_dshcgkhy(title="", state="") {
+        let id = "tasselSwitch" + Math.random();
+        let toggle = document.createElement("div");
+        toggle.classList.add("tasselToggle");
+        toggle.innerHTML = `
+          <input id="${id}" type="checkbox" ${state}>
+          <label for="${id}">${title}</label>
+        `;
+        return toggle;
     }
 })();
