@@ -30,6 +30,14 @@ let toasts = [
     "text": "There's a new option to show the tags of a reblog in the post notes. Turn it on in the settings.",
     "timestamp": 1682865300000,
     "new": false
+  },
+  {
+    "id": 9,
+    "extension": 7,
+    "title": "New Features",
+    "text": "Tagging Tools now has settings for default tags and auto-copying on reblogs.",
+    "timestamp": 1683375780000,
+    "new": false
   }
 ];
 
