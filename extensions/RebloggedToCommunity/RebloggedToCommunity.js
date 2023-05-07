@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.3
+// @version      2.4
 // @description  Shows where a post has been liked/reblogged to.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -22,12 +22,11 @@
     let settings = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
     if (settings.rebloggedToCommunity) {
         settings = settings.rebloggedToCommunity;
-        localStorage.removeItem("rtcdisablelike");
-        localStorage.removeItem("rtcdisablereblog");
     } else {
         settings = {
-            "showLikes": localStorage.getItem("rtcdisablelike") === "true" ? false : true,
-            "showReblogs": localStorage.getItem("rtcdisablereblog") === "true" ? false : true
+            "showLikes": true,
+            "showReblogs": true,
+            "showTags": false
         };
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.rebloggedToCommunity = settings;
@@ -39,27 +38,25 @@
 
     /* Initialize the script by adding event listeners to necessary buttons for user interaction. */
     function addEventListener_tlfevnlu() {
-        if (document.URL.search("www.pillowfort.social/posts/") == -1) return;
+        if (document.URL.search("www.pillowfort.social/posts/") === -1) return;
         //reblogs-tab and reblog-pagination buttons events
         let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
         reblogButton.addEventListener("click", runReblog_tlfevnlu);
-        reblogButton.addEventListener("click", fixDarkMode_tlfevnlu);
         reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
         reblogPageButtons.addEventListener("click", runReblog_tlfevnlu);
 
         //likes-tab and like-pagination buttons events
         let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
         likeButton.addEventListener("click", runLike_tlfevnlu);
-        likeButton.addEventListener("click", fixDarkMode_tlfevnlu);
         likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
         likePageButtons.addEventListener("click", runLike_tlfevnlu);
 
         //Dark Mode fix for no reblogs and no likes
         Object.values(document.getElementById("reblogs").children).find(function(child) {
-            return child.innerText == "There\n    are no reblogs for this post."
+            return child.innerText === "There\n    are no reblogs for this post."
         }).style.backgroundColor = "var(--tag_bg)";
         Object.values(document.getElementById("likes").children).find(function(child) {
-            return child.innerText == "There are no likes for this post."
+            return child.innerText === "There are no likes for this post."
         }).style.backgroundColor = "var(--tag_bg)";
     }
 
@@ -132,13 +129,11 @@
     function runReblog_tlfevnlu() {
         //stop everything that's already loading
         for (let i = timeouts.length-1; i >= 0; i--) clearTimeout(timeouts.pop());
-        if (!settings.showReblogs) return;
         //if the old entries are still displaying, wait some time and try again
         if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) {
             timeouts.push(setTimeout(runReblog_tlfevnlu, 200));
             return;
         }
-        fixDarkMode_tlfevnlu();
 
         //fetch new data
         let page = 1;
@@ -160,25 +155,48 @@
             let commId = Object.values(dataJSON)[0][index].community_id;
 
             //search cache for community
-            if (commId == null) {
+            if (commId === null && settings.showReblogs) {
                 link.outerHTML += " to their fort";
-                continue;
             }
             let comm = comms.filter(function(value){
-                return value[0] == commId;
+                return value[0] === commId;
             });
-            if (comm.length > 0) {
+            if (comm.length > 0 && settings.showReblogs) {
                 link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[0][1] + "'>" + comm[0][1] + "</a>";
-                continue;
             }
 
             //when the community is not in the cache, add a loading circle
-            let dataLoading = document.createElement("a");
-            dataLoading.classList.add("reblog"+postId);
-            dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
-            note.appendChild(dataLoading);
+            if (commId !== null && comm.length === 0 && settings.showReblogs) {
+                let dataLoading = document.createElement("a");
+                dataLoading.classList.add("reblog"+postId);
+                dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
+                note.appendChild(dataLoading);
+            }
+
+            //display tags
+            let tags = Object.values(dataJSON)[0][index].cached_tag_list || "";
+            if (tags.length > 0 && settings.showTags) {
+                let user = Object.values(dataJSON)[0][index].username;
+                tags = tags.split(", ");
+                let tagFrame = document.createElement("p");
+                tagFrame.classList.add("tasselRebloggedToCommunityTags");
+                for (let a = 0; a < tags.length; a++) {
+                    let tagLink = document.createElement("a");
+                    //tagLink.href = "https://www.pillowfort.social/search/" + tags[a];
+                    tagLink.href = `https://www.pillowfort.social/${user}/tagged/${tags[a]}`;
+                    tagLink.innerHTML = tags[a];
+                    tagFrame.appendChild(tagLink);
+                    if (a < tags.length - 1) {
+                        let comma = document.createElement("span");
+                        comma.innerHTML = ", ";
+                        tagFrame.appendChild(comma);
+                    }
+                }
+                note.appendChild(tagFrame);
+            }
 
             //start fetching community data
+            if (commId === null || comm.length > 0) continue;
             if (document.getElementsByClassName("reblog"+postId).length > 1) continue;
             timeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId);}, 500*timeouts.length));
         }
@@ -191,7 +209,7 @@
             let notes = Object.values(document.getElementsByClassName("reblog"+postId));
             for (let note of notes) {
                 note.classList.remove("reblog"+postId);
-                if (data.comm_name == undefined) {
+                if (data.comm_name === undefined) {
                     note.outerHTML = " to their fort";
                 } else {
                     note.outerHTML = " to <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
@@ -219,7 +237,6 @@
             timeouts.push(setTimeout(runLike_tlfevnlu, 200));
             return;
         }
-        fixDarkMode_tlfevnlu();
 
         //fetch new data
         let page = 1;
@@ -273,6 +290,8 @@
         });
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //add elements to the Tassel menu
     function initTassel_tlfevnlu() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
@@ -310,6 +329,13 @@
             file.rebloggedToCommunity = settings;
             localStorage.setItem("tasselSettings2", JSON.stringify(file));
         });
+        content.appendChild(createSwitch_tlfevnlu("Show the tags of a reblog.", settings.showTags ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.showTags = this.checked;
+            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+            file.rebloggedToCommunity = settings;
+            localStorage.setItem("tasselSettings2", JSON.stringify(file));
+        });
         content.appendChild(createSwitch_tlfevnlu("Show where likes came from.", settings.showLikes ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.showLikes = this.checked;
@@ -328,12 +354,5 @@
           <label for="${id}">${title}</label>
         `;
         return toggle;
-    }
-
-    function fixDarkMode_tlfevnlu() {
-        let notes = document.querySelectorAll(".reblog-note, .like-note")
-        notes.forEach(function(note) {
-            note.style.backgroundColor = "var(--tag_bg)";
-        });
     }
 })();

@@ -27,3 +27,57 @@ body.dark-theme #tasselTaggingToolsSuggestionBox button:hover {
     height: 24px;
     text-align: center;
 }
+
+#tasselTaggingToolsTagText,
+#tasselTaggingToolsTagPhoto,
+#tasselTaggingToolsTagVideo,
+#tasselTaggingToolsTagLink,
+#tasselTaggingToolsTagSelfReblog,
+#tasselTaggingToolsTagOtherReblog {
+    margin: 0;
+    margin-left: 0.5em;
+    padding: 0.5em 0.5em;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    line-height: inherit;
+    background-color: transparent;
+    color: #232b40;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: inherit;
+}
+
+body.dark-theme #tasselTaggingToolsTagText,
+body.dark-theme #tasselTaggingToolsTagPhoto,
+body.dark-theme #tasselTaggingToolsTagVideo,
+body.dark-theme #tasselTaggingToolsTagLink,
+body.dark-theme #tasselTaggingToolsTagSelfReblog,
+body.dark-theme #tasselTaggingToolsTagOtherReblog {
+    border-color: #d9dbe0;
+    color: #d9dbe0;
+}
+
+#tasselTaggingToolsSaveFrame {
+    display: grid;
+    justify-content: center;
+}
+#tasselTaggingToolsSaveFrame div {
+    height: 0;
+}
+#tasselTaggingToolsSaveFrame div div {
+    position: relative;
+    left: 73px;
+    width: 15px;
+    height: 30px;
+    border-right: 5px solid #449d44;
+    border-bottom: 5px solid #449d44;
+    transform: rotate(45deg);
+}
+#tasselTaggingToolsSaveTags {
+    z-index: 1;
+    transition: opacity .2s;
+}
+#tasselTaggingToolsSaveTags:focus {
+    /*visibility: hidden;*/
+    opacity: 0;
+}
