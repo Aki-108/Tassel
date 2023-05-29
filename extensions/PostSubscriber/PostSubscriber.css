@@ -1,0 +1,177 @@
+#postSubscriberModal {
+    overflow: hidden;
+    max-width: 60vw;
+    max-height: 80vh;
+    -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border: none;
+    border-radius: 6px;
+    padding: 0;
+    background: none;
+    color: var(--postFontColor)
+}
+
+#postSubscriberModal::backdrop {
+  background-color: #2C405A;
+  opacity: 0.95;
+}
+
+body.dark-theme #postSubscriberModal::backdrop {
+  background-color: #23282E;
+  opacity: 0.95;
+}
+
+#postSubscriberModal div {
+    background: var(--postBgColor);
+}
+
+#tasselPostSubscriberModalSubHeader {
+    border-top: 2px solid #e3e3e3;
+    border-bottom: 2px solid #e3e3e3;
+    padding: .5em 15px .5em 20px;
+    font-size: small;
+}
+
+body.dark-theme #tasselPostSubscriberModalSubHeader {
+    border-color: #3e3e3e;
+}
+
+#postSubscriberModalContent {
+    overflow: auto;
+    max-height: calc(80vh - 104px);
+    color: var(--postFontColor);
+}
+
+.tasselPostSubscriberModalEntry {
+    margin: 20px;
+}
+
+.tasselPostSubscriberModalEntryDataFrame {
+    padding-right: 0;
+    transition: all .2s;
+}
+
+.tasselPostSubscriberModalEntry:hover .tasselPostSubscriberModalEntryDataFrame {
+    padding-right: 3em;
+}
+
+.tasselPostSubscriberModalEntryData {
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 3em;
+    width: 100%;
+    min-height: 3em;
+    -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    padding: 10px;
+    background: white;
+    transition: all .2s, margin .2s;
+}
+
+.tasselPostSubscriberModalEntry:hover .tasselPostSubscriberModalEntryData {
+    grid-template-columns: auto 0em;
+}
+
+.tasselPostSubscriberModalEntryData p {
+    margin-bottom: 0;
+    color: var(--postFontColor);
+}
+
+.tasselPostSubscriberModalEntryDataDynamic {
+    display: grid;
+    padding-left: 10px;
+    text-align: center;
+    align-items: center;
+}
+
+.tasselPostSubscriberModalEntryDataDynamic h5 {
+    margin: 0;
+}
+
+.tasselPostSubscriberModalEntryBack {
+    display: grid;
+    grid-template-columns: auto 3em;
+    height: 0;
+}
+
+.tasselPostSubscriberModalEntryBackRight {
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    width: calc(3em - 10px);
+    min-height: 4.5em;
+    margin-left: 10px;
+}
+
+.tasselPostSubscriberModalEntryBackRight button {
+    width: calc(3em - 10px);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tasselPostSubscriberModalEntry button {
+    border: none;
+    background: transparent;
+}
+
+.tasselPostSubscriberModalEntry button:hover {
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2) inset;
+    background: transparent;
+}
+
+.vertical-line {
+    border-right: 1px solid rgba(0,0,0,0.2);
+    border-left: 1px solid rgba(0,0,0,0.2);
+    padding: 0 .4em;
+}
+
+[id^=tasselPostSubscriberNewComment] {
+    height: 0;
+    margin: -25px -53px;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#postSubscriberNotificationBubble {
+    display: none;
+    position: relative;
+    top: -10px;
+    right: -35px;
+    width: 8px;
+    height: 8px;
+    border-radius: 10px;
+    background: #F377B3;
+}
+
+#tasselPostSubscriberColorFrame {
+    display: inline-block;
+    height: min-content;
+    border: 1px solid black;
+    border-radius: .5em;
+}
+
+body.dark-theme #tasselPostSubscriberColorFrame {
+    border-color: #3a3e47;
+}
+
+#tasselPostSubscriberColorSelect{
+    border: none;
+}
+
+#tasselPostSubscriberColor {
+    width: 2.4em;
+    height: 2.5em;
+    margin: 0 0 0 0;
+    border: 1px transparent solid;
+    border-left: 1px lightgrey solid;
+    border-radius: 0 .5em .5em 0;
+    vertical-align: bottom;
+    background: none;
+    font-size: inherit;
+}
+
+body.dark-theme #tasselPostSubscriberColor {
+    border-left: 1px #3a3e47 solid
+}
