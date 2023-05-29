@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.3
+// @version      2.4
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -35,8 +35,8 @@
     loadSubscriptions_ltapluah();
 
     let icon = document.createElement("div");
-    icon.innerHTML = "<svg style='filter:var(--iconColor);overflow:visible;' class='sidebar-img' viewBox='0 0 14 14' style='overflow:visible;'><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M5.5 13.5h-3q-2 0 -2 -2v-8.5q0 -2 2 -2h8.5q2 0 2 2v5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 4h7.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 7h4.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 10h4'></path><g xmlns='http://www.w3.org/2000/svg' transform='scale(0.5),translate(10,10)'><path xmlns='http://www.w3.org/2000/svg' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z' transform='translate(-15.024 -14.708)' style='fill:none;stroke:#58b6dd;stroke-width:1.6px'></path></g></svg>";
-    let iconUnsub = "<svg style='filter:var(--iconColor);' width='20px' height='23px' viewBox='0 0 20 20'><path xmlns='http://www.w3.org/2000/svg' transform='translate(-15.024 -14.708)' style='fill:none;stroke:#58b6dd;stroke-width:1.7px' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z'/><path stroke='#58b6dd' stroke-width='2px' d='M3 3l14 17'/></svg>";
+    icon.innerHTML = "<svg style='filter:var(--iconColor);overflow:visible;' class='sidebar-img' viewBox='0 0 14 14'><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M5.5 13.5h-3q-2 0 -2 -2v-8.5q0 -2 2 -2h8.5q2 0 2 2v5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 4h7.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 7h4.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 10h4'></path><g xmlns='http://www.w3.org/2000/svg' transform='scale(0.5),translate(10,10)'><path xmlns='http://www.w3.org/2000/svg' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z' transform='translate(-15.024 -14.708)' style='fill:none;stroke:#58b6dd;stroke-width:1.6px'></path></g></svg>";
+    let iconUnsub = "<svg style='filter:var(--iconColor);' width='100%' height='100%' viewBox='0 0 20 22'><path xmlns='http://www.w3.org/2000/svg' transform='translate(-15.024 -14.708)' style='fill:none;stroke:#58b6dd;stroke-width:1.7px' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z'/><path stroke='#58b6dd' stroke-width='2px' d='M3 3l14 17'/></svg>";
 
     let commentContainer = document.getElementsByClassName("comments-container")[0];
     let postModal = document.getElementById("post-view-modal");
@@ -96,6 +96,7 @@
     /* Load the list of subscripted posts from local storage*/
     function loadSubscriptions_ltapluah() {
         subscriptions = (JSON.parse(localStorage.getItem("tasselPostSubscriber")) || {});
+        if (subscriptions.subscriptions === undefined) subscriptions.subscriptions = [];
     }
 
     /* Save list of subscriped posts to local storage */
@@ -126,7 +127,7 @@
                 thisPost.comments = data.comments_count;
                 thisPost.commentsSeen = data.comments_count;
                 thisPost.author = data.username || "ERROR";
-                thisPost.title = data.title || "";
+                thisPost.title = getPostTitle_ltapluah(data);
                 thisPost.timestamp = new Date(data.created_at).getTime() || null;
                 thisPost.edited = data.last_edited_at || null;
                 thisPost.visited = openTime;
@@ -158,7 +159,6 @@
         subscriptionNav.style.display = "none";
         subscriptionNav.title = subscribed ? "unsubscribe" : "subscribe";
         subscriptionNav.classList.add("nav-tab");
-        subscriptionNav.style.cursor = "pointer";
         subscriptionNav.appendChild(icon.cloneNode(true));
         subscriptionNav.firstChild.firstChild.style.width = "22px";
         subscriptionNav.addEventListener("click", toggleSubscription_ltapluah);
@@ -191,7 +191,6 @@
         subscriptionNav.id = "postSubscriberToggle";
         subscriptionNav.title = subscribed ? "unsubscribe" : "subscribe";
         subscriptionNav.classList.add("nav-tab");
-        subscriptionNav.style.cursor = "pointer";
         subscriptionNav.appendChild(icon.cloneNode(true));
         subscriptionNav.firstChild.firstChild.style.width = "22px";
         subscriptionNav.addEventListener("click", toggleSubscription_ltapluah);
@@ -206,9 +205,15 @@
                     return item.id === thisPost.id;
                 });
                 subscriptionData.comments = data.comments_count;
-                subscriptionData.title = data.title || "";
+                subscriptionData.title = getPostTitle_ltapluah(data);
+                let testDOM = document.createElement("div");
+                testDOM.innerHTML = data.content.replaceAll("<br>", "\n");
+                let text = testDOM.textContent;
+                if (text.search("\n") < 20) text = text.substring(0, text.search("\n"));
+                else text = text.substring(0, 17) + "...";
                 subscriptionData.edited = data.last_edited_at || null;
                 saveSubscriptions_ltapluah();
+                thisPost = subscriptionData;
 
                 //source: https://stackoverflow.com/a/14746878
                 window.addEventListener("beforeunload", function(event) {
@@ -230,7 +235,7 @@
                 thisPost.comments = data.comments_count;
                 thisPost.commentsSeen = data.comments_count;
                 thisPost.author = data.username || "ERROR";
-                thisPost.title = data.title || "";
+                thisPost.title = getPostTitle_ltapluah(data);
                 thisPost.timestamp = new Date(data.created_at).getTime() || null;
                 thisPost.edited = data.last_edited_at || null;
             });
@@ -254,7 +259,6 @@
         subscriptionSmall.children[0].children[0].style.transform = "rotate(0deg)";
         subscriptionSmall.children[0].children[0].classList.add("postSubscriberSpinner");
         let notificationBubble = document.createElement("div");
-        notificationBubble.setAttribute("style", "background:#F377B3;width:8px;height:8px;border-radius:10px;position:relative;top:-10px;right:-35px;display:none;");
         notificationBubble.id = "postSubscriberNotificationBubble";
         subscriptionSmall.children[0].appendChild(notificationBubble);
         subscriptionSmall.addEventListener("click", showPopup_ltapluah);
@@ -276,7 +280,7 @@
         }
         subscriptionBig.classList.add("postSubscriberIcon", "sidebar-topic");
         subscriptionBig.appendChild(icon.cloneNode(true).children[0]);
-        subscriptionBig.children[0].style.transition = "all 2s";
+        subscriptionBig.children[0].style.transition = "transform 2s";
         subscriptionBig.children[0].style.transform = "rotate(0deg)";
         subscriptionBig.children[0].classList.add("postSubscriberSpinner");
         subscriptionBig.innerHTML += "Subscriptions";
@@ -362,15 +366,15 @@
 		info2.style.fontWeight = "normal";
         info2.innerHTML = "Accent Color ";
         let options2 = document.createElement("div");
-        options2.style = "display:inline-block;border:1px solid black;border-radius:.5em;height:min-content;";
+        options2.id = "tasselPostSubscriberColorFrame";
         options2.innerHTML = `
-            <select id="tasselPostSubscriberColorSelect" style="border:none;">
+            <select id="tasselPostSubscriberColorSelect">
                 <option value="#ff7fc5">Pillowfort Pink</option>
                 <option value="#232b40">Pillowfort Blue</option>
                 <option value="" selected>Custom</option>
                 <option value="var(--linkColor)">Link Color</option>
             </select>
-            <input id="tasselPostSubscriberColor" type="color" value="${settings.color}" style="font-size:inherit;height:2.5em;width:2.4em;background:none;vertical-align:bottom;border:1px transparent solid;border-radius:0 .5em .5em 0;margin:0 0 0 0;border-left:1px lightgrey solid;">
+            <input id="tasselPostSubscriberColor" type="color" value="${settings.color}">
         `;
         info2.appendChild(options2);
         content.appendChild(info2);
@@ -414,92 +418,214 @@
 
     //show/hide the popup of subscriptions
     function showPopup_ltapluah() {
-        if (document.getElementById("postSubscriberBackground")) {
-            //remove the popup if it's already there
-            document.getElementsByTagName("body")[0].classList.remove("modal-open");
-            document.getElementsByTagName("nav")[0].style.paddingRight = "0";
-            document.getElementById("postSubscriberBackground").remove();
-            document.getElementById("postSubscriberModal").remove();
-        } else {
-            document.getElementsByTagName("body")[0].classList.add("modal-open");
-            document.getElementsByTagName("nav")[0].style.paddingRight = "11px";
-
-            //generate background
-            let bg = document.createElement("div");
-            bg.id = "postSubscriberBackground";
-            bg.classList.add("modal-backdrop", "in");
-            document.getElementsByTagName("body")[0].appendChild(bg);
-
-            //generate modal basis
-            let modal = document.createElement("div");
+        document.body.style.overflow = 'hidden';
+        let modal = document.getElementById("postSubscriberModal");
+        if (!modal) {
+            modal = document.createElement("dialog");
             modal.id = "postSubscriberModal";
-            modal.classList.add("modal", "in");
-            modal.setAttribute("style", "display:block;z-index:10;overflow:auto;");
-            //set the header
-            modal.innerHTML = "<div class='modal-dialog'><div class='modal-content' id='postSubscriberModalContent'><div style='padding:10px 15px 0 40px;border-bottom:2px solid #e3e3e3;'><button class='close' type='button' title='Close'><span style='color:var(--postFontColor);'>x</span></button><div style='float:right;margin:10px 20px 0 0;color:var(--postFontColor);cursor:pointer;' id='postSubscriberClear'>unsubscribe all</div><h4 class='modal-title'>Subscriptions</h4></div></div></div>";
-            document.getElementsByTagName("body")[0].appendChild(modal);
-            document.getElementById("postSubscriberModal").addEventListener("click", showPopup_ltapluah);
-            document.getElementById("postSubscriberClear").addEventListener("click", function() {
+            modal.innerHTML = `
+            <div class="nomargin">
+                <div id="tasselPostSubscriberModalHeader" class="nomargin">
+                    <div style='padding: 10px 15px 5px 20px;'>
+                        <button class='close' type='button' title='Close' onclick="document.getElementById('postSubscriberModal').close();">
+                            <span style='color:var(--postFontColor);'>x</span>
+                        </button>
+                        <h4 class='modal-title'>Subscriptions</h4>
+                    </div>
+                </div>
+                <div id="tasselPostSubscriberModalSubHeader">
+                    <div style="height: 28px;overflow: hidden;">
+                        <button class="tasselButtonSmall" id="postSubscriberCheck">update all</button>
+                        <button class="tasselButtonSmall" id="tasselPostSubscriberReadAll">mark all as read</button>
+                        <button class="tasselButtonSmall" id="tasselPostSubscriberUnsubAll">unsubscribe all</button>
+                        <button class="tasselButtonSmall" id="tasselPostSubscriberOpenOptions">settings</button>
+                    </div>
+                    <span id="tasselPostSubscriberCheckTime" class="nowrap">last update: ${timeToRel(subscriptions.lastCheck)} ago</span>
+                </div>
+                <div id='postSubscriberModalContent'></div>
+            </div>
+            `;
+            modal.addEventListener("close", function() {
+                document.body.style.overflow = "auto";
+            });
+            modal.addEventListener("click", function(e) {
+                const bounds = modal.getBoundingClientRect();
+                if (e.clientX < bounds.left ||
+                    e.clientX > bounds.right ||
+                    e.clientY < bounds.top ||
+                    e.clientY > bounds.bottom) {
+                    modal.close();
+                }
+            });
+            document.body.appendChild(modal);
+            document.getElementById("postSubscriberCheck").addEventListener("click", function() {
+                checkAll_ltapluah(true);
+            });
+            document.getElementById("tasselPostSubscriberReadAll").addEventListener("click", function() {
+                Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")).forEach(function(item) {
+                    item.innerHTML = "";
+                });
+                subscriptions.subscriptions.forEach(function(item) {
+                    item.commentsSeen = item.comments;
+                });
+                saveSubscriptions_ltapluah();
+                updateSidebarCounter_ltapluah();
+            });
+            document.getElementById("tasselPostSubscriberUnsubAll").addEventListener("click", function() {
                 subscriptions.subscriptions = [];
                 saveSubscriptions_ltapluah();
+                updateSidebarCounter_ltapluah();
             });
-
-            //generate post entries
-            subscriptions.subscriptions.forEach(function(item, index) {
-                let entry = document.createElement("div");
-                entry.style.padding = "10px";
-                let unsubIcon = document.createElement("div");
-                unsubIcon.innerHTML = iconUnsub;
-                unsubIcon.style.display = "inline-block";
-                unsubIcon.style.cursor = "pointer";
-                unsubIcon.title = "unsubscribe";
-                unsubIcon.setAttribute("postid", item.id);
-                entry.appendChild(unsubIcon);
-                let titleData = `
-                    <span style='display:inline-block;overflow:hidden;text-overflow:ellipsis;max-width:500px;white-space:nowrap;line-height:1em;'>
-                        ${item.author}: ${item.title}
-                    </span>
-                `;
-                entry.innerHTML += "<a href='https://www.pillowfort.social/posts/"+item.id+"' class='title font-nunito-bold' style='padding-left:10px;display:inline-block;'>"+titleData+"</a>";
-                let info = document.createElement("p");
-                info.style.paddingLeft = "30px";
-                info.style.marginBottom = "0";
-                if (item.commentsSeen < item.comments) info.innerHTML = (item.comments-item.commentsSeen)+" new comment(s) • ";
-                info.innerHTML += "<span style='color:var(--postFontColor);'>last visit: " + new Date(item.visited).toLocaleString()+"</span>";
-                entry.appendChild(info);
-                document.getElementById("postSubscriberModalContent").appendChild(entry);
-                document.getElementById("postSubscriberModalContent").lastChild.firstChild.addEventListener("click", function(){unsubscribe_ltapluah(this.getAttribute("postid"));});
+            document.getElementById("tasselPostSubscriberOpenOptions").addEventListener("click", function() {
+                modal.close();
+                document.getElementsByClassName("tasselSidebarBig")[0].click()
+                tasselDisplaySettings_ltapluah();
             });
         }
+        modal.showModal();
+
+        if (subscriptions.subscriptions.length === 0) {
+            document.getElementById("postSubscriberModalContent").innerHTML = `<p style="margin: 1em;">You don't have any subscriptions yet.</p>`;
+            return;
+        }
+
+        document.getElementById("postSubscriberModalContent").innerHTML = "";
+        subscriptions.subscriptions.forEach(function(item, index) {
+            let entry = document.createElement("div");
+            entry.classList.add("tasselPostSubscriberModalEntry");
+            let message = "";
+            if (item.edited) message = `<span class="vertical-line nowrap">edited ${item.edited} ago</span>`;
+            if (item.message) message = `<span class="vertical-line nowrap">${item.message}</span>`;
+            entry.innerHTML = `
+                <div class="tasselPostSubscriberModalEntryBack">
+                    <div></div>
+                    <div class="tasselPostSubscriberModalEntryBackRight">
+                        <button id="tPSread${item.id}" postid="${item.id}" style="padding: 0 0 4px 12px;" title="mark as read">
+                            <div class="tasselCheckmark"></div>
+                        </button>
+                        <button id="tPSunsub${item.id}" postid="${item.id}" style="padding: 3px;" title="unsubscribe">${iconUnsub}</button>
+                    </div>
+                </div>
+                <div class="tasselPostSubscriberModalEntryDataFrame">
+                    <div href="https://www.pillowfort.social/posts/${item.id}" class="tasselPostSubscriberModalEntryData">
+                        <div style="overflow: hidden;">
+                            <h5 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <a href="https://www.pillowfort.social/posts/${item.id}">${item.title}</a>
+                            </h5>
+                            <p>
+                                <span class="vertical-line nowrap"><a href="https://www.pillowfort.social/${item.author}">${item.author}</a></span><break>
+                                </break><span class="vertical-line nowrap">posted ${timeToStamp(item.timestamp)}</span><break>
+                                </break>${message}<break>
+                                </break><span class="vertical-line nowrap">last visit ${timeToStamp(item.visited)}</span>
+                            </p>
+                        </div>
+                        <div class="tasselPostSubscriberModalEntryDataDynamic" postid="${item.id}"></div>
+                    </div>
+                </div>
+            `;
+            if (item.comments - item.commentsSeen) entry.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")[0].innerHTML = `<div><h5>${item.comments - item.commentsSeen}</h5><p>new</p></div>`;
+            document.getElementById("postSubscriberModalContent").appendChild(entry);
+            document.getElementById(`tPSread${item.id}`).addEventListener("click", function() {
+                for (let a = 0, el = this; a < 100; a++, el = el.parentNode) {
+                    if (el.classList.contains("tasselPostSubscriberModalEntry")) {
+                        el.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")[0].innerHTML = "";
+                        break;
+                    }
+                }
+                let postId = this.getAttribute("postid");
+                let subscription = subscriptions.subscriptions.find(function(item) {
+                    return item.id == postId;
+                });
+                if (subscription) {
+                    subscription.commentsSeen = subscription.comments;
+                    saveSubscriptions_ltapluah();
+                }
+                updateSidebarCounter_ltapluah();
+            });
+            document.getElementById(`tPSunsub${item.id}`).addEventListener("click", function() {
+                let el = this;
+                for (let a = 0; a < 100; a++) {
+                    if (el.classList.contains("tasselPostSubscriberModalEntry")) {
+                        el.style.display = "none";
+                        break;
+                    } else el = el.parentNode;
+                }
+                unsubscribe_ltapluah(this.getAttribute("postid"));
+                updateSidebarCounter_ltapluah();
+            });
+        });
+    }
+
+    function timeToStamp(unix) {
+        let date = new Date(unix);
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let string = months[date.getMonth()] + " ";
+        let day = date.getDate();
+        if (day < 10) string += "0";
+        string += day + ", " + date.getFullYear() + " @ ";
+        let hours = date.getHours();
+        let ampm = hours >= 12 ? "pm" : "am";
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        if (hours < 10) string += "0";
+        string += hours + ":";
+        let minutes = date.getMinutes();
+        if (minutes < 10) string += "0";
+        string += minutes + " " + ampm;
+        return string;
+    }
+
+    function timeToRel(unix) {
+        if (unix === undefined) return "some time";
+        let now = new Date().getTime();
+        let rel = now - unix;
+        let minutes = Math.round(rel / 60000);
+        if (minutes === 1) return "1 minute";
+        if (minutes <= 90) return minutes + " minutes";
+        let hours = Math.round(rel / 3600000);
+        if (hours === 1) return "1 hour";
+        if (hours < 24) return hours + " hours";
+        let days = Math.round(rel / 86400000);
+        if (days === 1) return "1 day";
+        return days + " days";
+    }
+
+    function updateSidebarCounter_ltapluah() {
+        let counter = 0;//counter for new comments from ALL subscriptions
+        document.getElementById("postSubscriberNotificationBubble").style.display = "none";
+        subscriptions.subscriptions.forEach(function(item, index) {
+            if (!item.commentsSeen) item.commentsSeen = 0;
+            if (item.commentsSeen < item.comments) {
+                document.getElementById("postSubscriberNotificationBubble").style.display = "block";
+                counter += item.comments - item.commentsSeen;
+            }
+        });
+        document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
+        if (counter > 0) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
+        else if (tasselSettings.hideZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
     }
 
     //queue subscribed posts to check them for new comments
-    function checkAll_ltapluah() {
+    function checkAll_ltapluah(force) {
         let interval = settings.interval;
         let now = new Date().getTime();
-        if (now-subscriptions.lastCheck < interval) { //when it's not time yet, only check stored data, don't fetch new data
-            let counter = 0;//counter for new comments from ALL subscriptions
-            document.getElementById("postSubscriberNotificationBubble").style.display = "none";
-            subscriptions.subscriptions.forEach(function(item, index) {
-                if (!item.commentsSeen) item.commentsSeen = 0;
-                if (item.commentsSeen < item.comments) {
-                    document.getElementById("postSubscriberNotificationBubble").style.display = "block";
-                    counter += item.comments - item.commentsSeen;
-                }
-            });
-            document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
-			if (counter > 0) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
-            else if (tasselSettings.hideZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
+        if (now-subscriptions.lastCheck < interval && !force) { //when it's not time yet, only check stored data, don't fetch new data
+            updateSidebarCounter_ltapluah();
             return;
         }
 
         loadSubscriptions_ltapluah();
         subscriptions.lastCheck = now;
+        if (document.getElementById("tasselPostSubscriberCheckTime")) document.getElementById("tasselPostSubscriberCheckTime").innerHTML = `last update: ${timeToRel(subscriptions.lastCheck)} ago`;
         saveSubscriptions_ltapluah();
+        let modalAreas = Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic"));
+        modalAreas.forEach(function(item) {
+            item.innerHTML = `<i class="fa fa-circle-notch fa-spin fa-2x fa-fw" style="color:var(--linkColor);"></i>`;
+        });
         subscriptions.subscriptions.forEach(function(item, index) {
             window.setTimeout(function() {
                 checkPost_ltapluah(item.id);
-            }, 3000*index);
+            }, 1000*index);
         });
 
         //loading spinner
@@ -515,21 +641,41 @@
     function checkPost_ltapluah(id) {
         if (id == 0) return;
         $.getJSON("https://www.pillowfort.social/posts/"+id+"/json", function(json) {
-            let counter = 0;//counter for new comments from ALL subscriptions
+            let localCounter = 0;//counter for new comments from THIS subsription
             loadSubscriptions_ltapluah();
             document.getElementById("postSubscriberNotificationBubble").style.display = "none";
-            subscriptions.subscriptions.forEach(function(item, index) {
-                if (item.id === id) item.comments = json.comments_count;
-                if (!item.commentsSeen) item.commentsSeen = 0;
-                if (item.commentsSeen < item.comments) {
-                    document.getElementById("postSubscriberNotificationBubble").style.display = "block";
-                    counter += item.comments - item.commentsSeen;
-                }
+            let modalArea = Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic"));
+            modalArea = modalArea.find(function(item) {
+                return item.attributes.postid.value == id;
             });
-            document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
-			if (counter > 0) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
-            else if (tasselSettings.hideZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
+            subscriptions.subscriptions.forEach(function(item, index) {
+                if (item.id === id) {
+                    item.message = "";
+                    item.comments = json.comments_count;
+                    item.title = getPostTitle_ltapluah(json);
+                    localCounter = item.comments - item.commentsSeen;
+                    if (localCounter > 0) {
+                        modalArea.innerHTML = `<div><h5>${localCounter}</h5><p>new</p></div>`;
+                    } else {
+                        modalArea.innerHTML = "";
+                    }
+                }
+                if (!item.commentsSeen) item.commentsSeen = 0;
+            });
+            updateSidebarCounter_ltapluah();
             saveSubscriptions_ltapluah();
+        }).fail(function(value) {
+            loadSubscriptions_ltapluah();
+            let subscriptionData = subscriptions.subscriptions.find(function(item) {
+                return item.id === id;
+            });
+            subscriptionData.message = value.responseJSON.message;
+            saveSubscriptions_ltapluah();
+            let modalArea = Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic"));
+            modalArea = modalArea.find(function(item) {
+                return item.attributes.postid.value == id;
+            });
+            modalArea.innerHTML = "<h5>\u26A0</h5>";
         });
     }
 
@@ -540,7 +686,7 @@
             if (item.id == id) subscriptions.subscriptions.splice(index, 1);
         });
         saveSubscriptions_ltapluah();
-        if (document.getElementById("postSubscriberBackground")) showPopup_ltapluah();
+        //if (document.getElementById("postSubscriberBackground")) showPopup_ltapluah();
     }
 
     //(un-)subscribe to a post
@@ -585,6 +731,7 @@
             return item.id === thisPost.id;
         }).visited;
         let comments = document.getElementsByClassName("comment");
+        let newCounter = 0;
         for (let a = 0; a < comments.length; a++) {
             if (comments[a].classList.contains("postSubscriberProcessed")) continue;
             comments[a].classList.add("postSubscriberProcessed");
@@ -593,10 +740,22 @@
             if (time > pivotTime) {
                 let newIcon = document.createElement("div");
                 newIcon.innerHTML = "new";
-                newIcon.setAttribute("style", `height:0;margin:-25px -53px;color:${settings.color};font-weight:bold;font-size:1.5em;`);
+                newIcon.id = "tasselPostSubscriberNewComment" + newCounter;
+                newIcon.style.color = settings.color;
+                newCounter++;
                 comments[a].children[0].appendChild(newIcon);
             }
         }
+    }
+
+    function getPostTitle_ltapluah(json) {
+        if (json.title) return json.title;
+        if (!json.content) return json.post_type.substring(0, 1).toUpperCase() + json.post_type.substring(1);
+        let postBody = document.createElement("div");
+        postBody.innerHTML = json.content.replaceAll("<br>", "\n");
+        let text = postBody.textContent;
+        if (text.length > 40) return text.substring(0, 37) + "...";
+        return text.substring(0, 40);
     }
 
     function createSwitch_ltapluah(title="", state="") {
