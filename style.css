@@ -36,6 +36,7 @@ break {
 	right: 0;
 	margin: 20px;
 	font-size: 14px;
+	-webkit-box-shadow: 0 0 5px 0 black;
 	box-shadow: 0 0 5px 0 black;
 }
 
@@ -126,9 +127,14 @@ break {
 #tasselModalHeader {
 	padding: 10px 15px 0 40px;
 	border-bottom: 2px solid #e3e3e3;
+	-webkit-box-shadow: 0 0 5px 0 black;
 	box-shadow: 0 0 5px 0 black;
 	z-index: 10;
 	position: inherit;
+}
+
+body.dark-theme #tasselModalHeader {
+	border-color: #3e3e3e;
 }
 
 #tasselModalGrid {
@@ -138,8 +144,12 @@ break {
 }
 
 #tasselModalSidebar {
-	border-right: 1px grey solid;
+	border-right: 1px #e3e3e3 solid;
 	overflow-y: auto;
+}
+
+body.dark-theme #tasselModalSidebar {
+	border-color: #3e3e3e;
 }
 
 #tasselModalContent {
@@ -148,25 +158,31 @@ break {
 }
 
 #tasselModalContent hr {
-	border-top: 0.5px solid lightgray;
+	border-top: 0.5px solid #e3e3e3;
+}
+
+body.dark-theme #tasselModalContent hr {
+	border-color: #3e3e3e;
 }
 
 .tasselModalSidebarEntry {
 	font-weight: bold;
 	padding: 10px;
 	border: none;
-	border-bottom: .5px lightgrey solid;
+	border-bottom: .5px #e3e3e3 solid;
 	width: 100%;
 	text-align: left;
 	background: none;
 }
 
+body.dark-theme .tasselModalSidebarEntry {
+	border-color: #3e3e3e;
+}
+
 #tasselModalSidebar .active,
 .tasselModalSidebarEntry:active,
 .tasselModalSidebarEntry:focus {
-	box-shadow: 0 0 5px 0 grey inset !important;
-	border: none !important;
-	border-bottom: .5px lightgrey solid !important;
+	text-decoration: underline;
 }
 
 #tasselModalContent p {
@@ -201,11 +217,17 @@ break {
 .tasselExtension {
 	margin: 20px 10px 0;
 	padding: 10px;
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 	box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 	overflow: hidden;
 	display: grid;
 	grid-template-columns: auto 25px;
 	grid-gap: 10px;
+}
+
+body.dark-theme .tasselExtension {
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.5);
 }
 
 .tasselExtension input {
@@ -218,6 +240,10 @@ break {
 	display: block;
 	margin: 3px 0.5px 0 0;
 	padding: 1px;
+}
+
+.tasselExtension img {
+	filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);
 }
 
 .tasselExtensionVersion {
