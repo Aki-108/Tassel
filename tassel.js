@@ -14,13 +14,14 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@73d13d1936b2c0e2d68ffbf79b9c0888bbec1e9f/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8a09e2427259b42b890a23c7ef123fff5cb68c3f/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dda7e6f09f49ca598d8cb76c358a9cec60992da4/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7153dd3ae3a39f49bb3538ddb24b0b01a6117398/style.css";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5e6cefd8b0c83e6ed7d2164dd322cc2872528d8b/style.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+        <title>Tassel</title>
         <path xmlns="http://www.w3.org/2000/svg" id="prefix__ic_settings" style="fill:none;stroke:#58b6dd;stroke-width:1.2px" d="
           M 8 7        Q 6.5 8 6.5 12     Q 6.5 16 4 19
           M 12 7       Q 13.5 8 13.5 12   Q 13.5 16 16 19
@@ -75,7 +76,6 @@
 
     //source: https://stackoverflow.com/a/43027791
     var waitForJQuery = setInterval(function () {
-        console.log("JQery? ", typeof $ != 'undefined');
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
             loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
@@ -274,6 +274,7 @@
                 }
             });
         }
+
         document.getElementById("tasselToast").lastChild.style.height = document.getElementById("tasselToast").lastChild.clientHeight + "px";
         //mark as read when clicked
         document.getElementById("tasselToast").lastChild.addEventListener("click", function() {
@@ -461,7 +462,7 @@
               link.target = "_blank";
               link.title = "link to post";
               link.href = data.post;
-              link.innerHTML = `<img style="width:100%;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">`;
+              link.innerHTML = `<img alt="link to post" style="width:100%;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">`;
             if (data.post) sidebar.appendChild(link);
             let version = document.createElement("span");
               version.classList.add("tasselExtensionVersion");
