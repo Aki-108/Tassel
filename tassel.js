@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.2
+// @version      1.4.3
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -8,16 +8,15 @@
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @downloadURL  https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
 // @supportURL   https://www.pillowfort.social/Tassel
-// @resource     tasselCSS https://raw.githubusercontent.com/Aki-108/Tassel/9b661d602e4ba24f5c5eee952c5be625c7f13180/style.css
-// @grant        GM_getResourceText
-// @grant        GM_addStyle
+// @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f3c8dc59b8cb91d11d14f220e27bc82a7d0c9850/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@71f9ff3279c33760b88ca314d4719672dee8906c/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@73d13d1936b2c0e2d68ffbf79b9c0888bbec1e9f/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dda7e6f09f49ca598d8cb76c358a9cec60992da4/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7153dd3ae3a39f49bb3538ddb24b0b01a6117398/style.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -76,6 +75,7 @@
 
     //source: https://stackoverflow.com/a/43027791
     var waitForJQuery = setInterval(function () {
+        console.log("JQery? ", typeof $ != 'undefined');
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
             loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
@@ -85,7 +85,7 @@
 
     /* Initialize */
     function init_xcajbuzn() {
-        GM_addStyle(GM_getResourceText("tasselCSS"));
+        loadStyle_xcajbuzn(styleURL);
         loadAppearance_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
             .then().then(() => loadExtensions_xcajbuzn());
@@ -166,7 +166,7 @@
             <div id='tasselModalDialog2' class='modal-content'>
               <div id='tasselModalHeader'>
                 <button id='tasselModalClose' class='close' type='button' title='Close'>
-                <span style='color:#2b2b2b;'>x</span>
+                <span style='color:var(--postFontColor);'>x</span>
                 </button>
                 <h4 class='modal-title'>Tassel</h4>
               </div>
@@ -204,10 +204,12 @@
 
     /* Load selected appearance changes */
     function loadAppearance_xcajbuzn() {
-        if (settings2.stickyIcons) GM_addStyle(".side-info{position:sticky;top:70px;margin-bottom:10px;}");
-        if (settings2.stickyToolbar) GM_addStyle(".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}");
-        if (settings2.stickyCommentHeader) GM_addStyle(".comments-container .header{position:sticky;top:50px;z-index:3;}");
-        if (settings2.goldToBlue) GM_addStyle(".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}");
+        let style = document.createElement("style");
+        if (settings2.stickyIcons) style.innerHTML += ".side-info{position:sticky;top:70px;margin-bottom:10px;}";
+        if (settings2.stickyToolbar) style.innerHTML += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
+        if (settings2.stickyCommentHeader) style.innerHTML += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
+        if (settings2.goldToBlue) style.innerHTML += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
+        document.head.appendChild(style);
     }
 
     /* Create the basis for toasts */
