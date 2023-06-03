@@ -69,6 +69,11 @@ body.dark-theme #tasselPostSubscriberModalSubHeader {
     transition: all .2s, margin .2s;
 }
 
+body.dark-theme .tasselPostSubscriberModalEntryData {
+    -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
 .tasselPostSubscriberModalEntry:hover .tasselPostSubscriberModalEntryData {
     grid-template-columns: auto 0em;
 }
@@ -106,9 +111,7 @@ body.dark-theme #tasselPostSubscriberModalSubHeader {
 
 .tasselPostSubscriberModalEntryBackRight button {
     width: calc(3em - 10px);
-    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.2s;
 }
 
 .tasselPostSubscriberModalEntry button {
@@ -117,8 +120,11 @@ body.dark-theme #tasselPostSubscriberModalSubHeader {
 }
 
 .tasselPostSubscriberModalEntry button:hover {
-    box-shadow: 2px 2px 6px rgba(0,0,0,0.2) inset;
-    background: transparent;
+    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%);
+}
+
+body.dark-theme .tasselPostSubscriberModalEntry button:hover {
+    filter: brightness(0) saturate(100%) invert(59%) sepia(85%) saturate(375%) hue-rotate(296deg) brightness(80%) contrast(100%);
 }
 
 .vertical-line {
@@ -174,4 +180,8 @@ body.dark-theme #tasselPostSubscriberColorFrame {
 
 body.dark-theme #tasselPostSubscriberColor {
     border-left: 1px #3a3e47 solid
+}
+
+body.dark-theme #postSubscriberToggle, body.dark-theme #postSubscriberPostModal {
+    filter: brightness(0) saturate(100%) invert(59%) sepia(85%) saturate(375%) hue-rotate(296deg) brightness(80%) contrast(100%);
 }
