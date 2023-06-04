@@ -2,12 +2,12 @@ let tasselJsonManager = {
     modal: {
         ready: false,
         postId: null,
-        postJSON: {}
+        JSON: {}
     },
     post: {
         ready: false,
         postId: null,
-        postJSON: {}
+        JSON: {}
     },
     reblogs: {
         ready: false,
@@ -151,14 +151,14 @@ function initFortFeed() {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
                  tasselJsonManager.feed.ready = false;
-                $.getJSON(`https://www.pillowfort.social/
-                ${document.URL.split("/")[3]}
-                /json?p=
-                ${Object.values(
+                let page = 1;
+                let pageButton = Object.values(
                     document.getElementsByTagName("li")
                 ).find(function(item) {
                     return item.classList.contains("active")
-                }).textContent}`, function(data) {
+                });
+                if (pageButton) page = pageButton.textContent;
+                $.getJSON(`https://www.pillowfort.social/${document.URL.split("/")[3]}/json?p=${page}`, function(data) {
                     tasselJsonManager.feed.ready = true;
                     tasselJsonManager.feed.pages = 1;
                     tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
