@@ -2,24 +2,24 @@ let tasselJsonManager = {
     modal: {
         ready: false,
         postId: null,
-        JSON: {}
+        json: {}
     },
     post: {
         ready: false,
         postId: null,
-        JSON: {}
+        json: {}
     },
     reblogs: {
         ready: false,
         postId: null,
         page: null,
-        JSON: {}
+        json: {}
     },
     likes: {
         ready: false,
         postId: null,
         page: null,
-        JSON: {}
+        json: {}
     },
     feed: {
         ready: false,
@@ -42,7 +42,7 @@ function initModal_quugasdg() {
                 postId = postId.substring(postId.search("/posts/")+7);
                 tasselJsonManager.modal.postId = postId;
                 $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-                    tasselJsonManager.modal.postJSON = data;
+                    tasselJsonManager.modal.json = data;
                     tasselJsonManager.modal.ready = true;
                     trigger_quugasdg("tasselJsonManagerModalReady");
                 });
@@ -72,7 +72,7 @@ function initSinglePost_quugasdg() {
     postId = postId[4].split("?")[0];
     tasselJsonManager.post.postId = postId;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-        tasselJsonManager.post.postJSON = data;
+        tasselJsonManager.post.json = data;
         tasselJsonManager.post.ready = true;
         trigger_quugasdg("tasselJsonManagerPostReady");
     });
@@ -94,7 +94,7 @@ function getReblogData_quugasdg(postId) {
     if (reblogPageButtons.getElementsByClassName("active").length > 0) page = reblogPageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.reblogs.page = page;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/reblogs?p=${page}`, function(data) {
-        tasselJsonManager.reblogs.JSON = data.reblog_batch;
+        tasselJsonManager.reblogs.json = data.reblog_batch;
         tasselJsonManager.reblogs.ready = true;
         trigger_quugasdg("tasselJsonManagerReblogReady");
     });
@@ -108,7 +108,7 @@ function getLikeData_quugasdg(postId) {
     if (likePageButtons.getElementsByClassName("active").length > 0) page = likePageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.likes.page = page;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/likes?p=${page}`, function(data) {
-        tasselJsonManager.likes.JSON = data.likes_batch;
+        tasselJsonManager.likes.json = data.likes_batch;
         tasselJsonManager.likes.ready = true;
         trigger_quugasdg("tasselJsonManagerLikeReady");
     });
