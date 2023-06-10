@@ -15,7 +15,7 @@
     'use strict';
 
     /* Wait for the page to load before initializing the script. */
-    let timeouts = [];
+    let reblogTimeouts = [], likeTimeouts = [];
     let settings = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
     if (settings.rebloggedToCommunity) {
         settings = settings.rebloggedToCommunity;
@@ -35,6 +35,7 @@
 
     /* Initialize the script by adding event listeners to necessary buttons for user interaction. */
     function addEventListener_tlfevnlu() {
+        console.log("focused", document.hasFocus());
         if (document.URL.search("www.pillowfort.social/posts/") === -1) return;
         if (document.URL.search("www.pillowfort.social/posts/new") !== -1) return;
 
@@ -119,10 +120,10 @@
     /* Display reblog data. */
     function fillReblogData_tlfevnlu() {
         //stop everything that's already loading
-        for (let i = timeouts.length-1; i >= 0; i--) clearTimeout(timeouts.pop());
+        for (let i = reblogTimeouts.length-1; i >= 0; i--) clearTimeout(reblogTimeouts.pop());
         //if the old entries are still displaying, wait some time and try again
         if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) {
-            timeouts.push(setTimeout(fillReblogData_tlfevnlu, 200));
+            reblogTimeouts.push(setTimeout(fillReblogData_tlfevnlu, 200));
             return;
         }
 
@@ -141,7 +142,7 @@
             if (comm && settings.showReblogs) link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[1] + "'>" + comm[1] + "</a>";
 
             //when the community is not in the cache, add a loading circle
-            if (commId !== null && comm && settings.showReblogs) {
+            if (commId !== null && !comm && settings.showReblogs) {
                 let dataLoading = document.createElement("a");
                 dataLoading.classList.add("reblog"+postId);
                 dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
@@ -171,7 +172,7 @@
             //start fetching community data
             if (commId === null || comm) continue;
             if (document.getElementsByClassName("reblog"+postId).length > 1) continue;
-            timeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId);}, 500*timeouts.length));
+            reblogTimeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId);}, 500*reblogTimeouts.length));
         }
     }
 
@@ -200,11 +201,11 @@
     /* Display like data. */
     function fillLikeData_tlfevnlu() {
         //stop everything that's already loading
-        for (let i = timeouts.length-1; i >= 0; i--) clearTimeout(timeouts.pop());
+        for (let i = likeTimeouts.length-1; i >= 0; i--) clearTimeout(likeTimeouts.pop());
         if (!settings.showLikes) return;
         //if the old entries are still displaying, wait some time and try again
         if (document.getElementsByClassName("rtcsourcedisplayinglikes").length > 0) {
-            timeouts.push(setTimeout(fillLikeData_tlfevnlu, 200));
+            likeTimeouts.push(setTimeout(fillLikeData_tlfevnlu, 200));
             return;
         }
 
@@ -221,7 +222,7 @@
 
             //start fetching post data
             if (document.getElementsByClassName("like"+postId).length > 1) continue;
-            timeouts.push(setTimeout(function(){findReblog_tlfevnlu(postId);}, 500*timeouts.length));
+            likeTimeouts.push(setTimeout(function(){findReblog_tlfevnlu(postId);}, 500*likeTimeouts.length));
         }
     }
 
