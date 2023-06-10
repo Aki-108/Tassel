@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.4
+// @version      2.5
 // @description  Shows where a post has been liked/reblogged to.
 // @author       aki108
 // @match        http*://www.pillowfort.social/*
@@ -15,9 +15,6 @@
     'use strict';
 
     /* Wait for the page to load before initializing the script. */
-    let reblogPageButtons;
-    let likePageButtons;
-    let dataJSON;
     let timeouts = [];
     let settings = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
     if (settings.rebloggedToCommunity) {
@@ -33,23 +30,16 @@
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
-    waitForKeyElements("#post-comments-section", addEventListener_tlfevnlu);
+    waitForKeyElements("#tasselJsonManagerReblogReady", addEventListener_tlfevnlu);
     initTassel_tlfevnlu();
 
     /* Initialize the script by adding event listeners to necessary buttons for user interaction. */
     function addEventListener_tlfevnlu() {
         if (document.URL.search("www.pillowfort.social/posts/") === -1) return;
-        //reblogs-tab and reblog-pagination buttons events
-        let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
-        reblogButton.addEventListener("click", runReblog_tlfevnlu);
-        reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
-        reblogPageButtons.addEventListener("click", runReblog_tlfevnlu);
+        if (document.URL.search("www.pillowfort.social/posts/new") !== -1) return;
 
-        //likes-tab and like-pagination buttons events
-        let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
-        likeButton.addEventListener("click", runLike_tlfevnlu);
-        likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
-        likePageButtons.addEventListener("click", runLike_tlfevnlu);
+        document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", fillReblogData_tlfevnlu);
+        document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", fillLikeData_tlfevnlu);
 
         //Dark Mode fix for no reblogs and no likes
         Object.values(document.getElementById("reblogs").children).find(function(child) {
@@ -125,65 +115,48 @@
     comms.push([1062, "Writing-Prompts"]);
     comms.push([92, "YuriOnIce"]);
 
-    /* Load reblog data. */
-    function runReblog_tlfevnlu() {
+
+    /* Display reblog data. */
+    function fillReblogData_tlfevnlu() {
         //stop everything that's already loading
         for (let i = timeouts.length-1; i >= 0; i--) clearTimeout(timeouts.pop());
         //if the old entries are still displaying, wait some time and try again
         if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) {
-            timeouts.push(setTimeout(runReblog_tlfevnlu, 200));
+            timeouts.push(setTimeout(fillReblogData_tlfevnlu, 200));
             return;
         }
 
-        //fetch new data
-        let page = 1;
-        if (reblogPageButtons.getElementsByClassName("active").length > 0) page = reblogPageButtons.getElementsByClassName("active")[0].textContent;
-        $.getJSON(document.URL.split("?")[0]+'/reblogs?p='+page, function(data) {
-            dataJSON = data;
-            fillReblogData_tlfevnlu();
-        });
-    }
-
-    /* After new data is fetched, display it. */
-    function fillReblogData_tlfevnlu() {
         let notes = Object.values(document.getElementById("reblogs").getElementsByClassName("reblog-note"));
         for (let index in notes) {
-            let note = notes[index];
-            note.classList.add("rtcsourcedisplayingreblogs");
-            let link = note.getElementsByTagName("a")[1];
+            notes[index].classList.add("rtcsourcedisplayingreblogs");
+            let link = notes[index].getElementsByTagName("a")[1];
             let postId = link.href.substring(link.href.search("/posts/")+7);
-            let commId = Object.values(dataJSON)[0][index].community_id;
+            let commId = tasselJsonManager.reblogs.json[index].community_id;
 
             //search cache for community
-            if (commId === null && settings.showReblogs) {
-                link.outerHTML += " to their fort";
-            }
-            let comm = comms.filter(function(value){
+            if (commId === null && settings.showReblogs) link.outerHTML += " to their fort";
+            let comm = comms.find(function(value) {
                 return value[0] === commId;
             });
-            if (comm.length > 0 && settings.showReblogs) {
-                link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[0][1] + "'>" + comm[0][1] + "</a>";
-            }
+            if (comm && settings.showReblogs) link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[1] + "'>" + comm[1] + "</a>";
 
             //when the community is not in the cache, add a loading circle
-            if (commId !== null && comm.length === 0 && settings.showReblogs) {
+            if (commId !== null && comm && settings.showReblogs) {
                 let dataLoading = document.createElement("a");
                 dataLoading.classList.add("reblog"+postId);
                 dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
-                note.appendChild(dataLoading);
+                notes[index].appendChild(dataLoading);
             }
 
             //display tags
-            let tags = Object.values(dataJSON)[0][index].cached_tag_list || "";
-            if (tags.length > 0 && settings.showTags) {
-                let user = Object.values(dataJSON)[0][index].username;
+            let tags = tasselJsonManager.reblogs.json[index].cached_tag_list || "";
+            if (tags.length && settings.showTags) {
                 tags = tags.split(", ");
                 let tagFrame = document.createElement("p");
                 tagFrame.classList.add("tasselRebloggedToCommunityTags");
                 for (let a = 0; a < tags.length; a++) {
                     let tagLink = document.createElement("a");
-                    //tagLink.href = "https://www.pillowfort.social/search/" + tags[a];
-                    tagLink.href = `https://www.pillowfort.social/${user}/tagged/${tags[a]}`;
+                    tagLink.href = `https://www.pillowfort.social/${tasselJsonManager.reblogs.json[index].username}/tagged/${tags[a]}`;
                     tagLink.innerHTML = tags[a];
                     tagFrame.appendChild(tagLink);
                     if (a < tags.length - 1) {
@@ -192,11 +165,11 @@
                         tagFrame.appendChild(comma);
                     }
                 }
-                note.appendChild(tagFrame);
+                notes[index].appendChild(tagFrame);
             }
 
             //start fetching community data
-            if (commId === null || comm.length > 0) continue;
+            if (commId === null || comm) continue;
             if (document.getElementsByClassName("reblog"+postId).length > 1) continue;
             timeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId);}, 500*timeouts.length));
         }
@@ -209,11 +182,8 @@
             let notes = Object.values(document.getElementsByClassName("reblog"+postId));
             for (let note of notes) {
                 note.classList.remove("reblog"+postId);
-                if (data.comm_name === undefined) {
-                    note.outerHTML = " to their fort";
-                } else {
-                    note.outerHTML = " to <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
-                }
+                if (data.comm_name === undefined) note.outerHTML = " to their fort";
+                else note.outerHTML = " to <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
             }
         }).fail(function(value) {
             //show error message
@@ -227,39 +197,27 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /* Load like data. */
-    function runLike_tlfevnlu() {
+    /* Display like data. */
+    function fillLikeData_tlfevnlu() {
         //stop everything that's already loading
         for (let i = timeouts.length-1; i >= 0; i--) clearTimeout(timeouts.pop());
         if (!settings.showLikes) return;
         //if the old entries are still displaying, wait some time and try again
         if (document.getElementsByClassName("rtcsourcedisplayinglikes").length > 0) {
-            timeouts.push(setTimeout(runLike_tlfevnlu, 200));
+            timeouts.push(setTimeout(fillLikeData_tlfevnlu, 200));
             return;
         }
 
-        //fetch new data
-        let page = 1;
-        if (likePageButtons.getElementsByClassName("active").length > 0) page = likePageButtons.getElementsByClassName("active")[0].textContent;
-        $.getJSON(document.URL.split("?")[0]+'/likes?p='+page, function(data) {
-            dataJSON = data;
-            fillLikeData_tlfevnlu();
-        });
-    }
-
-    /* After new data is fetched, display it. */
-    function fillLikeData_tlfevnlu() {
         let notes = Object.values(document.getElementById("likes").getElementsByClassName("like-note"));
         for (let index in notes) {
-            let note = notes[index];
-            note.classList.add("rtcsourcedisplayinglikes");
-            let postId = Object.values(dataJSON)[0][index].liked_via_reblog_id;
+            notes[index].classList.add("rtcsourcedisplayinglikes");
+            let postId = tasselJsonManager.likes.json[index].liked_via_reblog_id;
 
             //add a loading circle
             let dataLoading = document.createElement("a");
             dataLoading.classList.add("like"+postId);
             dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
-            note.appendChild(dataLoading);
+            notes[index].appendChild(dataLoading);
 
             //start fetching post data
             if (document.getElementsByClassName("like"+postId).length > 1) continue;
@@ -274,11 +232,8 @@
             let notes = Object.values(document.getElementsByClassName("like"+postId));
             for (let note of notes) {
                 note.classList.remove("like"+postId);
-                if (data.comm_name == undefined) {
-                    note.outerHTML = " in <a href='https://www.pillowfort.social/" + data.username + "'>" + data.username + "</a>'s fort";
-                } else {
-                    note.outerHTML = " in <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
-                }
+                if (data.comm_name == undefined) note.outerHTML = " in <a href='https://www.pillowfort.social/" + data.username + "'>" + data.username + "</a>'s fort";
+                else note.outerHTML = " in <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
             }
         }).fail(function(value) {
             //show error message
