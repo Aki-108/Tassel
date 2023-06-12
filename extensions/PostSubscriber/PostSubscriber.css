@@ -8,7 +8,11 @@
     border-radius: 6px;
     padding: 0;
     background: none;
-    color: var(--postFontColor)
+    color: #2b2b2b;
+}
+
+body.dark-theme #postSubscriberModal {
+    color: #d9dbe0;
 }
 
 #postSubscriberModal::backdrop {
@@ -22,7 +26,11 @@ body.dark-theme #postSubscriberModal::backdrop {
 }
 
 #postSubscriberModal div {
-    background: var(--postBgColor);
+    background: #ffffff;
+}
+
+body.dark-theme #postSubscriberModal div {
+    background: #1b1d20;
 }
 
 #tasselPostSubscriberModalSubHeader {
@@ -39,7 +47,11 @@ body.dark-theme #tasselPostSubscriberModalSubHeader {
 #postSubscriberModalContent {
     overflow: auto;
     max-height: calc(80vh - 104px);
-    color: var(--postFontColor);
+    color: #2b2b2b;
+}
+
+body.dark-theme #postSubscriberModalContent {
+    color: #d9dbe0;
 }
 
 .tasselPostSubscriberModalEntry {
@@ -80,7 +92,11 @@ body.dark-theme .tasselPostSubscriberModalEntryData {
 
 .tasselPostSubscriberModalEntryData p {
     margin-bottom: 0;
-    color: var(--postFontColor);
+    color: #2b2b2b;
+}
+
+body.dark-theme .tasselPostSubscriberModalEntryData p {
+    color: #d9dbe0;
 }
 
 .tasselPostSubscriberModalEntryDataDynamic {
