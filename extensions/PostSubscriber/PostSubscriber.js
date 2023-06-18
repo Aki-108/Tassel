@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.5
+// @version      2.6
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -253,7 +253,7 @@
                     <div id="postSubscriberModal" style="margin: auto;">
                     <div id="tasselPostSubscriberModalHeader" class="nomargin">
                         <div style='padding: 10px 15px 5px 20px;'>
-                            <button class='close' type='button' title='Close' onclick="document.getElementById('postSubscriberModal').remove();document.body.style.overflow = 'auto';">
+                            <button class='close' type='button' title='Close' onclick="document.getElementById('postSubscriberModal').parentNode.remove();document.body.style.overflow = 'auto';">
                                 <span style='color:gray'>x</span>
                             </button>
                             <h4 class='modal-title'>Subscriptions</h4>
