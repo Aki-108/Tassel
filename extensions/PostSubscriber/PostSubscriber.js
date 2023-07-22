@@ -512,9 +512,7 @@
     function initModal_ltapluah() {
         let navigation = postModal.getElementsByClassName("post-nav-left")[0];
 
-        //wait before editing the modal because Pillowfort changes its content asynchronous
-        clearTimeout(modalTimeout);
-        modalTimeout = setTimeout(function() {
+        document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
 
             //check if this post is subscribed
             thisPost.id = postModal.getElementsByClassName("link_post")[0].href.substring(36)*1;
@@ -547,7 +545,7 @@
                 document.getElementById("postSubscriberPostModal").firstChild.firstChild.lastChild.firstChild.style.fill = "none";
             }
 
-        }, 1000);
+        });
 
         //switch from subscribe button to loading circle
         if (document.getElementById("postSubscriberPostModal")) {
