@@ -77,6 +77,7 @@ function initSinglePost_quugasdg() {
         trigger_quugasdg("tasselJsonManagerPostReady");
     });
 
+    if (document.getElementsByTagName("dir-pagination-controls").length < 1) return;
     let reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
     reblogPageButtons.addEventListener("click", function () {getReblogData_quugasdg(postId)});
     getReblogData_quugasdg(postId);
