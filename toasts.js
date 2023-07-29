@@ -22,6 +22,14 @@ let toasts = [
     "text": "got a new design.",
     "timestamp": 1685798654162,
     "new": false
+  },
+  {
+    "id": 11,
+    "extension": 0,
+    "title": "NSFW Blur",
+    "text": "The NSFW Blur was added to the Appearance Settings",
+    "timestamp": 1690655026520,
+    "new": true
   }
 ];
 
