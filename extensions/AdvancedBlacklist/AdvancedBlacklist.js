@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.0
+// @version      1.1
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -17,28 +17,11 @@
 		showTags: true,
 		showReason: true
 	};
-    let lastTime; //time of the oldest loaded post
     let permaLinks; //array of perma-link elements
     let locationType = "home" //type of webpage
 
-	const loadingIndicator =
-       document.getElementById("home_loading")
-    || document.getElementById("blog_loading")
-    || document.getElementById("user_posts_loading")
-    || document.getElementById("comm_large_loading")
-    || document.getElementById("search_loading")
-    || document.getElementById("comments_loading");
-    const mutationConfig = {attributes: true, attributeFilter: ["style"]};
-    const mutationCallback = (mutationList) => {
-        if (loadingIndicator.style.display == "none") {
-            loadPostData_skdasoyk();
-        }
-    };
-    const mutationObserver = new MutationObserver(mutationCallback);
-    if (loadingIndicator != null) {
-	    if (loadingIndicator.style.display == "none") loadPostData_skdasoyk();
-	    mutationObserver.observe(loadingIndicator, mutationConfig);
-    }
+    if (document.getElementById("tasselJsonManagerFeedReady")) document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", loadFeed_skdasoyk);
+    if (document.getElementById("tasselJsonManagerPostReady")) document.getElementById("tasselJsonManagerPostReady").addEventListener("click", loadSinglePost_skdasoyk);
 
 	/* Read Blacklist from local storage*/
     function loadBlacklist_skdasoyk() {
@@ -70,100 +53,38 @@
         buttonBig.children[0].innerHTML = icon.outerHTML + "Advanced Blacklist";
     }
 
-	/* Get Home Feed Data */
-	function loadPostData_skdasoyk() {
-        let url; //where to get the correct post data
-        let address = document.URL.split("/");
-        let posts = [];
-        if (address.length === 4 && address[3] === "") {//home feed
-            locationType = "feed";
-            permaLinks = document.getElementsByClassName("link_post");
-            url = "https://www.pillowfort.social/home/json";
-            if (lastTime) url += "?last_timestamp="+lastTime;
-
-        } else if (address[5] === "tagged") {//tagged comm
-            locationType = "comm";
-            permaLinks = document.getElementsByClassName("link_post");
-            url = `https://www.pillowfort.social/community/${address[4]}/tagged_json?tag=${address[6]}`;
-            if (lastTime) url += "&last_timestamp="+lastTime;
-
-        } else if (address[3] === "community" ) {//community
-            locationType = "comm";
-            permaLinks = document.getElementsByClassName("link_post");
-            url = document.URL + "/posts/json";
-            if (lastTime) url += "?last_timestamp="+lastTime;
-
-        } else if (address[3] === "posts") {//single post
-            locationType = "post";
-            permaLinks = document.getElementsByClassName("timestamp2");
-            url = document.URL.substring(0,document.URL.indexOf("?") >= 0 ? document.URL.indexOf("?") : document.URL.length) + "/json";
-            if (lastTime) url += "?last_timestamp="+lastTime;
-
-        } else if (address[3] === "search") {//search
-            locationType = "search";
-            permaLinks = document.getElementsByClassName("link_post");
-            url = `https://www.pillowfort.social/search/posts/${address[4]}/json/`;
-            if (lastTime) url += "?last_timestamp="+lastTime;
-
-        } else if (address[4] === "tagged") {//tagged fort
-            locationType = "fort";
-            permaLinks = document.getElementsByClassName("link_post");
-            url = `https://www.pillowfort.social/${address[3]}/tagged/${address[5]}/json/`;
-            url += "?p=";
-            let page = Object.values(document.getElementsByClassName("active")).filter(function(item){return item.nodeName == "LI"})[0];
-            if (page) url += page.firstChild.innerHTML;
-            else url += "1";
-
-        } else {//fort
-            locationType = "fort";
-            permaLinks = document.getElementsByClassName("link_post");
-            url = document.URL + "/json";
-            url += "?p=";
-            let page = Object.values(document.getElementsByClassName("active")).filter(function(item){return item.nodeName == "LI"})[0];
-            if (page) url += page.firstChild.innerHTML;
-            else url += "1";
-        }
-
-        if (locationType === "post") {
-            posts.push({
-                id: address[4]*1,
-                post: document.getElementsByClassName("post-container")[0]
-            });
-        } else {
-            Object.values(permaLinks).forEach(function(item) {
-                if (item.href.split("/")[4] === "") return;
-                posts.push({
-                    id: item.href.split("/")[4]*1,
-                    post: item.parentNode.parentNode.parentNode.parentNode.parentNode
-                });
-            });
-        }
-
-        if (!url) return;
-        $.getJSON(url, function(data) {
-            let postData = [];
-            if (locationType === "feed"
-               || locationType === "fort") {
-                postData = data.posts;
-            } else if (locationType === "comm") {
-                postData = data;
-            } else if (locationType === "post") {
-                postData.push(data);
-            } else if (locationType === "search") {
-                postData = data.posts_by_tag.posts_by_tag;
-            }
-
-            lastTime = postData[postData.length-1].created_at;
-
-            processPosts_skdasoyk(postData, posts);
-        });
+    /* Get post from JSON Manager and process it */
+    function loadSinglePost_skdasoyk() {
+        locationType = "post";
+        permaLinks = document.getElementsByClassName("timestamp2");
+        processPosts_skdasoyk([tasselJsonManager.post.json], [{
+            id: tasselJsonManager.post.postId*1,
+            post: document.getElementsByClassName("post-container")[0]
+        }]);
     }
 
+    /* Get posts from JSON Manager and process them */
+    function loadFeed_skdasoyk() {
+        locationType = "feed";
+        let posts = [];
+        permaLinks = document.getElementsByClassName("link_post");
+        Object.values(permaLinks).forEach(function(item) {
+            if (item.href.split("/")[4] === "") return;
+            posts.push({
+                id: item.href.split("/")[4]*1,
+                post: item.parentNode.parentNode.parentNode.parentNode.parentNode
+            });
+        });
+        processPosts_skdasoyk(tasselJsonManager.feed.posts, posts);
+    }
+
+    /*  */
     function processPosts_skdasoyk(postData, posts) {
         for (let post of postData) {
             let postElement = posts.find(function(item) {
                 return (item.id === (post.original_post_id || post.id));
             });
+            if (postElement === undefined) return;
             if (postElement.post.classList.contains("tasselAdvancedBlacklistProcessed")) continue;
             postElement.post.classList.add("tasselAdvancedBlacklistProcessed");
             addBlockButton_skdasoyk(post);
@@ -226,6 +147,7 @@
 
         let tagsElement = postElement.getElementsByClassName("tags")[0];
         if (!tagsElement) {
+            if (!tags.length) return;
             let container = document.createElement("div");
             container.classList.add("tags-container");
             let tagBox = document.createElement("div");
@@ -582,7 +504,7 @@
             input.placeholder = "Past the contents of a file export here.";
             inputFrame.appendChild(input);
             let add = document.createElement("button");
-            add.classList.add("btn", "inline", "tasselButton");
+            add.classList.add("btn", "inline");
             add.style.marginRight = "10px";
             add.innerHTML = "add to list";
             add.addEventListener("click", function(event) {
@@ -599,7 +521,7 @@
             });
             inputFrame.appendChild(add);
             let replace = document.createElement("button");
-            replace.classList.add("btn", "inline", "tasselButton");
+            replace.classList.add("btn", "inline");
             replace.innerHTML = "replace list";
             replace.addEventListener("click", function(event) {
                 event.preventDefault();
