@@ -48,12 +48,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.0",
+            "version": "1.1",
             "created": 1674907200000,
-            "updated": 1680855960000,
+            "updated": 1690648004203,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5d2620f0c3e2171191fbb8ed82bf064258865fbf/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2ee51079af4be92f07b44410c9f0db4584400625/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
