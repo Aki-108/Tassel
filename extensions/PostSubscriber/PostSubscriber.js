@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.6
+// @version      2.7
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -512,9 +512,7 @@
     function initModal_ltapluah() {
         let navigation = postModal.getElementsByClassName("post-nav-left")[0];
 
-        //wait before editing the modal because Pillowfort changes its content asynchronous
-        clearTimeout(modalTimeout);
-        modalTimeout = setTimeout(function() {
+        document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
 
             //check if this post is subscribed
             thisPost.id = postModal.getElementsByClassName("link_post")[0].href.substring(36)*1;
@@ -527,19 +525,17 @@
             });
 
             //get posts information in preparation for a new subscription
-            $.getJSON(`https://www.pillowfort.social/posts/${thisPost.id}/json`, function(data) {
-                thisPost.comments = data.comments_count;
-                thisPost.commentsSeen = data.comments_count;
-                thisPost.author = data.username || "ERROR";
-                thisPost.title = getPostTitle_ltapluah(data);
-                thisPost.timestamp = new Date(data.created_at).getTime() || null;
-                thisPost.edited = data.last_edited_at || null;
-                thisPost.visited = openTime;
+            thisPost.comments = tasselJsonManager.modal.json.comments_count;
+            thisPost.commentsSeen = tasselJsonManager.modal.json.comments_count;
+            thisPost.author = tasselJsonManager.modal.json.username || "ERROR";
+            thisPost.title = getPostTitle_ltapluah(tasselJsonManager.modal.json);
+            thisPost.timestamp = new Date(tasselJsonManager.modal.json.created_at).getTime() || null;
+            thisPost.edited = tasselJsonManager.modal.json.last_edited_at || null;
+            thisPost.visited = openTime;
 
-                //switch from loading circle to subscribe button
-                document.getElementById("postSubscriberPostModal").style.display = "inline-block";
-                document.getElementById("postSubscriberPostModalLoading").style.display = "none";
-            });
+            //switch from loading circle to subscribe button
+            document.getElementById("postSubscriberPostModal").style.display = "inline-block";
+            document.getElementById("postSubscriberPostModalLoading").style.display = "none";
 
             if (subscribed) {
                 document.getElementById("postSubscriberPostModal").firstChild.classList.add("svg-pink-light");
@@ -549,7 +545,7 @@
                 document.getElementById("postSubscriberPostModal").firstChild.firstChild.lastChild.firstChild.style.fill = "none";
             }
 
-        }, 1000);
+        });
 
         //switch from subscribe button to loading circle
         if (document.getElementById("postSubscriberPostModal")) {
@@ -603,14 +599,14 @@
             document.getElementById("postSubscriberToggle").firstChild.classList.add("svg-pink-light");
             document.getElementById("postSubscriberToggle").firstChild.firstChild.lastChild.firstChild.style.fill = "rgb(88, 182, 221)";
 
-            $.getJSON(`https://www.pillowfort.social/posts/${thisPost.id}/json`, function(data) {
+            document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
                 loadSubscriptions_ltapluah();
                 let subscriptionData = subscriptions.subscriptions.find(function(item) {
                     return item.id === thisPost.id;
                 });
-                subscriptionData.comments = data.comments_count;
-                subscriptionData.title = getPostTitle_ltapluah(data);
-                subscriptionData.edited = data.last_edited_at || null;
+                subscriptionData.comments = tasselJsonManager.post.json.comments_count;
+                subscriptionData.title = getPostTitle_ltapluah(tasselJsonManager.post.json);
+                subscriptionData.edited = tasselJsonManager.post.json.last_edited_at || null;
                 saveSubscriptions_ltapluah();
                 thisPost = subscriptionData;
 
@@ -630,13 +626,13 @@
 
             //get posts information in preparation for a new subscription
             thisPost.visited = new Date().getTime();
-            $.getJSON(`https://www.pillowfort.social/posts/${thisPost.id}/json`, function(data) {
-                thisPost.comments = data.comments_count;
-                thisPost.commentsSeen = data.comments_count;
-                thisPost.author = data.username || "ERROR";
-                thisPost.title = getPostTitle_ltapluah(data);
-                thisPost.timestamp = new Date(data.created_at).getTime() || null;
-                thisPost.edited = data.last_edited_at || null;
+            document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
+                thisPost.comments = tasselJsonManager.post.json.comments_count;
+                thisPost.commentsSeen = tasselJsonManager.post.json.comments_count;
+                thisPost.author = tasselJsonManager.post.json.username || "ERROR";
+                thisPost.title = getPostTitle_ltapluah(tasselJsonManager.post.json);
+                thisPost.timestamp = new Date(tasselJsonManager.post.json.created_at).getTime() || null;
+                thisPost.edited = tasselJsonManager.post.json.last_edited_at || null;
             });
         }
     }
@@ -735,10 +731,12 @@
                     item.comments = json.comments_count;
                     item.title = getPostTitle_ltapluah(json);
                     localCounter = item.comments - item.commentsSeen;
-                    if (localCounter > 0 && modalArea) {
-                        modalArea.innerHTML = `<div><h5>${localCounter}</h5><p>new</p></div>`;
-                    } else {
-                        modalArea.innerHTML = "";
+                    if (modalArea) {
+                        if (localCounter > 0) {
+                            modalArea.innerHTML = `<div><h5>${localCounter}</h5><p>new</p></div>`;
+                        } else {
+                            modalArea.innerHTML = "";
+                        }
                     }
                 }
                 if (!item.commentsSeen) item.commentsSeen = 0;

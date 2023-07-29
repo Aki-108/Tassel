@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.2
+// @version      1.3
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -47,31 +47,18 @@
     function initReblogModal_dshcgkhy() {
         if (!document.getElementById("post-view-modal")) return;
         let postModalLink = document.getElementById("post-view-modal").getElementsByClassName("link_post")[0];
-        //update again everytime the post URL changes
-        styleObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutationRecord) {
-                if (mutationRecord.attributeName === "href") {
-                    let postId = mutationRecord.target.href;
-                    postId = postId.substring(postId.search("/posts/")+7);
-                    if (postId === "") return;
-                    $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-                        newPostType = data.post_type;
-                        if (newPostType === "picture") newPostType = "photo";
-                        else if (newPostType === "embed") newPostType = "link";
-                        togglePostType_dshcgkhy(newPostType);
-                        if (data.mine) {
-                            tagInput.value += ", " + settings.tagPreset.selfReblog;
-                        } else {
-                            tagInput.value += ", " + settings.tagPreset.otherReblog;
-                        }
-                        if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
-                    });
-                }
-            });
-        });
-        styleObserver.observe(postModalLink, {
-            attributes: true,
-            attributeFilter: ["href"]
+        //update again everytime the post changes
+        document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
+            newPostType = tasselJsonManager.modal.json.post_type;
+            if (newPostType === "picture") newPostType = "photo";
+            else if (newPostType === "embed") newPostType = "link";
+            togglePostType_dshcgkhy(newPostType);
+            if (tasselJsonManager.modal.json.mine) {
+                tagInput.value += ", " + settings.tagPreset.selfReblog;
+            } else {
+                tagInput.value += ", " + settings.tagPreset.otherReblog;
+            }
+            if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
         });
     }
 
@@ -88,13 +75,12 @@
     /* Get post type for the static reblog page */
     function initReblogPage_dshcgkhy() {
         if (document.URL.substring(0,37) !== "https://www.pillowfort.social/reblog/") return;
-        let postId = document.URL.split("/")[4];
-        $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-            newPostType = data.post_type;
+        document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
+            newPostType = tasselJsonManager.post.json.post_type;
             if (newPostType === "picture") newPostType = "photo";
             else if (newPostType === "embed") newPostType = "link";
             togglePostType_dshcgkhy(newPostType);
-            if (data.mine) {
+            if (tasselJsonManager.post.json.mine) {
                 tagInput.value += ", " + settings.tagPreset.selfReblog;
             } else {
                 tagInput.value += ", " + settings.tagPreset.otherReblog;
