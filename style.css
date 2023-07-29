@@ -72,36 +72,67 @@ break {
 }
 
 .tasselButtonSmall {
-	margin-right: 0.5em;
-	margin-bottom: 0.5em;
-	border: 1px solid transparent;
-	border-radius: 0.5em;
-	padding: 0.2em 1em;
-	background-color: var(--pageBg);
-	color: var(--postHeaderFont);
-	font-size: small;
-	text-transform: uppercase;
-	transition: all .5s;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    border: 1px solid transparent;
+    border-radius: 0.5em;
+    padding: 0.2em 1em;
+    background-color: #2c405a;
+    color: #ffffff;
+    font-size: small;
+    text-transform: uppercase;
+    transition: all .5s;
+}
+
+body.dark-theme .tasselButtonSmall {
+    background-color: #23282e;
+    color: #d9dbe0;
 }
 
 .tasselButtonSmall:hover {
-	border-color: var(--pageBg);
-	background-color: var(--postHeaderFont);
-	color: var(--pageBg);
-	transition: background-color .1s;
+    border-color: #2c405a;
+    background-color: #ffffff;
+    color: #2c405a;
+    transition: background-color .1s;
+}
+
+body.dark-theme .tasselButtonSmall:hover {
+    border-color: #23282e;
+    background-color: #d9dbe0;
+    color: #23282e;
 }
 
 .tasselCheckmark {
-	width: 15px;
-	height: 25px;
-	border-right: 3.5px solid var(--linkColor);
-	border-bottom: 3.5px solid var(--linkColor);
-	transform: rotate(45deg);
-	background: transparent !important;
+    width: 15px;
+    height: 25px;
+    border-right: 3.5px solid #58b6dd;
+    border-bottom: 3.5px solid #58b6dd;
+    transform: rotate(45deg);
+    background: transparent !important;
+}
+
+body.dark-theme .tasselCheckmark {
+    border-color: #6f96bc;
 }
 
 .post .post-nav .nav-tab {
 	cursor: pointer;
+}
+
+.tasselIconColor {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%)
+}
+
+body.dark-theme .tasselIconColor {
+    filter: brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%);
+}
+
+.tasselLinkColor {
+    color: #58b6dd;
+}
+
+body.dark-theme .tasselLinkColor {
+    color: #58b6dd;
 }
 
 /*//////////////// Modal //////////////////////////*/
