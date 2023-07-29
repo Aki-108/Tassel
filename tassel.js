@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.3
+// @version      1.4.6
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -14,9 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8a09e2427259b42b890a23c7ef123fff5cb68c3f/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dda7e6f09f49ca598d8cb76c358a9cec60992da4/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5e6cefd8b0c83e6ed7d2164dd322cc2872528d8b/style.css";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@85155e7bf194284178588681b820a8946716c0dd/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8bb9114b1fee34ef904e98557060d2971d3bd40c/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f94a56c594c7263dfebcb782f2411b82141fa7b4/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ad7d32948086f0b6aa122385deb914d2376de5e0/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -79,7 +80,7 @@
         if (typeof $ != 'undefined') {
             clearInterval(waitForJQuery);
             loadScript_xcajbuzn("https://cdn.jsdelivr.net/gh/vnausea/waitForKeyElements@f50495d44441c0c5d153d7a5ff229eeaace0bf9e/waitForKeyElements.js")
-                .then().then(() => init_xcajbuzn());
+                .then(() => init_xcajbuzn());
         }
     }, 10);
 
@@ -87,16 +88,76 @@
     function init_xcajbuzn() {
         loadStyle_xcajbuzn(styleURL);
         loadAppearance_xcajbuzn();
+        initJsonManager_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
-            .then().then(() => loadExtensions_xcajbuzn());
+            .then(() => loadExtensions_xcajbuzn());
         initToast_xcajbuzn();
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
     }
 
+    function initJsonManager_xcajbuzn() {
+        let modalReady = document.createElement("button");
+        modalReady.id = "tasselJsonManagerModalReady";
+        modalReady.style.display = "none";
+        document.body.appendChild(modalReady);
+        modalReady.addEventListener("click", function() {console.log("modal data ready")});
+        if (settings2.blurNSFW) modalReady.addEventListener("click", function() {
+            blurNSFW_xcajbuzn([tasselJsonManager.modal.json]);
+        });
+
+        let postReady = document.createElement("button");
+        postReady.id = "tasselJsonManagerPostReady";
+        postReady.style.display = "none";
+        document.body.appendChild(postReady);
+        postReady.addEventListener("click", function() {console.log("post data ready")});
+        if (settings2.blurNSFW) postReady.addEventListener("click", function() {
+            blurNSFW_xcajbuzn([tasselJsonManager.post.json]);
+        });
+
+        let reblogReady = document.createElement("button");
+        reblogReady.id = "tasselJsonManagerReblogReady";
+        reblogReady.style.display = "none";
+        document.body.appendChild(reblogReady);
+        reblogReady.addEventListener("click", function() {console.log("reblog data ready")});
+
+        let likeReady = document.createElement("button");
+        likeReady.id = "tasselJsonManagerLikeReady";
+        likeReady.style.display = "none";
+        document.body.appendChild(likeReady);
+        likeReady.addEventListener("click", function() {console.log("like data ready")});
+
+        let feedReady = document.createElement("button");
+        feedReady.id = "tasselJsonManagerFeedReady";
+        feedReady.style.display = "none";
+        document.body.appendChild(feedReady);
+        feedReady.addEventListener("click", function() {console.log("feed data ready")});
+        if (settings2.blurNSFW) feedReady.addEventListener("click", function() {
+            blurNSFW_xcajbuzn(tasselJsonManager.feed.posts);
+        });
+
+        loadScript_xcajbuzn(jsonManager);
+    }
+
     /* Add buttons to sidebar */
     function initSidebar_xcajbuzn() {
         if (document.getElementsByClassName("tasselSidebarBig").length > 0) return; //stop if sidebar has already been initialized
+
+        //fix sidebar backdrop for small screen widths
+        document.getElementById("sidebar-view-toggle").addEventListener("click", function(){
+            window.setTimeout(function() {
+                let backdrop = document.getElementsByClassName("modal-bd-sidebar")[0];
+                if (document.getElementsByClassName("site-sidebar")[0].style.display=="none") {
+                    if (backdrop) backdrop.parentNode.remove(backdrop);
+                } else {
+                    if (!backdrop) {
+                        backdrop = document.createElement("div");
+                        backdrop.classList.add("modal-backdrop","fade","modal-bd-sidebar","in");
+                        document.body.appendChild(backdrop);
+                    }
+                }
+            }, 300);
+        });
 
         //add button to collapsed sidebar
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
@@ -219,7 +280,7 @@
         document.getElementsByTagName("body")[0].appendChild(toastFrame);
 
         loadScript_xcajbuzn(toastsURL)
-            .then().then(() => loadToasts_xcajbuzn());
+            .then(() => loadToasts_xcajbuzn());
     }
 
     /* Check which toasts to display */
@@ -589,6 +650,11 @@
             settings2.goldToBlue = this.checked;
             saveSettings_xcajbuzn();
         });
+        content.appendChild(createSwitch_xcajbuzn("Blur NSFW Images <i>(Note: takes a moment to load, every time)</i>", settings2.blurNSFW ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.blurNSFW = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Other
         content.appendChild(document.createElement("hr"));
@@ -671,6 +737,39 @@
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.tassel = settings2;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    function blurNSFW_xcajbuzn(postData) {
+        if (postData.length > 0) {
+            let start = new Date().getTime();
+            let nsfwPosts = postData.filter(function(item) {
+                if (item === undefined) return false;
+                return item.nsfw;
+            });
+            let links = Object.values(document.getElementsByClassName("link_post"));
+            nsfwPosts.forEach(function(json) {
+                let postElement = links.filter(function(item) {
+                    if (!item.href) return;
+                    return item.href.split("/")[4] == (json.original_post_id || json.id);
+                });
+                if (links.length === 0) return;//postElement = Object.values(document.getElementsByClassName("post"));
+                postElement.forEach(function(post) {
+                    for (let a = 0; a < 100; a++, post = post.parentNode) {
+                        if (post.classList.contains("post")) break;
+                    }
+                    let images = post.getElementsByClassName("media")[0];
+                    if (images) Object.values(images.children).forEach(function(item) {
+                        item.classList.add("tasselNsfwBlur");
+                    });
+                    let textBody = post.getElementsByClassName("content")[0];
+                    if (textBody) textBody = textBody.getElementsByTagName("img");
+                    if (textBody) Object.values(textBody).forEach(function(item) {
+                        item.classList.add("tasselNsfwBlur");
+                    });
+                });
+            });
+            console.log("load time: ", new Date().getTime() - start);
+        }
     }
 
     /* Create an HTML element of a checkbox with lable */
