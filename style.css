@@ -135,6 +135,14 @@ body.dark-theme .tasselLinkColor {
     color: #58b6dd;
 }
 
+.tasselNsfwBlur {
+    filter: blur(15px) grayscale();
+    transition: filter 1s;
+}
+.tasselNsfwBlur:hover {
+    filter: none;
+}
+
 /*//////////////// Modal //////////////////////////*/
 #tasselModal {
 	display: none;
