@@ -29,7 +29,15 @@ let toasts = [
     "title": "NSFW Blur",
     "text": "The NSFW Blur was added to the Appearance Settings",
     "timestamp": 1690655026520,
-    "new": true
+    "new": false
+  },
+  {
+    "id": 12,
+    "extension": 0,
+    "title": "Various New Settings",
+    "text": "New Tassel Settings have been added: Hide Avatar Frames, Show a Permalink in the Post Footer, Remember Privacy Settings",
+    "timestamp": 1691339326819,
+    "new": false
   }
 ];
 

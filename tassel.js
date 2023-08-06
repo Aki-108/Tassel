@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.7
+// @version      1.4.8
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -14,14 +14,14 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@85155e7bf194284178588681b820a8946716c0dd/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8bb9114b1fee34ef904e98557060d2971d3bd40c/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2d1377c88ed959deb396ba4b6263df7e28f09229/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d8a9fb7acdcd74f693de7886805fe2b25fa4f460/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@540d58cfca913bf29f4dee340d19dbae42701299/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ad7d32948086f0b6aa122385deb914d2376de5e0/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+      <svg xmlns="http://www.w3.org/2000/svg" class="tasselIconColor" width="20" height="20" viewBox="0 0 20 20">
         <title>Tassel</title>
         <path xmlns="http://www.w3.org/2000/svg" id="prefix__ic_settings" style="fill:none;stroke:#58b6dd;stroke-width:1.2px" d="
           M 8 7        Q 6.5 8 6.5 12     Q 6.5 16 4 19
@@ -94,6 +94,7 @@
         initToast_xcajbuzn();
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
+        if (settings2.rememberPostSettings) setPrivacySettings();
     }
 
     function initJsonManager_xcajbuzn() {
@@ -134,6 +135,9 @@
         feedReady.addEventListener("click", function() {console.log("feed data ready")});
         if (settings2.blurNSFW) feedReady.addEventListener("click", function() {
             blurNSFW_xcajbuzn(tasselJsonManager.feed.posts);
+        });
+        if (settings2.bottomPermalink) feedReady.addEventListener("click", function() {
+            addBottomPermalink();
         });
 
         loadScript_xcajbuzn(jsonManager);
@@ -187,7 +191,6 @@
         let image = icon.children[0];
         image.classList.add("sidebar-img");
         image.style.transform = "scale(1.2)";
-        image.style.filter = "var(--iconColor)";
         settingsBig.appendChild(image);
         settingsBig.innerHTML += "Tassel";
         settingsBigWrapper.appendChild(settingsBig);
@@ -270,6 +273,7 @@
         if (settings2.stickyToolbar) style.innerHTML += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
         if (settings2.stickyCommentHeader) style.innerHTML += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
         if (settings2.goldToBlue) style.innerHTML += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
+        if (settings2.noFrames) style.innerHTML += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
         document.head.appendChild(style);
     }
 
@@ -655,6 +659,11 @@
             settings2.blurNSFW = this.checked;
             saveSettings_xcajbuzn();
         });
+        content.appendChild(createSwitch_xcajbuzn("Hide Avatar Frames", settings2.noFrames ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.noFrames = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Other
         content.appendChild(document.createElement("hr"));
@@ -664,6 +673,16 @@
         content.appendChild(createSwitch_xcajbuzn("Show Experimental Extensions in the List", settings2.showWIP ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.showWIP = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Add Permalink to Post-Footer", settings2.bottomPermalink ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.bottomPermalink = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Remember Privacy Settings", settings2.rememberPostSettings ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.rememberPostSettings = this.checked;
             saveSettings_xcajbuzn();
         });
 
@@ -770,6 +789,53 @@
             });
             console.log("load time: ", new Date().getTime() - start);
         }
+    }
+
+    function addBottomPermalink() {
+        let nav = document.getElementsByClassName("post-nav-left");
+        Object.values(nav).forEach(function(item, index) {
+            if (item.classList.contains("tasselPermalinked")) return;
+            let link = document.createElement("a");
+            link.setAttribute("target", "_blank");
+            link.title = "link to post";
+            link.classList.add("link_post", "svg-blue");
+            if (tasselJsonManager.feed.posts[index] === undefined) return;
+            link.href = `/posts/${tasselJsonManager.feed.posts[index].original_post_id || tasselJsonManager.feed.posts[index].id}`;
+            link.style = "margin: 0 21px;";
+            link.innerHTML = `<img src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg" style="height: 20px;">`;
+            item.appendChild(link);
+            item.classList.add("tasselPermalinked");
+        });
+    }
+
+    function setPrivacySettings() {
+        if (!document.getElementById("privacy")) return;
+        //init settings
+        if (!settings2.postSettings) settings2.postSettings = {};
+
+        //add events to save changes
+        document.getElementById("privacy").addEventListener("change", function() {
+            settings2.postSettings.viewable = this.selectedIndex;
+            saveSettings_xcajbuzn();
+        });
+        document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input").rebloggable.parentNode.addEventListener("click", function() {
+            settings2.postSettings.rebloggable = !this.firstChild.checked;
+            saveSettings_xcajbuzn();
+        });
+        document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input").commentable.parentNode.addEventListener("click", function() {
+            settings2.postSettings.commentable = !this.firstChild.checked;
+            saveSettings_xcajbuzn();
+        });
+        document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input").nsfw.parentNode.addEventListener("click", function() {
+            settings2.postSettings.nsfw = !this.firstChild.checked;
+            saveSettings_xcajbuzn();
+        });
+
+        //set settings
+        document.getElementById("privacy").selectedIndex = (settings2.postSettings.viewable < document.getElementById("privacy").length ? settings2.postSettings.viewable : 0) || 0;
+        if (settings2.postSettings.rebloggable === false) document.getElementsByClassName("toggle")[2].click();
+        if (settings2.postSettings.commentable === false) document.getElementsByClassName("toggle")[3].click();
+        if (settings2.postSettings.nsfw === true) document.getElementsByClassName("toggle")[4].click();
     }
 
     /* Create an HTML element of a checkbox with lable */
