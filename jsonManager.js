@@ -9,6 +9,12 @@ let tasselJsonManager = {
         postId: null,
         json: {}
     },
+    comments: {
+        ready: false,
+        postId: null,
+        page: null,
+        comments: []
+    },
     reblogs: {
         ready: false,
         postId: null,
@@ -46,9 +52,11 @@ function initModal_quugasdg() {
                     tasselJsonManager.modal.ready = true;
                     trigger_quugasdg("tasselJsonManagerModalReady");
                 });
+                getCommentData_quugasdg(postId);
             } else if (mutationRecord.attributeName === "style") {
                 if (mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
+                    tasselJsonManager.comments.ready = false;
                 }
             }
         });
@@ -67,6 +75,7 @@ function initModal_quugasdg() {
 initSinglePost_quugasdg();
 function initSinglePost_quugasdg() {
     if (document.getElementById("post-view-modal")) return;
+    if (document.getElementsByTagName("dir-pagination-controls").length === 0) return;
     let postId = document.URL.split("/");
     if (postId.length < 5) return;
     postId = postId[4].split("?")[0];
@@ -78,6 +87,11 @@ function initSinglePost_quugasdg() {
     });
 
     if (document.getElementsByTagName("dir-pagination-controls").length < 1) return;
+
+    let commentPageButtons = document.getElementsByTagName("dir-pagination-controls")[0];
+    commentPageButtons.addEventListener("click", function () {getCommentData_quugasdg(postId)});
+    getCommentData_quugasdg(postId);
+
     let reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
     reblogPageButtons.addEventListener("click", function () {getReblogData_quugasdg(postId)});
     getReblogData_quugasdg(postId);
@@ -85,6 +99,20 @@ function initSinglePost_quugasdg() {
     let likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
     likePageButtons.addEventListener("click", function () {getLikeData_quugasdg(postId)});
     getLikeData_quugasdg(postId);
+}
+
+function getCommentData_quugasdg(postId) {
+    tasselJsonManager.comments.ready = false;
+    tasselJsonManager.comments.postId = postId;
+    let page = 1;
+    let commentPageButtons = document.getElementsByTagName("dir-pagination-controls")[0];
+    if (commentPageButtons.getElementsByClassName("active").length > 0) page = commentPageButtons.getElementsByClassName("active")[0].textContent;
+    tasselJsonManager.comments.page = page;
+    $.getJSON(`https://www.pillowfort.social/posts/${postId}/comments?pageNum=${page}`, function(data) {
+        tasselJsonManager.comments.json = unpackComments_quugasdg(data.comments);
+        tasselJsonManager.comments.ready = true;
+        trigger_quugasdg("tasselJsonManagerCommentReady");
+    });
 }
 
 function getReblogData_quugasdg(postId) {
@@ -235,4 +263,13 @@ function initSearch_quugasdg() {
 function trigger_quugasdg(name) {
     let trigger = document.getElementById(name);
     if (trigger) trigger.click();
+}
+
+function unpackComments_quugasdg(comment) {
+    if (comment.length === 0) return [];
+    let list = [...comment];
+    comment.forEach(function(item) {
+        list.push(...unpackComments_quugasdg(item.children))
+    });
+    return list;
 }
