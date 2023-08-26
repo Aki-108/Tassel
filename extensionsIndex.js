@@ -98,7 +98,25 @@ let extensionsIndex = [
             "features": [
                 "Suggests tags based on your previous posts.",
                 "Adds a button for copying tags when reblogging.",
-                "Set default tags that automatically apply to posts you make/reblog"
+                "Set default tags that automatically apply to posts you make/reblog."
+            ]
+        },
+        {
+            "name": "Image Censor",
+            "id": 8,
+            "version": "0.1",
+            "created": 1693040438225,
+            "updated": 1693040438225,
+            "author": "Aki108",
+            "description": "Censor (NSFW) images and icons.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bfe02a35c3dfe18a90891cb983224df3e9d96127/extensions/ImageCensor/ImageCensor.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@269c6d458b2c85ac8a7222cc7f95c46a97027dff/extensions/ImageCensor/ImageCensor.css",
+            "post": "https://www.pillowfort.social/posts/3656870",
+            "features": [
+                    "Blur NSFW images in posts.",
+                    "Collapse NSFW posts."
+                    "Blur any image in posts.",
+                    "Replace specific user's icon with the Pillowfort default icon."
             ]
         }
     ];
