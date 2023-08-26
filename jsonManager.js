@@ -109,7 +109,7 @@ function getCommentData_quugasdg(postId) {
     if (commentPageButtons.getElementsByClassName("active").length > 0) page = commentPageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.comments.page = page;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/comments?pageNum=${page}`, function(data) {
-        tasselJsonManager.comments.json = unpackComments_quugasdg(data.comments);
+        tasselJsonManager.comments.comments = unpackComments_quugasdg(data.comments);
         tasselJsonManager.comments.ready = true;
         trigger_quugasdg("tasselJsonManagerCommentReady");
     });
