@@ -1,3 +1,11 @@
+.tasselNsfwBlur {
+    filter: blur(15px) grayscale();
+    transition: filter 1s;
+}
+.tasselNsfwBlur:hover {
+    filter: none;
+}
+
 /*////////////////////////// Blocked Post //////////////////////*/
 .tasselAdvancedBlacklistBlockedHeader {
     background: var(--tag_bg);
