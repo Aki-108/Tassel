@@ -38,6 +38,14 @@ let toasts = [
     "text": "New Tassel Settings have been added: Hide Avatar Frames, Show a Permalink in the Post Footer, Remember Privacy Settings",
     "timestamp": 1691339326819,
     "new": false
+  },
+  {
+    "id": 13,
+    "extension": 8,
+    "title": "Image Censor",
+    "text": "The new Extension 'Image Censor' replaces the setting 'blur NSFW'. It also adds some more settings like collapsing NSFW posts or censoring profile pictures.",
+    "timestamp": 1693057804353,
+    "new": true
   }
 ];
 
