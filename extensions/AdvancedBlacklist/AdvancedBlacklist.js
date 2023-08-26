@@ -325,17 +325,17 @@
             reason = "Blocked for: " + blockResult.blockFor.join(", ");
         }
         let container = postElement.getElementsByClassName("tasselAdvancedBlacklistBlockedHeader")[0];
-        if (!container) {
-            container = document.createElement("div");
-            container.innerHTML = `
+        if (container) {
+            container.children[1].innerHTML += `<br>${reason}`;
+            return;
+        }
+
+        container = document.createElement("div");
+        container.innerHTML = `
                 <button>Show</button>
                 <div>${reason}</div>
             `;
-            postElement.getElementsByClassName("header")[0].after(container);
-        } else {
-            container.children[1].innerHTML += `<br>${reason}`;
-        }
-        container.classList.add("tasselAdvancedBlacklistBlockedHeader");
+        postElement.getElementsByClassName("header")[0].after(container);
         container.children[0].addEventListener("click", function() {
             let post = this.parentNode.parentNode;
             if (this.innerHTML == "Show") {
@@ -346,6 +346,7 @@
                 this.innerHTML = "Show";
             }
         });
+        container.classList.add("tasselAdvancedBlacklistBlockedHeader");
 
         for (let el of postElement.getElementsByClassName("title")) el.classList.add("advancedBlacklistHidden");
         for (let el of postElement.getElementsByClassName("media")) el.classList.add("advancedBlacklistHidden");
