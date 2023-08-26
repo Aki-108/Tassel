@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.1
+// @version      1.2
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -320,17 +320,22 @@
             return;
         }
 
-        let container = document.createElement("div");
-        container.classList.add("tasselAdvancedBlacklistBlockedHeader");
         let reason = "This post is blocked.";
         if (settings.showReason) {
             reason = "Blocked for: " + blockResult.blockFor.join(", ");
         }
-        container.innerHTML = `
-            <button>Show</button>
-            <div>${reason}</div>
-        `;
-        postElement.getElementsByClassName("header")[0].after(container);
+        let container = postElement.getElementsByClassName("tasselAdvancedBlacklistBlockedHeader")[0];
+        if (!container) {
+            container = document.createElement("div");
+            container.innerHTML = `
+                <button>Show</button>
+                <div>${reason}</div>
+            `;
+            postElement.getElementsByClassName("header")[0].after(container);
+        } else {
+            container.children[1].innerHTML += `<br>${reason}`;
+        }
+        container.classList.add("tasselAdvancedBlacklistBlockedHeader");
         container.children[0].addEventListener("click", function() {
             let post = this.parentNode.parentNode;
             if (this.innerHTML == "Show") {
