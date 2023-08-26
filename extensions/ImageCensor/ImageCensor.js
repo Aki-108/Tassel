@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Image Censor
-// @version      0.1
+// @version      0.2
 // @description  Censor (NSFW) images and icons.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -23,6 +23,9 @@
     });
     document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", function() {
         processPosts(tasselJsonManager.feed.posts);
+    });
+    document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", function() {
+        censorCommentIcon(tasselJsonManager.comments.comments);
     });
 
     function processPosts(postData) {
@@ -48,7 +51,6 @@
                 if (post.nsfw && settings.collapseNSFW) collapsePost(postEl);
 
                 let username = post.original_username || post.username;
-                console.log(username);
                 if (settings.censorUsers.includes(username)) censorIcon(postEl);
             });
         });
@@ -100,6 +102,22 @@
 
     function censorIcon(postElement) {
         postElement.getElementsByClassName("avatar")[0].children[0].src = "https://img3.pillowfort.social/pf-default-user.png";
+    }
+
+    function censorCommentIcon(comments) {
+        let nameElements = Object.values(document.getElementsByClassName("comment-title"));
+        comments.forEach(function(comment) {
+            if (!settings.censorUsers.includes(comment.username)) return;
+            let elements = nameElements.filter(function(item) {
+                return item.innerHTML === comment.username;
+            });
+            elements.forEach(function(item) {
+                for (let a = 0; a < 100; a++, item = item.parentNode) {
+                    if (item.classList.contains("header")) break;
+                }
+                item.getElementsByClassName("avatar")[0].src = "https://img3.pillowfort.social/pf-default-user.png";
+            });
+        });
     }
 
     /* Add elements to the Tassel menu */
