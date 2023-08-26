@@ -114,7 +114,7 @@ let extensionsIndex = [
             "post": "https://www.pillowfort.social/posts/3656870",
             "features": [
                     "Blur NSFW images in posts.",
-                    "Collapse NSFW posts."
+                    "Collapse NSFW posts.",
                     "Blur any image in posts.",
                     "Replace specific user's icon with the Pillowfort default icon."
             ]
