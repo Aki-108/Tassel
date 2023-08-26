@@ -48,12 +48,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.1",
+            "version": "1.2",
             "created": 1674907200000,
-            "updated": 1690648004203,
+            "updated": 1693047183221,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2ee51079af4be92f07b44410c9f0db4584400625/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0eb86cd4443ac8ff63c8b6c8d5bec74d41a14409/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -104,12 +104,12 @@ let extensionsIndex = [
         {
             "name": "Image Censor",
             "id": 8,
-            "version": "0.1",
+            "version": "0.2",
             "created": 1693040438225,
-            "updated": 1693040438225,
+            "updated": 1693047183221,
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bfe02a35c3dfe18a90891cb983224df3e9d96127/extensions/ImageCensor/ImageCensor.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8acdf8d950f0fbd3124c528062a75a2c01df83ea/extensions/ImageCensor/ImageCensor.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@269c6d458b2c85ac8a7222cc7f95c46a97027dff/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3656870",
             "features": [
