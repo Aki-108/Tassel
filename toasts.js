@@ -8,36 +8,28 @@ let toasts = [
     "new": false
   },
   {
-    "id": 9,
-    "extension": 7,
-    "title": "New Features",
-    "text": "Tagging Tools now has settings for default tags and auto-copying on reblogs.",
-    "timestamp": 1683375780000,
-    "new": false
-  },
-  {
-    "id": 10,
-    "extension": 2,
-    "title": "Post Subscriber",
-    "text": "got a new design.",
-    "timestamp": 1685798654162,
-    "new": false
-  },
-  {
-    "id": 11,
-    "extension": 0,
-    "title": "NSFW Blur",
-    "text": "The NSFW Blur was added to the Appearance Settings",
-    "timestamp": 1690655026520,
-    "new": false
-  },
-  {
     "id": 12,
     "extension": 0,
     "title": "Various New Settings",
     "text": "New Tassel Settings have been added: Hide Avatar Frames, Show a Permalink in the Post Footer, Remember Privacy Settings",
     "timestamp": 1691339326819,
     "new": false
+  },
+  {
+    "id": 13,
+    "extension": 8,
+    "title": "Image Censor",
+    "text": "The new Extension 'Image Censor' replaces the setting 'blur NSFW'. It also adds some more settings like collapsing NSFW posts or censoring profile pictures.",
+    "timestamp": 1693057804353,
+    "new": true
+  },
+  {
+    "id": 14,
+    "extension": 9,
+    "title": "New Extension",
+    "text": "Post Charts is now available for activation",
+    "timestamp": 1693639280661,
+    "new": true
   }
 ];
 

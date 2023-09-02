@@ -1,0 +1,66 @@
+#tasselChartPaneBox {
+    background-color: #fff;
+    width: 650px;
+    margin: 0px 20px 20px 0px;
+    padding: 20px;
+}
+body.dark-theme #tasselChartPaneBox {
+    background-color: #1B1D20;
+}
+
+#tasselNoteChartsTopLine {
+    display:flex;
+    justify-content:space-around;
+    margin-bottom: 1em;
+}
+
+#tasselNoteChartsTopLine .tasselButton {
+    width:33%;
+    margin: 0 .5em;
+}
+
+#tasselNoteChartsProgress {
+    display:none;
+    width:100%;
+    background-color:#ddd;
+    height:38px;
+    margin-bottom:1em;
+    border-radius: 0.5em;
+    overflow:hidden;
+}
+body.dark-theme #tasselNoteChartsProgress {
+    background-color: #23282e;
+}
+
+#tasselNoteChartsProgressBar {
+    width:0;
+    height: 38px;
+    background-color: #007D53;
+    text-align: center;
+    line-height: 38px;
+    color: var(--postHeaderFont);
+    transition:width 0.5s ease-out;
+    font-size:24px;
+}
+body.dark-theme #tasselNoteChartsProgressBar {
+    background-color: #31734e;
+}
+
+#timeGraphLabels,
+#weekGraphLabels,
+#hourGraphLabels {
+    text-align: center;
+    line-height: 1em;
+    margin: 1em;
+}
+
+.dygraph-axis-label {
+    color: #2b2b2b;
+}
+body.dark-theme .dygraph-axis-label {
+    color: #d9dbe0;
+}
+
+body.dark-theme hr {
+    border-color: rgba(255,255,255,0.1);
+}

@@ -1,0 +1,55 @@
+.tasselNsfwBlur {
+    filter: blur(15px) grayscale();
+    transition: filter 1s;
+}
+.tasselNsfwBlur:hover {
+    filter: none;
+}
+
+/*////////////////////////// Blocked Post //////////////////////*/
+.tasselAdvancedBlacklistBlockedHeader {
+    background: var(--tag_bg);
+    padding: 5px 15px;
+    line-height: 35px;
+}
+
+.tasselAdvancedBlacklistBlockedHeader button {
+    float: right;
+    width: 4em;
+    margin: 6px 0px;
+    border: 1px solid var(--postFontColor);
+    border-radius: 1.5px;
+    background: var(--postBgColor);
+}
+
+.tasselAdvancedBlacklistBlockedHeader div {
+    width: calc(100% - 4em - 10px);
+    margin: 6px 0;
+    line-height: 1.4em;
+}
+
+/*////////////////////////// Settings //////////////////////*/
+#tasselImageCensorSaveFrame {
+    display: grid;
+    justify-content: center;
+}
+#tasselImageCensorSaveFrame div {
+    height: 0;
+}
+#tasselImageCensorSaveFrame div div {
+    position: relative;
+    left: 73px;
+    width: 15px;
+    height: 30px;
+    border-right: 5px solid #449d44;
+    border-bottom: 5px solid #449d44;
+    transform: rotate(45deg);
+}
+#tasselImageCensorSaveUsers {
+    z-index: 1;
+    transition: opacity .2s;
+}
+#tasselImageCensorSaveUsers:focus {
+    /*visibility: hidden;*/
+    opacity: 0;
+}

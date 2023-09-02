@@ -22,7 +22,7 @@ let extensionsIndex = [
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@39b3ac70017defb9247c015208b5fde72a5ca5aa/extensions/PostSubscriber/PostSubscriber.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@60e619a2e8461b9561e6d45e8add5c67063d69ca/extensions/PostSubscriber/PostSubscriber.css",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@041af2a0fbd5ec2fa8b4c386597e40d4fb11b544/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -48,12 +48,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.1",
+            "version": "1.2",
             "created": 1674907200000,
-            "updated": 1690648004203,
+            "updated": 1693047183221,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2ee51079af4be92f07b44410c9f0db4584400625/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7b974afd2d424014a758c137451e6912aa98ecdb/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -98,9 +98,43 @@ let extensionsIndex = [
             "features": [
                 "Suggests tags based on your previous posts.",
                 "Adds a button for copying tags when reblogging.",
-                "Set default tags that automatically apply to posts you make/reblog"
+                "Set default tags that automatically apply to posts you make/reblog."
             ]
-        }
+        },
+        {
+            "name": "Image Censor",
+            "id": 8,
+            "version": "1.0",
+            "created": 1693040438225,
+            "updated": 1693062214682,
+            "author": "Aki108",
+            "description": "Censor (NSFW) images and icons.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c8f3010831253743bc205024fdf4c378663d465b/extensions/ImageCensor/ImageCensor.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4b8db357c1e3aeec3ef3b61452486f67c5583723/extensions/ImageCensor/ImageCensor.css",
+            "post": "https://www.pillowfort.social/posts/3658180",
+            "features": [
+                    "Blur NSFW images in posts.",
+                    "Collapse NSFW posts.",
+                    "Blur any image in posts.",
+                    "Replace specific user's icon with the Pillowfort default icon."
+            ]
+        },
+        {
+            "name": "Post Charts",
+            "id": 9,
+            "version": "1.0",
+            "created": 1693639280661,
+            "updated": 1693639280661,
+            "author": "Aki108",
+            "description": "Shows statistics of a post.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50c3ccae4cdc9f9fec179be4ecabbab05cf37d39/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f69d5400fe9f1ed953cd1fbdf858b99eec29aa1e/extensions/PostCharts/PostCharts.css",
+            "post": "https://www.pillowfort.social/posts/3682233",
+            "features": [
+                    "Shows a chart of how the notes on a post developed over time.",
+                    "Shows a chart of notes on a post grouped by weekday or hour."
+            ]
+          }
     ];
 
 /* Template

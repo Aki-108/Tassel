@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.8
+// @version      1.4.9
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2d1377c88ed959deb396ba4b6263df7e28f09229/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d8a9fb7acdcd74f693de7886805fe2b25fa4f460/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@540d58cfca913bf29f4dee340d19dbae42701299/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ad7d32948086f0b6aa122385deb914d2376de5e0/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@61602a44573908ff6b10a7c25548a4b5fc51cf26/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f33336ae3c917daba6a5db23f061d8cb08752a89/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8952670056b40320ac7e374d369b7f1206faae93/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@023796c87f450d8b16539ce1dff529c973f2e259/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -95,6 +95,13 @@
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
         if (settings2.rememberPostSettings) setPrivacySettings();
+
+        //temporary: auto-active Image Censor for users who used blurNSFW
+        if (settings2.blurNSFW) {
+            toggleExtension_xcajbuzn(8);
+            delete settings2["blurNSFW"];
+            saveSettings_xcajbuzn();
+        }
     }
 
     function initJsonManager_xcajbuzn() {
@@ -103,18 +110,18 @@
         modalReady.style.display = "none";
         document.body.appendChild(modalReady);
         modalReady.addEventListener("click", function() {console.log("modal data ready")});
-        if (settings2.blurNSFW) modalReady.addEventListener("click", function() {
-            blurNSFW_xcajbuzn([tasselJsonManager.modal.json]);
-        });
 
         let postReady = document.createElement("button");
         postReady.id = "tasselJsonManagerPostReady";
         postReady.style.display = "none";
         document.body.appendChild(postReady);
         postReady.addEventListener("click", function() {console.log("post data ready")});
-        if (settings2.blurNSFW) postReady.addEventListener("click", function() {
-            blurNSFW_xcajbuzn([tasselJsonManager.post.json]);
-        });
+
+        let commentReady = document.createElement("button");
+        commentReady.id = "tasselJsonManagerCommentReady";
+        commentReady.style.display = "none";
+        document.body.appendChild(commentReady);
+        commentReady.addEventListener("click", function() {console.log("comment data ready")});
 
         let reblogReady = document.createElement("button");
         reblogReady.id = "tasselJsonManagerReblogReady";
@@ -133,9 +140,6 @@
         feedReady.style.display = "none";
         document.body.appendChild(feedReady);
         feedReady.addEventListener("click", function() {console.log("feed data ready")});
-        if (settings2.blurNSFW) feedReady.addEventListener("click", function() {
-            blurNSFW_xcajbuzn(tasselJsonManager.feed.posts);
-        });
         if (settings2.bottomPermalink) feedReady.addEventListener("click", function() {
             addBottomPermalink();
         });
@@ -654,11 +658,6 @@
             settings2.goldToBlue = this.checked;
             saveSettings_xcajbuzn();
         });
-        content.appendChild(createSwitch_xcajbuzn("Blur NSFW Images <i>(Note: takes a moment to load, every time)</i>", settings2.blurNSFW ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings2.blurNSFW = this.checked;
-            saveSettings_xcajbuzn();
-        });
         content.appendChild(createSwitch_xcajbuzn("Hide Avatar Frames", settings2.noFrames ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.noFrames = this.checked;
@@ -758,39 +757,6 @@
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
-    function blurNSFW_xcajbuzn(postData) {
-        if (postData.length > 0) {
-            let start = new Date().getTime();
-            let nsfwPosts = postData.filter(function(item) {
-                if (item === undefined) return false;
-                return item.nsfw;
-            });
-            let links = Object.values(document.getElementsByClassName("link_post"));
-            nsfwPosts.forEach(function(json) {
-                let postElement = links.filter(function(item) {
-                    if (!item.href) return;
-                    return item.href.split("/")[4] == (json.original_post_id || json.id);
-                });
-                if (links.length === 0) return;//postElement = Object.values(document.getElementsByClassName("post"));
-                postElement.forEach(function(post) {
-                    for (let a = 0; a < 100; a++, post = post.parentNode) {
-                        if (post.classList.contains("post")) break;
-                    }
-                    let images = post.getElementsByClassName("media")[0];
-                    if (images) Object.values(images.children).forEach(function(item) {
-                        item.classList.add("tasselNsfwBlur");
-                    });
-                    let textBody = post.getElementsByClassName("content")[0];
-                    if (textBody) textBody = textBody.getElementsByTagName("img");
-                    if (textBody) Object.values(textBody).forEach(function(item) {
-                        item.classList.add("tasselNsfwBlur");
-                    });
-                });
-            });
-            console.log("load time: ", new Date().getTime() - start);
-        }
-    }
-
     function addBottomPermalink() {
         let nav = document.getElementsByClassName("post-nav-left");
         Object.values(nav).forEach(function(item, index) {
@@ -798,7 +764,7 @@
             let link = document.createElement("a");
             link.setAttribute("target", "_blank");
             link.title = "link to post";
-            link.classList.add("link_post", "svg-blue");
+            link.classList.add("link_post", "svg-blue", "tasselPermalinked");
             if (tasselJsonManager.feed.posts[index] === undefined) return;
             link.href = `/posts/${tasselJsonManager.feed.posts[index].original_post_id || tasselJsonManager.feed.posts[index].id}`;
             link.style = "margin: 0 21px;";

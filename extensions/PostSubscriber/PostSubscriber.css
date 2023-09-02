@@ -197,7 +197,3 @@ body.dark-theme #tasselPostSubscriberColorFrame {
 body.dark-theme #tasselPostSubscriberColor {
     border-left: 1px #3a3e47 solid
 }
-
-body.dark-theme #postSubscriberToggle, body.dark-theme #postSubscriberPostModal {
-    filter: brightness(0) saturate(100%) invert(59%) sepia(85%) saturate(375%) hue-rotate(296deg) brightness(80%) contrast(100%);
-}
