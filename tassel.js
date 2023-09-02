@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.8
+// @version      1.4.9
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2d1377c88ed959deb396ba4b6263df7e28f09229/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d8a9fb7acdcd74f693de7886805fe2b25fa4f460/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@540d58cfca913bf29f4dee340d19dbae42701299/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ad7d32948086f0b6aa122385deb914d2376de5e0/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@61602a44573908ff6b10a7c25548a4b5fc51cf26/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f33336ae3c917daba6a5db23f061d8cb08752a89/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8952670056b40320ac7e374d369b7f1206faae93/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@023796c87f450d8b16539ce1dff529c973f2e259/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
