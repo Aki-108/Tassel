@@ -95,6 +95,13 @@
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
         if (settings2.rememberPostSettings) setPrivacySettings();
+
+        //temporary: auto-active Image Censor for users who used blurNSFW
+        if (settings2.blurNSFW) {
+            toggleExtension_xcajbuzn(8);
+            delete settings2["blurNSFW"];
+            saveSettings_xcajbuzn();
+        }
     }
 
     function initJsonManager_xcajbuzn() {
@@ -103,18 +110,18 @@
         modalReady.style.display = "none";
         document.body.appendChild(modalReady);
         modalReady.addEventListener("click", function() {console.log("modal data ready")});
-        if (settings2.blurNSFW) modalReady.addEventListener("click", function() {
-            blurNSFW_xcajbuzn([tasselJsonManager.modal.json]);
-        });
 
         let postReady = document.createElement("button");
         postReady.id = "tasselJsonManagerPostReady";
         postReady.style.display = "none";
         document.body.appendChild(postReady);
         postReady.addEventListener("click", function() {console.log("post data ready")});
-        if (settings2.blurNSFW) postReady.addEventListener("click", function() {
-            blurNSFW_xcajbuzn([tasselJsonManager.post.json]);
-        });
+
+        let commentReady = document.createElement("button");
+        commentReady.id = "tasselJsonManagerCommentReady";
+        commentReady.style.display = "none";
+        document.body.appendChild(commentReady);
+        commentReady.addEventListener("click", function() {console.log("comment data ready")});
 
         let reblogReady = document.createElement("button");
         reblogReady.id = "tasselJsonManagerReblogReady";
@@ -133,9 +140,6 @@
         feedReady.style.display = "none";
         document.body.appendChild(feedReady);
         feedReady.addEventListener("click", function() {console.log("feed data ready")});
-        if (settings2.blurNSFW) feedReady.addEventListener("click", function() {
-            blurNSFW_xcajbuzn(tasselJsonManager.feed.posts);
-        });
         if (settings2.bottomPermalink) feedReady.addEventListener("click", function() {
             addBottomPermalink();
         });
@@ -654,11 +658,6 @@
             settings2.goldToBlue = this.checked;
             saveSettings_xcajbuzn();
         });
-        content.appendChild(createSwitch_xcajbuzn("Blur NSFW Images <i>(Note: takes a moment to load, every time)</i>", settings2.blurNSFW ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings2.blurNSFW = this.checked;
-            saveSettings_xcajbuzn();
-        });
         content.appendChild(createSwitch_xcajbuzn("Hide Avatar Frames", settings2.noFrames ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.noFrames = this.checked;
@@ -758,39 +757,6 @@
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
-    function blurNSFW_xcajbuzn(postData) {
-        if (postData.length > 0) {
-            let start = new Date().getTime();
-            let nsfwPosts = postData.filter(function(item) {
-                if (item === undefined) return false;
-                return item.nsfw;
-            });
-            let links = Object.values(document.getElementsByClassName("link_post"));
-            nsfwPosts.forEach(function(json) {
-                let postElement = links.filter(function(item) {
-                    if (!item.href) return;
-                    return item.href.split("/")[4] == (json.original_post_id || json.id);
-                });
-                if (links.length === 0) return;//postElement = Object.values(document.getElementsByClassName("post"));
-                postElement.forEach(function(post) {
-                    for (let a = 0; a < 100; a++, post = post.parentNode) {
-                        if (post.classList.contains("post")) break;
-                    }
-                    let images = post.getElementsByClassName("media")[0];
-                    if (images) Object.values(images.children).forEach(function(item) {
-                        item.classList.add("tasselNsfwBlur");
-                    });
-                    let textBody = post.getElementsByClassName("content")[0];
-                    if (textBody) textBody = textBody.getElementsByTagName("img");
-                    if (textBody) Object.values(textBody).forEach(function(item) {
-                        item.classList.add("tasselNsfwBlur");
-                    });
-                });
-            });
-            console.log("load time: ", new Date().getTime() - start);
-        }
-    }
-
     function addBottomPermalink() {
         let nav = document.getElementsByClassName("post-nav-left");
         Object.values(nav).forEach(function(item, index) {
@@ -798,7 +764,7 @@
             let link = document.createElement("a");
             link.setAttribute("target", "_blank");
             link.title = "link to post";
-            link.classList.add("link_post", "svg-blue");
+            link.classList.add("link_post", "svg-blue", "tasselPermalinked");
             if (tasselJsonManager.feed.posts[index] === undefined) return;
             link.href = `/posts/${tasselJsonManager.feed.posts[index].original_post_id || tasselJsonManager.feed.posts[index].id}`;
             link.style = "margin: 0 21px;";
