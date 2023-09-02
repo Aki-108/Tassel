@@ -118,7 +118,23 @@ let extensionsIndex = [
                     "Blur any image in posts.",
                     "Replace specific user's icon with the Pillowfort default icon."
             ]
-        }
+        },
+        {
+            "name": "Post Charts",
+            "id": 9,
+            "version": "1.0",
+            "created": 1693639280661,
+            "updated": 1693639280661,
+            "author": "Aki108",
+            "description": "Shows statistics of a post.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50c3ccae4cdc9f9fec179be4ecabbab05cf37d39/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f69d5400fe9f1ed953cd1fbdf858b99eec29aa1e/extensions/PostCharts/PostCharts.css",
+            "post": "https://www.pillowfort.social/posts/3682233",
+            "features": [
+                    "Shows a chart of how the notes on a post developed over time.",
+                    "Shows a chart of notes on a post grouped by weekday or hour."
+            ]
+          }
     ];
 
 /* Template
