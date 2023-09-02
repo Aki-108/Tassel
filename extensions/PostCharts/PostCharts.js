@@ -12,7 +12,7 @@
 (function() {
     'use strict';
 
-    let likesData = [], reblogsData = [], commentsData = [], timeGraphData = [], weekGraphData = [], hourGraphData = [];
+    let likesData = [], reblogsData = [], commentsData = [], timeGraphData = [], weekGraphData = [[new Date(),0,0,0]], hourGraphData = [[new Date(),0,0,0]];
     let GraphObjects = [];
 
     const loadScript_gkgyjoep = src => {
@@ -92,6 +92,9 @@
                 <hr>
                 <div id="timeGraph"></div>
                 <div id="timeGraphLabels"></div>
+                <div>
+                    <p>Controls: Drag to zoom. Shift-Drag to pan.</p>
+                </div>
                 <hr>
                 <div id="weekGraph"></div>
                 <div id="weekGraphLabels"></div>
@@ -295,6 +298,9 @@
                 }
             }
         );
+        Object.values(document.getElementById("hourGraph").getElementsByClassName("dygraph-axis-label dygraph-axis-label-x")).forEach(function(item, index) {
+            item.innerHTML = (index < 10 ? "0" : "") + index + ":00";
+        });
     }
 
     /* Draw a bar-chart on the canvas */
