@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Image Censor
-// @version      1.0
+// @version      1.1
 // @description  Censor (NSFW) images and icons.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -64,6 +64,9 @@
                 //censor icons
                 let username = post.original_username || post.username;
                 if (settings.censorUsers.includes(username)) censorIcon_kyhjxbvr(postEl);
+
+                //pause gifs
+                if (settings.pauseGifs) pauseGifs_kyhjxbvr(postEl);
             });
         });
     };
@@ -143,6 +146,53 @@
         });
     }
 
+    /* Replace GIFs with a static image and toggle */
+    function pauseGifs_kyhjxbvr(postElement) {
+        //get all gifs in the post
+        let images = postElement.getElementsByTagName("img");
+        let gifs = Object.values(images).filter(function(image) {
+            return image.src.search(".gif") > -1;
+        });
+
+        gifs.forEach(function(gif) {
+            //the frame holds all the elements and replaces the original GIF
+            let frame = document.createElement("div");
+            frame.classList = gif.classList;
+            frame.classList.remove("pointer-cursor");
+            frame.classList.add("tasselPauseGifFrame");
+            frame.style.height = gif.height + "px";
+            frame.style.width = gif.width + "px";
+            frame.appendChild(gif.cloneNode(true));
+            frame.children[0].classList.add("hidden");
+            frame.children[0].addEventListener("click", function() {
+                this.classList.add("hidden");
+            });
+            gif.parentNode.appendChild(frame);
+
+            let canvas = document.createElement("canvas");
+            canvas.setAttribute("width", gif.width);
+            canvas.setAttribute("height", gif.height);
+            frame.appendChild(canvas);
+
+            let context = canvas.getContext("2d");
+            context.drawImage(gif, 0, 0);
+
+            let playButton = document.createElement("div");
+            playButton.classList.add("tasselPauseGifPlay");
+            playButton.innerHTML = `
+                <button style="top:${-gif.height/2-75}px">&#x25BA;</button>
+            `;
+            let minDimention = Math.min(gif.width, gif.height);//fit button inside image dimentions
+            if (minDimention < 200) playButton.children[0].style.scale = 0.5*minDimention + "%";
+            playButton.children[0].addEventListener("click", function() {
+                this.parentNode.parentNode.children[0].classList.remove("hidden");
+            });
+            frame.appendChild(playButton);
+
+            gif.remove();
+        });
+    }
+
     /* Add elements to the Tassel menu */
     function initTassel_kyhjxbvr() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
@@ -190,10 +240,16 @@
             settings.blurAny = this.checked;
             saveSettings_kyhjxbvr();
         });
+
+        content.appendChild(createSwitch_kyhjxbvr("Pause GIFs", settings.pauseGifs ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.pauseGifs = this.checked;
+            saveSettings_kyhjxbvr();
+        });
         content.appendChild(document.createElement("hr"));
 
-        let info4 = document.createElement("p");
-        info4.innerHTML = "Enter a list of users whose profile-picture should be censored. One username per line."
+        let info4 = document.createElement("label");
+        info4.innerHTML = "<p>Enter a list of users whose profile-picture should be censored. One username per line.</p>"
         content.appendChild(info4);
         let userInput = document.createElement("textarea");
         userInput.id = "tasselImageCensorUsers";
