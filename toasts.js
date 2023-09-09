@@ -35,7 +35,7 @@ let toasts = [
     "id": 15,
     "extension": 8,
     "title": "Pausable GIFs",
-    "text": "The extension 'Image Censor' now has the options to stop GIF auto-play.",
+    "text": "The extension 'Image Censor' now has the option to stop GIF auto-play.",
     "timestamp": 1694245433855,
     "new": false
   }
