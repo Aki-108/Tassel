@@ -30,6 +30,14 @@ let toasts = [
     "text": "Post Charts is now available for activation",
     "timestamp": 1693639280661,
     "new": true
+  },
+  {
+    "id": 15,
+    "extension": 8,
+    "title": "Pausable GIFs",
+    "text": "The extension 'Image Censor' now has the options to stop GIF auto-play.",
+    "timestamp": 1694245433855,
+    "new": false
   }
 ];
 
