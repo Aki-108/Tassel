@@ -155,6 +155,15 @@
         });
 
         gifs.forEach(function(gif) {
+            if (gif.parentNode.classList.contains("tasselPauseGifFrame")) return;
+            let minDimention = Math.min(gif.width, gif.height);
+            if (minDimention === 0) {//for gifs that didn't load yet
+                gif.addEventListener("load", function() {
+                    pauseGifs_kyhjxbvr(postElement);
+                });
+                return;
+            }
+
             //the frame holds all the elements and replaces the original GIF
             let frame = document.createElement("div");
             frame.classList = gif.classList;
@@ -172,17 +181,17 @@
             let canvas = document.createElement("canvas");
             canvas.setAttribute("width", gif.width);
             canvas.setAttribute("height", gif.height);
+            canvas.setAttribute("aria-label", "Paused GIF" + (gif.alt? ": " + gif.alt : ""));
             frame.appendChild(canvas);
 
             let context = canvas.getContext("2d");
-            context.drawImage(gif, 0, 0);
+            context.drawImage(gif, 0, 0, gif.clientWidth, gif.clientHeight);
 
             let playButton = document.createElement("div");
             playButton.classList.add("tasselPauseGifPlay");
             playButton.innerHTML = `
-                <button style="top:${-gif.height/2-75}px">&#x25BA;</button>
+                <button aria-label="play GIF" style="top:${-gif.height/2-75}px">&#x25BA;</button>
             `;
-            let minDimention = Math.min(gif.width, gif.height);//fit button inside image dimentions
             if (minDimention < 200) playButton.children[0].style.scale = 0.5*minDimention + "%";
             playButton.children[0].addEventListener("click", function() {
                 this.parentNode.parentNode.children[0].classList.remove("hidden");
