@@ -15,7 +15,7 @@
     'use strict';
 
     let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b3eed7607d9606787df5fc63e1d9f0ee27d5240c/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6ca7972d7b9dc945d79a0f20854961ba30f610d3/toasts.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@882f8375c1bd56c9c28be1a0c3f6a40528b433ec/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8952670056b40320ac7e374d369b7f1206faae93/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@023796c87f450d8b16539ce1dff529c973f2e259/jsonManager.js";
 
