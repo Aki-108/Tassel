@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Post Charts
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Shows statistics of a post.
 // @author       Aki108
-// @match        https://www.pillowfort.social/posts/*
+// @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
 // @grant        none
 // ==/UserScript==
@@ -38,6 +38,7 @@
         })
     }
 
+    if (document.URL.split("/")[3] !== "posts") return;
     loadScript_gkgyjoep("https://unpkg.com/dygraphs@2.2.1/dist/dygraph.min.js")
         .then(() => init_gkgyjoep());
     loadStyle_gkgyjoep("https://unpkg.com/dygraphs@2.2.1/dist/dygraph.min.css");
@@ -45,7 +46,7 @@
     /* Initialize */
     function init_gkgyjoep() {
         let tabs = document.getElementsByClassName("nav-tabs");
-        if (!tabs) return;
+        if (!tabs.length) return;
 
         //add tab button
         let chartTab = document.createElement("li");

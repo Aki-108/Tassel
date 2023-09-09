@@ -104,30 +104,31 @@ let extensionsIndex = [
         {
             "name": "Image Censor",
             "id": 8,
-            "version": "1.0",
+            "version": "1.1",
             "created": 1693040438225,
-            "updated": 1693062214682,
+            "updated": 1694245433855,
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c8f3010831253743bc205024fdf4c378663d465b/extensions/ImageCensor/ImageCensor.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4b8db357c1e3aeec3ef3b61452486f67c5583723/extensions/ImageCensor/ImageCensor.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@152b208ca2d38e414247660a32050cb36248b2ca/extensions/ImageCensor/ImageCensor.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9c34ab44040bc42fa6bb50363b5f03017de5743f/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3658180",
             "features": [
                     "Blur NSFW images in posts.",
                     "Collapse NSFW posts.",
                     "Blur any image in posts.",
+                    "Pause GIFs",
                     "Replace specific user's icon with the Pillowfort default icon."
             ]
         },
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.0",
+            "version": "1.1",
             "created": 1693639280661,
-            "updated": 1693639280661,
+            "updated": 1694188283413,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50c3ccae4cdc9f9fec179be4ecabbab05cf37d39/extensions/PostCharts/PostCharts.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b23bedf86f7c2ae1e9edc57063f143ed79402571/extensions/PostCharts/PostCharts.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f69d5400fe9f1ed953cd1fbdf858b99eec29aa1e/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
