@@ -258,6 +258,7 @@
         content.appendChild(document.createElement("hr"));
 
         let info4 = document.createElement("label");
+        info4.setAttribute("for", "tasselImageCensorUsers")
         info4.innerHTML = "<p>Enter a list of users whose profile-picture should be censored. One username per line.</p>"
         content.appendChild(info4);
         let userInput = document.createElement("textarea");
