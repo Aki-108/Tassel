@@ -1,8 +1,8 @@
-.tasselNsfwBlur {
-    filter: blur(15px) grayscale();
+.tasselNsfwBlur * {
+    filter: blur(15px) grayscale(1);
     transition: filter 1s;
 }
-.tasselNsfwBlur:hover {
+.tasselNsfwBlur *:hover {
     filter: none;
 }
 
@@ -26,6 +26,48 @@
     width: calc(100% - 4em - 10px);
     margin: 6px 0;
     line-height: 1.4em;
+}
+
+.tasselPauseGifFrame {
+    overflow: hidden;
+    vertical-align: middle;
+    filter: none;
+}
+
+.tasselPauseGifFrame.half {
+    display: inline-block;
+    max-width: 100%;
+    max-height: 1200px;
+}
+
+.tasselPauseGifFrame .hidden {/*hide normal image*/
+    display: none;
+}
+
+.tasselPauseGifPlay {
+    height: 0;
+    filter: none;
+}
+
+.tasselPauseGifPlay button {/*play button*/
+    position: relative;
+    width: 150px;
+    height: 150px;
+    outline: 10px solid #232b40;
+    border: 10px solid #FFFFFF;
+    border-radius: 100%;
+    padding-left: 15px;
+    background-color: #232b40;
+    color: #FFFFFF;
+    font-size: 100px;
+    filter: none;
+}
+
+body.dark-theme .tasselPauseGifPlay button {
+    outline: 10px solid #1b1d20;
+    border: 10px solid #d9dbe0;
+    background-color: #1b1d20;
+    color: #d9dbe0;
 }
 
 /*////////////////////////// Settings //////////////////////*/
