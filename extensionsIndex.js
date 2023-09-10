@@ -147,7 +147,6 @@ let extensionsIndex = [
     "created": 0,
     "updated": 0,
     "author": "",
-    "icon": "",
     "description": "",
     "src": "",
     "css": "",
