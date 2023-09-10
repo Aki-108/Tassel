@@ -197,6 +197,8 @@ body.dark-theme #tasselModalContent hr {
 }
 
 #tasselModalContent label {
+    width: 100%;  
+    line-height: 1.2em;
     font-weight: normal;
 }
 
@@ -249,6 +251,11 @@ body.dark-theme .tasselModalSidebarEntry {
 	height: 2.5em;
 }
 
+#tasselModalContentExtensionsList {  
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
 .tasselExtension {
 	margin: 20px 10px 0;
 	padding: 10px;
@@ -261,8 +268,8 @@ body.dark-theme .tasselModalSidebarEntry {
 }
 
 body.dark-theme .tasselExtension {
-	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-	box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.8);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.8);
 }
 
 .tasselExtension input {
@@ -290,6 +297,19 @@ body.dark-theme .tasselExtension {
 	cursor: help;
 }
 
+.tasselExtensionAuthor {
+	display: grid;
+	width: 25px;
+	height: 25px;
+	margin-top: 5px;
+	border: 1.5px solid black;
+	border-radius: 3px;
+	align-content: center;
+	text-align: center;
+	font-size: 15px;
+	cursor: help;
+}
+
 .tasselExtensionWIP {
 	width: 25px;
 	height: 25px;
@@ -305,6 +325,7 @@ body.dark-theme .tasselExtension {
 	margin-top: 5px;
 }
 
+body.dark-theme .tasselExtensionAuthor,
 body.dark-theme .tasselExtensionWIP {
 	border: 1.5px solid #d9dbe0;
 }
@@ -346,12 +367,99 @@ body.dark-theme .tasselExtensionWIP {
 }
 
 .tasselToggle label {
+    	width: auto;
+	max-width: calc(100% - 35px);
 	font-weight: normal;
 	cursor: pointer;
 	max-width: 90%;
 	line-height: 1em;
 }
 
+/*//////////////// Mobile //////////////////////////*/
+@media(max-width:800px) {
+    #tasselModalHeader {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    #tasselModalGrid {
+        grid-template-columns: 100%;
+        grid-template-rows: 40px auto;
+        overflow: hidden;
+    }
+
+    #tasselModalSidebar {
+        width: max-content;  width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+        -webkit-box-shadow: 0 0 5px 0 black;
+        box-shadow: 0 0 5px 0 black;
+        border-bottom: 1px #e3e3e3 solid;
+        border-right: none;
+    }
+
+    .tasselModalSidebarEntry {
+        display: inline-block;
+        max-width: max-content;  
+        border-right: .5px #e3e3e3 solid;
+        border-bottom: none;
+    }
+}
+
+@media(max-width:700px) {
+    #tasselModalDialog1 {
+        margin: 50px 0 0 0;
+        max-width: 100%;
+        max-height: 100%;
+        height: calc(100% - 50px);
+    }
+    
+    #tasselModalDialog2.modal-content {
+        border-radius: 0;
+        height: 100%;
+    }
+
+    #tasselModalGrid {
+        height: calc(100% - 46px);
+    }
+
+    #tasselModalContentExtensionsHeader {
+        grid-template-columns: auto 0;
+    }
+    
+    #tasselModalContentExtensionsHeader label {
+        display: none;
+    }
+}
+
+@media(max-width:550px) {
+    .tasselExtension {
+        grid-template-columns: auto;
+        grid-template-rows: auto 25px;
+    }
+    
+    .tasselExtensionSidebar {
+        display: grid;
+        grid-template-columns: 25px 25px 25px 25px 25px;
+        grid-gap: 10px;
+    }
+    
+    .tasselExtension a,
+    .tasselExtensionVersion,
+    .tasselExtensionAuthor,
+    .tasselExtensionWIP {
+        margin-top: 0;
+    }
+}
+
+@media(max-width:400px) {
+    #tasselModalContentExtensionsList {
+        grid-template-columns: 100% !important;
+    }
+}
+
+/*//////////////// Other //////////////////////////*/
 @keyframes blink {
 	0% {opacity: 1;}
 	50% {opacity: 0;}

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.7
+// @version      2.8
 // @description  Get notified when there are new comments in a post.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -197,7 +197,7 @@
                         </div>
                     </div>
                     <div id="tasselPostSubscriberModalSubHeader">
-                        <div style="height: 28px;overflow: hidden;">
+                        <div>
                             <button class="tasselButtonSmall" id="postSubscriberCheck">update all</button>
                             <button class="tasselButtonSmall" id="tasselPostSubscriberReadAll">mark all as read</button>
                             <button class="tasselButtonSmall" id="tasselPostSubscriberUnsubAll">unsubscribe all</button>
@@ -303,8 +303,8 @@
                 </div>
                 <div class="tasselPostSubscriberModalEntryDataFrame">
                     <div href="https://www.pillowfort.social/posts/${item.id}" class="tasselPostSubscriberModalEntryData">
-                        <div style="overflow: hidden;">
-                            <h5 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <div>
+                            <h5>
                                 <a href="https://www.pillowfort.social/posts/${item.id}">${item.title}</a>
                             </h5>
                             <p>
