@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.4.10
+// @version      1.5.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
-// @author       aki108
+// @author       Aki108
 // @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/tassel.js
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@409f96482658a973843cb533b08415abfb950f59/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@03badfc842768851603db9eb1ead69fa9a81fcf2/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@882f8375c1bd56c9c28be1a0c3f6a40528b433ec/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fc8edc097f7854e19f9c90eef08b95796c76d4e9/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@023796c87f450d8b16539ce1dff529c973f2e259/jsonManager.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@58a1585d7caec88c40e206c8d2149b8434f7bc1e/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@506239642b1df59c05f4b1f8276773a78ac2e58b/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -469,8 +469,7 @@
             }
         });
         let extensionsList = document.createElement("div");
-        extensionsList.style.display = "grid";
-        extensionsList.style.gridTemplateColumns = "50% 50%";
+        extensionsList.id = "tasselModalContentExtensionsList"
 
         //create extension entries in modal
         extensionsIndex.forEach(function(data, index) {
@@ -511,6 +510,7 @@
             frame.appendChild(info);
 
             let sidebar = document.createElement("div");
+            sidebar.classList.add("tasselExtensionSidebar");
             let checkbox = document.createElement("input");
               checkbox.id = checkboxID;
               checkbox.title = "activate";
@@ -538,6 +538,11 @@
               version.innerHTML = data.version;
               version.title = `version ${data.version}, published ${new Date(data.created).toLocaleDateString()}, updated ${new Date(data.updated).toLocaleDateString()}`;
             sidebar.appendChild(version);
+            let author = document.createElement("span");
+              author.classList.add("tasselExtensionAuthor");
+              author.innerHTML = "3rd";
+              author.title = "This is a third-party extension. The author is " + data.author;
+            if (data.author !== "Aki108") sidebar.appendChild(author);
             let wip = document.createElement("span");
               wip.classList.add("tasselExtensionWIP");
               wip.innerHTML = "WIP";
@@ -550,9 +555,34 @@
         content.appendChild(extensionsList);
 
         content.appendChild(document.createElement("hr"));
-        let info2 = document.createElement("p");
-        info2.innerHTML = "If you enjoy an extension, consider commenting / reblogging / liking the corresponding announcement post by opening the link of the extension."
+        let info2 = document.createElement("div");
+        info2.innerHTML = `
+            <p>Icon Legend:</p>
+            <ul>
+                <li>
+                    <img alt="link to post" style="width:25px;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">
+                    Link to Post: This link will take you to the announcement post of the extension.
+                </li>
+                <li>
+                    <span style="cursor: normal;display: inline;margin: 0;" class="tasselExtensionVersion">1.0</span>
+                    Version: This is the version of the extension.
+                </li>
+                <li>
+                    <span style="cursor: normal;display: inline-block;padding-top:3px;" class="tasselExtensionAuthor">3rd</span>
+                    Third-Party: This extension is from a third-party author.
+                </li>
+                <li>
+                    <span style="cursor: normal;display: inline-block;padding-top:6px;" class="tasselExtensionWIP">WIP</span>
+                    Work in Progress: This extension is currently in development and might not work as intended. It might be removed in the future. Use at your own risk.
+                </li>
+            </ul>
+        `;
         content.appendChild(info2);
+
+        content.appendChild(document.createElement("hr"));
+        let info3 = document.createElement("p");
+        info3.innerHTML = "If you enjoy an extension, consider commenting / reblogging / liking the corresponding announcement post by opening the link of the extension.";
+        content.appendChild(info3);
     }
 
     /* Create the About page in the modal */
