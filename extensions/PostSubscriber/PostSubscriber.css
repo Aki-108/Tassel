@@ -44,6 +44,11 @@ body.dark-theme #tasselPostSubscriberModalSubHeader {
     border-color: #3e3e3e;
 }
 
+#tasselPostSubscriberModalSubHeader div {
+    height: 28px;
+    overflow: hidden;
+}
+
 #postSubscriberModalContent {
     overflow: auto;
     max-height: calc(80vh - 104px);
@@ -97,6 +102,16 @@ body.dark-theme .tasselPostSubscriberModalEntryData {
 
 body.dark-theme .tasselPostSubscriberModalEntryData p {
     color: #d9dbe0;
+}
+
+.tasselPostSubscriberModalEntryData div {
+    overflow: hidden;
+}
+
+.tasselPostSubscriberModalEntryData h5 {
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
 }
 
 .tasselPostSubscriberModalEntryDataDynamic {
@@ -196,4 +211,30 @@ body.dark-theme #tasselPostSubscriberColorFrame {
 
 body.dark-theme #tasselPostSubscriberColor {
     border-left: 1px #3a3e47 solid
+}
+
+@media(max-width:800px) {
+    #postSubscriberModal {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    
+    #postSubscriberModalContent {
+        max-height: calc(100vh - 104px);
+    }
+}
+
+@media(max-width:550px) {
+    #tasselPostSubscriberModalSubHeader div {
+        height: 56px;
+    }
+}
+
+@media(max-width:400px) {
+    .tasselPostSubscriberModalEntryData h5 {
+        white-space: normal;
+    }
 }
