@@ -8,14 +8,6 @@ let toasts = [
     "new": false
   },
   {
-    "id": 12,
-    "extension": 0,
-    "title": "Various New Settings",
-    "text": "New Tassel Settings have been added: Hide Avatar Frames, Show a Permalink in the Post Footer, Remember Privacy Settings",
-    "timestamp": 1691339326819,
-    "new": false
-  },
-  {
     "id": 13,
     "extension": 8,
     "title": "Image Censor",
