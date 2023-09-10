@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Post Charts
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Shows statistics of a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -94,7 +94,7 @@
                 <div id="timeGraph"></div>
                 <div id="timeGraphLabels"></div>
                 <div>
-                    <p>Controls: Drag to zoom. Shift-Drag to pan.</p>
+                    <p>Controls: Drag to zoom. Shift-Drag to pan. Double-Click to zoom out.</p>
                 </div>
                 <hr>
                 <div id="weekGraph"></div>
@@ -158,9 +158,6 @@
                 axisLineColor: gLineColor,
                 axes: {
                     x: {
-                        axisLabelFormatter: function(d, gran, opts) {
-                            return Dygraph.dateAxisLabelFormatter(new Date(d.getTime() + 86400*1000), gran, opts);
-                        },
                         valueFormatter: function(ms) {
                             let d = new Date(ms),
                                 yyyy = d.getFullYear(),
