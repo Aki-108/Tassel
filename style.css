@@ -249,6 +249,11 @@ body.dark-theme .tasselModalSidebarEntry {
 	height: 2.5em;
 }
 
+#tasselModalContentExtensionsList {  
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
 .tasselExtension {
 	margin: 20px 10px 0;
 	padding: 10px;
@@ -346,12 +351,84 @@ body.dark-theme .tasselExtensionWIP {
 }
 
 .tasselToggle label {
+    	width: auto;
+	max-width: calc(100% - 35px);
 	font-weight: normal;
 	cursor: pointer;
 	max-width: 90%;
 	line-height: 1em;
 }
 
+/*//////////////// Mobile //////////////////////////*/
+@media(max-width:800px) {
+    #tasselModalGrid {
+        grid-template-columns: 100%;
+        grid-template-rows: 40px auto;
+    }
+    
+    #tasselModalSidebar {
+        width: max-content;  width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+        border-bottom: 1px #e3e3e3 solid;
+        border-right: none;
+    }
+    
+    .tasselModalSidebarEntry {
+        display: inline-block;
+        max-width: max-content;  
+        border-right: .5px #e3e3e3 solid;
+        border-bottom: none;
+    }
+}
+
+@media(max-width:700px) {
+    #tasselModalDialog1 {
+        margin: 50px 0 0 0;
+        max-width: 100%;
+        max-height: 100%;
+        height: calc(100% - 50px);
+    }
+    
+    #tasselModalDialog2.modal-content {
+        border-radius: 0;
+        height: 100%;
+    }
+
+    #tasselModalGrid {
+        height: calc(100% - 46px);
+    }
+
+    #tasselModalContentExtensionsHeader {
+        grid-template-columns: auto 0;
+    }
+}
+
+@media(max-width:550px) {
+    .tasselExtension {
+        grid-template-columns: auto;
+        grid-template-rows: auto 25px;
+    }
+    
+    .tasselExtension a {
+        display: inline-block;
+        margin-left: 10px;
+    }
+    
+    .tasselExtensionVersion {
+        display: inline-block;
+        margin-left: 10px;
+    }
+}
+
+@media(max-width:400px) {
+    #tasselModalContentExtensionsList {
+        grid-template-columns: 100% !important;
+    }
+}
+
+/*//////////////// Other //////////////////////////*/
 @keyframes blink {
 	0% {opacity: 1;}
 	50% {opacity: 0;}
