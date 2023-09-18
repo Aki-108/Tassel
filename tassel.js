@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.0
+// @version      1.5.1
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@03badfc842768851603db9eb1ead69fa9a81fcf2/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a4dc50ed25188fb48fb52adb19b8f024f1d8e1fc/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@882f8375c1bd56c9c28be1a0c3f6a40528b433ec/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@58a1585d7caec88c40e206c8d2149b8434f7bc1e/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@506239642b1df59c05f4b1f8276773a78ac2e58b/jsonManager.js";
@@ -95,13 +95,6 @@
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
         if (settings2.rememberPostSettings) setPrivacySettings();
-
-        //temporary: auto-active Image Censor for users who used blurNSFW
-        if (settings2.blurNSFW) {
-            toggleExtension_xcajbuzn(8);
-            delete settings2["blurNSFW"];
-            saveSettings_xcajbuzn();
-        }
     }
 
     function initJsonManager_xcajbuzn() {
@@ -154,12 +147,13 @@
         //fix sidebar backdrop for small screen widths
         document.getElementById("sidebar-view-toggle").addEventListener("click", function(){
             window.setTimeout(function() {
-                let backdrop = document.getElementsByClassName("modal-bd-sidebar")[0];
+                let backdrop = document.getElementById("tasselBackdropFix");
                 if (document.getElementsByClassName("site-sidebar")[0].style.display=="none") {
                     if (backdrop) backdrop.parentNode.remove(backdrop);
                 } else {
                     if (!backdrop) {
                         backdrop = document.createElement("div");
+                        backdrop.id = "tasselBackdropFix";
                         backdrop.classList.add("modal-backdrop","fade","modal-bd-sidebar","in");
                         document.body.appendChild(backdrop);
                     }
