@@ -15,7 +15,7 @@
     'use strict';
 
     let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a4dc50ed25188fb48fb52adb19b8f024f1d8e1fc/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@882f8375c1bd56c9c28be1a0c3f6a40528b433ec/toasts.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@da4ef9682c597facecfe655f701e09300e802415/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@58a1585d7caec88c40e206c8d2149b8434f7bc1e/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@506239642b1df59c05f4b1f8276773a78ac2e58b/jsonManager.js";
 
@@ -143,23 +143,6 @@
     /* Add buttons to sidebar */
     function initSidebar_xcajbuzn() {
         if (document.getElementsByClassName("tasselSidebarBig").length > 0) return; //stop if sidebar has already been initialized
-
-        //fix sidebar backdrop for small screen widths
-        document.getElementById("sidebar-view-toggle").addEventListener("click", function(){
-            window.setTimeout(function() {
-                let backdrop = document.getElementById("tasselBackdropFix");
-                if (document.getElementsByClassName("site-sidebar")[0].style.display=="none") {
-                    if (backdrop) backdrop.parentNode.remove(backdrop);
-                } else {
-                    if (!backdrop) {
-                        backdrop = document.createElement("div");
-                        backdrop.id = "tasselBackdropFix";
-                        backdrop.classList.add("modal-backdrop","fade","modal-bd-sidebar","in");
-                        document.body.appendChild(backdrop);
-                    }
-                }
-            }, 300);
-        });
 
         //add button to collapsed sidebar
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
@@ -725,6 +708,7 @@
             <option value="tasselAdvancedBlacklist">Advanced Blacklist</option>
             <option value="tasselBlocklistAnnotations">Blocklist Annotations</option>
             <option value="tasselPostSubscriber">Post Subscriber</option>
+            <option value="tasselSidebarCounts">Sidebar Counts</option>
             <option value="tasselTaggingTools">Tagging Tools</option>
         `;
         content.appendChild(select3);
