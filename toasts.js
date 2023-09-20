@@ -38,6 +38,14 @@ let toasts = [
     "text": "The extension 'Image Censor' now has the option to stop GIF auto-play.",
     "timestamp": 1694245433855,
     "new": false
+  },
+  {
+    "id": 16,
+    "extension": 10,
+    "title": "New Extension",
+    "text": "Sidebar Counts is now available as a work-in-progress extension.",
+    "timestamp": 1694995080000,
+    "new": true
   }
 ];
 

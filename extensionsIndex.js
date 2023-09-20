@@ -135,24 +135,35 @@ let extensionsIndex = [
                     "Shows a chart of how the notes on a post developed over time.",
                     "Shows a chart of notes on a post grouped by weekday or hour."
             ]
-          }
-    ];
+        },
+        {
+                "name": "Sidebar Counts",
+                "id": 10,
+                "version": "0.3",
+                "created": 1694995080000,
+                "updated": 1694995080000,
+                "author": "optimists-inbound",
+                "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@31ecb6f276fea901f3ec7ba568cc0fcb77f98461/extensions/SidebarCounts.js",
+                "post": "https://www.pillowfort.social/posts/3739972"
+        }
+];
 
 /* Template
 
-  {
-    "name": "",
-    "id": 0,
-    "version": "",
-    "created": 0,
-    "updated": 0,
-    "author": "",
-    "icon": "",
-    "description": "",
-    "src": "",
-    "css": "",
-    "post": "",
-    "features": [
-    ]
-  }
+        {
+                "name": "",
+                "id": 0,
+                "version": "",
+                "created": 0,
+                "updated": 0,
+                "author": "",
+                "icon": "",
+                "description": "",
+                "src": "",
+                "css": "",
+                "post": "",
+                "features": [
+                ]
+        }
 */
