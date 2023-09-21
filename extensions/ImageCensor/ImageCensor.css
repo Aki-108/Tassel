@@ -1,8 +1,10 @@
-.tasselNsfwBlur * {
+.tasselNsfwBlur *,
+img.tasselNsfwBlur {
     filter: blur(15px) grayscale(1);
     transition: filter 1s;
 }
-.tasselNsfwBlur *:hover {
+.tasselNsfwBlur *:hover,
+img.tasselNsfwBlur:hover {
     filter: none;
 }
 
@@ -45,8 +47,10 @@
 }
 
 .tasselPauseGifPlay {
+    display: flex;
     height: 0;
     filter: none;
+    justify-content: center;
 }
 
 .tasselPauseGifPlay button {/*play button*/
