@@ -139,12 +139,12 @@ let extensionsIndex = [
         {
                 "name": "Sidebar Counts",
                 "id": 10,
-                "version": "0.3",
+                "version": "0.4",
                 "created": 1694995080000,
-                "updated": 1694995080000,
+                "updated": 1695618079219,
                 "author": "optimists-inbound",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@31ecb6f276fea901f3ec7ba568cc0fcb77f98461/extensions/SidebarCounts.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@94de62c8c9f1e13ba6f6c531ec8d5735fd518e73/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
         }
 ];
