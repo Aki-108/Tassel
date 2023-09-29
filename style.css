@@ -290,6 +290,7 @@ body.dark-theme .tasselExtension {
 
 .tasselExtensionVersion {
 	width: 25px;
+	height: 25px;
 	display: grid;
 	align-content: center;
 	text-align: center;
