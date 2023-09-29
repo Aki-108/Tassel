@@ -1,0 +1,16 @@
+.tasselReadMoreOldPost {
+    display: none;
+}
+
+.tasselReadMoreNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
+}
+
+.tasselReadMoreNewBlock summary {
+    width: max-content;
+    color: var(--linkColor);
+}
+
+.tasselReadMoreNewBlock summary::marker {
+    content: "";
+}
