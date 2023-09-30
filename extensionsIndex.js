@@ -150,12 +150,12 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "0.1",
+                "version": "0.2",
                 "created": 1696017952450,
                 "updated": 1696017952450,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@840958498332b018bfd32cc27fac7bc8e20f24f8/extensions/ReadThis/ReadThis.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fef47702dc4fca52df08ebd1900b4435fe7d2850/extensions/ReadThis/ReadThis.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@781a4351eedbd636ee1ee5bcacb325c2c6100a2c/extensions/ReadThis/ReadThis.css",
                 "post": ""
         }
