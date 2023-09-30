@@ -1,16 +1,78 @@
-.tasselReadMoreOldPost {
+.tasselReadThisOldPost {
     display: none;
 }
 
-.tasselReadMoreNewBlock {
+.tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
 }
 
-.tasselReadMoreNewBlock summary {
+.tasselReadThisNewBlock summary {
     width: max-content;
     color: var(--linkColor);
 }
+.tasselReadThisNewBlock summary:hover {
+    color: #F377B3;
+}
+body.dark-theme .tasselReadThisNewBlock summary:hover {
+    color: var(--linkColor);
+}
+.tasselReadThisNewBlock summary:focus {
+    text-decoration: underline;
+}
 
-.tasselReadMoreNewBlock summary::marker {
+.tasselReadThisNewBlock summary::marker {
     content: "";
+}
+
+.tasselReadThisShort {
+    overflow: hidden;
+}
+
+.tasselReadThisFade {
+    position: relative;
+    height: 100px;
+    margin-top:-100px;
+    box-shadow: 0 -2px 0 0 inset var(--postHeaderFooter);
+    background:transparent;
+    background: linear-gradient(0deg, var(--postHeaderFooter) 0%, transparent 100%);
+}
+
+.tasselReadThisOpen {
+    display: flex;
+    justify-content: center;
+    padding: .5em;
+    background-color: var(--postHeaderFooter);
+}
+
+.tasselReadThisOpen button {
+    border: none;
+    background: none;
+    color: var(--linkColor);
+}
+.tasselReadThisOpen button:hover {
+    color: #F377B3;
+}
+body.dark-theme .tasselReadThisOpen button:hover {
+    color: var(--linkColor);
+}
+.tasselReadThisOpen button:focus {
+    text-decoration: underline;
+}
+
+#tasselReadThisMaxLengthInput,
+#tasselReadThisShortLengthInput {
+    width: 5em;
+    margin: 0.5em;
+    border: 1px solid #232b40;
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 0.5em 0.5em;
+}
+
+body.dark-theme #tasselReadThisMaxLengthInput,
+body.dark-theme #tasselReadThisShortLengthInput {
+    border: 1px solid #3a3e47;
+    background-color: #1B1D20;
+    color: #d9dbe0;
+    font-variant: none;
 }
