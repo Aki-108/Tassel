@@ -232,5 +232,4 @@ body.dark-theme .tasselFortArchivePostDisplay {
     height: 22px;
     margin: 0;
     padding: 0;
-    filter: brightness(0) saturate(100%) invert(12%) sepia(36%) saturate(3762%) hue-rotate(22deg) brightness(104%) contrast(95%) !important;
 }
