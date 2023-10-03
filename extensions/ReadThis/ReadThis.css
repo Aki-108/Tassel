@@ -5,6 +5,18 @@
 .tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
 }
+blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -20px 0px 0px 0px var(--postHeaderFooter);
+}
+body.dark-theme blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -20px 0px 0px 0px var(--linkColor);
+}
+blockquote blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px #c4c4c4, -15px 0px 0px 0px var(--postHeaderFooter);
+}
+body.dark-theme blockquote blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -15px 0px 0px 0px var(--linkColor);
+}
 
 .tasselReadThisNewBlock summary {
     width: max-content;
@@ -32,25 +44,24 @@ body.dark-theme .tasselReadThisNewBlock summary:hover {
     position: relative;
     height: 100px;
     margin-top:-100px;
-    box-shadow: 0 -2px 0 0 inset var(--postHeaderFooter);
+    box-shadow: 0 -2px 0 0 inset var(--tag_bg);
     background:transparent;
-    background: linear-gradient(0deg, var(--postHeaderFooter) 0%, transparent 100%);
+    background: linear-gradient(0deg, var(--tag_bg) 0%, transparent 100%);
 }
 
 .tasselReadThisOpen {
     display: flex;
     justify-content: center;
     padding: .5em;
-    background-color: var(--postHeaderFooter);
+    background-color: var(--tag_bg);
 }
 
 .tasselReadThisOpen button {
-    border: none;
-    background: none;
-    color: var(--linkColor);
-}
-.tasselReadThisOpen button:hover {
-    color: #F377B3;
+    border: 1px solid var(--postHeaderFont);
+    border-radius: 0.5em;
+    padding: 0.3em 0.7em;
+    background: var(--postHeaderFooter);
+    color: var(--postHeaderFont);
 }
 body.dark-theme .tasselReadThisOpen button:hover {
     color: var(--linkColor);
@@ -64,9 +75,9 @@ body.dark-theme .tasselReadThisOpen button:hover {
     width: 5em;
     margin: 0.5em;
     border: 1px solid #232b40;
-    background-color: white;
     border-radius: 0.5em;
     padding: 0.5em 0.5em;
+    background-color: white;
 }
 
 body.dark-theme #tasselReadThisMaxLengthInput,
