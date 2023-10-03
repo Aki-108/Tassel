@@ -1,0 +1,89 @@
+.tasselReadThisOldPost {
+    display: none;
+}
+
+.tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
+}
+blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -20px 0px 0px 0px var(--postHeaderFooter);
+}
+body.dark-theme blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -20px 0px 0px 0px var(--linkColor);
+}
+blockquote blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px #c4c4c4, -15px 0px 0px 0px var(--postHeaderFooter);
+}
+body.dark-theme blockquote blockquote .tasselReadThisNewBlock {
+    box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -15px 0px 0px 0px var(--linkColor);
+}
+
+.tasselReadThisNewBlock summary {
+    width: max-content;
+    color: var(--linkColor);
+}
+.tasselReadThisNewBlock summary:hover {
+    color: #F377B3;
+}
+body.dark-theme .tasselReadThisNewBlock summary:hover {
+    color: var(--linkColor);
+}
+.tasselReadThisNewBlock summary:focus {
+    text-decoration: underline;
+}
+
+.tasselReadThisNewBlock summary::marker {
+    content: "";
+}
+
+.tasselReadThisShort {
+    overflow: hidden;
+}
+
+.tasselReadThisFade {
+    position: relative;
+    height: 100px;
+    margin-top:-100px;
+    box-shadow: 0 -2px 0 0 inset var(--tag_bg);
+    background:transparent;
+    background: linear-gradient(0deg, var(--tag_bg) 0%, transparent 100%);
+}
+
+.tasselReadThisOpen {
+    display: flex;
+    justify-content: center;
+    padding: .5em;
+    background-color: var(--tag_bg);
+}
+
+.tasselReadThisOpen button {
+    border: 1px solid var(--postHeaderFont);
+    border-radius: 0.5em;
+    padding: 0.3em 0.7em;
+    background: var(--postHeaderFooter);
+    color: var(--postHeaderFont);
+}
+body.dark-theme .tasselReadThisOpen button:hover {
+    color: var(--linkColor);
+}
+.tasselReadThisOpen button:focus {
+    text-decoration: underline;
+}
+
+#tasselReadThisMaxLengthInput,
+#tasselReadThisShortLengthInput {
+    width: 5em;
+    margin: 0.5em;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    padding: 0.5em 0.5em;
+    background-color: white;
+}
+
+body.dark-theme #tasselReadThisMaxLengthInput,
+body.dark-theme #tasselReadThisShortLengthInput {
+    border: 1px solid #3a3e47;
+    background-color: #1B1D20;
+    color: #d9dbe0;
+    font-variant: none;
+}

@@ -40,6 +40,14 @@ break {
 	box-shadow: 0 0 5px 0 black;
 }
 
+#tasselToast h1 {
+	font-size: 1em;  
+	font-weight: bold;
+	line-height: 1em;
+	margin-bottom: 4px;  
+	margin-top: 0;
+}
+
 #tasselToast div {
 	background: var(--postBgColor);
 	color: var(--postFontColor);
@@ -168,6 +176,10 @@ body.dark-theme #tasselModalHeader {
 	border-color: #3e3e3e;
 }
 
+.modal-title {
+	font-size: 1.5em;
+}
+
 #tasselModalGrid {
 	display: grid;
 	grid-template-columns: 200px auto;
@@ -186,6 +198,10 @@ body.dark-theme #tasselModalSidebar {
 #tasselModalContent {
 	overflow: hidden scroll;
 	padding: 10px;
+}
+
+#tasselModalContent h2 {
+	font-size: 1.5em;
 }
 
 #tasselModalContent hr {
@@ -290,6 +306,7 @@ body.dark-theme .tasselExtension {
 
 .tasselExtensionVersion {
 	width: 25px;
+	height: 25px;
 	display: grid;
 	align-content: center;
 	text-align: center;

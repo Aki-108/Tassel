@@ -1,0 +1,235 @@
+#tasselFortArchive {
+    margin-top: 100px;
+    background: #2C405A;  
+    display: flex;
+    flex-direction: column;
+}
+#tasselFortArchive.reverse {
+    flex-direction: column-reverse;
+}
+
+#tasselFortArchive.reverse .content {
+    flex-direction: column-reverse;
+}
+#tasselFortArchive.reverse .content .content {
+    flex-direction: row;
+}
+
+#tasselFortArchiveNavigation {
+    position: fixed;
+    top: 50px;
+    height: 50px;
+    background: #232b40;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;  
+    padding: 0 2em;
+    gap: 0.5em;
+    color: #ffffff;
+}
+
+#tasselFortArchiveNavigation button {
+    background-color: #2c405a;
+    color: #ffffff;
+    padding: 0 1em;
+}
+
+[id^=tasselFortArchiveYear] {
+    width: 100%;
+}
+
+[id^=tasselFortArchiveYear] h1 {
+    background: #232b40;
+    color: white;
+    text-align: center;
+    font-weight: bold;  
+    position: sticky;
+    top: 98px;
+    z-index: 999;
+    margin: 0;
+}
+
+[id^=tasselFortArchiveYear] .content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+[id^=tasselFortArchiveYear] h2 {
+    background: #232b40;
+    color: white;
+    text-align: center;
+    font-weight: bold;  
+    top: 134px;
+    z-index: 998;
+    margin: 0;
+    position: sticky;  
+    font-size: 1.5em;
+}
+
+[id^=tasselFortArchiveYear] .content .content {
+    margin: 10px;  
+    flex-direction: row;
+}
+
+[class^=tasselFortArchiveMonth] {
+    width: 100%;
+}
+
+.tasselFortArchivePost {
+    width: 170px;
+    height: 170px;    
+    background: white;
+    overflow: hidden;
+}
+body.dark-theme .tasselFortArchivePost {
+    background: #1B1D20;
+}
+.tasselFortArchivePost:hover .tasselFortArchivePostDisplay {
+    opacity: 0;
+    height: 0;
+    transition: opacity 0.2s, height 0s 0.2s;
+}
+
+.tasselFortArchivePostInfo {
+    background: #232b40;
+    height: 170px;
+    overflow: hidden;  
+    padding: 5px;
+    font-size: 15px;  
+    text-align: center;
+    padding-top: 10px;
+    color: #FFFFFF;
+    line-height: 20px;
+} 
+body.dark-theme .tasselFortArchivePostInfo {
+    background: #010102;
+}
+
+.tasselFortArchivePostInfo hr {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-color: #FFFFFF;
+}
+
+.tasselFortArchivePostInfoNotes {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.tasselFortArchivePostInfoNotes img {
+    height: 20px;
+}
+body.dark-theme .tasselFortArchivePostInfoNotes img {
+    filter: brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%);
+}
+
+.tasselFortArchivePostInfoTags {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    line-height: 1em;
+    white-space: break-spaces;  
+    height: 63px;
+    overflow: auto;  
+    text-align: left;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 0 0.5em;
+}
+
+.tasselFortArchivePostDisplay {
+    overflow: hidden;
+    background: white;
+    height: 170px;  
+    position: relative;
+    top: -170px;
+    opacity: 1;
+    transition: opacity 0.2s, height 0s;
+    color: #2B2B2B;
+}
+body.dark-theme .tasselFortArchivePostDisplay {
+    background: #1B1D20;
+    color: #d9dbe0;
+}
+
+.tasselFortArchivePostDisplay .youtubeembed {
+    margin: -32px -60px;
+    scale: 0.6;
+    width: 290px;
+    height: 163px;
+}
+
+.tasselFortArchivePostDisplay .tumblrembed {
+    margin: -60px;
+    scale: 0.6;
+    width: 290px;
+    height: 290px;
+}
+.tasselFortArchivePostDisplay .tumblrembed,
+.tasselFortArchivePostDisplay .embed {
+    margin: -60px -60px;
+    scale: 0.6;
+    width: 290px;
+    height: 290px;
+    padding: 0 10px;
+}
+
+.tasselFortArchivePostDisplay .embed embededly-embed {
+    width: 470px;
+    height: 264px;
+    scale: 0.6;
+    margin: -50px -100px;
+}
+
+.tasselFortArchivePost header {
+    padding: 5px;
+}
+
+.tasselFortArchivePost header h3 {
+    display: inline;
+    line-height: 20px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.tasselFortArchivePost .tasselFortArchivePostImage {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tasselFortArchivePost .tasselFortArchivePostImage img {
+    max-width: 170px;
+    display: inline-block;
+}
+
+.tasselFortArchivePost .tasselFortArchivePostImage.half img {
+    max-width: 100px;
+}
+
+.tasselFortArchivePost .tasselFortArchivePostContent {
+    padding: 5px;
+    font-size: 12px;
+}
+
+.tasselFortArchivePost .tasselFortArchivePostContent img {
+    max-width: 160px;
+}
+
+.tasselFortArchivePostContent blockquote {
+    background: #ddd;
+    background: #0002;
+}
+
+.util-buttons.sidebar-expanded button{
+    border: none;
+    background: none;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+}

@@ -8,22 +8,6 @@ let toasts = [
     "new": false
   },
   {
-    "id": 12,
-    "extension": 0,
-    "title": "Various New Settings",
-    "text": "New Tassel Settings have been added: Hide Avatar Frames, Show a Permalink in the Post Footer, Remember Privacy Settings",
-    "timestamp": 1691339326819,
-    "new": false
-  },
-  {
-    "id": 13,
-    "extension": 8,
-    "title": "Image Censor",
-    "text": "The new Extension 'Image Censor' replaces the setting 'blur NSFW'. It also adds some more settings like collapsing NSFW posts or censoring profile pictures.",
-    "timestamp": 1693057804353,
-    "new": true
-  },
-  {
     "id": 14,
     "extension": 9,
     "title": "New Extension",
@@ -45,6 +29,22 @@ let toasts = [
     "title": "New Extension",
     "text": "Sidebar Counts is now available as a work-in-progress extension.",
     "timestamp": 1694995080000,
+    "new": true
+  },
+  {
+    "id": 17,
+    "extension": 11,
+    "title": "New: Read This",
+    "text": "The new extension, 'Read This', let's you open Read-More's without opening the post in a new tab. And it can shorten long posts.",
+    "timestamp": 1696017952450,
+    "new": true
+  },
+  {
+    "id": 18,
+    "extension": 12,
+    "title": "WIP: Fort Archive",
+    "text": "'Fort Archive' let's you see many posts at once and jump to a specific time. But it is still work-in-progress.",
+    "timestamp": 1696333244573,
     "new": true
   }
 ];

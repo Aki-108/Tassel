@@ -146,6 +146,34 @@ let extensionsIndex = [
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@94de62c8c9f1e13ba6f6c531ec8d5735fd518e73/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
+        },
+        {
+                "name": "Read This",
+                "id": 11,
+                "version": "1.0",
+                "created": 1696017952450,
+                "updated": 1696017952450,
+                "author": "Aki108",
+                "description": "Open Read-More's anywhere.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ade3de2d76d8c22844c6a46469de82d00422c106/extensions/ReadThis/ReadThis.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@20c51bad5855cb99d6e138fc78a8a6f331a3c11f/extensions/ReadThis/ReadThis.css",
+                "post": "https://www.pillowfort.social/posts/3787080",
+                "features": [
+                        "Opens a Read-More without opening the post.",
+                        "Shortens long posts."
+                ]
+        },
+        {
+                "name": "Fort Archive",
+                "id": 12,
+                "version": "0.1",
+                "created": 1696333244573,
+                "updated": 1696333244573,
+                "author": "Aki108",
+                "description": "See many posts at once.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9522855d0d1843655797c72fd71ff3e2b63277fb/extensions/FortArchive/FortArchive.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@81d7e49e67bd4d391f052728d9f3199a97804a1c/extensions/FortArchive/FortArchive.css",
+                "post": "https://www.pillowfort.social/posts/3798470"
         }
 ];
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.3
+// @version      1.5.4
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,16 +14,16 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e056068714f846127826008872716c74b48a63f8/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@da4ef9682c597facecfe655f701e09300e802415/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@58a1585d7caec88c40e206c8d2149b8434f7bc1e/style.css";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a3f7fb5985e581e1b6695a9ecc5c3c8cb3c6710/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@520e0c0c5d062d26c7b5e230e8493c42ddd4bdef/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289f9e1ae16455551ee7b77024d7d1ec4cd9274d/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@506239642b1df59c05f4b1f8276773a78ac2e58b/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" class="tasselIconColor" width="20" height="20" viewBox="0 0 20 20">
         <title>Tassel</title>
-        <path xmlns="http://www.w3.org/2000/svg" id="prefix__ic_settings" style="fill:none;stroke:#58b6dd;stroke-width:1.2px" d="
+        <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#58b6dd;stroke-width:1.2px" d="
           M 8 7        Q 6.5 8 6.5 12     Q 6.5 16 4 19
           M 12 7       Q 13.5 8 13.5 12   Q 13.5 16 16 19
           M 8 2.5      L 8 0.5            L 12 0.5            L 12 2.5
@@ -209,19 +209,19 @@
         modal.innerHTML = `
           <div id='tasselModalDialog1' class='modal-dialog'>
             <div id='tasselModalDialog2' class='modal-content'>
-              <div id='tasselModalHeader'>
+              <header id='tasselModalHeader'>
                 <button id='tasselModalClose' class='close' type='button' title='Close'>
                 <span style='color:var(--postFontColor);'>x</span>
                 </button>
-                <h4 class='modal-title'>Tassel</h4>
-              </div>
+                <h1 class='modal-title'>Tassel</h4>
+              </header>
               <div id='tasselModalGrid'>
-                <div id='tasselModalSidebar'>
+                <nav id='tasselModalSidebar' aria-label='Tassel Navigation'>
                   <button class='tasselModalSidebarEntry' id='tasselModalSidebarExtensions'>Extensions</button>
                   <button class='tasselModalSidebarEntry' id='tasselModalSidebarSettings'>Settings</button>
                   <button class='tasselModalSidebarEntry' id='tasselModalSidebarAbout'>About</button>
-                </div>
-                <div id='tasselModalContent'></div>
+                </nav>
+                <main id='tasselModalContent'></main>
               </div>
             </div>
           </div>
@@ -304,7 +304,7 @@
     function pushToast_xcajbuzn(data) {
         let toast = document.createElement("div");
         toast.innerHTML = `
-          <h6>${data.title}</h6>
+          <h1>${data.title}</h1>
           <span>${data.text}</span>
         `;
         toast.setAttribute("timestamp", data.timestamp);
@@ -450,7 +450,7 @@
 
         //create extension entries in modal
         extensionsIndex.forEach(function(data, index) {
-            let frame = document.createElement("div");
+            let frame = document.createElement("section");
             frame.id = "extension"+data.id;
             frame.classList.add("tasselExtension");
                 let checkboxID = "checkbox"+data.name;
@@ -575,7 +575,7 @@
 
         content.innerHTML = `
           <div style="justify-content:center;display:grid;text-align:center;">
-            <h4 style="margin:0;">Tassel</h4>
+            <h2 style="margin:0;">Tassel</h2>
             <span style="margin-bottom:.5em;">by Aki108</span>
             <span style="margin-bottom:.5em;">Version ${GM_info.script.version}</span>
             <span style="margin-bottom:2.5em;">since 11th Dec 2022</span>
@@ -603,7 +603,7 @@
         content.appendChild(document.createElement("hr"));
 
         //Notifications
-        let title1 = document.createElement("h4");
+        let title1 = document.createElement("h2");
         title1.innerHTML = "Notifications";
         content.appendChild(title1);
         let info1 = document.createElement("p");
@@ -627,7 +627,7 @@
 
         //Appearance
         content.appendChild(document.createElement("hr"));
-        let title2 = document.createElement("h4");
+        let title2 = document.createElement("h2");
         title2.innerHTML = "Appearance";
         content.appendChild(title2);
         content.appendChild(createSwitch_xcajbuzn("Shorten Expended Sidebar", settings2.shortenSidebar ? "checked" : ""));
@@ -673,7 +673,7 @@
 
         //Other
         content.appendChild(document.createElement("hr"));
-        let title4 = document.createElement("h4");
+        let title4 = document.createElement("h2");
         title4.innerHTML = "Other";
         content.appendChild(title4);
         content.appendChild(createSwitch_xcajbuzn("Show Experimental Extensions in the List", settings2.showWIP ? "checked" : ""));
@@ -694,7 +694,7 @@
 
         //Reset
         content.appendChild(document.createElement("hr"));
-        let title3 = document.createElement("h4");
+        let title3 = document.createElement("h2");
         title3.innerHTML = "Reset";
         content.appendChild(title3);
         let info3 = document.createElement("p");
@@ -702,6 +702,7 @@
         content.appendChild(info3);
         let select3 = document.createElement("select");
         select3.id = "tasselResetSelect";
+        select3.setAttribute("aria-label", "data group");
         select3.style.marginRight = "1em";
         select3.innerHTML = `
             <option value="tasselSettings2">Tassel Settings</option>
