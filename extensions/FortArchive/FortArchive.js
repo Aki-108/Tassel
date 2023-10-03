@@ -62,9 +62,14 @@
 
         let pagination = document.getElementsByClassName("pagination")[0];
         lastPage = pagination.children[pagination.children.length-2].textContent;
-        //let lastPage = 20;
-        loadPage_avytegoo(lastPage, true);
-        initNav_avytegoo();
+        $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${lastPage}`, function(data) {
+            pageTime[lastPage] = [
+                new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
+                ,
+                new Date(data.posts[0].timestamp.replace("@", ""))
+            ];
+            initNav_avytegoo();
+        });
     }
 
     function initNav_avytegoo() {
