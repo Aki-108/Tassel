@@ -150,14 +150,29 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "0.4",
+                "version": "1.0",
                 "created": 1696017952450,
                 "updated": 1696017952450,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f48bbfad71710090213631f2a37a2eb8c9a7e1c1/extensions/ReadThis/ReadThis.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ade3de2d76d8c22844c6a46469de82d00422c106/extensions/ReadThis/ReadThis.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@20c51bad5855cb99d6e138fc78a8a6f331a3c11f/extensions/ReadThis/ReadThis.css",
-                "post": "https://www.pillowfort.social/posts/3787080"
+                "post": "https://www.pillowfort.social/posts/3787080",
+                "features": [
+                        "Opens a Read-More without opening the post.",
+                        "Shortens long posts."
+                ]
+        },
+        {
+                "name": "Fort Archive",
+                "id": 12,
+                "version": "0.1",
+                "created": 1696333244573,
+                "updated": 1696333244573,
+                "author": "Aki108",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@842708c8e1818fc90526013be80786d153e5e1be/extensions/FortArchive/FortArchive.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7f38fbacd341a7c72335ab55ec8b5cd31855f94b/extensions/FortArchive/FortArchive.css",
+                "post": "https://www.pillowfort.social/posts/3798470"
         }
 ];
 
