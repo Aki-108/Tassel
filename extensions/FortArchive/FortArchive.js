@@ -21,7 +21,7 @@
 
     let icon = document.createElement("div");
     icon.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="tasselFortArchive user-buttons svg-purple" width="20" height="20" viewBox="0 0 20 20">
+      <svg xmlns="http://www.w3.org/2000/svg" class="tasselFortArchive user-buttons svg-blue" width="20" height="20" viewBox="0 0 20 20">
         <title>Archive</title>
         <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#58b6dd;stroke-width:1.4px" d="
           M 16.5 6.5   L 10.5 0.5   L 3.5 0.5   L 3.5 19.5   L 16.5 19.5   L 16.5 6.5   L 10.5 6.5   L 10.5 0.5
