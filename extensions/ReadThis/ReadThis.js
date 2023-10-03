@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      0.4
+// @version      1.0
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
