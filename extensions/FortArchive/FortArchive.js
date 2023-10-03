@@ -61,7 +61,7 @@
         loadPage_avytegoo(1);
 
         let pagination = document.getElementsByClassName("pagination")[0];
-        lastPage = pagination.children[pagination.children.length-2].textContent;
+        lastPage = pagination.children[pagination.children.length-2].textContent*1;
         $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${lastPage}`, function(data) {
             pageTime[lastPage] = [
                 new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
