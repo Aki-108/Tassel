@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      0.3
+// @version      0.4
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -11,7 +11,7 @@
 (function() {
     'use strict';
 
-    let settings = JSON.parse(localStorage.getItem("tasselSettings2")).readThis || {maxHeight: 800, shortHeight: 500};
+    let settings = JSON.parse(localStorage.getItem("tasselSettings2")).readThis || {maxLength: 1000, shortLength: 800};
 
     /* Initialize */
     initTassel_icigqyni();
