@@ -104,13 +104,13 @@ let extensionsIndex = [
         {
             "name": "Image Censor",
             "id": 8,
-            "version": "1.1",
+            "version": "1.2",
             "created": 1693040438225,
-            "updated": 1694245433855,
+            "updated": 1698421111531,
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@152b208ca2d38e414247660a32050cb36248b2ca/extensions/ImageCensor/ImageCensor.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4bd6a94922afc6510beadbdc9cb2013cf1560854/extensions/ImageCensor/ImageCensor.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@35aa264521a85a9d18b14def9e6b2a2475f69e12/extensions/ImageCensor/ImageCensor.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7aeca1171c75ee359b5dc1c65ec8b33cb9ea398f/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3658180",
             "features": [
                     "Blur NSFW images in posts.",
