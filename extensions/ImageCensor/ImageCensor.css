@@ -66,12 +66,23 @@ img.tasselNsfwBlur:hover {
     font-size: 100px;
     filter: none;
 }
+.tasselPauseGifPlay button div {
+    width: 0;
+    height: 0;
+    margin-left: 20px;
+    border-top: 40px solid transparent;
+    border-left: 75px solid #FFFFFF;
+    border-bottom: 40px solid transparent;
+}
 
 body.dark-theme .tasselPauseGifPlay button {
     outline: 10px solid #1b1d20;
     border: 10px solid #d9dbe0;
     background-color: #1b1d20;
     color: #d9dbe0;
+}
+body.dark-theme .tasselPauseGifPlay button div {
+    border-left: 75px solid #d9dbe0;
 }
 
 /*////////////////////////// Settings //////////////////////*/

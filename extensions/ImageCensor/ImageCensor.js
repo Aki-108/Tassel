@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Image Censor
-// @version      1.1
+// @version      1.2
 // @description  Censor (NSFW) images and icons.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -190,7 +190,7 @@
             let playButton = document.createElement("div");
             playButton.classList.add("tasselPauseGifPlay");
             playButton.innerHTML = `
-                <button aria-label="play GIF" style="top:${-gif.height/2-75}px">&#x25BA;</button>
+                <button aria-label="play GIF" style="top:${-gif.height/2-75}px"><div></div></button>
             `;
             if (minDimention < 200) playButton.children[0].style.scale = 0.5*minDimention + "%";
             playButton.children[0].addEventListener("click", function() {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      1.0
+// @version      1.1
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -108,6 +108,7 @@
 
             //add a button to open shortened posts
             let button = document.createElement("div");
+            button.classList.add("tasselReadThisTools");
             button.innerHTML = `
                 <div class="tasselReadThisFade"></div>
                 <div class="tasselReadThisOpen">
