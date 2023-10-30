@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.5
+// @version      1.5.6
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a3f7fb5985e581e1b6695a9ecc5c3c8cb3c6710/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@96cbbece6433aa1633856c93c4051a0ee07507f9/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@520e0c0c5d062d26c7b5e230e8493c42ddd4bdef/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289f9e1ae16455551ee7b77024d7d1ec4cd9274d/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@506239642b1df59c05f4b1f8276773a78ac2e58b/jsonManager.js";
@@ -196,21 +196,6 @@
         settingsBigWrapper.appendChild(settingsBig);
         sidebarBig.appendChild(settingsBigWrapper);
 
-        //shorten the expended sidebar
-        if (settings2.shortenSidebar) {
-            let sidebarItems = document.getElementsByClassName("sidebar-topic");
-            Object.values(sidebarItems).forEach(function(item) {
-                item.style.marginTop = "8px";
-                item.style.marginBottom = "8px";
-                item.style.paddingBottom = "0";
-            });
-            let sidebarBottom = document.getElementsByClassName("sidebar-bottom-left");
-            Object.values(sidebarBottom).forEach(function(item) {
-                item.style.paddingTop = "10px";
-                item.style.paddingBottom = "8px";
-            });
-        }
-
         //hide 0 notifications
         if (settings2.hideZero) {
             Object.values(document.getElementsByClassName("sidebar-num")).forEach(function(el) {
@@ -268,12 +253,22 @@
 
     /* Load selected appearance changes */
     function loadAppearance_xcajbuzn() {
+        let css = "";
+        if (settings2.shortenSidebar) css += ".sidebar-topic{margin-top:8px !important;margin-bottom:8px !important;padding-bottom:0 !important;}.sidebar-indent{padding-bottom:4px !important;}.sidebar-bottom-left{padding-top:10px;padding-bottom:8px;}";
+        if (settings2.stickyIcons) css += ".side-info{position:sticky;top:70px;margin-bottom:10px;}";
+        if (settings2.stickyToolbar) css += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
+        if (settings2.stickyCommentHeader) css += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
+        if (settings2.goldToBlue) css += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
+        if (settings2.noFrames) css += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
+
+        //src: https://stackoverflow.com/q/3922139
         let style = document.createElement("style");
-        if (settings2.stickyIcons) style.innerHTML += ".side-info{position:sticky;top:70px;margin-bottom:10px;}";
-        if (settings2.stickyToolbar) style.innerHTML += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
-        if (settings2.stickyCommentHeader) style.innerHTML += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
-        if (settings2.goldToBlue) style.innerHTML += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
-        if (settings2.noFrames) style.innerHTML += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
+        style.setAttribute('type', 'text/css');
+        if (style.styleSheet) {//IE
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
         document.head.appendChild(style);
     }
 
