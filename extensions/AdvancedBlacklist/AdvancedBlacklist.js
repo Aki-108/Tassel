@@ -329,6 +329,12 @@
             return;
         }
 
+        //compatibility with Read This
+        let readThis = postElement.getElementsByClassName("tasselReadThisTools");
+        if (readThis.length) {
+            readThis[0].style.display = "none";
+        }
+
         let reason = "This post is blocked.";
         if (settings.showReason) {
             reason = "Blocked for: " + blockResult.blockFor.join(", ");
