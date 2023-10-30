@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.4
+// @version      1.5.5
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -103,6 +103,25 @@
         modalReady.style.display = "none";
         document.body.appendChild(modalReady);
         modalReady.addEventListener("click", function() {console.log("modal data ready")});
+        if (settings2.bottomPermalink) modalReady.addEventListener("click", function() {
+            let nav = document.getElementById("post-view-modal").getElementsByClassName("post-nav-left");
+            Object.values(nav).forEach(function(item, index) {
+                if (!tasselJsonManager.modal.ready) return;
+                if (item.classList.contains("tasselPermalinked")) {
+                    item.getElementsByClassName("tasselPermalinked")[0].href = `/posts/${tasselJsonManager.modal.json.original_post_id || tasselJsonManager.modal.json.id}`;
+                    return;
+                }
+                let link = document.createElement("a");
+                link.setAttribute("target", "_blank");
+                link.title = "link to post";
+                link.classList.add("link_post", "svg-blue", "tasselPermalinked");
+                link.href = `/posts/${tasselJsonManager.modal.json.original_post_id || tasselJsonManager.modal.json.id}`;
+                link.style = "margin: 0 21px;";
+                link.innerHTML = `<img src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg" style="height: 20px;">`;
+                item.appendChild(link);
+                item.classList.add("tasselPermalinked");
+            });
+        });
 
         let postReady = document.createElement("button");
         postReady.id = "tasselJsonManagerPostReady";
@@ -177,21 +196,6 @@
         settingsBigWrapper.appendChild(settingsBig);
         sidebarBig.appendChild(settingsBigWrapper);
 
-        //shorten the expended sidebar
-        if (settings2.shortenSidebar) {
-            let sidebarItems = document.getElementsByClassName("sidebar-topic");
-            Object.values(sidebarItems).forEach(function(item) {
-                item.style.marginTop = "8px";
-                item.style.marginBottom = "8px";
-                item.style.paddingBottom = "0";
-            });
-            let sidebarBottom = document.getElementsByClassName("sidebar-bottom-left");
-            Object.values(sidebarBottom).forEach(function(item) {
-                item.style.paddingTop = "10px";
-                item.style.paddingBottom = "8px";
-            });
-        }
-
         //hide 0 notifications
         if (settings2.hideZero) {
             Object.values(document.getElementsByClassName("sidebar-num")).forEach(function(el) {
@@ -249,12 +253,22 @@
 
     /* Load selected appearance changes */
     function loadAppearance_xcajbuzn() {
+        let css = "";
+        if (settings2.shortenSidebar) css += ".sidebar-topic{margin-top:8px !important;margin-bottom:8px !important;padding-bottom:0;}.sidebar-indent{padding-bottom:4px;}.sidebar-bottom-left{padding-top:10px;padding-bottom:8px;}";
+        if (settings2.stickyIcons) css += ".side-info{position:sticky;top:70px;margin-bottom:10px;}";
+        if (settings2.stickyToolbar) css += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
+        if (settings2.stickyCommentHeader) css += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
+        if (settings2.goldToBlue) css += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
+        if (settings2.noFrames) css += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
+
+        //src: https://stackoverflow.com/q/3922139
         let style = document.createElement("style");
-        if (settings2.stickyIcons) style.innerHTML += ".side-info{position:sticky;top:70px;margin-bottom:10px;}";
-        if (settings2.stickyToolbar) style.innerHTML += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
-        if (settings2.stickyCommentHeader) style.innerHTML += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
-        if (settings2.goldToBlue) style.innerHTML += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
-        if (settings2.noFrames) style.innerHTML += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
+        style.setAttribute('type', 'text/css');
+        if (style.styleSheet) {//IE
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
         document.head.appendChild(style);
     }
 
@@ -770,11 +784,11 @@
         let nav = document.getElementsByClassName("post-nav-left");
         Object.values(nav).forEach(function(item, index) {
             if (item.classList.contains("tasselPermalinked")) return;
+            if (tasselJsonManager.feed.posts[index] === undefined) return;
             let link = document.createElement("a");
             link.setAttribute("target", "_blank");
             link.title = "link to post";
             link.classList.add("link_post", "svg-blue", "tasselPermalinked");
-            if (tasselJsonManager.feed.posts[index] === undefined) return;
             link.href = `/posts/${tasselJsonManager.feed.posts[index].original_post_id || tasselJsonManager.feed.posts[index].id}`;
             link.style = "margin: 0 21px;";
             link.innerHTML = `<img src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg" style="height: 20px;">`;
