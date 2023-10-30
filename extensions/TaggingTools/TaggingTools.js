@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.3
+// @version      1.4
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -17,9 +17,11 @@
     //get page elements
     let tagInput = document.getElementById("tags") || document.getElementById("post_tag_list");
     let submitButton = document.getElementById("submit-reblog");
+    let draftButton;
     if (submitButton) {;//reblog modal
     } else if (document.getElementsByClassName("submit-post-bkd")[1]) {//create post
-        submitButton = document.getElementsByClassName("submit-post-bkd")[1].children[0].children[0];
+        submitButton = document.getElementById("publish-btn");
+        draftButton = document.getElementById("draft-btn");
     } else if (document.getElementsByClassName("main reblog-tags-container")[0]) {//reblog page
         submitButton = document.getElementsByClassName("main reblog-tags-container")[0].children[1].children[0];
     }
@@ -38,7 +40,8 @@
         initNewPostPage_dshcgkhy();
         initReblogPage_dshcgkhy();
         initReblogModal_dshcgkhy();
-        addEventListenerSubmit_dshcgkhy();
+        addEventListenerSubmit_dshcgkhy(submitButton);
+        addEventListenerSubmit_dshcgkhy(draftButton);
         addEventListenerInput_dshcgkhy();
         initTassel_dshcgkhy();
     }
@@ -115,9 +118,9 @@
     }
 
     /* Add the event for updating the database */
-    function addEventListenerSubmit_dshcgkhy() {
-        if (!submitButton) return;
-        submitButton.addEventListener("click", function() {
+    function addEventListenerSubmit_dshcgkhy(button) {
+        if (!button) return;
+        button.addEventListener("click", function() {
             //load database
             let file = JSON.parse(localStorage.getItem("tasselTaggingTools")) || {};
             let fileTags = file.tags || [];
