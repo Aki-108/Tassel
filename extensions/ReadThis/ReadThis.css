@@ -4,6 +4,7 @@
 
 .tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
+    line-height: 1.4em;
 }
 blockquote .tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -20px 0px 0px 0px var(--postHeaderFooter);

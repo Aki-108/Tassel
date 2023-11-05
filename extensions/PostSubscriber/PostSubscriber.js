@@ -1,13 +1,10 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.8
+// @version      2.9
 // @description  Get notified when there are new comments in a post.
-// @author       aki108
+// @author       Aki108
 // @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
-// @updateURL    https://raw.githubusercontent.com/Aki-108/pf-post-subscriber/main/main.js
-// @downloadURL  https://raw.githubusercontent.com/Aki-108/pf-post-subscriber/main/main.js
-// @supportURL   https://www.pillowfort.social/posts/2878877
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
 // ==/UserScript==
@@ -15,13 +12,13 @@
 (function() {
     'use strict';
 
-    let modalTimeout = null;//timeout while waiting for new data in the pillowfort post modal
     let newBrowser = typeof HTMLDialogElement === 'function';//check if the browser supports the <dialog> element
     let subscribed = false;
     let thisPost = {};
     let openTime = new Date().getTime();
 
     let tasselSettings = JSON.parse(localStorage.getItem("tasselSettings2")).tassel;
+    let hideNumbersSettings = JSON.parse(localStorage.getItem("tasselSettings2")).hideNumbers || {};
     let settings = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
     if (settings.postSubscriber) {
         settings = settings.postSubscriber;
@@ -162,7 +159,7 @@
         let counter = document.createElement("div");
         counter.classList.add("sidebar-num");
         counter.style.paddingTop = "7px";
-        if (tasselSettings.hideZero) counter.style.display = "none";
+        if (hideNumbersSettings.subscriptionZero) counter.style.display = "none";
         counter.id = "postSubscriberNotificationCounter";
         counter.innerHTML = "0";
         subscriptionBig.appendChild(counter);
@@ -765,13 +762,13 @@
         subscriptions.subscriptions.forEach(function(item, index) {
             if (!item.commentsSeen) item.commentsSeen = 0;
             if (item.commentsSeen < item.comments) {
-                document.getElementById("postSubscriberNotificationBubble").style.display = "block";
+                if (!hideNumbersSettings.subscription) document.getElementById("postSubscriberNotificationBubble").style.display = "block";
                 counter += item.comments - item.commentsSeen;
             }
         });
         document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
-        if (counter > 0) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
-        else if (tasselSettings.hideZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
+        if (counter > 0 && !hideNumbersSettings.subscription) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
+        else if (hideNumbersSettings.subscriptionZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
     }
 
     //return a post "title" based on title, text or post type

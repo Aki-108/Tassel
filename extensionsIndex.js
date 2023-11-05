@@ -16,12 +16,12 @@ let extensionsIndex = [
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "2.8",
+            "version": "2.9",
             "created": 1661764440000,
-            "updated": 1694334474843,
+            "updated": 1699180553884,
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@219c75536ac76987cec15efe8829e32e70d6204a/extensions/PostSubscriber/PostSubscriber.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e355457ddf91119f11d4506cbf1ccec172dc3e24/extensions/PostSubscriber/PostSubscriber.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e99697a94751a76a9c7704e41d77edab02413a9c/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
@@ -87,12 +87,12 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "1.3",
+            "version": "1.4",
             "created": 1678386060000,
-            "updated": 1690041155179,
+            "updated": 1698693876440,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c7236a3ae4b23865fe3b9b07a14b1150c83099dc/extensions/TaggingTools/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@573b3d38a98f94ec22b7ed388e7a69b32f42b55a/extensions/TaggingTools/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@45a52798eab8c5650efd95b0916747f0c07c02b1/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
@@ -174,6 +174,16 @@ let extensionsIndex = [
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9522855d0d1843655797c72fd71ff3e2b63277fb/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@81d7e49e67bd4d391f052728d9f3199a97804a1c/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470"
+        },
+        {
+                "name": "Hide Numbers",
+                "id": 13,
+                "version": "1.0",
+                "created": 1699174060526,
+                "updated": 1699174060526,
+                "author": "Aki108",
+                "description": "Hide any number.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@11ffc58430e017d77d327b26c925cd8bd91ca563/extensions/HideNumbers.js"
         }
 ];
 

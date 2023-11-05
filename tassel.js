@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.6
+// @version      1.5.7
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@96cbbece6433aa1633856c93c4051a0ee07507f9/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@520e0c0c5d062d26c7b5e230e8493c42ddd4bdef/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a174b3ac39fd9f79ce86e74743157e077990756f/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7703065150778350e5a7f85b7430f24efa7e771b/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289f9e1ae16455551ee7b77024d7d1ec4cd9274d/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@506239642b1df59c05f4b1f8276773a78ac2e58b/jsonManager.js";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@65f3b0340112c63b7689ddf562f533fd4cfafcbe/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -35,7 +35,6 @@
     let settings2 = (JSON.parse(localStorage.getItem("tasselSettings2")) || {
         "tassel": {
             "extensions": [],
-            "hideZero": false,
             "highlightComments": false,
             "notify": {
                 "active": true,
@@ -195,13 +194,6 @@
         settingsBig.innerHTML += "Tassel";
         settingsBigWrapper.appendChild(settingsBig);
         sidebarBig.appendChild(settingsBigWrapper);
-
-        //hide 0 notifications
-        if (settings2.hideZero) {
-            Object.values(document.getElementsByClassName("sidebar-num")).forEach(function(el) {
-                if (el.innerHTML == "0") el.style.display = "none"
-            });
-        }
     }
 
     /* Create the modal basis with sidebar */
@@ -649,11 +641,6 @@
             settings2.shortenSidebar = this.checked;
             saveSettings_xcajbuzn();
         });
-        content.appendChild(createSwitch_xcajbuzn("Hide 0 Notification Counter", settings2.hideZero ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings2.hideZero = this.checked;
-            saveSettings_xcajbuzn();
-        });
         content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", settings2.highlightComments ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.highlightComments = this.checked;
@@ -785,6 +772,7 @@
         Object.values(nav).forEach(function(item, index) {
             if (item.classList.contains("tasselPermalinked")) return;
             if (tasselJsonManager.feed.posts[index] === undefined) return;
+            if (tasselJsonManager.feed.type === 'drafts') return;
             let link = document.createElement("a");
             link.setAttribute("target", "_blank");
             link.title = "link to post";
