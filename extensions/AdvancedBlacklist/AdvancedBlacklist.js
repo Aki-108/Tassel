@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.2
+// @version      1.3
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -103,7 +103,10 @@
             if (locationType === "post") id = document.URL.split("/")[4].split("?")[0]
             else id = item.href.substring(item.href.search("/posts/")+7);
             return id == (post.original_post_id || post.id);
-        }).parentNode.parentNode.parentNode.parentNode;
+        });
+        for (let a = 0; a < 100 && !postElement.classList.contains("post-container"); a++) {
+            postElement = postElement.parentNode;
+        }
 
         let button = document.createElement("span");
         button.innerHTML = `
@@ -141,7 +144,10 @@
 
         let postElement = Object.values(permaLinks).find(function(item) {
             return item.href.substring(item.href.search("/posts/")+7) == post.original_post_id;
-        }).parentNode.parentNode.parentNode.parentNode;
+        });
+        for (let a = 0; a < 100 && !postElement.classList.contains("post-container"); a++) {
+            postElement = postElement.parentNode;
+        }
         if (postElement.classList.contains("tasselOriginalTagsAdded")) return;
         postElement.classList.add("tasselOriginalTagsAdded");
 
@@ -153,7 +159,7 @@
             let tagBox = document.createElement("div");
             tagBox.classList.add("tags");
             container.appendChild(tagBox);
-            postElement.insertBefore(container, postElement.getElementsByClassName("post-nav")[0]);
+            postElement.children[1].children[postElement.children[1].children.length-2].after(container);
             tagsElement = postElement.getElementsByClassName("tags")[0];
         } else {
             tagsElement.appendChild(document.createElement("br"));
@@ -312,12 +318,21 @@
             if (locationType === "post") id = document.URL.split("/")[4].split("?")[0]
             else id = item.href.substring(item.href.search("/posts/")+7);
             return id == (post.original_post_id || post.id);
-        }).parentNode.parentNode.parentNode.parentNode;
+        });
+        for (let a = 0; a < 100 && !postElement.classList.contains("post-container"); a++) {
+            postElement = postElement.parentNode;
+        }
 
         //hide post completly
         if (blockResult.hide && locationType !== "post") {
-            postElement.parentNode.parentNode.style.display = "none";
+            postElement.style.display = "none";
             return;
+        }
+
+        //compatibility with Read This
+        let readThis = postElement.getElementsByClassName("tasselReadThisTools");
+        if (readThis.length) {
+            readThis[0].style.display = "none";
         }
 
         let reason = "This post is blocked.";
@@ -658,6 +673,7 @@
         let blackInput = document.createElement("input");
         blackInput.type = "text";
         blackInput.id = "tasselAdvancedBlacklistInput-black-" + index;
+        blackInput.setAttribute("aria-label", `blacklist, row ${index+1}`);
         if (item) blackInput.value = item.blacklist.join(", ");
         blackInput.addEventListener("input", checkNewRow_skdasoyk);
         blacklistView.appendChild(blackInput);
@@ -665,12 +681,14 @@
         let whiteInput = document.createElement("input");
         whiteInput.type = "text";
         whiteInput.id = "tasselAdvancedBlacklistInput-white-" + index;
+        whiteInput.setAttribute("aria-label", `whitelist, row ${index+1}`);
         if (item) whiteInput.value = item.whitelist.join(", ");
         whiteInput.addEventListener("input", checkNewRow_skdasoyk);
         blacklistView.appendChild(whiteInput);
 
         let checkTags = document.createElement("input");
         checkTags.id = "tasselAdvancedBlacklistInput-tags-" + index;
+        checkTags.setAttribute("aria-label", `search tags, row ${index+1}`);
         checkTags.type = "checkbox";
         checkTags.checked = true;
         if (item) checkTags.checked = item.apply.tags;
@@ -678,6 +696,7 @@
 
         let checkBody = document.createElement("input");
         checkBody.id = "tasselAdvancedBlacklistInput-body-" + index;
+        checkBody.setAttribute("aria-label", `search text body, row ${index+1}`);
         checkBody.type = "checkbox";
         checkBody.checked = true;
         if (item) checkBody.checked = item.apply.body;
@@ -685,12 +704,14 @@
 
         let checkId = document.createElement("input");
         checkId.id = "tasselAdvancedBlacklistInput-id-" + index;
+        checkId.setAttribute("aria-label", `search post id, row ${index+1}`);
         checkId.type = "checkbox";
         if (item) checkId.checked = item.apply.id;
         blacklistView.appendChild(checkId);
 
         let hidePost = document.createElement("input");
         hidePost.id = "tasselAdvancedBlacklistInput-hide-" + index;
+        hidePost.setAttribute("aria-label", `hide post, row ${index+1}`);
         hidePost.type = "checkbox";
         if (item) hidePost.checked = item.hide;
         blacklistView.appendChild(hidePost);
@@ -698,6 +719,7 @@
         let sourceInput = document.createElement("input");
         sourceInput.type = "text";
         sourceInput.id = "tasselAdvancedBlacklistInput-source-" + index;
+        sourceInput.setAttribute("aria-label", `source, row ${index+1}`);
         sourceInput.addEventListener("input", checkNewRow_skdasoyk);
         if (item) sourceInput.value = item.source;
         blacklistView.appendChild(sourceInput);
