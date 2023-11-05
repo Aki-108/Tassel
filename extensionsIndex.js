@@ -174,6 +174,17 @@ let extensionsIndex = [
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9522855d0d1843655797c72fd71ff3e2b63277fb/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@81d7e49e67bd4d391f052728d9f3199a97804a1c/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470"
+        },
+        {
+                "name": "Hide Numbers",
+                "id": 13,
+                "version": "0.1",
+                "created": 1699174060526,
+                "updated": 1699174060526,
+                "author": "Aki108",
+                "description": "Hide any number.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@74db6335f59fb05793738e6fe82d11b9caf83c76/extensions/HideNumbers.js",
+                "post": "https://www.pillowfort.social/posts/3902566",
         }
 ];
 
