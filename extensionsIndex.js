@@ -178,13 +178,12 @@ let extensionsIndex = [
         {
                 "name": "Hide Numbers",
                 "id": 13,
-                "version": "0.1",
+                "version": "1.0",
                 "created": 1699174060526,
                 "updated": 1699174060526,
                 "author": "Aki108",
                 "description": "Hide any number.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@74db6335f59fb05793738e6fe82d11b9caf83c76/extensions/HideNumbers.js",
-                "post": "https://www.pillowfort.social/posts/3902566",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@11ffc58430e017d77d327b26c925cd8bd91ca563/extensions/HideNumbers.js"
         }
 ];
 
