@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Hide Numbers
-// @version      0.1
+// @version      1.0
 // @description  Hide any number on Pillowfort
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -13,10 +13,10 @@
 
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).hideNumbers || {own:{},other:{}};
 
-    init();
-    function init() {
-        hideNumbersSidebar();
-        initTassel();
+    init_yxhjqepn();
+    function init_yxhjqepn() {
+        initTassel_yxhjqepn();
+        hideNumbersSidebar_yxhjqepn();
 
         if (settings.own.comment
             || settings.own.reblog
@@ -31,7 +31,7 @@
                 links = links.filter(function(item) {
                     return !item.classList.contains("tasselPermalinked");
                 });
-                hideNumbersPosts(tasselJsonManager.feed.posts, links);
+                hideNumbersPosts_yxhjqepn(tasselJsonManager.feed.posts, links);
             });
             document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
                 //get HTML elements for posts
@@ -39,7 +39,7 @@
                 links = links.filter(function(item) {
                     return !item.classList.contains("tasselPermalinked");
                 });
-                hideNumbersPosts([tasselJsonManager.post.json], links);
+                hideNumbersPosts_yxhjqepn([tasselJsonManager.post.json], links);
             });
             document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
                 //get HTML elements for posts
@@ -47,18 +47,10 @@
                 links = links.filter(function(item) {
                     return !item.classList.contains("tasselPermalinked");
                 });
-                hideNumbersPosts([tasselJsonManager.modal.json], links);
+                hideNumbersPosts_yxhjqepn([tasselJsonManager.modal.json], links);
             });
         }
         if (settings.commentLikes) {
-            document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
-                let likes = Object.values(document.getElementsByClassName("comment-like-button"));
-                likes.forEach(function(item) {
-                    if (item.children.length) {
-                        item.children[item.children.length-1].style.display = "none";
-                    }
-                });
-            });
             document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", function() {
                 //modal
                 if (document.getElementById("post-view-modal")) {
@@ -71,7 +63,6 @@
                 } else {
                     //other
                     let likes = Object.values(document.getElementsByClassName("comment-like-button"));
-                    console.log(likes);
                     likes.forEach(function(item) {
                         if (item.children.length) {
                             item.children[item.children.length-1].style.display = "none";
@@ -82,14 +73,15 @@
         }
     }
 
-    function hideNumbersSidebar() {
+    function hideNumbersSidebar_yxhjqepn() {
         let sidebar = document.getElementById("expanded-bar-container");
+        //sidebar top
         if (settings.draft) {
-            let drafts = getElementByHref(sidebar, "/drafts");
+            let drafts = getElementByHref_yxhjqepn(sidebar, "/drafts");
             if (drafts) drafts[0].getElementsByClassName("sidebar-num")[0].style.visibility = "hidden";
         }
         if (settings.inbox || settings.inboxZero) {
-            let inbox = getElementByHref(sidebar, "/messages");
+            let inbox = getElementByHref_yxhjqepn(sidebar, "/messages");
             if (inbox) {
                 let num = inbox[0].getElementsByClassName("sidebar-num")[0];
                 if (settings.inbox) {
@@ -108,7 +100,7 @@
             }
         }
         if (settings.notification || settings.notificationZero) {
-            let notification = getElementByHref(sidebar, "/notifs_dash");
+            let notification = getElementByHref_yxhjqepn(sidebar, "/notifs_dash");
             if (notification) {
                 let num = notification[0].getElementsByClassName("sidebar-num")[0];
                 if (settings.notification) {
@@ -119,29 +111,30 @@
             }
         }
 
+        //sidebar bottom
         if (settings.followers) {
-            let followers = getElementByHref(sidebar, "/followers");
+            let followers = getElementByHref_yxhjqepn(sidebar, "/followers");
             if (followers) {
                 let num = followers[0].getElementsByClassName("sidebar-bottom-num")[0];
                 num.style.visibility = "hidden";
             }
         }
         if (settings.following) {
-            let following = getElementByHref(sidebar, "/following");
+            let following = getElementByHref_yxhjqepn(sidebar, "/following");
             if (following) {
                 let num = following[0].getElementsByClassName("sidebar-bottom-num")[0];
                 num.style.visibility = "hidden";
             }
         }
         if (settings.mutuals) {
-            let mutuals = getElementByHref(sidebar, "/mutuals");
+            let mutuals = getElementByHref_yxhjqepn(sidebar, "/mutuals");
             if (mutuals) {
                 let num = mutuals[0].getElementsByClassName("sidebar-bottom-num")[0];
                 num.style.visibility = "hidden";
             }
         }
         if (settings.donation) {
-            let donation = getElementByHref(sidebar, "/donations");
+            let donation = getElementByHref_yxhjqepn(sidebar, "/donations");
             if (donation) {
                 let num = donation[0].getElementsByClassName("sidebar-bottom-num")[0];
                 num.style.visibility = "hidden";
@@ -149,7 +142,8 @@
         }
     }
 
-    function hideNumbersPosts(posts, links) {
+    /* Filter posts into posts by oneself and posts by others */
+    function hideNumbersPosts_yxhjqepn(posts, links) {
         if (settings.own.comment
             || settings.own.reblog
             || settings.own.like
@@ -157,7 +151,7 @@
             let ownPosts = posts.filter(function(item) {
                 return item.mine;
             });
-            hideNumbersPostsFiltered(ownPosts, links, settings.own)
+            hideNumbersPostsFiltered_yxhjqepn(ownPosts, links, settings.own)
         }
         if (settings.other.comment
             || settings.other.reblog
@@ -166,11 +160,15 @@
             let otherPosts = posts.filter(function(item) {
                 return !item.mine;
             });
-            hideNumbersPostsFiltered(otherPosts, links, settings.other)
+            hideNumbersPostsFiltered_yxhjqepn(otherPosts, links, settings.other)
         }
     }
 
-    function hideNumbersPostsFiltered(posts, links, filter) {
+    /* Hide the numbers on a list of posts */
+    //posts: json of posts
+    //links: html of posts
+    //filter: what to hide
+    function hideNumbersPostsFiltered_yxhjqepn(posts, links, filter) {
         posts.forEach(function(post) {
             //match data with an HTML element
             let postElement = links.filter(function(item) {
@@ -214,7 +212,8 @@
         });
     }
 
-    function getElementByHref(parent, href) {
+    /* Find anchor objects with a specific link */
+    function getElementByHref_yxhjqepn(parent, href) {
         if (!parent) return null;
         let results = Object.values(parent.getElementsByTagName("a")).filter(function(item) {
             return item.getAttribute("href") === href;
@@ -224,7 +223,7 @@
     }
 
     /* Add elements to the Tassel menu */
-    function initTassel() {
+    function initTassel_yxhjqepn() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar == null) return;
         let button = document.createElement("button");
@@ -232,11 +231,11 @@
         button.id = "tasselModalSidebarHideNumbers";
         button.innerHTML = "Hide Numbers";
         tasselSidebar.appendChild(button);
-        document.getElementById("tasselModalSidebarHideNumbers").addEventListener("click", displaySettings);
+        document.getElementById("tasselModalSidebarHideNumbers").addEventListener("click", displaySettings_yxhjqepn);
     }
 
     /* Create Tassel settings menu */
-    function displaySettings() {
+    function displaySettings_yxhjqepn() {
         //deselect other menu items and select this one
         let content = document.getElementById("tasselModalContent");
         content.innerHTML = "";
@@ -257,60 +256,60 @@
         title1.innerHTML = "Sidebar";
         content.appendChild(title1);
 
-        content.appendChild(createSwitch("Hide Draft Count", settings.draft ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Draft Count", settings.draft ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.draft = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Inbox Count when Zero", settings.inboxZero ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Inbox Count when Zero", settings.inboxZero ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.inboxZero = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Inbox Count", settings.inbox ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Inbox Count", settings.inbox ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.inbox = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Subscription Count when Zero (Post Subscriber Extension)", settings.subscriptionZero ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Subscription Count when Zero (Post Subscriber Extension)", settings.subscriptionZero ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.subscriptionZero = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Subscription Count (Post Subscriber Extension)", settings.subscription ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Subscription Count (Post Subscriber Extension)", settings.subscription ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.subscription = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Notification Count when Zero", settings.notificationZero ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Notification Count when Zero", settings.notificationZero ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.notificationZero = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Notification Count", settings.notification ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Notification Count", settings.notification ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.notification = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Followers Count", settings.followers ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Followers Count", settings.followers ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.followers = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Following Count", settings.following ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Following Count", settings.following ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.following = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Mutuals Count", settings.mutuals ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Mutuals Count", settings.mutuals ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.mutuals = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Donation Percent", settings.donation ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Donation Percent", settings.donation ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.donation = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
         content.appendChild(document.createElement("hr"));
 
@@ -318,20 +317,20 @@
         title2.innerHTML = "Own Posts";
         content.appendChild(title2);
 
-        content.appendChild(createSwitch("Hide Comment Count", settings.own.comment ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Comment Count", settings.own.comment ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.own.comment = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Reblog Count", settings.own.reblog ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Reblog Count", settings.own.reblog ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.own.reblog = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Like Count", settings.own.like ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Like Count", settings.own.like ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.own.like = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
         content.appendChild(document.createElement("hr"));
 
@@ -339,20 +338,20 @@
         title3.innerHTML = "Other Posts";
         content.appendChild(title3);
 
-        content.appendChild(createSwitch("Hide Comment Count", settings.other.comment ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Comment Count", settings.other.comment ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.other.comment = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Reblog Count", settings.other.reblog ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Reblog Count", settings.other.reblog ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.other.reblog = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch("Hide Like Count", settings.other.like ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Like Count", settings.other.like ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.other.like = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
         content.appendChild(document.createElement("hr"));
 
@@ -360,20 +359,20 @@
         title4.innerHTML = "Miscellaneous";
         content.appendChild(title4);
 
-        content.appendChild(createSwitch("Hide Comment Like Count", settings.commentLikes ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Comment Like Count", settings.commentLikes ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.commentLikes = this.checked;
-            saveSettings();
+            saveSettings_yxhjqepn();
         });
     }
 
-    function saveSettings() {
+    function saveSettings_yxhjqepn() {
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.hideNumbers = settings;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
-    function createSwitch(title="", state="") {
+    function createSwitch_yxhjqepn(title="", state="") {
         let id = "tasselSwitch" + Math.random();
         let toggle = document.createElement("div");
         toggle.classList.add("tasselToggle");
