@@ -110,7 +110,7 @@ let extensionsIndex = [
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@35aa264521a85a9d18b14def9e6b2a2475f69e12/extensions/ImageCensor/ImageCensor.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7aeca1171c75ee359b5dc1c65ec8b33cb9ea398f/extensions/ImageCensor/ImageCensor.css",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5381c8033b663799c648d26f1803daf38ab8ddfa/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3658180",
             "features": [
                     "Blur NSFW images in posts.",

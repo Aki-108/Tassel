@@ -73,6 +73,7 @@ img.tasselNsfwBlur:hover {
     border-top: 40px solid transparent;
     border-left: 75px solid #FFFFFF;
     border-bottom: 40px solid transparent;
+    filter: none;
 }
 
 body.dark-theme .tasselPauseGifPlay button {
