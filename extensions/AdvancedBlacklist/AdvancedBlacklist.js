@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.3
+// @version      1.4
 // @description  A new and improved blacklist feature for Pillowfort.
-// @author       aki108
+// @author       Aki108
 // @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
 // @grant        none
@@ -185,6 +185,16 @@
             blockFor: [],
             hide: false
         };
+
+        // get tag content
+        let tags = [];
+        tags.push(...post.tags);
+        if (post.original_post) tags.push(...post.original_post.tag_list);
+
+        if (settings.removeUntagged && !tags.length) {
+            return {block: true, blockFor: ["untagged"], hide: true};
+        }
+
         blacklist.forEach(function(entry) {
             //found indicators: -1 no entry; 0 not found; 1 found
             let indicatorSource = -1;
@@ -232,11 +242,6 @@
                 _body = _body.replaceAll("<br>", " ");
                 body = _body.split(" ");
             }
-
-            // get tag content
-            let tags = [];
-            tags.push(...post.tags);
-            if (post.original_post) tags.push(...post.original_post.tag_list);
 
             // whitelist /////////////////////////////////////////////////////////////////
             let whitelistCount = 0;
@@ -447,6 +452,12 @@
             saveSettings_skdasoyk();
         });
         settingsArea.appendChild(switch2);
+        let switch3 = createSwitch_skdasoyk("Remove untagged Posts", settings.removeUntagged ? "checked" : "");
+        switch3.children[0].addEventListener("change", function() {
+            settings.removeUntagged = this.checked;
+            saveSettings_skdasoyk();
+        });
+        settingsArea.appendChild(switch3);
 
         settingsArea.appendChild(document.createElement("hr"));
 

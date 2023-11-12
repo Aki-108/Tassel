@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.5
+// @version      2.6
 // @description  Shows where a post has been liked/reblogged to.
-// @author       aki108
+// @author       Aki108
 // @match        http*://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
 // @updateURL    https://raw.githubusercontent.com/Aki-108/Tassel/main/extensions/RebloggedToCommunity.js
@@ -35,12 +35,24 @@
 
     /* Initialize the script by adding event listeners to necessary buttons for user interaction. */
     function addEventListener_tlfevnlu() {
-        console.log("focused", document.hasFocus());
         if (document.URL.search("www.pillowfort.social/posts/") === -1) return;
         if (document.URL.search("www.pillowfort.social/posts/new") !== -1) return;
 
+        //JSON Manager events
         document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", fillReblogData_tlfevnlu);
         document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", fillLikeData_tlfevnlu);
+
+        //HTML click events
+        let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
+        reblogButton.addEventListener("click", function() {
+            if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) return;
+            fillReblogData_tlfevnlu();
+        });
+        let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
+        likeButton.addEventListener("click", function() {
+            if (document.getElementsByClassName("rtcsourcedisplayinglikes").length > 0) return;
+            fillLikeData_tlfevnlu();
+        });
 
         //Dark Mode fix for no reblogs and no likes
         Object.values(document.getElementById("reblogs").children).find(function(child) {
