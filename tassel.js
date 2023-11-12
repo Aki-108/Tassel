@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.8
+// @version      1.5.9
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4b46e6c39603c1f90b9bf5628576f9dd8b3a16fe/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c317fc070d31cb24e5780e3863686d313cebe122/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7703065150778350e5a7f85b7430f24efa7e771b/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289f9e1ae16455551ee7b77024d7d1ec4cd9274d/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@65f3b0340112c63b7689ddf562f533fd4cfafcbe/jsonManager.js";
@@ -587,6 +587,7 @@
             <span style="margin-bottom:2.5em;">since 11th Dec 2022</span>
             <a style="margin-bottom:1em;" href="https://www.pillowfort.social/Tassel">Visit Tassel's Fort</a>
             <a style="margin-bottom:1em;" href="https://github.com/Aki-108/Tassel">Tassel on GitHub</a>
+            <a style="margin-bottom:1em;" href="https://github.com/Aki-108/Tassel/wiki/Version-History">Version History</a>
           </div>
         `;
     }
