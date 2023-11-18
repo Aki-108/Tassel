@@ -400,6 +400,7 @@ body.dark-theme .tasselExtensionWIP {
     }
 
     #tasselModalGrid {
+	height: calc(100% - 46px);
         grid-template-columns: 100%;
         grid-template-rows: 40px auto;
         overflow: hidden;
