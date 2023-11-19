@@ -37,18 +37,21 @@ let tasselJsonManager = {
     },
     followers: {
         ready: false,
+        updated: null,
         users: [],
         displayed_count: null,
         real_count: null
     },
     following: {
         ready: false,
+        updated: null,
         users: [],
         displayed_count: null,
         real_count: null
     },
     mutuals: {
         ready: false,
+        updated: null,
         users: [],
         displayed_count: null,
         real_count: null
@@ -327,46 +330,49 @@ function initDraftFeed_quugasdg() {
     });
 }
 
-loadFollowers_quugasdg();
-function loadFollowers_quugasdg() {
-    tasselJsonManager.followers.ready = false;
+loadUsers_quugasdg("followers");
+loadUsers_quugasdg("following");
+loadUsers_quugasdg("mutuals");
+function loadUsers_quugasdg(type) {
+    tasselJsonManager[type].ready = false;
     let file = JSON.parse(localStorage.getItem("tasselJsonManager"));
-    if (file) tasselJsonManager.followers = file.followers;
+    if (file && file[type]) tasselJsonManager[type] = file[type];
 
     let sidebar = document.getElementById("expanded-bar-container");
     let links = Object.values(sidebar.getElementsByTagName("a"));
     links = links.filter(function(item) {
-        return item.getAttribute("href") === "/followers";
+        return item.getAttribute("href") === `/${type}`;
     });
     if (!links.length) return;
-    let count = links[0].getElementsByClassName("sidebar-bottom-num")[0].textContent;
+    let count = parseInt(links[0].getElementsByClassName("sidebar-bottom-num")[0].textContent);
 
-    if (count == tasselJsonManager.followers.displayed_count) {
-        tasselJsonManager.followers.ready = true;
+    if (count == tasselJsonManager[type].displayed_count && (new Date().getTime() - tasselJsonManager[type].updated < 86400000)) {
+        tasselJsonManager[type].ready = true;
         return;
     }
 
-    tasselJsonManager.followers.users = [];
-    tasselJsonManager.followers.displayed_count = count*1;
-    loadFollowersPages_quugasdg(1);
+    tasselJsonManager[type].users = [];
+    tasselJsonManager[type].displayed_count = count;
+    loadUserPages_quugasdg(type, 1);
 }
 
-function loadFollowersPages_quugasdg(page) {
-    $.getJSON(`https://www.pillowfort.social/following_json?p=${page}`, function(data) {
-        let users = data.following.map(function(item) {
+function loadUserPages_quugasdg(type, page) {
+    $.getJSON(`https://www.pillowfort.social/${type}_json?p=${page}`, function(data) {
+        let users = data[type].map(function(item) {
             return item.username
         });
         if (users.length) {
-            tasselJsonManager.followers.users.push(...users);
-            loadFollowersPages_quugasdg(page+1);
+            tasselJsonManager[type].users.push(...users);
+            loadUserPages_quugasdg(type, page+1);
         } else {
-            tasselJsonManager.followers.users = tasselJsonManager.followers.users.filter(function(item) {
+            tasselJsonManager[type].users = tasselJsonManager[type].users.filter(function(item) {
                 return !item.includes("_deleted");
             });
-            tasselJsonManager.followers.real_count = tasselJsonManager.followers.users.length;
-            tasselJsonManager.followers.ready = true;
+            tasselJsonManager[type].real_count = tasselJsonManager[type].users.length;
+            tasselJsonManager[type].updated = new Date().getTime();
+            tasselJsonManager[type].ready = true;
             let file = JSON.parse(localStorage.getItem("tasselJsonManager") || "{}");
-            file.followers = tasselJsonManager.followers;
+            file[type] = tasselJsonManager[type];
             localStorage.setItem("tasselJsonManager", JSON.stringify(file));
         }
     });
