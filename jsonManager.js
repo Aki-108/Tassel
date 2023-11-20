@@ -72,12 +72,7 @@ function initModal_quugasdg() {
                 tasselJsonManager.modal.postId = postId;
                 $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
                     tasselJsonManager.modal.json = data;
-                    tasselJsonManager.modal.json.follower = tasselJsonManager.followers.users.includes(tasselJsonManager.modal.json.username);
-                    tasselJsonManager.modal.json.following = tasselJsonManager.following.users.includes(tasselJsonManager.modal.json.username);
-                    tasselJsonManager.modal.json.mutual = tasselJsonManager.mutuals.users.includes(tasselJsonManager.modal.json.username);
-                    tasselJsonManager.modal.json.original_follower = tasselJsonManager.followers.users.includes(tasselJsonManager.modal.json.original_username);
-                    tasselJsonManager.modal.json.original_following = tasselJsonManager.following.users.includes(tasselJsonManager.modal.json.original_username);
-                    tasselJsonManager.modal.json.original_mutual = tasselJsonManager.mutuals.users.includes(tasselJsonManager.modal.json.original_username);
+                    assignUsers_quugasdg(tasselJsonManager.modal.json)
                     tasselJsonManager.modal.ready = true;
                     trigger_quugasdg("tasselJsonManagerModalReady");
                 });
@@ -336,11 +331,9 @@ function initDraftFeed_quugasdg() {
     });
 }
 
-waitForKeyElements("#expanded-bar-container", function() {
-    loadUsers_quugasdg("followers");
-    loadUsers_quugasdg("following");
-    loadUsers_quugasdg("mutuals");
-});
+loadUsers_quugasdg("followers");
+loadUsers_quugasdg("following");
+loadUsers_quugasdg("mutuals");
 function loadUsers_quugasdg(type) {
     tasselJsonManager[type].ready = false;
     let file = JSON.parse(localStorage.getItem("tasselJsonManager"));
@@ -386,6 +379,21 @@ function loadUserPages_quugasdg(type, page) {
             localStorage.setItem("tasselJsonManager", JSON.stringify(file));
         }
     });
+}
+
+function assignUsers_quugasdg(json) {
+    json.follower = tasselJsonManager.followers.users.includes(json.username);
+    json.following = tasselJsonManager.following.users.includes(json.username);
+    json.mutual = tasselJsonManager.mutuals.users.includes(json.username);
+    if (json.original_username) {
+        json.original_follower = tasselJsonManager.followers.users.includes(json.original_username);
+        json.original_following = tasselJsonManager.following.users.includes(json.original_username);
+        json.original_mutual = tasselJsonManager.mutuals.users.includes(json.original_username);
+    } else {
+        json.original_follower = null;
+        json.original_following = null;
+        json.original_mutual = null;
+    }
 }
 
 function trigger_quugasdg(name) {
