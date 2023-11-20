@@ -72,6 +72,12 @@ function initModal_quugasdg() {
                 tasselJsonManager.modal.postId = postId;
                 $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
                     tasselJsonManager.modal.json = data;
+                    tasselJsonManager.modal.json.follower = tasselJsonManager.followers.user.includes(tasselJsonManager.modal.json.username);
+                    tasselJsonManager.modal.json.following = tasselJsonManager.following.user.includes(tasselJsonManager.modal.json.username);
+                    tasselJsonManager.modal.json.mutual = tasselJsonManager.mutuals.user.includes(tasselJsonManager.modal.json.username);
+                    tasselJsonManager.modal.json.original_follower = tasselJsonManager.followers.user.includes(tasselJsonManager.modal.json.original_username);
+                    tasselJsonManager.modal.json.original_following = tasselJsonManager.following.user.includes(tasselJsonManager.modal.json.original_username);
+                    tasselJsonManager.modal.json.original_mutual = tasselJsonManager.mutuals.user.includes(tasselJsonManager.modal.json.original_username);
                     tasselJsonManager.modal.ready = true;
                     trigger_quugasdg("tasselJsonManagerModalReady");
                 });
