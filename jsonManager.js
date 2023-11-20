@@ -72,12 +72,12 @@ function initModal_quugasdg() {
                 tasselJsonManager.modal.postId = postId;
                 $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
                     tasselJsonManager.modal.json = data;
-                    tasselJsonManager.modal.json.follower = tasselJsonManager.followers.user.includes(tasselJsonManager.modal.json.username);
-                    tasselJsonManager.modal.json.following = tasselJsonManager.following.user.includes(tasselJsonManager.modal.json.username);
-                    tasselJsonManager.modal.json.mutual = tasselJsonManager.mutuals.user.includes(tasselJsonManager.modal.json.username);
-                    tasselJsonManager.modal.json.original_follower = tasselJsonManager.followers.user.includes(tasselJsonManager.modal.json.original_username);
-                    tasselJsonManager.modal.json.original_following = tasselJsonManager.following.user.includes(tasselJsonManager.modal.json.original_username);
-                    tasselJsonManager.modal.json.original_mutual = tasselJsonManager.mutuals.user.includes(tasselJsonManager.modal.json.original_username);
+                    tasselJsonManager.modal.json.follower = tasselJsonManager.followers.users.includes(tasselJsonManager.modal.json.username);
+                    tasselJsonManager.modal.json.following = tasselJsonManager.following.users.includes(tasselJsonManager.modal.json.username);
+                    tasselJsonManager.modal.json.mutual = tasselJsonManager.mutuals.users.includes(tasselJsonManager.modal.json.username);
+                    tasselJsonManager.modal.json.original_follower = tasselJsonManager.followers.users.includes(tasselJsonManager.modal.json.original_username);
+                    tasselJsonManager.modal.json.original_following = tasselJsonManager.following.users.includes(tasselJsonManager.modal.json.original_username);
+                    tasselJsonManager.modal.json.original_mutual = tasselJsonManager.mutuals.users.includes(tasselJsonManager.modal.json.original_username);
                     tasselJsonManager.modal.ready = true;
                     trigger_quugasdg("tasselJsonManagerModalReady");
                 });
@@ -336,9 +336,11 @@ function initDraftFeed_quugasdg() {
     });
 }
 
-loadUsers_quugasdg("followers");
-loadUsers_quugasdg("following");
-loadUsers_quugasdg("mutuals");
+waitForKeyElements("#expanded-bar-container", function() {
+    loadUsers_quugasdg("followers");
+    loadUsers_quugasdg("following");
+    loadUsers_quugasdg("mutuals");
+});
 function loadUsers_quugasdg(type) {
     tasselJsonManager[type].ready = false;
     let file = JSON.parse(localStorage.getItem("tasselJsonManager"));
