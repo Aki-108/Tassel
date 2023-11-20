@@ -348,6 +348,7 @@ function loadUsers_quugasdg(type) {
 
     if (count == tasselJsonManager[type].displayed_count && (new Date().getTime() - tasselJsonManager[type].updated < 86400000)) {
         tasselJsonManager[type].ready = true;
+        trigger_quugasdg(`tasselJsonManager${type.charAt(0).toUpperCase()+type.slice(1)}Ready`);
         return;
     }
 
@@ -371,6 +372,7 @@ function loadUserPages_quugasdg(type, page) {
             tasselJsonManager[type].real_count = tasselJsonManager[type].users.length;
             tasselJsonManager[type].updated = new Date().getTime();
             tasselJsonManager[type].ready = true;
+            trigger_quugasdg(`tasselJsonManager${type.charAt(0).toUpperCase()+type.slice(1)}Ready`);
             let file = JSON.parse(localStorage.getItem("tasselJsonManager") || "{}");
             file[type] = tasselJsonManager[type];
             localStorage.setItem("tasselJsonManager", JSON.stringify(file));
