@@ -193,7 +193,7 @@
 
         //remove untagged posts
         if (!post.mine && !tags.length && ((settings.removeUntaggedFollowing && post.following) || (settings.removeUntagged && !post.following))) {
-            return {block: true, blockFor: ["untagged"], hide: false};
+            return {block: true, blockFor: ["untagged"], hide: true};
         }
 
         blacklist.forEach(function(entry) {
