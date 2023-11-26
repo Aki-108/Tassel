@@ -194,7 +194,7 @@ function initHomeFeed_quugasdg() {
                 let time = "";
                 if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
                 $.getJSON(`https://www.pillowfort.social/home/json${time}`, function(data) {
-                    data.forEach(function(post) {
+                    data.posts.forEach(function(post) {
                         assignUsers_quugasdg(post);
                     });
                     tasselJsonManager.feed.type = 'home';
@@ -267,7 +267,7 @@ function initFortFeed_quugasdg() {
                 let jsonURL = "/";
                 if (document.URL.split("/")[4] === "tagged") jsonURL = `/tagged/${document.URL.split("/")[5]}/`;
                 $.getJSON(`https://www.pillowfort.social/${document.URL.split("/")[3]}${jsonURL}json?p=${page}`, function(data) {
-                    data.forEach(function(post) {
+                    data.posts.forEach(function(post) {
                         assignUsers_quugasdg(post);
                     });
                     tasselJsonManager.feed.type = 'fort';
@@ -299,7 +299,7 @@ function initSearch_quugasdg() {
                 let time = "";
                 if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
                 $.getJSON(`https://www.pillowfort.social/search/posts/${document.URL.split("/")[4]}/json${time}`, function(data) {
-                    data.forEach(function(post) {
+                    data.posts_by_tag.posts_by_tag.forEach(function(post) {
                         assignUsers_quugasdg(post);
                     });
                     tasselJsonManager.feed.type = 'search';
