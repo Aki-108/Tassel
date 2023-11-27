@@ -53,7 +53,7 @@ let extensionsIndex = [
             "updated": 1701031377853,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a619cc1c7f6873db60d83e794efd3c12c10b17f3/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@40f887aac6c57056cabe716fc2dde83c08f4523f/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -139,12 +139,12 @@ let extensionsIndex = [
         {
                 "name": "Sidebar Counts",
                 "id": 10,
-                "version": "0.4",
+                "version": "1.0",
                 "created": 1694995080000,
-                "updated": 1695618079219,
+                "updated": 1701106140000,
                 "author": "optimists-inbound",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@94de62c8c9f1e13ba6f6c531ec8d5735fd518e73/extensions/SidebarCounts.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ca65e9cddf1016f5c2cc749e38a0426867f56cb4/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
         },
         {
