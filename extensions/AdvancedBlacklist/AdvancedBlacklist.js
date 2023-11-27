@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.4
+// @version      1.5
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -191,7 +191,8 @@
         tags.push(...post.tags);
         if (post.original_post) tags.push(...post.original_post.tag_list);
 
-        if (settings.removeUntagged && !tags.length) {
+        //remove untagged posts
+        if (!post.mine && !tags.length && ((settings.removeUntaggedFollowing && post.following) || (settings.removeUntagged && !post.following))) {
             return {block: true, blockFor: ["untagged"], hide: true};
         }
 
@@ -452,12 +453,18 @@
             saveSettings_skdasoyk();
         });
         settingsArea.appendChild(switch2);
-        let switch3 = createSwitch_skdasoyk("Remove untagged Posts", settings.removeUntagged ? "checked" : "");
+        let switch3 = createSwitch_skdasoyk("Remove untagged Posts from Users you're following", settings.removeUntaggedFollowing ? "checked" : "");
         switch3.children[0].addEventListener("change", function() {
-            settings.removeUntagged = this.checked;
+            settings.removeUntaggedFollowing = this.checked;
             saveSettings_skdasoyk();
         });
         settingsArea.appendChild(switch3);
+        let switch4 = createSwitch_skdasoyk("Remove untagged Posts from Users you're not following", settings.removeUntagged ? "checked" : "");
+        switch4.children[0].addEventListener("change", function() {
+            settings.removeUntagged = this.checked;
+            saveSettings_skdasoyk();
+        });
+        settingsArea.appendChild(switch4);
 
         settingsArea.appendChild(document.createElement("hr"));
 

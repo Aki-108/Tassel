@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Sidebar Counts
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      1.0
 // @description  Make the Pillowfort followers/following/mutuals count be accurate, or else be "???"
 // @author       optimists-inbound
 // @match        https://www.pillowfort.social/*
@@ -17,14 +17,15 @@ async function countUsers_xarxirzq(sidebarLabel = "",jsonPageNumber = 1,previous
         .then(jsonContents => {
         if(jsonContents.indexOf(`<title>(500)</title>`) !== -1){
             //we're seeing a '500' error. maybe try loading this json page again?
-            if(attemptNumber<3){///i'm using 3 attempts here, but maybe this number could be a user-configured setting...
+            if(attemptNumber<3){///i'm using 3 attempts here, but maybe this number could be a user-configured setting.
                 setTimeout(() => {
                     countUsers_xarxirzq(sidebarLabel,jsonPageNumber,previouslyCounted,attemptNumber+1);
-                },150);///'every 150 milliseconds' seems like a good retry rate for me, but maybe this could be another user-configured setting.
+                },150);///'every 150 milliseconds' seems like a good retry rate for me, but maybe this could be a user-configured setting too.
             }
             else if(sidebarLabel=="mutuals" && jsonPageNumber>1){
                 //i'm guessing that a '500' error is fine if it's for mutuals, and if it's beyond page 1.
-                //the mutuals json seems to give a '500' error when it has no users listed. if we're done counting, then we can display the counted value.
+                //the mutuals json gives a Pillowfort-style '500' error page when it has no users listed.
+                //if we're done counting, then we can display the counted value.
                 const displayedValue = document.querySelector(`[href='/${sidebarLabel}'] .sidebar-bottom-num`);
                 if(displayedValue !== null){displayedValue.textContent=`${previouslyCounted+newlyCounted}`;}
                 //save this displayed number to local storage in the browser
@@ -38,12 +39,11 @@ async function countUsers_xarxirzq(sidebarLabel = "",jsonPageNumber = 1,previous
         else{
             const displayedValue = document.querySelector(`[href='/${sidebarLabel}'] .sidebar-bottom-num`);
             if(displayedValue == null){return;}
-            let searchIndex = jsonContents.indexOf("{\"username\":");
-            //if there are usernames on this page, please count them
-            while(searchIndex !== -1){
-                newlyCounted++;
-                searchIndex=jsonContents.indexOf("{\"username\":",searchIndex + 1);
-            }
+
+            //this revised code for counting usernames, for version 0.5, should exclude deleted users too.
+            newlyCounted=jsonContents.split(`{"username":"`).length-1;
+            newlyCounted-=jsonContents.split(`_deleted`).length-1;
+
             if(newlyCounted !== 0){//if this page is not empty, then check the next page too.
                 countUsers_xarxirzq(sidebarLabel,jsonPageNumber+1,previouslyCounted+newlyCounted);
             }

@@ -34,6 +34,27 @@ let tasselJsonManager = {
         time: null,
         utc: null,
         posts: []
+    },
+    followers: {
+        ready: false,
+        updated: null,
+        users: [],
+        displayed_count: null,
+        real_count: null
+    },
+    following: {
+        ready: false,
+        updated: null,
+        users: [],
+        displayed_count: null,
+        real_count: null
+    },
+    mutuals: {
+        ready: false,
+        updated: null,
+        users: [],
+        displayed_count: null,
+        real_count: null
     }
 }
 
@@ -51,6 +72,7 @@ function initModal_quugasdg() {
                 tasselJsonManager.modal.postId = postId;
                 $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
                     tasselJsonManager.modal.json = data;
+                    assignUsers_quugasdg(tasselJsonManager.modal.json);
                     tasselJsonManager.modal.ready = true;
                     trigger_quugasdg("tasselJsonManagerModalReady");
                 });
@@ -84,6 +106,7 @@ function initSinglePost_quugasdg() {
     tasselJsonManager.post.postId = postId;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
         tasselJsonManager.post.json = data;
+        assignUsers_quugasdg(tasselJsonManager.post.json);
         tasselJsonManager.post.ready = true;
         trigger_quugasdg("tasselJsonManagerPostReady");
     });
@@ -112,6 +135,9 @@ function getCommentData_quugasdg(postId) {
     tasselJsonManager.comments.page = page;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/comments?pageNum=${page}`, function(data) {
         tasselJsonManager.comments.comments = unpackComments_quugasdg(data.comments);
+        tasselJsonManager.comments.comments.forEach(function(comment) {
+            assignUsers_quugasdg(comment);
+        });
         tasselJsonManager.comments.ready = true;
         trigger_quugasdg("tasselJsonManagerCommentReady");
     });
@@ -126,6 +152,9 @@ function getReblogData_quugasdg(postId) {
     tasselJsonManager.reblogs.page = page;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/reblogs?p=${page}`, function(data) {
         tasselJsonManager.reblogs.json = data.reblog_batch;
+        tasselJsonManager.reblogs.json.forEach(function(reblog) {
+            assignUsers_quugasdg(reblog);
+        });
         tasselJsonManager.reblogs.ready = true;
         trigger_quugasdg("tasselJsonManagerReblogReady");
     });
@@ -140,12 +169,15 @@ function getLikeData_quugasdg(postId) {
     tasselJsonManager.likes.page = page;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/likes?p=${page}`, function(data) {
         tasselJsonManager.likes.json = data.likes_batch;
+        tasselJsonManager.likes.json.forEach(function(like) {
+            assignUsers_quugasdg(like);
+        });
         tasselJsonManager.likes.ready = true;
         trigger_quugasdg("tasselJsonManagerLikeReady");
     });
 }
 
-initHomeFeed_quugasdg()
+initHomeFeed_quugasdg();
 function initHomeFeed_quugasdg() {
     const loadingIndicator = document.getElementById("home_loading");
     if (!loadingIndicator) return;
@@ -162,12 +194,15 @@ function initHomeFeed_quugasdg() {
                 let time = "";
                 if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
                 $.getJSON(`https://www.pillowfort.social/home/json${time}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
+                    data.posts.forEach(function(post) {
+                        assignUsers_quugasdg(post);
+                    });
                     tasselJsonManager.feed.type = 'home';
                     tasselJsonManager.feed.pages++;
                     tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
                     tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
                     tasselJsonManager.feed.posts.push(...data.posts);
+                    tasselJsonManager.feed.ready = true;
                     trigger_quugasdg("tasselJsonManagerFeedReady");
                 });
             }
@@ -179,7 +214,7 @@ function initHomeFeed_quugasdg() {
     });
 }
 
-initCommFeed_quugasdg()
+initCommFeed_quugasdg();
 function initCommFeed_quugasdg() {
     const loadingIndicator = document.getElementById("comm_large_loading");
     if (!loadingIndicator) return;
@@ -193,12 +228,15 @@ function initCommFeed_quugasdg() {
                 let jsonURL = "/posts/json";
                 if (document.URL.split("/")[5] === "tagged") jsonURL = `/tagged_json?tag=${document.URL.split("/")[6]}&`;
                 $.getJSON(`https://www.pillowfort.social/community/${document.URL.split("/")[4]}${jsonURL}${time}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
+                    data.forEach(function(post) {
+                        assignUsers_quugasdg(post);
+                    });
                     tasselJsonManager.feed.type = 'community'
                     tasselJsonManager.feed.pages++;
                     tasselJsonManager.feed.time = data[data.length-1].created_at;
                     tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
                     tasselJsonManager.feed.posts.push(...data);
+                    tasselJsonManager.feed.ready = true;
                     trigger_quugasdg("tasselJsonManagerFeedReady");
                 });
             }
@@ -210,7 +248,7 @@ function initCommFeed_quugasdg() {
     });
 }
 
-initFortFeed_quugasdg()
+initFortFeed_quugasdg();
 function initFortFeed_quugasdg() {
     const loadingIndicator = document.getElementById("blog_loading");
     if (!loadingIndicator) return;
@@ -229,12 +267,15 @@ function initFortFeed_quugasdg() {
                 let jsonURL = "/";
                 if (document.URL.split("/")[4] === "tagged") jsonURL = `/tagged/${document.URL.split("/")[5]}/`;
                 $.getJSON(`https://www.pillowfort.social/${document.URL.split("/")[3]}${jsonURL}json?p=${page}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
+                    data.posts.forEach(function(post) {
+                        assignUsers_quugasdg(post);
+                    });
                     tasselJsonManager.feed.type = 'fort';
                     tasselJsonManager.feed.pages = 1;
                     tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
                     tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
                     tasselJsonManager.feed.posts = data.posts;
+                    tasselJsonManager.feed.ready = true;
                     trigger_quugasdg("tasselJsonManagerFeedReady");
                 });
             }
@@ -246,7 +287,7 @@ function initFortFeed_quugasdg() {
     });
 }
 
-initSearch_quugasdg()
+initSearch_quugasdg();
 function initSearch_quugasdg() {
     const loadingIndicator = document.getElementById("search_loading");
     if (!loadingIndicator) return;
@@ -258,12 +299,15 @@ function initSearch_quugasdg() {
                 let time = "";
                 if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
                 $.getJSON(`https://www.pillowfort.social/search/posts/${document.URL.split("/")[4]}/json${time}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
+                    data.posts_by_tag.posts_by_tag.forEach(function(post) {
+                        assignUsers_quugasdg(post);
+                    });
                     tasselJsonManager.feed.type = 'search';
                     tasselJsonManager.feed.pages++;
                     tasselJsonManager.feed.time = data.posts_by_tag.posts_by_tag[data.posts_by_tag.posts_by_tag.length-1].created_at;
                     tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
                     tasselJsonManager.feed.posts.push(...data.posts_by_tag.posts_by_tag);
+                    tasselJsonManager.feed.ready = true;
                     trigger_quugasdg("tasselJsonManagerFeedReady");
                 });
             }
@@ -275,7 +319,7 @@ function initSearch_quugasdg() {
     });
 }
 
-initDraftFeed_quugasdg()
+initDraftFeed_quugasdg();
 function initDraftFeed_quugasdg() {
     const loadingIndicator = document.getElementById("drafts_loading");
     if (!loadingIndicator) return;
@@ -307,6 +351,83 @@ function initDraftFeed_quugasdg() {
         attributes: true,
         attributeFilter: ["style"]
     });
+}
+
+loadUsers_quugasdg("followers");
+loadUsers_quugasdg("following");
+loadUsers_quugasdg("mutuals");
+function loadUsers_quugasdg(type) {
+    tasselJsonManager[type].ready = false;
+    let file = JSON.parse(localStorage.getItem("tasselJsonManager"));
+    if (file && file[type]) tasselJsonManager[type] = file[type];
+
+    let sidebar = document.getElementById("expanded-bar-container");
+    let links = Object.values(sidebar.getElementsByTagName("a"));
+    links = links.filter(function(item) {
+        return item.getAttribute("href") === `/${type}`;
+    });
+    if (!links.length) return;
+    let count = parseInt(links[0].getElementsByClassName("sidebar-bottom-num")[0].textContent);
+
+    if (count == tasselJsonManager[type].displayed_count && (new Date().getTime() - tasselJsonManager[type].updated < 86400000)) {
+        tasselJsonManager[type].ready = true;
+        trigger_quugasdg(`tasselJsonManager${type.charAt(0).toUpperCase()+type.slice(1)}Ready`);
+        return;
+    }
+
+    tasselJsonManager[type].users = [];
+    tasselJsonManager[type].displayed_count = count;
+    loadUserPages_quugasdg(type, 1);
+}
+
+function loadUserPages_quugasdg(type, page) {
+    $.getJSON(`https://www.pillowfort.social/${type}_json?p=${page}`, function(data) {
+        let users = data[type].map(function(item) {
+            return item.username
+        });
+        if (users.length) {
+            tasselJsonManager[type].users.push(...users);
+            loadUserPages_quugasdg(type, page+1);
+        } else {
+            tasselJsonManager[type].users = tasselJsonManager[type].users.filter(function(item) {
+                return !item.includes("_deleted");
+            });
+            tasselJsonManager[type].real_count = tasselJsonManager[type].users.length;
+            tasselJsonManager[type].updated = new Date().getTime();
+            tasselJsonManager[type].ready = true;
+            trigger_quugasdg(`tasselJsonManager${type.charAt(0).toUpperCase()+type.slice(1)}Ready`);
+            let file = JSON.parse(localStorage.getItem("tasselJsonManager") || "{}");
+            file[type] = tasselJsonManager[type];
+            localStorage.setItem("tasselJsonManager", JSON.stringify(file));
+        }
+    })
+    .fail(function() {
+        tasselJsonManager[type].users = tasselJsonManager[type].users.filter(function(item) {
+            return !item.includes("_deleted");
+        });
+        tasselJsonManager[type].real_count = tasselJsonManager[type].users.length;
+        tasselJsonManager[type].updated = new Date().getTime();
+        tasselJsonManager[type].ready = true;
+        trigger_quugasdg(`tasselJsonManager${type.charAt(0).toUpperCase()+type.slice(1)}Ready`);
+        let file = JSON.parse(localStorage.getItem("tasselJsonManager") || "{}");
+        file[type] = tasselJsonManager[type];
+        localStorage.setItem("tasselJsonManager", JSON.stringify(file));
+    });
+}
+
+function assignUsers_quugasdg(json) {
+    json.follower = tasselJsonManager.followers.users.includes(json.username);
+    json.following = tasselJsonManager.following.users.includes(json.username);
+    json.mutual = tasselJsonManager.mutuals.users.includes(json.username);
+    if (json.original_username) {
+        json.original_follower = tasselJsonManager.followers.users.includes(json.original_username);
+        json.original_following = tasselJsonManager.following.users.includes(json.original_username);
+        json.original_mutual = tasselJsonManager.mutuals.users.includes(json.original_username);
+    } else {
+        json.original_follower = null;
+        json.original_following = null;
+        json.original_mutual = null;
+    }
 }
 
 function trigger_quugasdg(name) {
