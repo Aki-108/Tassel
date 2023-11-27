@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.9
+// @version      1.5.10
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c317fc070d31cb24e5780e3863686d313cebe122/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7703065150778350e5a7f85b7430f24efa7e771b/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289f9e1ae16455551ee7b77024d7d1ec4cd9274d/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@65f3b0340112c63b7689ddf562f533fd4cfafcbe/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3f3f68616f659071f099a09548a9b474e9ae55d6/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8be4b214650c3d0aa1e7e0dbcef66b5e521649fb/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@588b8e158b0d734d7ec79ca0ac041caa8351cf39/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7b683b3b8eac2ec723ba09375550d7b7bcd013f1/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -154,6 +154,24 @@
         if (settings2.bottomPermalink) feedReady.addEventListener("click", function() {
             addBottomPermalink();
         });
+
+        let followersReady = document.createElement("button");
+        followersReady.id = "tasselJsonManagerFollowersReady";
+        followersReady.style.display = "none";
+        document.body.appendChild(followersReady);
+        followersReady.addEventListener("click", function() {console.log("followers data ready")});
+
+        let followingReady = document.createElement("button");
+        followingReady.id = "tasselJsonManagerFollowingReady";
+        followingReady.style.display = "none";
+        document.body.appendChild(followingReady);
+        followingReady.addEventListener("click", function() {console.log("following data ready")});
+
+        let mutualsReady = document.createElement("button");
+        mutualsReady.id = "tasselJsonManagerMutualsReady";
+        mutualsReady.style.display = "none";
+        document.body.appendChild(mutualsReady);
+        mutualsReady.addEventListener("click", function() {console.log("mutuals data ready")});
 
         loadScript_xcajbuzn(jsonManager);
     }
@@ -710,36 +728,59 @@
             <option value="tasselSettings2">Tassel Settings</option>
             <option value="tasselAdvancedBlacklist">Advanced Blacklist</option>
             <option value="tasselBlocklistAnnotations">Blocklist Annotations</option>
+            <option value="tasselJsonManager">JSON Manager</option>
             <option value="tasselPostSubscriber">Post Subscriber</option>
             <option value="tasselSidebarCounts">Sidebar Counts</option>
             <option value="tasselTaggingTools">Tagging Tools</option>
         `;
         content.appendChild(select3);
         let button2 = document.createElement("button");
+        button2.id = "tasselJSONViewButton";
         button2.innerHTML = "View";
         button2.classList.add("tasselButton");
         button2.style = "width: 150px;";
         button2.addEventListener("click", function() {
             let viewFrame = document.getElementById("tasselJSONView");
             if (viewFrame) {
-                viewFrame.innerHTML = JSON.stringify(JSON.parse(localStorage.getItem(document.getElementById("tasselResetSelect").value)), null, 2);
+                viewFrame.value = JSON.stringify(JSON.parse(localStorage.getItem(document.getElementById("tasselResetSelect").value)), null, 2);
             } else {
-                viewFrame = document.createElement("pre");
+                viewFrame = document.createElement("textarea");
                 viewFrame.id = "tasselJSONView";
-                viewFrame.innerHTML = JSON.stringify(JSON.parse(localStorage.getItem(document.getElementById("tasselResetSelect").value)), null, 2);
+                viewFrame.disabled = true;
+                viewFrame.rows = 200;
+                viewFrame.value = JSON.stringify(JSON.parse(localStorage.getItem(document.getElementById("tasselResetSelect").value)), null, 2);
                 document.getElementById("tasselModalContent").appendChild(viewFrame);
             }
         });
         content.appendChild(button2);
         let button3 = document.createElement("button");
-        button3.innerHTML = "Reset";
-        button3.classList.add("delete-button");
-        button3.style.backgroundColor = "#B30000";
+        button3.innerHTML = "Edit";
+        button3.classList.add("tasselButton");
         button3.style.width = "150px";
-        button3.style.borderRadius = "0.5em";
         button3.addEventListener("click", function() {
-            localStorage.removeItem(document.getElementById("tasselResetSelect").value);
-            window.location.reload()
+            if (this.classList.contains("tasselSaveButton")) {
+                let viewFrame = document.getElementById("tasselJSONView");
+                let editedData;
+                try {
+                    editedData = JSON.parse(viewFrame.value);
+                    viewFrame.disabled = true;
+                    localStorage.setItem(document.getElementById("tasselResetSelect").value, JSON.stringify(editedData));
+                    this.innerHTML = "Edit";
+                    this.classList.remove("tasselSaveButton");
+                } catch {
+                    if (confirm("Error: Data invalid. Revert changes?") === true) {
+                        document.getElementById("tasselJSONViewButton").click();
+                    }
+                }
+            } else {
+                document.getElementById("tasselJSONViewButton").click();
+                if (confirm("Warning: Editing any value might break parts of Tassel. Do you want to continue?") === true) {
+                    let viewFrame = document.getElementById("tasselJSONView");
+                    viewFrame.disabled = false;
+                    this.innerHTML = "Save";
+                    this.classList.add("tasselSaveButton");
+                }
+            }
         });
         content.appendChild(button3);
     }
