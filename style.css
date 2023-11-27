@@ -1,15 +1,15 @@
 /*/////////////////// custom elements ///////////////////*/
 .nowrap {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 .nomargin {
-    margin: 0;
+	margin: 0;
 }
 
 break {
-    display: inline-block;
-    width: 0;
+	display: inline-block;
+	width: 0;
 }
 
 /*/////////////////// common page elements ///////////////////*/
@@ -80,47 +80,47 @@ break {
 }
 
 .tasselButtonSmall {
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
-    border: 1px solid transparent;
-    border-radius: 0.5em;
-    padding: 0.2em 1em;
-    background-color: #2c405a;
-    color: #ffffff;
-    font-size: small;
-    text-transform: uppercase;
-    transition: all .5s;
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+	border: 1px solid transparent;
+	border-radius: 0.5em;
+	padding: 0.2em 1em;
+	background-color: #2c405a;
+	color: #ffffff;
+	font-size: small;
+	text-transform: uppercase;
+	transition: all .5s;
 }
 
 body.dark-theme .tasselButtonSmall {
-    background-color: #23282e;
-    color: #d9dbe0;
+	background-color: #23282e;
+	color: #d9dbe0;
 }
 
 .tasselButtonSmall:hover {
-    border-color: #2c405a;
-    background-color: #ffffff;
-    color: #2c405a;
-    transition: background-color .1s;
+	border-color: #2c405a;
+	background-color: #ffffff;
+	color: #2c405a;
+	transition: background-color .1s;
 }
 
 body.dark-theme .tasselButtonSmall:hover {
-    border-color: #23282e;
-    background-color: #d9dbe0;
-    color: #23282e;
+	border-color: #23282e;
+	background-color: #d9dbe0;
+	color: #23282e;
 }
 
 .tasselCheckmark {
-    width: 15px;
-    height: 25px;
-    border-right: 3.5px solid #58b6dd;
-    border-bottom: 3.5px solid #58b6dd;
-    transform: rotate(45deg);
-    background: transparent !important;
+	width: 15px;
+	height: 25px;
+	border-right: 3.5px solid #58b6dd;
+	border-bottom: 3.5px solid #58b6dd;
+	transform: rotate(45deg);
+	background: transparent !important;
 }
 
 body.dark-theme .tasselCheckmark {
-    border-color: #6f96bc;
+	border-color: #6f96bc;
 }
 
 .post .post-nav .nav-tab {
@@ -128,19 +128,19 @@ body.dark-theme .tasselCheckmark {
 }
 
 .tasselIconColor {
-    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%)
+	filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%)
 }
 
 body.dark-theme .tasselIconColor {
-    filter: brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%);
+	filter: brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%);
 }
 
 .tasselLinkColor {
-    color: #58b6dd;
+	color: #58b6dd;
 }
 
 body.dark-theme .tasselLinkColor {
-    color: #58b6dd;
+	color: #58b6dd;
 }
 
 /*//////////////// Modal //////////////////////////*/
@@ -213,9 +213,9 @@ body.dark-theme #tasselModalContent hr {
 }
 
 #tasselModalContent label {
-    width: 100%;  
-    line-height: 1.2em;
-    font-weight: normal;
+	width: 100%;  
+	line-height: 1.2em;
+	font-weight: normal;
 }
 
 .tasselModalSidebarEntry {
@@ -268,8 +268,8 @@ body.dark-theme .tasselModalSidebarEntry {
 }
 
 #tasselModalContentExtensionsList {  
-    display: grid;
-    grid-template-columns: 50% 50%;
+	display: grid;
+	grid-template-columns: 50% 50%;
 }
 
 .tasselExtension {
@@ -357,20 +357,29 @@ body.dark-theme .tasselExtensionWIP {
 }
 
 #tasselJSONView {
-    margin-top: 10px; 
-    background: var(--postBgColor); 
-    color: var(--postFontColor);
+	margin-top: 10px; 
+	background: var(--postBgColor); 
+	color: var(--postFontColor);
+	font-family: Consolas, monospace;
 }
 
 .tasselButton {
-    height: 38px; 
-    margin-right: 1em;
-    border: 1px solid transparent; 
-    border-radius: 0.5em; 
-    background-color: var(--pageBg); 
-    color: var(--postHeaderFont); 
-    font-size: 16px; 
-    text-transform: uppercase; 
+	height: 38px; 
+	margin-right: 1em;
+	border: 1px solid transparent; 
+	border-radius: 0.5em; 
+	background-color: var(--pageBg); 
+	color: var(--postHeaderFont); 
+	font-size: 16px; 
+	text-transform: uppercase; 
+}
+
+.tasselSaveButton {
+	background-color: #55ce8a;
+}
+
+body.dark-theme .tasselSaveButton {
+	background-color: #31734e;
 }
 
 .tasselToggle {
@@ -395,8 +404,8 @@ body.dark-theme .tasselExtensionWIP {
 /*//////////////// Mobile //////////////////////////*/
 @media(max-width:800px) {
     #tasselModalHeader {
-        -webkit-box-shadow: none;
-        box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
     }
 
     #tasselModalGrid {
