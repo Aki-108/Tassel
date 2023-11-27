@@ -400,6 +400,18 @@ function loadUserPages_quugasdg(type, page) {
             file[type] = tasselJsonManager[type];
             localStorage.setItem("tasselJsonManager", JSON.stringify(file));
         }
+    })
+    .fail(function() {
+        tasselJsonManager[type].users = tasselJsonManager[type].users.filter(function(item) {
+            return !item.includes("_deleted");
+        });
+        tasselJsonManager[type].real_count = tasselJsonManager[type].users.length;
+        tasselJsonManager[type].updated = new Date().getTime();
+        tasselJsonManager[type].ready = true;
+        trigger_quugasdg(`tasselJsonManager${type.charAt(0).toUpperCase()+type.slice(1)}Ready`);
+        let file = JSON.parse(localStorage.getItem("tasselJsonManager") || "{}");
+        file[type] = tasselJsonManager[type];
+        localStorage.setItem("tasselJsonManager", JSON.stringify(file));
     });
 }
 
