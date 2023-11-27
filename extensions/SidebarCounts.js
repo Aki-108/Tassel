@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Sidebar Counts
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      1.0
 // @description  Make the Pillowfort followers/following/mutuals count be accurate, or else be "???"
 // @author       optimists-inbound
 // @match        https://www.pillowfort.social/*
@@ -42,7 +42,7 @@ async function countUsers_xarxirzq(sidebarLabel = "",jsonPageNumber = 1,previous
 
             //this revised code for counting usernames, for version 0.5, should exclude deleted users too.
             newlyCounted=jsonContents.split(`{"username":"`).length-1;
-            newlyCounted-=jsonContents.split(`_deleted","avatar_url":"http`).length-1;
+            newlyCounted-=jsonContents.split(`_deleted`).length-1;
 
             if(newlyCounted !== 0){//if this page is not empty, then check the next page too.
                 countUsers_xarxirzq(sidebarLabel,jsonPageNumber+1,previouslyCounted+newlyCounted);
