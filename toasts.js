@@ -22,6 +22,14 @@ let toasts = [
     "text": "The setting 'Hide 0 Notification Counter' has been replaced with the extension 'Hide Numbers'.",
     "timestamp": 1699174060526,
     "new": true
+  },
+  {
+    "id": 20,
+    "extension": 10,
+    "title": "Sidebar Counts",
+    "text": "The extension 'Sidebar Counts' is now available as a full release.",
+    "timestamp": 1701106140000,
+    "new": false
   }
 ];
 
