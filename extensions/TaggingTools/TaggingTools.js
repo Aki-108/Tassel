@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.4
+// @version      1.5
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -41,7 +41,7 @@
         initReblogPage_dshcgkhy();
         initReblogModal_dshcgkhy();
         addEventListenerSubmit_dshcgkhy(submitButton);
-        addEventListenerSubmit_dshcgkhy(draftButton);
+        //addEventListenerSubmit_dshcgkhy(draftButton);
         addEventListenerInput_dshcgkhy();
         initTassel_dshcgkhy();
     }
@@ -62,6 +62,9 @@
                 tagInput.value += ", " + settings.tagPreset.otherReblog;
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
+            tasselJsonManager.modal.json.tags.forEach(function(tag) {
+                tags.push({tag:tag,count:1});
+            });
         });
     }
 
@@ -89,6 +92,9 @@
                 tagInput.value += ", " + settings.tagPreset.otherReblog;
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
+            tasselJsonManager.post.json.tags.forEach(function(tag) {
+                tags.push({tag:tag,count:1});
+            });
         });
     }
 
@@ -349,7 +355,7 @@
         });
         content.appendChild(document.createElement("hr"));
 
-        let title1 = document.createElement("h4");
+        let title1 = document.createElement("h2");
         title1.innerHTML = "Default Tags";
         content.appendChild(title1);
 
