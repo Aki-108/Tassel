@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      0.1
+// @version      0.2
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -18,12 +18,13 @@
     let lastPage = 1;
     let mainFrame;
     let navigation;
+    let loadedPages = [];
 
     let icon = document.createElement("div");
     icon.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="tasselFortArchive user-buttons svg-blue" width="20" height="20" viewBox="0 0 20 20">
+      <svg xmlns="http://www.w3.org/2000/svg" class="tasselFortArchive user-buttons svg-purple" width="20" height="20" viewBox="0 0 20 20">
         <title>Archive</title>
-        <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#58b6dd;stroke-width:1.4px" d="
+        <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.4px" d="
           M 16.5 6.5   L 10.5 0.5   L 3.5 0.5   L 3.5 19.5   L 16.5 19.5   L 16.5 6.5   L 10.5 6.5   L 10.5 0.5
         "/>
       </svg>`;
@@ -62,7 +63,7 @@
 
         let pagination = document.getElementsByClassName("pagination")[0];
         lastPage = pagination.children[pagination.children.length-2].textContent*1;
-        $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${lastPage}`, function(data) {
+        $.getJSON(`${document.URL}/json/?p=${lastPage}`, function(data) {
             pageTime[lastPage] = [
                 new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
                 ,
@@ -98,7 +99,7 @@
             <select id="tasselFortArchiveNavigationYear">
             </select>
             <button id="tasselFortArchiveNavigationSearch" class="tasselButton">Go</button>
-            <!--<button id="tasselFortArchiveNavigationReverse" class="tasselButton">Reverse</button>-->
+            <button id="tasselFortArchiveNavigationReverse" class="tasselButton">Reverse</button>
         `;
         let years = document.getElementById("tasselFortArchiveNavigationYear");
         let start = pageTime[1][1].getFullYear();
@@ -109,15 +110,18 @@
         document.getElementById("tasselFortArchiveNavigationSearch").addEventListener("click", function() {
             findDate_avytegoo(1, lastPage);
         });
-        /*document.getElementById("tasselFortArchiveNavigationReverse").addEventListener("click", function() {
+        document.getElementById("tasselFortArchiveNavigationReverse").addEventListener("click", function() {
             if (mainFrame.classList.contains("reverse")) mainFrame.classList.remove("reverse");
             else mainFrame.classList.add("reverse");
-        });*/
+            Object.values(document.getElementsByClassName("tasselFortArchivePost")).forEach(function(post) {
+                post.style.order *= -1;
+            });
+        });
     }
 
     function findDate_avytegoo(minPage, maxPage) {
         let pivot = Math.ceil((minPage+maxPage)/2);
-        $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${pivot}`, function(data) {
+        $.getJSON(`${document.URL}/json/?p=${pivot}`, function(data) {
             pageTime[pivot] = [
                 new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
                 ,
@@ -163,33 +167,53 @@
 
     function clearPage_avytegoo() {
         mainFrame.innerHTML = "";
+        loadedPages = [];
     }
 
     function loadPage_avytegoo(page, hidden) {
-        $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
+        $.getJSON(`${document.URL}/json/?p=${page}`, function(data) {
             pageTime[page] = [
                 new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
                 ,
                 new Date(data.posts[0].timestamp.replace("@", ""))
             ];
             if (hidden) return;
+            loadedPages.push(page);
             data.posts.forEach(function(post) {
                 addPost_avytegoo(post);
             });
             if (page < lastPage) addLoadPage_avytegoo(page+1);
+            if (page > 1) addLoadPage_avytegoo(page-1, true);
+            if (document.getElementById("tasselFortArchiveLoadingIndicator")) document.getElementById("tasselFortArchiveLoadingIndicator").remove();
         });
     }
 
     function addLoadPage_avytegoo(page, top) {
+        if (loadedPages.includes(page)) return;
         let eventArea = document.createElement("div");
-        if (top) eventArea.style.order = "-99999999";
-        else eventArea.style.order = "99999999";
-        eventArea.style.height = "10px";
+        if (top) {
+            if (document.getElementById("tasselFortArchiveScrollDetectorTop")) return;
+            eventArea.style.order = "-99999998";
+            eventArea.id = "tasselFortArchiveScrollDetectorTop";
+        } else {
+            if (document.getElementById("tasselFortArchiveScrollDetectorBottom")) return;
+            eventArea.style.order = "99999998";
+            eventArea.id = "tasselFortArchiveScrollDetectorBottom";
+        }
+        eventArea.style.height = "70px";
         mainFrame.appendChild(eventArea);
+        if (top || mainFrame.classList.contains("reverse")) window.scrollBy(0, 200);
         VisibilityMonitor_avytegoo(eventArea, function() {
             loadPage_avytegoo(page);
             eventArea.remove();
-            console.log("view page", page);
+            let loadingIndicator = document.createElement("div");
+            loadingIndicator.id = "tasselFortArchiveLoadingIndicator";
+            loadingIndicator.innerHTML = `<div style="text-align: center;"><i class="fa fa-circle-notch fa-spin fa-3x fa-fw" style="color:white; margin-top: 10px;"></i></div>`;
+            if (top) loadingIndicator.style.order = "-99999999";
+            else loadingIndicator.style.order = "99999999";
+            loadingIndicator.style.height = "70px";
+            loadingIndicator.style.backgroundColor = "#2C405A";
+            mainFrame.appendChild(loadingIndicator);
         }, function(){});
     }
 
