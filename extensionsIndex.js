@@ -184,6 +184,18 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Hide any number.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@11ffc58430e017d77d327b26c925cd8bd91ca563/extensions/HideNumbers.js"
+        },
+        {
+                "name": "Keyboard Shortcuts",
+                "id": 14,
+                "version": "0.1",
+                "created": 1703241062270,
+                "updated": 1703241062270,
+                "author": "Aki108",
+                "description": "Navigate Pillowfort with you keyboard.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@774b8c0ee696c73f60581a1f1f70775de1cc367e/extensions/KeyboardShortcuts/KeyboardShortcuts.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f53219db6b18491c39a11fb63561e491474614a4/extensions/KeyboardShortcuts/KeyboardShortcuts.css",
+                "post": "https://www.pillowfort.social/posts/4123393"
         }
 ];
 
