@@ -150,12 +150,12 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "1.1",
+                "version": "1.2",
                 "created": 1696017952450,
-                "updated": 1698662976732,
+                "updated": 1703533945712,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6142346f69f1a084408286be98c0ec3a000db421/extensions/ReadThis/ReadThis.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c4970c66f3ac9329b818db222823880a0783f528/extensions/ReadThis/ReadThis.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@20c51bad5855cb99d6e138fc78a8a6f331a3c11f/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
