@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      1.1
+// @version      1.2
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -81,7 +81,7 @@
             //get root element
             let postElement = link;
             for (let a = 0; a < 100; a++, postElement = postElement.parentNode) {
-                if (postElement.classList.contains("post-container")) break;
+                if (postElement || postElement.classList.contains("post-container")) break;
             }
             if (postElement.classList.contains("tasselReadThisProcessed2")) return;
             postElement.classList.add("tasselReadThisProcessed2");
