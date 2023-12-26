@@ -196,6 +196,22 @@ let extensionsIndex = [
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@774b8c0ee696c73f60581a1f1f70775de1cc367e/extensions/KeyboardShortcuts/KeyboardShortcuts.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f53219db6b18491c39a11fb63561e491474614a4/extensions/KeyboardShortcuts/KeyboardShortcuts.css",
                 "post": "https://www.pillowfort.social/posts/4123393"
+        },
+        {
+                "name": "User Muting",
+                "id": 15,
+                "version": "1.0",
+                "created": 1703613662842,
+                "updated": 1703613662842,
+                "author": "Aki108",
+                "description": "Remove people partially.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b482f3f8ce0f32d8e7073d6ed10f9059d12d776b/extensions/UserMuting/UserMuting.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@989380e9672f8996c1eb8ee06d11bd47faf09430/extensions/UserMuting/UserMuting.css",
+                "post": "https://www.pillowfort.social/posts/4139698",
+                "features": [
+                        "Remove posts/reblogs of someone.",
+                        "Remove collapse comments of someone."
+                ]
         }
 ];
 
