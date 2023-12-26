@@ -134,7 +134,7 @@
     }
 
     /* Add elements to the Tassel menu */
-    window.setTimeout(initTassel_gatzfpvu, 500);
+    initTassel_gatzfpvu();
     function initTassel_gatzfpvu() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar == null) return;
