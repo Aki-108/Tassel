@@ -50,3 +50,17 @@
 .tasselUserMutingProcessed .tasselUserMutingcomment:focus {
 	text-decoration: underline;
 }
+
+@media(max-width:400px) {
+	#tasselUserMutingSettingsTable {
+		width: 100%;
+	}
+	
+	#tasselUserMutingSettingsTable .heading {
+		height: 8em;
+	}
+	
+	#tasselUserMutingSettingsTable .heading div {
+		transform: rotate(-90deg);
+	}
+}
