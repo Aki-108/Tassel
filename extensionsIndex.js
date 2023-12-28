@@ -156,7 +156,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c4970c66f3ac9329b818db222823880a0783f528/extensions/ReadThis/ReadThis.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@20c51bad5855cb99d6e138fc78a8a6f331a3c11f/extensions/ReadThis/ReadThis.css",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5afc9dfe248201b8b23ba0b5a2be72b5fa8c21/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
                         "Opens a Read-More without opening the post.",
