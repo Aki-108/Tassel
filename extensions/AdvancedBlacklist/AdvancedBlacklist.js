@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.5
+// @version      1.6
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -15,7 +15,8 @@
 	loadBlacklist_skdasoyk();
 	let settings = JSON.parse(localStorage.getItem("tasselSettings2")).advancedBlacklist || {
 		showTags: true,
-		showReason: true
+		showReason: true,
+        	hideBlacklistPost: false
 	};
     let permaLinks; //array of perma-link elements
     let locationType = "home" //type of webpage
@@ -87,7 +88,7 @@
             if (postElement === undefined) return;
             if (postElement.post.classList.contains("tasselAdvancedBlacklistProcessed")) continue;
             postElement.post.classList.add("tasselAdvancedBlacklistProcessed");
-            addBlockButton_skdasoyk(post);
+            if (!settings.hideBlacklistPost) addBlockButton_skdasoyk(post);
             if (settings.showTags) addTags_skdasoyk(post, postElement);
             let blockResult = shouldBeBlocked_skdasoyk(post);
             if (!blockResult.block) continue;
@@ -453,6 +454,12 @@
             saveSettings_skdasoyk();
         });
         settingsArea.appendChild(switch2);
+        let switch5 = createSwitch_skdasoyk("Hide the Blacklist Post button", settings.hideBlacklistPost ? "checked" : "");
+        switch5.children[0].addEventListener("change", function() {
+            settings.hideBlacklistPost = this.checked;
+            saveSettings_skdasoyk();
+        });
+        settingsArea.appendChild(switch5);
         let switch3 = createSwitch_skdasoyk("Remove untagged Posts from Users you're following", settings.removeUntaggedFollowing ? "checked" : "");
         switch3.children[0].addEventListener("change", function() {
             settings.removeUntaggedFollowing = this.checked;
