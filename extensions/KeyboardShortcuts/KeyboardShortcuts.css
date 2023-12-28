@@ -1,0 +1,18 @@
+#tasselKeyboardShortcutsSettings label {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	gap: 0.2em 0;
+}
+
+#tasselKeyboardShortcutsSettings input {
+	margin: 0;
+	border: 1px solid #232b40;
+	border-radius: 0.5em;
+	padding: 0.5em 0.5em;
+	color: #232b40;
+}
+
+body.dark-theme #tasselKeyboardShortcutsSettings input {
+	border-color: #d9dbe0;
+	color: #d9dbe0;
+}

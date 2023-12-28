@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.10
+// @version      1.5.11
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3f3f68616f659071f099a09548a9b474e9ae55d6/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8be4b214650c3d0aa1e7e0dbcef66b5e521649fb/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@588b8e158b0d734d7ec79ca0ac041caa8351cf39/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7b683b3b8eac2ec723ba09375550d7b7bcd013f1/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7ea11450e5f5e663901d3aba18551c2faffa62b5/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@431fec4627ac614a3a34c725da1f1462df3a785e/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bf8d8d273132a40f5db288b86ceb857d023ce82d/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -362,6 +362,18 @@
                 openModal_xcajbuzn(pair[1]);
             } else if (pair[0] == "tExtension") {
                 let extension = document.getElementById(pair[1]);
+                if (!extension) {
+                    let list = document.getElementById("tasselModalContentExtensionsList");
+                    extension = document.createElement("section");
+                    extension.id = pair[1];
+                    extension.classList.add("tasselExtension");
+                    extension.innerHTML = `
+                        <div>
+                            <label>Coming Soon</label>
+                        </div>
+                    `;
+                    list.insertBefore(extension, list.firstChild);
+                }
                 extension.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
                 extension.style.animationDuration = "2s";
                 extension.style.animationIterationCount = "2";

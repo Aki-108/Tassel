@@ -1,0 +1,66 @@
+#tasselUserMutingSettingsTable {
+	width: 21em;
+	margin-bottom: 0.5em;
+	display: grid;
+	grid-template-columns: auto 2em 2em 2em 2em;
+	gap: 4px 0;
+}
+
+#tasselUserMutingSettingsTable .heading {
+	height: 5em;  
+	display: grid;
+	justify-content: center;
+	align-items: end;
+}
+
+#tasselUserMutingSettingsTable .heading div {
+	width: 0;
+	height: 0.8em;
+	transform: rotate(-45deg);
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+#tasselUserMutingSettingsTable input {
+	outline: none;
+	width: 100%;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+}
+
+#tasselUserMutingSettingsTable input[type="checkbox"] {
+	width: 0.8em;
+	margin: 1px 0 0 10px;  
+	accent-color: var(--pageBg);
+}
+
+.tasselUserMutingProcessed .tasselUserMutingcomment::marker {
+	content: "";
+}
+
+.tasselUserMutingProcessed .tasselUserMutingcomment {
+	width: max-content;
+	margin: 6px 0px;
+	border: 1px solid var(--postFontColor);
+	border-radius: 1.5px;
+	padding: 0 0.5em;
+	background: var(--tag_bg);
+}
+
+.tasselUserMutingProcessed .tasselUserMutingcomment:focus {
+	text-decoration: underline;
+}
+
+@media(max-width:400px) {
+	#tasselUserMutingSettingsTable {
+		width: 100%;
+	}
+	
+	#tasselUserMutingSettingsTable .heading {
+		height: 8em;
+	}
+	
+	#tasselUserMutingSettingsTable .heading div {
+		transform: rotate(-90deg);
+	}
+}

@@ -48,12 +48,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.5",
+            "version": "1.6",
             "created": 1674907200000,
-            "updated": 1701031377853,
+            "updated": 1703757216988,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@40f887aac6c57056cabe716fc2dde83c08f4523f/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@de7120aec7f4ab9e46fd2e8c736a02a1061a1078/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -87,12 +87,12 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "1.4",
+            "version": "1.5",
             "created": 1678386060000,
-            "updated": 1698693876440,
+            "updated": 1703150271861,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@573b3d38a98f94ec22b7ed388e7a69b32f42b55a/extensions/TaggingTools/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d1712a4536d75ff9cc843cf4dc43b268fbb3951/extensions/TaggingTools/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@45a52798eab8c5650efd95b0916747f0c07c02b1/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
@@ -150,13 +150,13 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "1.1",
+                "version": "1.2",
                 "created": 1696017952450,
-                "updated": 1698662976732,
+                "updated": 1703533945712,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6142346f69f1a084408286be98c0ec3a000db421/extensions/ReadThis/ReadThis.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@20c51bad5855cb99d6e138fc78a8a6f331a3c11f/extensions/ReadThis/ReadThis.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c4970c66f3ac9329b818db222823880a0783f528/extensions/ReadThis/ReadThis.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5afc9dfe248201b8b23ba0b5a2be72b5fa8c21/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
                         "Opens a Read-More without opening the post.",
@@ -166,12 +166,12 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "0.1",
+                "version": "0.2",
                 "created": 1696333244573,
-                "updated": 1696333244573,
+                "updated": 1703164434481,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9522855d0d1843655797c72fd71ff3e2b63277fb/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@066fb41a4608a028aba317faa57cb61e853fb017/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@81d7e49e67bd4d391f052728d9f3199a97804a1c/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470"
         },
@@ -184,6 +184,34 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Hide any number.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@11ffc58430e017d77d327b26c925cd8bd91ca563/extensions/HideNumbers.js"
+        },
+        {
+                "name": "Keyboard Shortcuts",
+                "id": 14,
+                "version": "0.1",
+                "created": 1703241062270,
+                "updated": 1703241062270,
+                "author": "Aki108",
+                "description": "Navigate Pillowfort with you keyboard.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@774b8c0ee696c73f60581a1f1f70775de1cc367e/extensions/KeyboardShortcuts/KeyboardShortcuts.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f53219db6b18491c39a11fb63561e491474614a4/extensions/KeyboardShortcuts/KeyboardShortcuts.css",
+                "post": "https://www.pillowfort.social/posts/4123393"
+        },
+        {
+                "name": "User Muting",
+                "id": 15,
+                "version": "1.0",
+                "created": 1703613662842,
+                "updated": 1703613662842,
+                "author": "Aki108",
+                "description": "Remove people partially.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b482f3f8ce0f32d8e7073d6ed10f9059d12d776b/extensions/UserMuting/UserMuting.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9efa6891aa45b0eda4fa80a6f7424cb01e0242e2/extensions/UserMuting/UserMuting.css",
+                "post": "https://www.pillowfort.social/posts/4139698",
+                "features": [
+                        "Remove posts/reblogs of someone.",
+                        "Remove collapse comments of someone."
+                ]
         }
 ];
 

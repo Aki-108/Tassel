@@ -8,14 +8,6 @@ let toasts = [
     "new": false
   },
   {
-    "id": 18,
-    "extension": 12,
-    "title": "WIP: Fort Archive",
-    "text": "'Fort Archive' let's you see many posts at once and jump to a specific time. But it is still work-in-progress.",
-    "timestamp": 1696333244573,
-    "new": true
-  },
-  {
     "id": 19,
     "extension": 13,
     "title": "New Extension",
@@ -30,6 +22,22 @@ let toasts = [
     "text": "The extension 'Sidebar Counts' is now available as a full release.",
     "timestamp": 1701106140000,
     "new": false
+  },
+  {
+    "id": 21,
+    "extension": 14,
+    "title": "WIP: Keyboard Shortcuts",
+    "text": "A new Work-In-Progress extension has been added.",
+    "timestamp": 1703241062270,
+    "new": true
+  },
+  {
+    "id": 22,
+    "extension": 15,
+    "title": "User Muting",
+    "text": "A new extension has been added.",
+    "timestamp": 1703613662842,
+    "new": true
   }
 ];
 

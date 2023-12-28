@@ -218,6 +218,10 @@ body.dark-theme #tasselModalContent hr {
 	font-weight: normal;
 }
 
+#tasselModalSidebarAbout {
+	border-color: darkgray;
+}
+
 .tasselModalSidebarEntry {
 	font-weight: bold;
 	padding: 10px;

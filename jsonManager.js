@@ -99,7 +99,6 @@ function initModal_quugasdg() {
 initSinglePost_quugasdg();
 function initSinglePost_quugasdg() {
     if (document.getElementById("post-view-modal")) return;
-    if (document.getElementsByTagName("dir-pagination-controls").length === 0) return;
     let postId = document.URL.split("/");
     if (postId.length < 5) return;
     postId = postId[4].split("?")[0];
