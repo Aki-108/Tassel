@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.0
+// @version      1.1
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -183,23 +183,40 @@
             `;
         }
         content.appendChild(table1);
+        let inputs = Object.values(document.getElementById("tasselUserMutingSettingsTable").getElementsByTagName("input"));
+        for (let input of inputs) {
+            if (input.getAttribute("key") === "username") input.addEventListener("keyup", toggleSetting_gatzfpvu);
+            else input.addEventListener("click", toggleSetting_gatzfpvu);
+        }
 
         let button1 = document.createElement("button");
         button1.innerHTML = "Add";
         button1.classList.add("tasselButton");
         button1.addEventListener("click", function() {
-            table1.innerHTML += `
-                <input key="username"></input>
-                <input type="checkbox" key="originalPost"></input>
-                <input type="checkbox" key="rebloggedFrom"></input>
-                <input type="checkbox" key="rebloggedBy"></input>
-                <input type="checkbox" key="comments"></input>
-            `;
-            let inputs = Object.values(document.getElementById("tasselUserMutingSettingsTable").getElementsByTagName("input"));
-            for (let input of inputs) {
-                if (input.getAttribute("key") === "username") input.addEventListener("keyup", toggleSetting_gatzfpvu);
-                else input.addEventListener("click", toggleSetting_gatzfpvu);
-            }
+            let username = document.createElement("input");
+            username.setAttribute("key", "username");
+            username.addEventListener("keyup", toggleSetting_gatzfpvu);
+            table1.appendChild(username);
+            let originalPost = document.createElement("input");
+            originalPost.type = "checkbox";
+            originalPost.setAttribute("key", "originalPost");
+            originalPost.addEventListener("click", toggleSetting_gatzfpvu);
+            table1.appendChild(originalPost);
+            let rebloggedFrom = document.createElement("input");
+            rebloggedFrom.type = "checkbox";
+            rebloggedFrom.setAttribute("key", "rebloggedFrom");
+            rebloggedFrom.addEventListener("click", toggleSetting_gatzfpvu);
+            table1.appendChild(rebloggedFrom);
+            let rebloggedBy = document.createElement("input");
+            rebloggedBy.type = "checkbox";
+            rebloggedBy.setAttribute("key", "rebloggedBy");
+            rebloggedBy.addEventListener("click", toggleSetting_gatzfpvu);
+            table1.appendChild(rebloggedBy);
+            let comments = document.createElement("input");
+            comments.type = "checkbox";
+            comments.setAttribute("key", "comments");
+            comments.addEventListener("click", toggleSetting_gatzfpvu);
+            table1.appendChild(comments);
         });
         button1.click();
         content.appendChild(button1);
