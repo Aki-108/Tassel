@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.1
+// @version      1.2
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -34,6 +34,14 @@
     /* Find and hide posts */
     function processPosts_gatzfpvu(postData, posts) {
         for (let post of postData) {
+            //ignore muting if the post is in a moderated community
+            if (post.community_id) {
+                let community = tasselJsonManager.communities.communities.find(function(community) {
+                    return community.id === post.community_id;
+                });
+                if (community.membership_type === "moderator") continue;
+            }
+
             //match html to json
             let postElement = posts.find(function(item) {
                 return (item.id === (post.original_post_id || post.id));
