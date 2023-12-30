@@ -35,7 +35,6 @@ body.dark-theme #tasselTaggingToolsSuggestionBox button:hover {
 #tasselTaggingToolsTagSelfReblog,
 #tasselTaggingToolsTagOtherReblog {
     margin: 0;
-    margin-left: 0.5em;
     padding: 0.5em 0.5em;
     border: 1px solid #232b40;
     border-radius: 0.5em;
@@ -55,6 +54,17 @@ body.dark-theme #tasselTaggingToolsTagSelfReblog,
 body.dark-theme #tasselTaggingToolsTagOtherReblog {
     border-color: #d9dbe0;
     color: #d9dbe0;
+}
+
+#tasselTaggingToolsSettings {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 7em auto;
+    gap: 4px 0.5em;
+}
+
+#tasselTaggingToolsSettings label {
+    margin-top: 9px;
 }
 
 #tasselTaggingToolsSaveFrame {
@@ -80,4 +90,33 @@ body.dark-theme #tasselTaggingToolsTagOtherReblog {
 #tasselTaggingToolsSaveTags:focus {
     /*visibility: hidden;*/
     opacity: 0;
+}
+#tasselTaggingToolsRemoveCount {
+    width: 4em;
+    margin-left: 0.5em;
+}
+#tasselTaggingToolsRemoveButton {
+    margin-left: 0.5em;
+    border: 1px solid #ff7be7;
+    border-radius: 2px;
+    padding: 3px 0.5em;
+    background-color: #232b40;
+    color: #fff;
+}
+#tasselTaggingToolsRemoveButton:hover {
+    background-color: #ff7be7;
+}
+body.dark-theme #tasselTaggingToolsRemoveButton {
+    color: #d9dbe0;
+    background-color: #23282E;
+    border-color: #353840;
+}
+body.dark-theme #tasselTaggingToolsRemoveButton:hover {
+    background-color: #33738d;
+}
+
+@media(max-width:400px) {
+    #tasselTaggingToolsSettings {
+        grid-template-columns: auto;
+    }
 }
