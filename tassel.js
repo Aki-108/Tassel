@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.12
+// @version      1.5.13
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e1bdf2c3f63702fd82f638ab2fe0bdfc95af8987/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4bc18515a5b36ecfd75bd7fada8df5b387daf097/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@431fec4627ac614a3a34c725da1f1462df3a785e/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bf8d8d273132a40f5db288b86ceb857d023ce82d/jsonManager.js";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fbb80d0b8a8855e1c02c2a4b810b9a8febe75d23/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -172,6 +172,12 @@
         mutualsReady.style.display = "none";
         document.body.appendChild(mutualsReady);
         mutualsReady.addEventListener("click", function() {console.log("mutuals data ready")});
+
+        let communitiesReady = document.createElement("button");
+        communitiesReady.id = "tasselJsonManagerCommunitiesReady";
+        communitiesReady.style.display = "none";
+        document.body.appendChild(communitiesReady);
+        communitiesReady.addEventListener("click", function() {console.log("community data ready")});
 
         loadScript_xcajbuzn(jsonManager);
     }
@@ -744,6 +750,7 @@
             <option value="tasselPostSubscriber">Post Subscriber</option>
             <option value="tasselSidebarCounts">Sidebar Counts</option>
             <option value="tasselTaggingTools">Tagging Tools</option>
+            <option value="tasselUserMuting">User Muting</option>
         `;
         content.appendChild(select3);
         let button2 = document.createElement("button");
