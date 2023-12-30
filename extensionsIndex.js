@@ -210,7 +210,7 @@ let extensionsIndex = [
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
                         "Remove posts/reblogs of someone.",
-                        "Remove collapse comments of someone."
+                        "Collapse comments of someone."
                 ]
         }
 ];
