@@ -123,12 +123,12 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.2",
+            "version": "1.3",
             "created": 1693639280661,
-            "updated": 1694363465129,
+            "updated": 1703925817495,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8d09d60972bc97fa3d628c5f2be52875636bf1b7/extensions/PostCharts/PostCharts.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@60354f1febf4d269a0ab6ee523bbee03219b2a19/extensions/PostCharts/PostCharts.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f69d5400fe9f1ed953cd1fbdf858b99eec29aa1e/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
