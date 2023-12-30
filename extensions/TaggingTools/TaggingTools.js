@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.5
+// @version      1.6
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -147,6 +147,13 @@
                 } else {//add new tag
                     fileTags.push({tag: tag, count: 1});
                 }
+            });
+            //remove empty tags
+            fileTags = fileTags.filter(function(item) {
+                return item.tag.length > 0;
+            });
+            fileTags.sort(function(a, b) {
+                return b.count - a.count
             });
             //save database
             file.tags = fileTags;
@@ -359,65 +366,69 @@
         title1.innerHTML = "Default Tags";
         content.appendChild(title1);
 
+        let frame1 = document.createElement("div");
+        frame1.id = "tasselTaggingToolsSettings";
+        content.appendChild(frame1);
+
         let info1 = document.createElement("label");
 		info1.style.fontWeight = "normal";
         info1.innerHTML = "Text Posts";
+        info1.setAttribute("for", "tasselTaggingToolsTagText");
+        frame1.appendChild(info1);
         let input1 = document.createElement("input");
         input1.id = "tasselTaggingToolsTagText";
         input1.value = settings.tagPreset.textPost || "";
-        info1.appendChild(input1);
-        content.appendChild(info1);
-        content.appendChild(document.createElement("br"));
+        frame1.appendChild(input1);
 
         let info2 = document.createElement("label");
 		info2.style.fontWeight = "normal";
         info2.innerHTML = "Photo Posts";
+        info2.setAttribute("for", "tasselTaggingToolsTagPhoto");
+        frame1.appendChild(info2);
         let input2 = document.createElement("input");
         input2.id = "tasselTaggingToolsTagPhoto";
         input2.value = settings.tagPreset.photoPost || "";
-        info2.appendChild(input2);
-        content.appendChild(info2);
-        content.appendChild(document.createElement("br"));
+        frame1.appendChild(input2);
 
         let info3 = document.createElement("label");
 		info3.style.fontWeight = "normal";
         info3.innerHTML = "Video Posts";
+        info3.setAttribute("for", "tasselTaggingToolsTagVideo");
+        frame1.appendChild(info3);
         let input3 = document.createElement("input");
         input3.id = "tasselTaggingToolsTagVideo";
         input3.value = settings.tagPreset.videoPost || "";
-        info3.appendChild(input3);
-        content.appendChild(info3);
-        content.appendChild(document.createElement("br"));
+        frame1.appendChild(input3);
 
         let info4 = document.createElement("label");
 		info4.style.fontWeight = "normal";
         info4.innerHTML = "Link Posts";
+        info4.setAttribute("for", "tasselTaggingToolsTagLink");
+        frame1.appendChild(info4);
         let input4 = document.createElement("input");
         input4.id = "tasselTaggingToolsTagLink";
         input4.value = settings.tagPreset.linkPost || "";
-        info4.appendChild(input4);
-        content.appendChild(info4);
-        content.appendChild(document.createElement("br"));
+        frame1.appendChild(input4);
 
         let info5 = document.createElement("label");
 		info5.style.fontWeight = "normal";
         info5.innerHTML = "Self-Reblogs";
+        info5.setAttribute("for", "tasselTaggingToolsTagSelfReblog");
+        frame1.appendChild(info5);
         let input5 = document.createElement("input");
         input5.id = "tasselTaggingToolsTagSelfReblog";
         input5.value = settings.tagPreset.selfReblog || "";
-        info5.appendChild(input5);
-        content.appendChild(info5);
-        content.appendChild(document.createElement("br"));
+        frame1.appendChild(input5);
 
         let info6 = document.createElement("label");
 		info6.style.fontWeight = "normal";
         info6.innerHTML = "Other-Reblogs";
+        info6.setAttribute("for", "tasselTaggingToolsTagOtherReblog");
+        frame1.appendChild(info6);
         let input6 = document.createElement("input");
         input6.id = "tasselTaggingToolsTagOtherReblog";
         input6.value = settings.tagPreset.otherReblog || "";
-        info6.appendChild(input6);
-        content.appendChild(info6);
-        content.appendChild(document.createElement("br"));
+        frame1.appendChild(input6);
 
         let frame7 = document.createElement("div");
         frame7.id = "tasselTaggingToolsSaveFrame";
@@ -433,6 +444,60 @@
         button7.addEventListener("click", saveTags_dshcgkhy);
         frame7.appendChild(button7);
         content.appendChild(frame7);
+        content.appendChild(document.createElement("hr"));
+
+        let title2 = document.createElement("h2");
+        title2.innerHTML = "Manage";
+        content.appendChild(title2);
+
+        let info8 = document.createElement("p");
+        info8.innerHTML = `You have <b>${tags.length}</b> saved tags.`;
+        content.appendChild(info8);
+
+        let info9 = document.createElement("p");
+        info9.innerHTML = "Remove tags used fewer times than:";
+        content.appendChild(info9);
+        let input9 = document.createElement("input");
+        input9.id = "tasselTaggingToolsRemoveCount"
+        input9.type = "number";
+        input9.min = "1";
+        input9.step = "1";
+        input9.value = "1";
+        info9.appendChild(input9);
+        input9.addEventListener("change", function() {
+            //display how many tags are selected based on input
+            let input = document.getElementById("tasselTaggingToolsRemoveCount");
+            let count = tags.filter(function(item) {
+                return item.count < input.value;
+            }).length;
+            document.getElementById("tasselTaggingToolsRemoveSelected").innerHTML = `<b>${count}</b> tags selected.`;
+        });
+        let button9 = document.createElement("button");
+        button9.id = "tasselTaggingToolsRemoveButton";
+        button9.innerHTML = "Remove";
+        info9.appendChild(button9);
+        button9.addEventListener("click", function() {
+            //load data
+            let file = JSON.parse(localStorage.getItem("tasselTaggingTools")) || {};
+            let fileTags = file.tags || [];
+
+            let before = fileTags.length;
+            let input = document.getElementById("tasselTaggingToolsRemoveCount");
+            fileTags = fileTags.filter(function(item) {
+                return item.count >= input.value;
+            });
+            tags = fileTags;
+            //save data
+            file.tags = fileTags;
+            localStorage.setItem("tasselTaggingTools", JSON.stringify(file));
+
+            displaySettings_dshcgkhy();
+        });
+
+        let info10 = document.createElement("p");
+        info10.id = "tasselTaggingToolsRemoveSelected";
+        info10.innerHTML = "<b>0</b> tags selected.";
+        content.appendChild(info10);
     }
 
     /* Save settings to local storage */

@@ -55,6 +55,10 @@ let tasselJsonManager = {
         users: [],
         displayed_count: null,
         real_count: null
+    },
+    communities: {
+        ready: false,
+        communities: []
     }
 }
 
@@ -427,6 +431,15 @@ function assignUsers_quugasdg(json) {
         json.original_following = null;
         json.original_mutual = null;
     }
+}
+
+initCommunities_quugasdg();
+function initCommunities_quugasdg() {
+    $.getJSON(`https://www.pillowfort.social/communitylist/json`, function(data) {
+        tasselJsonManager.communities.communities = data;
+        tasselJsonManager.communities.ready = true;
+        trigger_quugasdg("tasselJsonManagerCommunitiesReady");
+    });
 }
 
 function trigger_quugasdg(name) {

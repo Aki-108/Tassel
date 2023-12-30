@@ -1,7 +1,6 @@
 // ==UserScript==
 // @name         Post Charts
-// @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  Shows statistics of a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -110,7 +109,7 @@
                 </div>
             </div>
         `;
-        timeGraphData.push([new Date(tasselJsonManager.post.json.created_at), 0, 0, 0]);//start of data
+        timeGraphData.push([new Date(tasselJsonManager.post.json.publish_at), 0, 0, 0]);//start of data
         timeGraphData.push([new Date(), null, null, null]);//end of data
         graph_gkgyjoep();
 
@@ -225,7 +224,7 @@
                         canvas.fillRect(canvas_left_x, area.y, canvas_width, area.h);
                     }
 
-                    let created_at = new Date(tasselJsonManager.post.json.created_at).getDay();
+                    let created_at = new Date(tasselJsonManager.post.json.publish_at).getDay();
                     highlight_period(created_at-0.5, created_at+0.5);
                 },
                 drawCallback: function() {
@@ -291,7 +290,7 @@
                         canvas.fillRect(canvas_left_x, area.y, canvas_width, area.h);
                     }
 
-                    let created_at = new Date(tasselJsonManager.post.json.created_at).getHours();
+                    let created_at = new Date(tasselJsonManager.post.json.publish_at).getHours();
                     highlight_period(created_at-0.5, created_at+0.5);
                 }
             }
