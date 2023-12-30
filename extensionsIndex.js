@@ -212,6 +212,17 @@ let extensionsIndex = [
                         "Remove posts/reblogs of someone.",
                         "Collapse comments of someone."
                 ]
+        },
+        {
+                "name": "Feed Pagination",
+                "id": 16,
+                "version": "0.1",
+                "created": 1703955489355,
+                "updated": 1703955489355,
+                "author": "Aki108",
+                "description": "No more infinit scroll.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0e315a9045595ddb687ed48833c563897b0e9ed5/extensions/FeedPagination/FeedPagination.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ba19be243e41faba257d5fc07930540ecc042608/extensions/FeedPagination/FeedPagination.css"
         }
 ];
 
