@@ -10,8 +10,12 @@
     border-radius: .5em;
     padding: 2px 8px;
     margin: 4px;
-    background-color: var(--tag_bg);
-    color: var(--postFontColor);
+    background-color: #ececec;
+    color: #2b2b2b;
+}
+body.dark-theme #tasselTaggingToolsSuggestionBox button {
+    background-color: #010102;
+    color: #d9dbe0;
 }
 #tasselTaggingToolsSuggestionBox button:hover {
     background-color: #e8e8e8;
