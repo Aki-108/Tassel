@@ -294,7 +294,10 @@ body.dark-theme .tasselExtension {
 
 .tasselExtension input {
 	margin: 5px 6px;
-	accent-color: var(--pageBg);
+	accent-color: #2c405a;
+}
+body.dark-theme .tasselExtension input {
+	accent-color: #23282e;
 }
 
 .tasselExtension a {
@@ -362,9 +365,13 @@ body.dark-theme .tasselExtensionWIP {
 
 #tasselJSONView {
 	margin-top: 10px; 
-	background: var(--postBgColor); 
-	color: var(--postFontColor);
+	background: #ffffff; 
+	color: #2b2b2b;
 	font-family: Consolas, monospace;
+}
+body.dark-theme #tasselJSONView {
+	background: #1b1d20; 
+	color: #d9dbe0;
 }
 
 .tasselButton {
@@ -372,10 +379,14 @@ body.dark-theme .tasselExtensionWIP {
 	margin-right: 1em;
 	border: 1px solid transparent; 
 	border-radius: 0.5em; 
-	background-color: var(--pageBg); 
-	color: var(--postHeaderFont); 
+	background-color: #2c405a;
+	color: #ffffff;
 	font-size: 16px; 
 	text-transform: uppercase; 
+}
+body.dark-theme .tasselButton {
+	background-color: #23282e; 
+	color: #d9dbe0; 
 }
 
 .tasselSaveButton {
