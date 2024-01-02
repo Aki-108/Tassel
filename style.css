@@ -404,7 +404,10 @@ body.dark-theme .tasselSaveButton {
 .tasselToggle input {
 	margin: 1px 10px 5px 5px;
 	transform: scale(1.6);
-	accent-color: var(--pageBg);
+	accent-color: #2c405a;
+}
+body.dark-theme .tasselToggle input {
+	accent-color: #23282e;
 }
 
 .tasselToggle label {
