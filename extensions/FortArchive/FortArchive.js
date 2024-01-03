@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      0.2
+// @version      0.3
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -63,14 +63,7 @@
 
         let pagination = document.getElementsByClassName("pagination")[0];
         lastPage = pagination.children[pagination.children.length-2].textContent*1;
-        $.getJSON(`${document.URL}/json/?p=${lastPage}`, function(data) {
-            pageTime[lastPage] = [
-                new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
-                ,
-                new Date(data.posts[0].timestamp.replace("@", ""))
-            ];
-            initNav_avytegoo();
-        });
+        findLastPage_avytegoo(1, lastPage);
     }
 
     function initNav_avytegoo() {
@@ -119,6 +112,29 @@
         });
     }
 
+    function findLastPage_avytegoo(minPage, maxPage, lastSuccessful, lastUnsuccessful) {
+        let pivot = Math.ceil((minPage+maxPage)/2);
+        if (lastSuccessful === lastUnsuccessful-1 || lastSuccessful === lastPage) {
+            lastPage = lastSuccessful;
+            initNav_avytegoo();
+            return;
+        }
+        $.getJSON(`${document.URL}/json/?p=${pivot}`, function(data) {
+            if (data.posts.length) {
+                lastSuccessful = lastSuccessful < pivot || lastSuccessful === undefined ? pivot : lastSuccessful;
+                findLastPage_avytegoo(pivot+1, maxPage, lastSuccessful, lastUnsuccessful);
+                pageTime[pivot] = [
+                    new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
+                    ,
+                    new Date(data.posts[0].timestamp.replace("@", ""))
+                ];
+            } else {
+                lastUnsuccessful = lastUnsuccessful > pivot || lastUnsuccessful === undefined ? pivot : lastUnsuccessful;
+                findLastPage_avytegoo(minPage, pivot-1, lastSuccessful, lastUnsuccessful);
+            }
+        });
+    }
+
     function findDate_avytegoo(minPage, maxPage) {
         let pivot = Math.ceil((minPage+maxPage)/2);
         $.getJSON(`${document.URL}/json/?p=${pivot}`, function(data) {
@@ -130,6 +146,12 @@
             let month = document.getElementById("tasselFortArchiveNavigationMonth").value;
             let year = document.getElementById("tasselFortArchiveNavigationYear").value;
             let date = new Date(`01 ${month} ${year}`).getTime();
+            //escape endless loop
+            if (maxPage === pivot) {
+                clearPage_avytegoo();
+                loadPage_avytegoo(minPage);
+                return;
+            }
             if (date <= pageTime[minPage][1].getTime() && date >= pageTime[pivot][0].getTime()) {
                 if (date >= pageTime[minPage][0].getTime()) {
                     clearPage_avytegoo();
@@ -161,6 +183,12 @@
                     findDate_avytegoo(pivot, maxPage);
                     return;
                 }
+            }
+            //selected date is older than oldest post
+            if (date < pageTime[maxPage][0].getTime()) {
+                clearPage_avytegoo();
+                loadPage_avytegoo(maxPage);
+                return;
             }
         });
     }
