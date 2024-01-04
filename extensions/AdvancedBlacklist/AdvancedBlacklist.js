@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.6
+// @version      1.7
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -173,8 +173,10 @@
         for (let tag of tags) {
             let comma = "<span>, </span>";
             if (tag == tags[tags.length-1]) comma = "";
+            let url = `/search/${tag}`;
+            if (tasselJsonManager.feed.type === "community") url = `${document.URL}/tagged/${tag}`;
             tagsElement.innerHTML += `
-                <span><a class="tag-item" href="/search/${tag}">${tag}</a>${comma}</span>
+                <span><a class="tag-item" href="${url}">${tag}</a>${comma}</span>
             `;
         }
     }
