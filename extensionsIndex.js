@@ -48,12 +48,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.6",
+            "version": "1.7",
             "created": 1674907200000,
-            "updated": 1703757216988,
+            "updated": 1704363610164,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@de7120aec7f4ab9e46fd2e8c736a02a1061a1078/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ae2b0854e88fe20329367978af401096556b288c/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -200,12 +200,12 @@ let extensionsIndex = [
         {
                 "name": "User Muting",
                 "id": 15,
-                "version": "1.2",
+                "version": "1.3",
                 "created": 1703613662842,
-                "updated": 1703854999636,
+                "updated": 1704363610164,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c553ba867db4a7acf890cc7498f2f562d87f2a73/extensions/UserMuting/UserMuting.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e73ade23abb370a5772565279e4de610df6627f6/extensions/UserMuting/UserMuting.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9efa6891aa45b0eda4fa80a6f7424cb01e0242e2/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
