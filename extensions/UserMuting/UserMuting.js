@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.2
+// @version      1.3
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -39,7 +39,7 @@
                 let community = tasselJsonManager.communities.communities.find(function(community) {
                     return community.id === post.community_id;
                 });
-                if (community.membership_type === "moderator") continue;
+                if (community && community.membership_type === "moderator") continue;
             }
 
             //match html to json
