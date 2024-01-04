@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.6
+// @version      2.7
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -147,11 +147,17 @@
             let commId = tasselJsonManager.reblogs.json[index].community_id;
 
             //search cache for community
-            if (commId === null && settings.showReblogs) link.outerHTML += " to their fort";
+            if (commId === null) {
+                if (settings.showReblogs) link.outerHTML += " to their fort";
+                addTags_tlfevnlu(notes[index], index);
+            }
             let comm = comms.find(function(value) {
                 return value[0] === commId;
             });
-            if (comm && settings.showReblogs) link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[1] + "'>" + comm[1] + "</a>";
+            if (comm) {
+                if (settings.showReblogs) link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[1] + "'>" + comm[1] + "</a>";
+                addTags_tlfevnlu(notes[index], index, comm[1]);
+            }
 
             //when the community is not in the cache, add a loading circle
             if (commId !== null && !comm && settings.showReblogs) {
@@ -161,39 +167,20 @@
                 notes[index].appendChild(dataLoading);
             }
 
-            //display tags
-            let tags = tasselJsonManager.reblogs.json[index].cached_tag_list || "";
-            if (tags.length && settings.showTags) {
-                tags = tags.split(", ");
-                let tagFrame = document.createElement("p");
-                tagFrame.classList.add("tasselRebloggedToCommunityTags");
-                for (let a = 0; a < tags.length; a++) {
-                    let tagLink = document.createElement("a");
-                    tagLink.href = `https://www.pillowfort.social/${tasselJsonManager.reblogs.json[index].username}/tagged/${tags[a]}`;
-                    tagLink.innerHTML = tags[a];
-                    tagFrame.appendChild(tagLink);
-                    if (a < tags.length - 1) {
-                        let comma = document.createElement("span");
-                        comma.innerHTML = ", ";
-                        tagFrame.appendChild(comma);
-                    }
-                }
-                notes[index].appendChild(tagFrame);
-            }
-
             //start fetching community data
             if (commId === null || comm) continue;
             if (document.getElementsByClassName("reblog"+postId).length > 1) continue;
-            reblogTimeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId);}, 500*reblogTimeouts.length));
+            reblogTimeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId, index);}, 500*reblogTimeouts.length));
         }
     }
 
     /* Fetch community data. */
-    function findCommunity_tlfevnlu(postId) {
+    function findCommunity_tlfevnlu(postId, index) {
         $.getJSON('https://www.pillowfort.social/posts/'+postId+'/json', function(data) {
             //fill data for all entries with the same community
             let notes = Object.values(document.getElementsByClassName("reblog"+postId));
             for (let note of notes) {
+                addTags_tlfevnlu(note.parentNode, index, data.comm_name);
                 note.classList.remove("reblog"+postId);
                 if (data.comm_name === undefined) note.outerHTML = " to their fort";
                 else note.outerHTML = " to <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
@@ -202,10 +189,35 @@
             //show error message
             let notes = Object.values(document.getElementsByClassName("reblog"+postId));
             for (let note of notes) {
+                addTags_tlfevnlu(note.parentNode, index);
                 note.classList.remove("reblog"+postId);
                 note.outerHTML = " to <abbr title='" + value.statusText + "'>???</abbr>";
             }
         });
+    }
+
+    /* Show tags of the reblog */
+    function addTags_tlfevnlu(div, index, community) {
+        if (!settings.showTags) return;
+        let tags = tasselJsonManager.reblogs.json[index].cached_tag_list || "";
+        if (tags.length) {
+            tags = tags.split(", ");
+            let tagFrame = document.createElement("p");
+            tagFrame.classList.add("tasselRebloggedToCommunityTags");
+            for (let a = 0; a < tags.length; a++) {
+                let tagLink = document.createElement("a");
+                if (community) tagLink.href = `https://www.pillowfort.social/community/${community}/tagged/${tags[a]}`;
+                else tagLink.href = `https://www.pillowfort.social/${tasselJsonManager.reblogs.json[index].username}/tagged/${tags[a]}`;
+                tagLink.innerHTML = tags[a];
+                tagFrame.appendChild(tagLink);
+                if (a < tags.length - 1) {
+                    let comma = document.createElement("span");
+                    comma.innerHTML = ", ";
+                    tagFrame.appendChild(comma);
+                }
+            }
+            div.appendChild(tagFrame);
+        }
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
