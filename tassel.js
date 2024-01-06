@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.16
+// @version      1.5.17
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9ee0d95bfff177f805af63ff4ae0aba819d388af/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b9493a3814199979637a6bbd18ac429cdbc3f8de/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b74ac60521f8aeb737d9e817378115eea89a3e01/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fbb80d0b8a8855e1c02c2a4b810b9a8febe75d23/jsonManager.js";
@@ -829,20 +829,20 @@
     }
 
     function addBottomPermalink() {
-        let nav = document.getElementsByClassName("post-nav-left");
-        Object.values(nav).forEach(function(item, index) {
-            if (item.classList.contains("tasselPermalinked")) return;
-            if (tasselJsonManager.feed.posts[index] === undefined) return;
-            if (tasselJsonManager.feed.type === 'drafts') return;
-            let link = document.createElement("a");
-            link.setAttribute("target", "_blank");
-            link.title = "link to post";
-            link.classList.add("link_post", "svg-blue", "tasselPermalinked");
-            link.href = `/posts/${tasselJsonManager.feed.posts[index].original_post_id || tasselJsonManager.feed.posts[index].id}`;
+        if (tasselJsonManager.feed.type === 'drafts') return;
+        let links = Object.values(document.getElementsByClassName("link_post"));
+        links.forEach(function(item) {
+            let post = item;
+            for (let a = 0; a < 100 && !post.classList.contains("post-container"); a++) {
+                post = post.parentNode;
+            }
+            let nav = post.getElementsByClassName("post-nav-left")[0];
+            if (nav.classList.contains("tasselPermalinked")) return;
+            nav.classList.add("tasselPermalinked");
+            let link = item.cloneNode(true);
+            link.classList.add("tasselPermalinked");
             link.style = "margin: 0 21px;";
-            link.innerHTML = `<img src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg" style="height: 20px;">`;
-            item.appendChild(link);
-            item.classList.add("tasselPermalinked");
+            nav.appendChild(link);
         });
     }
 
