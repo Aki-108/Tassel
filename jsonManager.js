@@ -269,6 +269,8 @@ function initFortFeed_quugasdg() {
                 if (pageButton) page = pageButton.textContent;
                 let jsonURL = "/";
                 if (document.URL.split("/")[4] === "tagged") jsonURL = `/tagged/${document.URL.split("/")[5]}/`;
+                if (document.URL.split("/")[4] === "original") jsonURL = `/original/`;
+                if (document.URL.split("/")[4] === "reblogs") jsonURL = `/reblogs/`;
                 $.getJSON(`https://www.pillowfort.social/${document.URL.split("/")[3]}${jsonURL}json?p=${page}`, function(data) {
                     data.posts.forEach(function(post) {
                         assignUsers_quugasdg(post);
