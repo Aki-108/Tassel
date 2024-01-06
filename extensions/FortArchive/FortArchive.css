@@ -9,7 +9,7 @@
 }
 
 #tasselFortArchive.reverse .content {
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 #tasselFortArchive.reverse .content .content {
     flex-direction: row;
@@ -55,7 +55,7 @@
     flex-wrap: wrap;
     gap: 10px;
     justify-content: flex-start;
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 [id^=tasselFortArchiveYear] h2 {
