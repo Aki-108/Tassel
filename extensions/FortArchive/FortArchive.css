@@ -9,7 +9,7 @@
 }
 
 #tasselFortArchive.reverse .content {
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 #tasselFortArchive.reverse .content .content {
     flex-direction: row;
@@ -35,6 +35,33 @@
     padding: 0 1em;
 }
 
+#tasselFortArchiveNavigation label {
+    margin: 0;
+}
+
+#tasselFortArchiveJumpLoading {
+    box-sizing: border-box;
+    border: 1px solid #ffffff;
+    border-radius: 0.25em;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    background-color: #e9ecef;
+    font-size: 1.5em;
+}
+body.dark-theme #tasselFortArchiveJumpLoading {
+    border-color: #353840;
+    background-color: #1b1d20;
+}
+#tasselFortArchiveJumpLoading::-webkit-progress-bar,
+#tasselFortArchiveJumpLoading::-webkit-progress-value,
+#tasselFortArchiveJumpLoading::-moz-progress-bar {
+    background-color: #55ce8a;
+}
+body.dark-theme #tasselFortArchiveJumpLoading::-webkit-progress-bar,
+body.dark-theme #tasselFortArchiveJumpLoading::-webkit-progress-value,
+body.dark-theme #tasselFortArchiveJumpLoading::-moz-progress-bar {
+    background-color: #31734e;
+}
+
 [id^=tasselFortArchiveYear] {
     width: 100%;
 }
@@ -55,7 +82,7 @@
     flex-wrap: wrap;
     gap: 10px;
     justify-content: flex-start;
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 [id^=tasselFortArchiveYear] h2 {

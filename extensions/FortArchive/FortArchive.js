@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      0.3
+// @version      0.4
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -19,6 +19,8 @@
     let mainFrame;
     let navigation;
     let loadedPages = [];
+    let maxSearchDepth = 1;
+    let searchedCount = 0;
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -63,6 +65,13 @@
 
         let pagination = document.getElementsByClassName("pagination")[0];
         lastPage = pagination.children[pagination.children.length-2].textContent*1;
+        maxSearchDepth = Math.ceil(Math.log2(lastPage + 1));
+
+        navigation.innerHTML = `
+            <label for="tasselFortArchiveJumpLoading">Preloading fort:</label>
+            <progress id="tasselFortArchiveJumpLoading" value="0" max="${maxSearchDepth}"></progress>
+        `;
+
         findLastPage_avytegoo(1, lastPage);
     }
 
@@ -120,6 +129,9 @@
             return;
         }
         $.getJSON(`${document.URL}/json/?p=${pivot}`, function(data) {
+            searchedCount++;
+            let loading = document.getElementById("tasselFortArchiveJumpLoading");
+            if (loading) loading.value = searchedCount;
             if (data.posts.length) {
                 lastSuccessful = lastSuccessful < pivot || lastSuccessful === undefined ? pivot : lastSuccessful;
                 findLastPage_avytegoo(pivot+1, maxPage, lastSuccessful, lastUnsuccessful);

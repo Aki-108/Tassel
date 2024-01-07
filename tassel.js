@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.16
+// @version      1.5.17
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9ee0d95bfff177f805af63ff4ae0aba819d388af/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a0de524eedfa39f66438d8506aa692efea01eb2c/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b74ac60521f8aeb737d9e817378115eea89a3e01/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fbb80d0b8a8855e1c02c2a4b810b9a8febe75d23/jsonManager.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d58f755ac02de04c04187c24000255c6de067ab/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@061fc6e7e8d854b8a2bf295bc2818eb972c73c8b/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -730,18 +730,16 @@
             saveSettings_xcajbuzn();
         });
 
-        //Reset
+        //Data Management
         content.appendChild(document.createElement("hr"));
         let title3 = document.createElement("h2");
-        title3.innerHTML = "Reset";
+        title3.innerHTML = "Data";
         content.appendChild(title3);
-        let info3 = document.createElement("p");
-        info3.innerHTML = "Select what data to view or delete.";
-        content.appendChild(info3);
+        let grid3 = document.createElement("div");
+        grid3.id = "tasselSettingsData";
         let select3 = document.createElement("select");
         select3.id = "tasselResetSelect";
         select3.setAttribute("aria-label", "data group");
-        select3.style.marginRight = "1em";
         select3.innerHTML = `
             <option value="tasselSettings2">Tassel Settings</option>
             <option value="tasselAdvancedBlacklist">Advanced Blacklist</option>
@@ -752,12 +750,11 @@
             <option value="tasselTaggingTools">Tagging Tools</option>
             <option value="tasselUserMuting">User Muting</option>
         `;
-        content.appendChild(select3);
+        grid3.appendChild(select3);
         let button2 = document.createElement("button");
         button2.id = "tasselJSONViewButton";
         button2.innerHTML = "View";
         button2.classList.add("tasselButton");
-        button2.style = "width: 150px;";
         button2.addEventListener("click", function() {
             let viewFrame = document.getElementById("tasselJSONView");
             if (viewFrame) {
@@ -771,11 +768,10 @@
                 document.getElementById("tasselModalContent").appendChild(viewFrame);
             }
         });
-        content.appendChild(button2);
+        grid3.appendChild(button2);
         let button3 = document.createElement("button");
         button3.innerHTML = "Edit";
         button3.classList.add("tasselButton");
-        button3.style.width = "150px";
         button3.addEventListener("click", function() {
             if (this.classList.contains("tasselSaveButton")) {
                 let viewFrame = document.getElementById("tasselJSONView");
@@ -801,7 +797,99 @@
                 }
             }
         });
-        content.appendChild(button3);
+        grid3.appendChild(button3);
+        let button4 = document.createElement("button");
+        button4.classList.add("tasselButton");
+        button4.innerHTML = "export selected"
+        button4.addEventListener("click", function() {
+            let selected = document.getElementById("tasselResetSelect").value;
+            let data = JSON.parse(localStorage.getItem(selected));
+            let formated = {};
+            formated[selected] = data;
+            let d = new Date();
+            downloadObject_xcajbuzn(JSON.stringify(formated), `tassel_export_${selected}_${d.getDate()}-${d.getMonth()}-${d.getFullYear()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.json`);
+        });
+        grid3.appendChild(button4);
+        let button5 = document.createElement("button");
+        button5.classList.add("tasselButton");
+        button5.innerHTML = "export all"
+        button5.addEventListener("click", function() {
+            let options = Object.values(document.getElementById("tasselResetSelect").options);
+            let formated = {};
+            for (let option of options) {
+                let data = JSON.parse(localStorage.getItem(option.value));
+                formated[option.value] = data;
+            }
+            let d = new Date();
+            downloadObject_xcajbuzn(JSON.stringify(formated), `tassel_export_${d.getDate()}-${d.getMonth()}-${d.getFullYear()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.json`);
+        });
+        grid3.appendChild(button5);
+        let dropArea3 = document.createElement("div");
+        dropArea3.classList.add("tasselButton");
+        dropArea3.style = "display:grid;align-items:center;";
+        dropArea3.innerHTML = "<p style='margin:0;text-align:center;'>drop to import</p>"
+        dropArea3.addEventListener("dragenter", function(e) {
+            this.classList.add("dragenter");
+        });
+        dropArea3.addEventListener("dragleave", function() {
+            this.classList.remove("dragenter");
+        });
+        dropArea3.addEventListener("dragover", function(e) {
+            e.preventDefault();
+        });
+        dropArea3.addEventListener("drop", function(e) {
+            e.preventDefault();
+            this.classList.remove("dragenter");
+            //source: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop#process_the_drop
+            if (e.dataTransfer.items) {
+                [...e.dataTransfer.items].forEach((item, i) => {
+                    if (item.kind !== "file") return;
+                    const file = item.getAsFile();
+                    readFile_xcajbuzn(file);
+                });
+            } else {
+                [...e.dataTransfer.files].forEach((file, i) => {
+                    readFile_xcajbuzn(file);
+                });
+            }
+        });
+        grid3.appendChild(dropArea3);
+        content.appendChild(grid3);
+    }
+
+    /* Read a JSON file and save it's data as localStorage */
+    //source: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsText#javascript
+    function readFile_xcajbuzn(file) {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            let data = {};
+            try {
+                data = JSON.parse(JSON.parse(reader.result));
+            } catch {
+                alert("Error: Data invalid");
+                return;
+            }
+            let options = Object.values(document.getElementById("tasselResetSelect").options);
+            for (let option of options) {
+                if (!data[option.value]) continue;
+                localStorage.setItem(option.value, JSON.stringify(data[option.value]));
+            }
+            location.reload();
+        },false,);
+        if (file) reader.readAsText(file);
+    }
+
+    /* Download JSON as a file */
+    /* https://stackoverflow.com/a/47821215 */
+    function downloadObject_xcajbuzn(object, filename) {
+        var blob = new Blob([JSON.stringify(object)], {type: "application/json;charset=utf-8"});
+        var url = URL.createObjectURL(blob);
+        var elem = document.createElement("a");
+        elem.href = url;
+        elem.download = filename;
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
     }
 
     /* Activate / deactivate extensions */
@@ -829,20 +917,20 @@
     }
 
     function addBottomPermalink() {
-        let nav = document.getElementsByClassName("post-nav-left");
-        Object.values(nav).forEach(function(item, index) {
-            if (item.classList.contains("tasselPermalinked")) return;
-            if (tasselJsonManager.feed.posts[index] === undefined) return;
-            if (tasselJsonManager.feed.type === 'drafts') return;
-            let link = document.createElement("a");
-            link.setAttribute("target", "_blank");
-            link.title = "link to post";
-            link.classList.add("link_post", "svg-blue", "tasselPermalinked");
-            link.href = `/posts/${tasselJsonManager.feed.posts[index].original_post_id || tasselJsonManager.feed.posts[index].id}`;
+        if (tasselJsonManager.feed.type === 'drafts') return;
+        let links = Object.values(document.getElementsByClassName("link_post"));
+        links.forEach(function(item) {
+            let post = item;
+            for (let a = 0; a < 100 && !post.classList.contains("post-container"); a++) {
+                post = post.parentNode;
+            }
+            let nav = post.getElementsByClassName("post-nav-left")[0];
+            if (nav.classList.contains("tasselPermalinked")) return;
+            nav.classList.add("tasselPermalinked");
+            let link = item.cloneNode(true);
+            link.classList.add("tasselPermalinked");
             link.style = "margin: 0 21px;";
-            link.innerHTML = `<img src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg" style="height: 20px;">`;
-            item.appendChild(link);
-            item.classList.add("tasselPermalinked");
+            nav.appendChild(link);
         });
     }
 

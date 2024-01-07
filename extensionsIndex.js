@@ -166,13 +166,13 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "0.3",
+                "version": "0.4",
                 "created": 1696333244573,
-                "updated": 1704312196407,
+                "updated": 1704614777120,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7a9cb71185fa9aa8837cbc310ebcb2445752bd93/extensions/FortArchive/FortArchive.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a9a7208ed69548bfca6124f3724a985937aebc17/extensions/FortArchive/FortArchive.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c2b0488794cce9e9aac4004bc679f092abb52180/extensions/FortArchive/FortArchive.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7f64a859ac233305b7090ee4a879ee909c364abc/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470"
         },
         {
@@ -200,12 +200,12 @@ let extensionsIndex = [
         {
                 "name": "User Muting",
                 "id": 15,
-                "version": "1.3",
+                "version": "1.4",
                 "created": 1703613662842,
-                "updated": 1704363610164,
+                "updated": 1704631104619,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e73ade23abb370a5772565279e4de610df6627f6/extensions/UserMuting/UserMuting.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7e4d663bbac6e081a57e560be42b3d694737de8a/extensions/UserMuting/UserMuting.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9efa6891aa45b0eda4fa80a6f7424cb01e0242e2/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
