@@ -363,6 +363,15 @@ body.dark-theme .tasselExtensionWIP {
 	cursor: pointer;
 }
 
+#tasselSettingsData {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	gap: 0.5em;
+}
+#tasselSettingsData * {
+	margin: 0;
+}
+
 #tasselJSONView {
 	margin-top: 10px; 
 	background: #ffffff; 
@@ -387,6 +396,15 @@ body.dark-theme #tasselJSONView {
 body.dark-theme .tasselButton {
 	background-color: #23282e; 
 	color: #d9dbe0; 
+}
+.tasselButton.dragenter {
+	background-color: #55ce8a;
+}
+body.dark-theme .tasselButton.dragenter {
+	background-color: #31734e;
+}
+.tasselButton.dragenter p {
+	visibility: hidden;
 }
 
 .tasselSaveButton {
@@ -499,9 +517,13 @@ body.dark-theme .tasselToggle input {
 }
 
 @media(max-width:400px) {
-    #tasselModalContentExtensionsList {
-        grid-template-columns: 100% !important;
-    }
+	#tasselModalContentExtensionsList {
+		grid-template-columns: 100% !important;
+	}
+
+	#tasselSettingsData {
+		grid-template-columns: auto;
+	}
 }
 
 /*//////////////// Other //////////////////////////*/
