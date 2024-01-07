@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4c01f97f959298820c5edc2a08e1ce140b315b5e/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a0de524eedfa39f66438d8506aa692efea01eb2c/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d58f755ac02de04c04187c24000255c6de067ab/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@061fc6e7e8d854b8a2bf295bc2818eb972c73c8b/jsonManager.js";
