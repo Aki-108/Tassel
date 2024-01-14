@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      0.4
+// @version      0.5
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -15,10 +15,11 @@
     if (!user.length) return;
     user = user[0].id;
     let pageTime = [];
+    let pageJson = [];
     let lastPage = 1;
     let mainFrame;
     let navigation;
-    let loadedPages = [];
+    let pagesDisplayed = [];
     let maxSearchDepth = 1;
     let searchedCount = 0;
 
@@ -140,6 +141,7 @@
                     ,
                     new Date(data.posts[0].timestamp.replace("@", ""))
                 ];
+                pageJson[pivot] = data;
             } else {
                 lastUnsuccessful = lastUnsuccessful > pivot || lastUnsuccessful === undefined ? pivot : lastUnsuccessful;
                 findLastPage_avytegoo(minPage, pivot-1, lastSuccessful, lastUnsuccessful);
@@ -149,87 +151,108 @@
 
     function findDate_avytegoo(minPage, maxPage) {
         let pivot = Math.ceil((minPage+maxPage)/2);
-        $.getJSON(`${document.URL}/json/?p=${pivot}`, function(data) {
-            pageTime[pivot] = [
-                new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
-                ,
-                new Date(data.posts[0].timestamp.replace("@", ""))
-            ];
-            let month = document.getElementById("tasselFortArchiveNavigationMonth").value;
-            let year = document.getElementById("tasselFortArchiveNavigationYear").value;
-            let date = new Date(`01 ${month} ${year}`).getTime();
-            //escape endless loop
-            if (maxPage === pivot) {
+        if (pageTime[pivot]) evaluateDate_avytegoo(minPage, pivot, maxPage);
+        else {
+            $.getJSON(`${document.URL}/json/?p=${pivot}`, function(data) {
+                pageTime[pivot] = [
+                    new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
+                    ,
+                    new Date(data.posts[0].timestamp.replace("@", ""))
+                ];
+                pageJson[pivot] = data;
+                evaluateDate_avytegoo(minPage, pivot, maxPage);
+            });
+        }
+    }
+
+    function evaluateDate_avytegoo(minPage, pivot, maxPage) {
+        let month = document.getElementById("tasselFortArchiveNavigationMonth").value;
+        let year = document.getElementById("tasselFortArchiveNavigationYear").value;
+        let date = new Date(`01 ${month} ${year}`).getTime();
+        //escape endless loop
+        if (maxPage === pivot) {
+            clearPage_avytegoo();
+            loadPage_avytegoo(minPage);
+            return;
+        }
+        if (date <= pageTime[minPage][1].getTime() && date >= pageTime[pivot][0].getTime()) {
+            if (date >= pageTime[minPage][0].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(minPage);
+                //if (minPage > 1) addLoadPage(minPage-1, true);
+                return;
+            } else if (date <= pageTime[pivot][1].getTime()) {
+                clearPage_avytegoo();
+                loadPage_avytegoo(pivot);
+                //if (pivot > 1) addLoadPage(pivot-1, true);
+                return;
+            } else {
+                findDate_avytegoo(minPage, pivot);
                 return;
             }
-            if (date <= pageTime[minPage][1].getTime() && date >= pageTime[pivot][0].getTime()) {
-                if (date >= pageTime[minPage][0].getTime()) {
-                    clearPage_avytegoo();
-                    loadPage_avytegoo(minPage);
-                    //if (minPage > 1) addLoadPage(minPage-1, true);
-                    return;
-                } else if (date <= pageTime[pivot][1].getTime()) {
-                    clearPage_avytegoo();
-                    loadPage_avytegoo(pivot);
-                    //if (pivot > 1) addLoadPage(pivot-1, true);
-                    return;
-                } else {
-                    findDate_avytegoo(minPage, pivot);
-                    return;
-                }
-            }
-            if (date <= pageTime[pivot][1].getTime() && date >= pageTime[maxPage][0].getTime()) {
-                if (date >= pageTime[pivot][0].getTime()) {
-                    clearPage_avytegoo();
-                    loadPage_avytegoo(pivot);
-                   // if (pivot > 1) addLoadPage(pivot-1, true);
-                    return;
-                } else if (date <= pageTime[maxPage][1].getTime()) {
-                    clearPage_avytegoo();
-                    loadPage_avytegoo(maxPage);
-                    //if (maxPage > 1) addLoadPage(maxPage-1, true);
-                    return;
-                } else {
-                    findDate_avytegoo(pivot, maxPage);
-                    return;
-                }
-            }
-            //selected date is older than oldest post
-            if (date < pageTime[maxPage][0].getTime()) {
+        }
+        if (date <= pageTime[pivot][1].getTime() && date >= pageTime[maxPage][0].getTime()) {
+            if (date >= pageTime[pivot][0].getTime()) {
+                clearPage_avytegoo();
+                loadPage_avytegoo(pivot);
+                // if (pivot > 1) addLoadPage(pivot-1, true);
+                return;
+            } else if (date <= pageTime[maxPage][1].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(maxPage);
+                //if (maxPage > 1) addLoadPage(maxPage-1, true);
+                return;
+            } else {
+                findDate_avytegoo(pivot, maxPage);
                 return;
             }
-        });
+        }
+        //selected date is older than oldest post
+        if (date < pageTime[maxPage][0].getTime()) {
+            clearPage_avytegoo();
+            loadPage_avytegoo(maxPage);
+            return;
+        }
     }
 
     function clearPage_avytegoo() {
         mainFrame.innerHTML = "";
-        loadedPages = [];
+        pagesDisplayed = [];
     }
 
     function loadPage_avytegoo(page, hidden) {
-        $.getJSON(`${document.URL}/json/?p=${page}`, function(data) {
-            pageTime[page] = [
-                new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
-                ,
-                new Date(data.posts[0].timestamp.replace("@", ""))
-            ];
+        if (!hidden && pagesDisplayed.includes(page)) return;
+        if (pageJson[page]) {
             if (hidden) return;
-            loadedPages.push(page);
-            data.posts.forEach(function(post) {
+            pagesDisplayed.push(page);
+            pageJson[page].posts.forEach(function(post) {
                 addPost_avytegoo(post);
             });
             if (page < lastPage) addLoadPage_avytegoo(page+1);
             if (page > 1) addLoadPage_avytegoo(page-1, true);
             if (document.getElementById("tasselFortArchiveLoadingIndicator")) document.getElementById("tasselFortArchiveLoadingIndicator").remove();
-        });
+        } else {
+            $.getJSON(`${document.URL}/json/?p=${page}`, function(data) {
+                pageTime[page] = [
+                    new Date(data.posts[data.posts.length-1].timestamp.replace("@", ""))
+                    ,
+                    new Date(data.posts[0].timestamp.replace("@", ""))
+                ];
+                pageJson[page] = data;
+                if (hidden) return;
+                pagesDisplayed.push(page);
+                data.posts.forEach(function(post) {
+                    addPost_avytegoo(post);
+                });
+                if (page < lastPage) addLoadPage_avytegoo(page+1);
+                if (page > 1) addLoadPage_avytegoo(page-1, true);
+                if (document.getElementById("tasselFortArchiveLoadingIndicator")) document.getElementById("tasselFortArchiveLoadingIndicator").remove();
+            });
+        }
     }
 
     function addLoadPage_avytegoo(page, top) {
-        if (loadedPages.includes(page)) return;
+        if (pagesDisplayed.includes(page)) return;
         let eventArea = document.createElement("div");
         if (top) {
             if (document.getElementById("tasselFortArchiveScrollDetectorTop")) return;
@@ -242,10 +265,13 @@
         }
         eventArea.style.height = "70px";
         mainFrame.appendChild(eventArea);
-        if (top || mainFrame.classList.contains("reverse")) window.scrollBy(0, 200);
         VisibilityMonitor_avytegoo(eventArea, function() {
-            loadPage_avytegoo(page);
             eventArea.remove();
+            let dir = 1;
+            if (top != mainFrame.classList.contains("reverse")) dir = -1;
+            window.scrollBy({top: 71*dir, left: 0, behavior : "auto"});
+            loadPage_avytegoo(page);
+            if (pageJson[page]) return;
             let loadingIndicator = document.createElement("div");
             loadingIndicator.id = "tasselFortArchiveLoadingIndicator";
             loadingIndicator.innerHTML = `<div style="text-align: center;"><i class="fa fa-circle-notch fa-spin fa-3x fa-fw" style="color:white; margin-top: 10px;"></i></div>`;
