@@ -9,7 +9,7 @@
 }
 
 #tasselFortArchive.reverse .content {
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 #tasselFortArchive.reverse .content .content {
     flex-direction: row;
@@ -82,7 +82,7 @@ body.dark-theme #tasselFortArchiveJumpLoading::-moz-progress-bar {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: flex-start;
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 
 [id^=tasselFortArchiveYear] h2 {
@@ -259,4 +259,41 @@ body.dark-theme .tasselFortArchivePostDisplay {
     height: 22px;
     margin: 0;
     padding: 0;
+}
+
+.tasselFortArchiveMonth0 {
+    order: 0;
+}
+.tasselFortArchiveMonth1 {
+    order: 1;
+}
+.tasselFortArchiveMonth2 {
+    order: 2;
+}
+.tasselFortArchiveMonth3 {
+    order: 3;
+}
+.tasselFortArchiveMonth4 {
+    order: 4;
+}
+.tasselFortArchiveMonth5 {
+    order: 5;
+}
+.tasselFortArchiveMonth6 {
+    order: 6;
+}
+.tasselFortArchiveMonth7 {
+    order: 7;
+}
+.tasselFortArchiveMonth8 {
+    order: 8;
+}
+.tasselFortArchiveMonth9 {
+    order: 9;
+}
+.tasselFortArchiveMonth10 {
+    order: 10;
+}
+.tasselFortArchiveMonth11 {
+    order: 11;
 }
