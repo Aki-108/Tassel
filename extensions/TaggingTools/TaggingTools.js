@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.6
+// @version      1.7
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -254,7 +254,7 @@
         let button = document.createElement("button");
         button.id = "tasselTaggingToolsCopyTags";
         button.title = "copy tags";
-        button.innerHTML = "🠗";
+        button.innerHTML = "&#x1F817;";
 
         //copy tags
         button.addEventListener("click", function(event) {
