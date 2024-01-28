@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.4
+// @version      1.5
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -67,7 +67,7 @@
             && !post.original_post_id //only count if post is not a reblog
             && post.username === user.username //only count if user matches the one from the mutelist
             && user.originalPost //only count if original posts by that user should be removed
-            && !post.username === document.URL.split("/")[3]; //ignore posts on own fort
+            && post.username !== document.URL.split("/")[3]; //ignore posts on own fort
             let rebloggedFrom =
                 originalUser !== undefined //ignore if user is not in mutelist
             && post.original_post_id //only count if post is a reblog
