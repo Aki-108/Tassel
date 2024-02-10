@@ -16,12 +16,12 @@ let extensionsIndex = [
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "2.9",
+            "version": "2.10",
             "created": 1661764440000,
-            "updated": 1699180553884,
+            "updated": 1707555075119,
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e355457ddf91119f11d4506cbf1ccec172dc3e24/extensions/PostSubscriber/PostSubscriber.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9012cb21c73a8c8847b9cf5cb6bf61f8d04a6e81/extensions/PostSubscriber/PostSubscriber.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e99697a94751a76a9c7704e41d77edab02413a9c/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
@@ -178,12 +178,12 @@ let extensionsIndex = [
         {
                 "name": "Hide Numbers",
                 "id": 13,
-                "version": "1.0",
+                "version": "1.1",
                 "created": 1699174060526,
-                "updated": 1699174060526,
+                "updated": 1707555075119,
                 "author": "Aki108",
                 "description": "Hide any number.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@11ffc58430e017d77d327b26c925cd8bd91ca563/extensions/HideNumbers.js"
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@91f6b3097d0f332ce50ff99f8199ebfb6c45f43c/extensions/HideNumbers.js"
         },
         {
                 "name": "Keyboard Shortcuts",
