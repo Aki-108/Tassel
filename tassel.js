@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.18
+// @version      1.5.19
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@60ad69d1bcc3aa64827477bb299f805158eae2a0/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5185da5ca9d43f2800f87ac4a2b2c08568d71e29/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d58f755ac02de04c04187c24000255c6de067ab/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@061fc6e7e8d854b8a2bf295bc2818eb972c73c8b/jsonManager.js";
@@ -202,7 +202,10 @@
 
         //add button to expanded sidebar
         let sidebarBig = document.getElementsByClassName("sidebar-expanded")[1];
-        sidebarBig.children[8].firstChild.style.paddingBottom = "0";
+        for (let child of sidebarBig.children) {
+            if (child.href !== "https://www.pillowfort.social/settings") continue;
+            child.firstChild.style.paddingBottom = "3px";
+        }
         let settingsBigWrapper = document.createElement("a");
         settingsBigWrapper.href = "";//add a link to comply with accessibility requirements but don't open the link
         settingsBigWrapper.addEventListener("click", function(event) {
