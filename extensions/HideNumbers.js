@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Hide Numbers
-// @version      1.0
+// @version      1.1
 // @description  Hide any number on Pillowfort
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -79,6 +79,10 @@
         if (settings.draft) {
             let drafts = getElementByHref_yxhjqepn(sidebar, "/drafts");
             if (drafts) drafts[0].getElementsByClassName("sidebar-num")[0].style.visibility = "hidden";
+        }
+        if (settings.queue) {
+            let queue = getElementByHref_yxhjqepn(sidebar, "/queued_posts");
+            if (queue) queue[0].getElementsByClassName("sidebar-num")[0].style.visibility = "hidden";
         }
         if (settings.inbox || settings.inboxZero) {
             let inbox = getElementByHref_yxhjqepn(sidebar, "/messages");
@@ -259,6 +263,11 @@
         content.appendChild(createSwitch_yxhjqepn("Hide Draft Count", settings.draft ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.draft = this.checked;
+            saveSettings_yxhjqepn();
+        });
+        content.appendChild(createSwitch_yxhjqepn("Hide Queue Count", settings.queue ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.queue = this.checked;
             saveSettings_yxhjqepn();
         });
         content.appendChild(createSwitch_yxhjqepn("Hide Inbox Count when Zero", settings.inboxZero ? "checked" : ""));

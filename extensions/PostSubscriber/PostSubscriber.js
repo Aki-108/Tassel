@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V2
-// @version      2.9
+// @version      2.10
 // @description  Get notified when there are new comments in a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -138,7 +138,6 @@
 
         //add button to expanded sidebar
         let sidebarBig = document.getElementsByClassName("sidebar-expanded")[1];
-        sidebarBig.children[8].firstChild.style.paddingBottom = "0";
         let subscriptionBigWrapper = document.createElement("a");
         subscriptionBigWrapper.href = "";//add a link to comply with accessibility requirements but don't open the link
         subscriptionBigWrapper.addEventListener("click", function(event) {
@@ -164,7 +163,11 @@
         counter.innerHTML = "0";
         subscriptionBig.appendChild(counter);
         subscriptionBigWrapper.appendChild(subscriptionBig);
-        sidebarBig.insertBefore(subscriptionBigWrapper, sidebarBig.children[3]);
+        for (let child of sidebarBig.children) {
+            if (child.href !== "https://www.pillowfort.social/communities") continue;
+            sidebarBig.insertBefore(subscriptionBigWrapper, child);
+            break;
+        }
 
         //make sidebar bigger but only if Tassel isn't installed
         if (document.getElementById("tasselModalSidebar") != null) return;
