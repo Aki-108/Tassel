@@ -368,12 +368,12 @@ function initQueueFeed_quugasdg() {
             if (mutationRecord.target.style.display === "none") {
                 tasselJsonManager.feed.ready = false;
                 let page = 1;
-                let pageButton = Object.values(
+                /*let pageButton = Object.values(
                     document.getElementsByTagName("li")
                 ).find(function(item) {
                     return item.classList.contains("active")
                 });
-                if (pageButton) page = pageButton.textContent;
+                if (pageButton) page = pageButton.textContent;*/
                 $.getJSON(`https://www.pillowfort.social/queued_posts/json?p=${page}`, function(data) {
                     tasselJsonManager.feed.ready = true;
                     tasselJsonManager.feed.type = 'queue';
@@ -402,12 +402,12 @@ function initScheduleFeed_quugasdg() {
             if (mutationRecord.target.style.display === "none") {
                 tasselJsonManager.feed.ready = false;
                 let page = 1;
-                let pageButton = Object.values(
+                /*let pageButton = Object.values(
                     document.getElementsByTagName("li")
                 ).find(function(item) {
                     return item.classList.contains("active")
                 });
-                if (pageButton) page = pageButton.textContent;
+                if (pageButton) page = pageButton.textContent;*/
                 $.getJSON(`https://www.pillowfort.social/scheduled_posts/json?p=${page}`, function(data) {
                     tasselJsonManager.feed.ready = true;
                     tasselJsonManager.feed.type = 'schedule';
