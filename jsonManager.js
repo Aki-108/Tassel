@@ -426,10 +426,10 @@ function initScheduleFeed_quugasdg() {
     });
 }
 
-loadUsers_quugasdg("followers");
-loadUsers_quugasdg("following");
-loadUsers_quugasdg("mutuals");
-function loadUsers_quugasdg(type) {
+loadUsers_quugasdg("followers", 0);
+loadUsers_quugasdg("following", 0);
+loadUsers_quugasdg("mutuals", 0);
+function loadUsers_quugasdg(type, tries) {
     tasselJsonManager[type].ready = false;
     let file = JSON.parse(localStorage.getItem("tasselJsonManager"));
     if (file && file[type]) tasselJsonManager[type] = file[type];
@@ -450,10 +450,10 @@ function loadUsers_quugasdg(type) {
 
     tasselJsonManager[type].users = [];
     tasselJsonManager[type].displayed_count = count;
-    loadUserPages_quugasdg(type, 1);
+    loadUserPages_quugasdg(type, 1, tries);
 }
 
-function loadUserPages_quugasdg(type, page) {
+function loadUserPages_quugasdg(type, page, tries) {
     $.getJSON(`https://www.pillowfort.social/${type}_json?p=${page}`, function(data) {
         let users = data[type].map(function(item) {
             return item.username
@@ -475,7 +475,9 @@ function loadUserPages_quugasdg(type, page) {
         }
     })
     .fail(function() {
-        window.setTimeout(loadUsers_quugasdg(type), 300_000);
+        if (tries < 10) {
+            window.setTimeout(loadUsers_quugasdg(type, tries + 1), 300_000);
+        }
     });
 }
 
