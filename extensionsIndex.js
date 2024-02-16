@@ -212,6 +212,18 @@ let extensionsIndex = [
                         "Remove posts/reblogs of someone.",
                         "Collapse comments of someone."
                 ]
+        },
+        {
+                "name": "Time Format",
+                "id": 16,
+                "version": "0.1",
+                "created": 1708117680669,
+                "updated": 1708117680669,
+                "author": "Aki108",
+                "description": "Format timestamps any way you want.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0e415aac70453777943ad6e11e4b30f95f0f9e91/extensions/TimeFormat/TimeFormat.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@86afcba701f5d9deca1a69cb7b3c394f8d256752/extensions/TimeFormat/TimeFormat.css",
+                "post": "https://www.pillowfort.social/posts/4348164"
         }
 ];
 
