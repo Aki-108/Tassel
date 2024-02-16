@@ -112,7 +112,7 @@
         let button = document.createElement("span");
         button.innerHTML = `
             <a href="" title="Blacklist this Post" class="nav-tab tab-leftmost" style="padding-top: 15px;" post-id="${(post.original_post_id || post.id)}">
-                <img class="report-img svg-purple" src="/assets/global/ic_block-ab3bc6c0524c05af88fbd21105408134932d0a7302bc16a820d5ba43cfd68bf8.svg">
+                <img class="report-img svg-purple" src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/block.svg">
             </a>
         `;
         button.children[0].addEventListener("click", function(event) {
