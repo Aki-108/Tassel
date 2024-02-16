@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      0.4
+// @version      0.5
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -280,15 +280,15 @@
         notes.classList.add("tasselFortArchivePostInfoNotes");
         notes.innerHTML = `
             <span>
-                <img src="/assets/global/ic_comments-971400e1d5e879ea6d55b07efceaeab51933a87f0efeda913ee55a363a5a5628.svg">
+                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/comment.svg">
                 <span>${post.comments_count}</span>
             </span>
             <span>
-                <img src="/assets/global/ic_repost-05181363d91d42e9926ec9a2f623b8367228dc7588b573d8c2be4365eb76d477.svg">
+                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/reblog.svg">
                 <span>${post.reblogs_count}</span>
             </span>
             <span>
-                <img class="${post.liked ? "svg-pink-light" : "svg-blue"}" src="${post.liked ? "/assets/global/heart-filled-21763dc1590d5cd3b2f7fbdd6f55c4f32638eb3b9447f1f9c2189d96d8cf1693.svg" : "/assets/global/heart-empty-0df522a263aebc4b7469d31bac635776ea3794c9fc2bac01986d4917f1faa857.svg"}">
+                <img class="${post.liked ? "svg-pink-light" : "svg-blue"}" src="${post.liked ? "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a1b0fd5791107e84f128115ebab358d9f3bf0ab4/icons/liked.svg" : "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/like.svg"}">
                 <span>${post.likes_count}</span>
             </span>
         `;
