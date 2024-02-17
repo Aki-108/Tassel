@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      0.1
+// @version      1.0
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -27,6 +27,8 @@
         if (document.getElementById("tasselJsonManagerFeedReady")) document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", loadFeed_draxcpxe);
         if (document.getElementById("tasselJsonManagerPostReady")) document.getElementById("tasselJsonManagerPostReady").addEventListener("click", loadSinglePost_draxcpxe);
         if (document.getElementById("tasselJsonManagerCommentReady")) document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", processComments_draxcpxe);
+        if (document.getElementById("tasselJsonManagerReblogReady")) document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", processReblogs_draxcpxe);
+        if (document.getElementById("tasselJsonManagerLikeReady")) document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", processLikes_draxcpxe);
     }
 
     /* Get the posts from the feed and hand them to the post processor */
@@ -59,7 +61,6 @@
     /* Apply changes to the posts */
     function processPosts_draxcpxe(postData, posts) {
         for (let post of postData) {
-            if (!post.original_post) continue;
             let postElement = posts.find(function(item) {
                 return (item.id === (post.original_post_id || post.id));
             });
@@ -69,7 +70,8 @@
 
             //post header
             let reblogged = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogDate);
-            let posted = formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.postDate);
+            let posted = "";
+            if (post.original_post) posted = formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.postDate);
             let element = postElement.post.getElementsByClassName("timestamp2")[0];
             if (element === undefined) continue;
             if (settings.reblogDate.length === 0) reblogged = element.innerHTML;
@@ -94,6 +96,35 @@
             if (!text) continue;
             text.lastChild.textContent = "";
             text.children[1].innerHTML = formatDate_draxcpxe(new Date(comment.created_at), settings.commentDate);
+        }
+    }
+
+    /* Apply changes to the reblog list */
+    function processReblogs_draxcpxe() {
+        if (settings.reblogNote.length === 0) return;
+        let links = Object.values(document.getElementsByClassName("reblog-note"));
+        for (let reblog of tasselJsonManager.reblogs.json) {
+            let element = links.find(function(item) {
+                return item.children[1].href === `https://www.pillowfort.social/posts/${reblog.id}`;
+            });
+            if (element === undefined) continue;
+            if (element.classList.contains("tasselTimeFormatProcessed")) continue;
+            element.classList.add("tasselTimeFormatProcessed");
+            element.children[1].innerHTML = formatDate_draxcpxe(new Date(reblog.publish_at), settings.reblogNote);
+        }
+    }
+
+    /* Apply changes to the like list */
+    function processLikes_draxcpxe() {
+        if (settings.likeNote.length === 0) return;
+        let links = Object.values(document.getElementById("likes").children);
+        for (let index in links) {
+            if (links[index].tagName === "DIR-PAGINATION-CONTROLS") return;
+            let element = links[index];
+            if (element === undefined || element.children.length < 1) continue;
+            if (element.classList.contains("tasselTimeFormatProcessed")) continue;
+            element.classList.add("tasselTimeFormatProcessed");
+            element.children[0].children[1].innerHTML = formatDate_draxcpxe(new Date(tasselJsonManager.likes.json[index - 1].created_at), settings.likeNote);
         }
     }
 
@@ -228,14 +259,14 @@
         frame1.id = "tasselTimeFormatSettings";
         content.appendChild(frame1);
 
-        createInput_draxcpxe("Reblog Date", settings.reblogDate, frame1);
+        createInput_draxcpxe("Reblog Date"+createTooltip_draxcpxe("This is the timestamp that Pillowfort shows in the post header by default.").outerHTML, settings.reblogDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.reblogDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
-        createInput_draxcpxe("Post Date", settings.postDate, frame1);
+        createInput_draxcpxe("Post Date"+createTooltip_draxcpxe("This is not originally shown. It will also show up in the post header.").outerHTML, settings.postDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.postDate = this.value;
             saveSettings_draxcpxe();
@@ -256,7 +287,7 @@
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
-        /*createInput_draxcpxe("Reblog Note", settings.reblogNote, frame1);
+        createInput_draxcpxe("Reblog Note", settings.reblogNote, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.reblogNote = this.value;
             saveSettings_draxcpxe();
@@ -269,11 +300,11 @@
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
-        frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);*/
+        frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         let preview = document.createElement("p");
         preview.id = "tasselTimeFormatPreview";
         content.appendChild(preview);
-        //TODO reblog note, like note, inbox, notifications, post subscriber, blocklist
+        //TODO inbox, notifications, post subscriber, blocklist
         content.appendChild(document.createElement("hr"));
 
         let title2 = document.createElement("h2");
@@ -321,6 +352,20 @@
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.timeFormat = settings;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    /* Create an icon with hover popup */
+    function createTooltip_draxcpxe(content) {
+        let icon = document.createElement("div");
+        icon.classList.add("tasselInfo");
+        icon.innerHTML = `
+            <div class='tasselTooltip'>
+                <div class='tasselTooltipBubble'>
+                    ${content}
+                </div>
+            </div>
+        `;
+        return icon;
     }
 
     /* Create a label and a text input */
