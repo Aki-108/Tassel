@@ -68,12 +68,17 @@
             postElement.post.classList.add("tasselTimeFormatProcessed");
 
             //post header
-            if (settings.reblogDate.length > 0) postElement.post.getElementsByClassName("timestamp2")[0].innerHTML = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogDate);
-            if (settings.reblogDate.length && settings.postDate.length) {
-                postElement.post.getElementsByClassName("timestamp2")[0].innerHTML += "<br>";
-                postElement.post.getElementsByClassName("timestamp2")[0].style = "line-height: 1.2em;display: inline-block";
+            let reblogged = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogDate);
+            let posted = formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.postDate);
+            let element = postElement.post.getElementsByClassName("timestamp2")[0];
+            if (element === undefined) continue;
+            if (settings.reblogDate.length === 0) reblogged = element.innerHTML;
+            element.innerHTML = reblogged;
+            if (element.innerHTML.length > 0 && posted.length > 0) {
+                element.innerHTML += "<br>";
+                element.style = "line-height: 1.2em;display: inline-block";
             }
-            if (settings.postDate.length > 0) postElement.post.getElementsByClassName("timestamp2")[0].innerHTML += formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.postDate);
+            element.innerHTML += posted;
         }
     }
 
