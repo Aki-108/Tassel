@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.19
+// @version      1.5.20
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5185da5ca9d43f2800f87ac4a2b2c08568d71e29/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0ddfad8663189674879e182bb70ea45224716a85/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d58f755ac02de04c04187c24000255c6de067ab/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@061fc6e7e8d854b8a2bf295bc2818eb972c73c8b/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6496c8fabd4c8f4a011907ae7522f917302ea9a6/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@da4e368a7c5c2e9ae35d657aed3f0290086e3a2b/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9d87a3c28c769c70ed19cf500ec43db49e12798f/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f3ab09cf5e276fb944d0725993d5f3c4cddf1d41/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -116,7 +116,7 @@
                 link.classList.add("link_post", "svg-blue", "tasselPermalinked");
                 link.href = `/posts/${tasselJsonManager.modal.json.original_post_id || tasselJsonManager.modal.json.id}`;
                 link.style = "margin: 0 21px;";
-                link.innerHTML = `<img src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg" style="height: 20px;">`;
+                link.innerHTML = `<img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg" style="height: 20px;">`;
                 item.appendChild(link);
                 item.classList.add("tasselPermalinked");
             });
@@ -553,7 +553,7 @@
               link.target = "_blank";
               link.title = "link to post";
               link.href = data.post;
-              link.innerHTML = `<img alt="link to post" style="width:100%;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">`;
+              link.innerHTML = `<img alt="link to post" style="width:100%;" src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg">`;
             if (data.post) sidebar.appendChild(link);
             let version = document.createElement("span");
               version.classList.add("tasselExtensionVersion");
@@ -582,7 +582,7 @@
             <p>Icon Legend:</p>
             <ul>
                 <li>
-                    <img alt="link to post" style="width:25px;" src="/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg">
+                    <img alt="link to post" style="width:25px;" src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg">
                     Link to Post: This link will take you to the announcement post of the extension.
                 </li>
                 <li>
@@ -921,6 +921,8 @@
 
     function addBottomPermalink() {
         if (tasselJsonManager.feed.type === 'drafts') return;
+        if (tasselJsonManager.feed.type === 'queue') return;
+        if (tasselJsonManager.feed.type === 'schedule') return;
         let links = Object.values(document.getElementsByClassName("link_post"));
         links.forEach(function(item) {
             let post = item;
