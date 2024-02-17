@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.7
+// @version      2.8
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -233,10 +233,12 @@
             return;
         }
 
-        let notes = Object.values(document.getElementById("likes").getElementsByClassName("like-note"));
+        let notes = Object.values(document.getElementById("likes").children);
         for (let index in notes) {
+            if (notes[index].tagName === "DIR-PAGINATION-CONTROLS") return;
+            if (notes[index] === undefined || notes[index].children.length < 1) continue;
             notes[index].classList.add("rtcsourcedisplayinglikes");
-            let postId = tasselJsonManager.likes.json[index].liked_via_reblog_id;
+            let postId = tasselJsonManager.likes.json[index - 1].liked_via_reblog_id;
 
             //add a loading circle
             let dataLoading = document.createElement("a");
