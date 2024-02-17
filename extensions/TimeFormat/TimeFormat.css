@@ -1,7 +1,7 @@
 #tasselTimeFormatSettings {
         margin-bottom: 10px;
         display: grid;
-        grid-template-columns: 7em auto;
+        grid-template-columns: 8em auto;
         gap: 4px 0.5em;
 }
 
@@ -15,13 +15,12 @@
         border-radius: 0.5em;
         padding: 0.5em 0.5em;
         background-color: transparent;
-        color: #232b40;
         font-family: inherit;
         font-size: 1em;
         line-height: inherit;
+        color: #232b40;
         cursor: inherit;
 }
-
 body.dark-theme #tasselTimeFormatSettings input {
         border-color: #d9dbe0;
         color: #d9dbe0;
@@ -31,7 +30,8 @@ body.dark-theme #tasselTimeFormatSettings input {
         width: max-content;
         display: grid;
         grid-template-columns: auto auto;
-        gap: 1em;
+        gap: 0 1em;
+        line-height: 1.2em;
 }
 
 @media(max-width:400px) {
