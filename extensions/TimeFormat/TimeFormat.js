@@ -13,12 +13,12 @@
 
     let permaLinks; //array of perma-link elements
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).timeFormat || {
-        reblogDate: "RR ago",
+        reblogDate: "RRR ago",
         postDate: "",
-        editDate: "Last edited RR ago.",
-        commentDate: "RR ago",
-        reblogNote: "RR ago",
-        likeNote: "RR ago"
+        editDate: "Last edited RRR ago.",
+        commentDate: "RRR ago",
+        reblogNote: "RRR ago",
+        likeNote: "RRR ago"
     };
 
     init_draxcpxe();
@@ -99,7 +99,7 @@
         let hours = time.getHours();
         output = replaceKey_draxcpxe(output, "HH", (hours < 10 ? "0" : "") + hours);
         output = replaceKey_draxcpxe(output, "H", hours);
-        let ap = hours < 12 ? "a.m." : "p.m.";
+        let ap = hours < 12 ? "AM" : "PM";
         hours += hours > 12 ? -12 : 0;
         hours = hours <= 0 ? 12 : hours;
         output = replaceKey_draxcpxe(output, "hh", (hours < 10 ? "0" : "") + hours);
@@ -112,8 +112,6 @@
         let seconds = time.getSeconds();
         output = replaceKey_draxcpxe(output, "SS", (seconds < 10 ? "0" : "") + seconds);
         output = replaceKey_draxcpxe(output, "S", seconds);
-
-        output = replaceKey_draxcpxe(output, "ap", ap);
 
         let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         output = replaceKey_draxcpxe(output, "DDDD", weekdays[time.getDay()]);
@@ -133,8 +131,10 @@
         output = replaceKey_draxcpxe(output, "YYYY", year);
         output = replaceKey_draxcpxe(output, "YY", String(year).substring(2));
 
-        output = replaceKey_draxcpxe(output, "RR", getRelativeTime_draxcpxe(time, false));
-        output = replaceKey_draxcpxe(output, "R", getRelativeTime_draxcpxe(time, true));
+        output = replaceKey_draxcpxe(output, "RRR", getRelativeTime_draxcpxe(time, false));
+        output = replaceKey_draxcpxe(output, "RR", getRelativeTime_draxcpxe(time, true));
+
+        output = replaceKey_draxcpxe(output, "ap", ap);
 
         return output;
     }
@@ -298,8 +298,8 @@
             <div>M</div><div>Month, flexible</div>
             <div>YYYY</div><div>Year, four digits</div>
             <div>YY</div><div>Year, two digits</div>
-            <div>RR</div><div>Relative Time, full</div>
-            <div>R</div><div>Relative Time, abbreviated</div>
+            <div>RRR</div><div>Relative Time, full</div>
+            <div>RR</div><div>Relative Time, abbreviated</div>
         `;
         content.appendChild(table2);
     }
@@ -352,7 +352,7 @@
     M    month, number
     YYYY full year
     YY   year
-    RR   relative time, word
-    R    relative time, unit
+    RRR   relative time, word
+    RR    relative time, unit
     */
 })();
