@@ -38,6 +38,14 @@ let toasts = [
     "text": "A new extension has been added.",
     "timestamp": 1703613662842,
     "new": true
+  },
+  {
+    "id": 23,
+    "extension": 16,
+    "title": "Time Format",
+    "text": "A new extension has been added.",
+    "timestamp": 1708166933831,
+    "new": true
   }
 ];
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Lightbox
-// @version      1.5
+// @version      1.6
 // @description  Adds a lightbox to Pillowfort.social.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -112,7 +112,7 @@
                 linkIcon.style.padding = "2px";
                 linkIcon.style.filter = "none";
                 linkIcon.classList.add("tasselLightboxImageLink");
-                linkIcon.src = "https://www.pillowfort.social/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg";
+                linkIcon.src = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg";
                 linkIcon.addEventListener("mouseenter", function(){hoverIn_kpeyutgp(this)});
                 linkIcon.addEventListener("mouseleave", function(){hoverOut_kpeyutgp(this)});
                 linkA.appendChild(linkIcon);
@@ -227,7 +227,7 @@
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         link.title = "link to post";
-        link.innerHTML = "<img style='width: 30px; margin: 5px; filter: invert(50%) sepia(100%) saturate(1835%) hue-rotate(161deg) brightness(107%) saturate(52%);' src='/assets/global/link-9f122935c5c4c4b995a7771b6761858a316e25f4dee4c6d2aff037af1f24adac.svg'>";
+        link.innerHTML = "<img style='width: 30px; margin: 5px; filter: invert(50%) sepia(100%) saturate(1835%) hue-rotate(161deg) brightness(107%) saturate(52%);' src='https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg'>";
         link.style.position = "fixed";
         link.style.top = top+"px";
         link.style.right = "0";

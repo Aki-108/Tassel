@@ -1,0 +1,45 @@
+#tasselTimeFormatSettings {
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 8em auto;
+        gap: 4px 0.5em;
+}
+
+#tasselTimeFormatSettings label {
+        margin-top: 9px;
+}
+
+#tasselTimeFormatSettings input {
+        margin: 0;
+        border: 1px solid #232b40;
+        border-radius: 0.5em;
+        padding: 0.5em 0.5em;
+        background-color: transparent;
+        font-family: inherit;
+        font-size: 1em;
+        line-height: inherit;
+        color: #232b40;
+        cursor: inherit;
+}
+body.dark-theme #tasselTimeFormatSettings input {
+        border-color: #d9dbe0;
+        color: #d9dbe0;
+}
+
+#tasselTimeFormatTable {
+        width: max-content;
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 0 1em;
+        line-height: 1.2em;
+}
+
+@media(max-width:400px) {
+        #tasselTimeFormatSettings {
+                grid-template-columns: auto;
+        }
+        
+        #tasselTimeFormatSettings input {
+                width: calc(100vw - 1em - 2px);
+        }
+}

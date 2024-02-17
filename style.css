@@ -437,6 +437,62 @@ body.dark-theme .tasselToggle input {
 	line-height: 1em;
 }
 
+.tasselInfo {
+        width: 1.2em;
+        height: 1.2em;
+        margin: -0.2em 0.5em;
+        display: inline-block;
+        border-radius: 100%;
+        background: #888;
+        font-family: serif;
+        font-weight: bold;
+        text-align: center;
+        color: #FFF;
+        cursor: help;
+}
+body.dark-theme .tasselInfo {
+	background: #777;
+	color: #1B1D20;
+}
+.tasselInfo::before {
+	content: "i";
+}
+.tasselInfo:hover .tasselTooltip {
+	overflow: visible;
+}
+
+.tasselTooltip {
+	float: right;
+	width: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.tasselTooltipBubble {
+	position: relative;
+	margin-top: -0.6em;
+	margin-left: 0.5em;
+	width: max-content;
+	max-width: 20em;
+	border: 1px solid #232b40;
+	border-radius: 0.5em;
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+	padding: 0.5em;
+	background: white;
+	font-family: "Nunito", sans-serif;
+	font-weight: normal;
+	text-align: left;
+	color: black;
+}
+body.dark-theme .tasselTooltipBubble {
+	border-color: #d9dbe0;
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.8);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.8);
+	background-color: #1B1D20;
+	color: #d9dbe0;
+}
+
 /*//////////////// Mobile //////////////////////////*/
 @media(max-width:800px) {
     #tasselModalHeader {
@@ -524,6 +580,10 @@ body.dark-theme .tasselToggle input {
 	#tasselSettingsData {
 		grid-template-columns: auto;
 	}
+	
+        .tasselTooltipBubble {
+		max-width: 50vw;
+        }
 }
 
 /*//////////////// Other //////////////////////////*/
