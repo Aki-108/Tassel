@@ -222,7 +222,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@670af9576d19f848bc66a0f9dbd9a1eff2479c39/extensions/TimeFormat/TimeFormat.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@86afcba701f5d9deca1a69cb7b3c394f8d256752/extensions/TimeFormat/TimeFormat.css",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         }
 ];
