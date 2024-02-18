@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.0
+// @version      1.1
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -33,6 +33,8 @@
 
     /* Get the posts from the feed and hand them to the post processor */
     function loadFeed_draxcpxe() {
+        if (tasselJsonManager.feed.type === "queue") return;
+        if (tasselJsonManager.feed.type === "schedule") return;
         let posts = [];
         permaLinks = document.getElementsByClassName("link_post");
         Object.values(permaLinks).forEach(function(item) {
