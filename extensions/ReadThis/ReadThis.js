@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      1.2
+// @version      1.3
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -15,7 +15,7 @@
 
     /* Initialize */
     initTassel_icigqyni();
-    document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
+    if (document.getElementById("tasselJsonManagerModalReady")) document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
         //undo changes from previous modal opening
         let links = Object.values(document.getElementById("post-view-modal").getElementsByClassName("link_post"));
         let originalView = document.getElementById("post-view-modal").getElementsByClassName("tasselReadThisOldPost");
@@ -26,7 +26,7 @@
         }
         processPosts_icigqyni([tasselJsonManager.modal.json], links);
     });
-    document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", function() {
+    if (document.getElementById("tasselJsonManagerFeedReady")) document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", function() {
         //get HTML elements for posts
         let links = Object.values(document.getElementsByClassName("link_post"));
         links = links.filter(function(item) {
@@ -81,7 +81,7 @@
             //get root element
             let postElement = link;
             for (let a = 0; a < 100; a++, postElement = postElement.parentNode) {
-                if (postElement || postElement.classList.contains("post-container")) break;
+                if (postElement.classList.contains("post-container")) break;
             }
             if (postElement.classList.contains("tasselReadThisProcessed2")) return;
             postElement.classList.add("tasselReadThisProcessed2");

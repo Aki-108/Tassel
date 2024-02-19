@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.0
+// @version      1.1
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,12 +14,15 @@
     let permaLinks; //array of perma-link elements
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).timeFormat || {
         reblogDate: "RRR ago",
+        reblogTooltip: "MMM DD, YYYY @ hh:mm ap",
         postDate: "",
         editDate: "Last edited RRR ago.",
         commentDate: "RRR ago",
         reblogNote: "RRR ago",
         likeNote: "RRR ago"
     };
+    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     init_draxcpxe();
     function init_draxcpxe() {
@@ -33,6 +36,8 @@
 
     /* Get the posts from the feed and hand them to the post processor */
     function loadFeed_draxcpxe() {
+        if (tasselJsonManager.feed.type === "queue") return;
+        if (tasselJsonManager.feed.type === "schedule") return;
         let posts = [];
         permaLinks = document.getElementsByClassName("link_post");
         Object.values(permaLinks).forEach(function(item) {
@@ -51,9 +56,8 @@
 
     /* Get post from JSON Manager and process it */
     function loadSinglePost_draxcpxe() {
-        permaLinks = document.getElementsByClassName("timestamp2");
         processPosts_draxcpxe([tasselJsonManager.post.json], [{
-            id: tasselJsonManager.post.postId*1,
+            id: tasselJsonManager.post.json.original_post ? tasselJsonManager.post.json.original_post_id : tasselJsonManager.post.json.id,
             post: document.getElementsByClassName("post-container")[0]
         }]);
     }
@@ -69,18 +73,29 @@
             postElement.post.classList.add("tasselTimeFormatProcessed");
 
             //post header
+            //get formated reblog date
             let reblogged = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogDate);
+            if (settings.reblogDate.length === 0) reblogged = element.innerHTML;
+            //get formated publish date
             let posted = "";
             if (post.original_post) posted = formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.postDate);
+            //get html element
             let element = postElement.post.getElementsByClassName("timestamp2")[0];
             if (element === undefined) continue;
-            if (settings.reblogDate.length === 0) reblogged = element.innerHTML;
+            //set formated reblog date
             element.innerHTML = reblogged;
+            //style for two dates to be displayed
             if (element.innerHTML.length > 0 && posted.length > 0) {
                 element.innerHTML += "<br>";
                 element.style = "line-height: 1.2em;display: inline-block";
             }
+            //set formated publish date
             element.innerHTML += posted;
+            //set formated tooltip
+            if (settings.reblogTooltip.length > 0) {
+                if (post.original_post) element.title = formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.reblogTooltip);
+                else element.title = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogTooltip);
+            }
         }
     }
 
@@ -130,60 +145,63 @@
 
     /* Format date to the desired form */
     function formatDate_draxcpxe(time, format) {
-        let output = format;
+        let data = {
+            mask: format,
+            output: format
+        }
 
         let hours = time.getHours();
-        output = replaceKey_draxcpxe(output, "HH", (hours < 10 ? "0" : "") + hours);
-        output = replaceKey_draxcpxe(output, "H", hours);
+        if (data.mask.indexOf("HH") >= 0) data = replaceKey_draxcpxe(data, "HH", (hours < 10 ? "0" : "") + hours);
+        if (data.mask.indexOf("H") >= 0) data = replaceKey_draxcpxe(data, "H", hours);
         let ap = hours < 12 ? "AM" : "PM";
         hours += hours > 12 ? -12 : 0;
         hours = hours <= 0 ? 12 : hours;
-        output = replaceKey_draxcpxe(output, "hh", (hours < 10 ? "0" : "") + hours);
-        output = replaceKey_draxcpxe(output, "h", hours);
+        if (data.mask.indexOf("hh") >= 0) data = replaceKey_draxcpxe(data, "hh", (hours < 10 ? "0" : "") + hours);
+        if (data.mask.indexOf("h") >= 0) data = replaceKey_draxcpxe(data, "h", hours);
 
         let minutes = time.getMinutes();
-        output = replaceKey_draxcpxe(output, "mm", (minutes < 10 ? "0" : "") + minutes);
-        output = replaceKey_draxcpxe(output, "m", minutes);
+        if (data.mask.indexOf("mm") >= 0) data = replaceKey_draxcpxe(data, "mm", (minutes < 10 ? "0" : "") + minutes);
+        if (data.mask.indexOf("m") >= 0) data = replaceKey_draxcpxe(data, "m", minutes);
 
         let seconds = time.getSeconds();
-        output = replaceKey_draxcpxe(output, "SS", (seconds < 10 ? "0" : "") + seconds);
-        output = replaceKey_draxcpxe(output, "S", seconds);
+        if (data.mask.indexOf("SS") >= 0) data = replaceKey_draxcpxe(data, "SS", (seconds < 10 ? "0" : "") + seconds);
+        if (data.mask.indexOf("S") >= 0) data = replaceKey_draxcpxe(data, "S", seconds);
 
-        let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        output = replaceKey_draxcpxe(output, "DDDD", weekdays[time.getDay()]);
-        output = replaceKey_draxcpxe(output, "DDD", weekdays[time.getDay()].substring(0, 3));
+        if (data.mask.indexOf("RRR") >= 0) data = replaceKey_draxcpxe(data, "RRR", getRelativeTime_draxcpxe(time, false));
+        if (data.mask.indexOf("RR") >= 0) data = replaceKey_draxcpxe(data, "RR", getRelativeTime_draxcpxe(time, true));
+
+        if (data.mask.indexOf("ap") >= 0) data = replaceKey_draxcpxe(data, "ap", ap);
+
+        if (data.mask.indexOf("DDDD") >= 0) data = replaceKey_draxcpxe(data, "DDDD", weekdays[time.getDay()]);
+        if (data.mask.indexOf("DDD") >= 0) data = replaceKey_draxcpxe(data, "DDD", weekdays[time.getDay()].substring(0, 3));
         let day = time.getDate();
-        output = replaceKey_draxcpxe(output, "DD", (day < 10 ? "0" : "") + day);
-        output = replaceKey_draxcpxe(output, "D", day);
+        if (data.mask.indexOf("DD") >= 0) data = replaceKey_draxcpxe(data, "DD", (day < 10 ? "0" : "") + day);
+        if (data.mask.indexOf("D") >= 0) data = replaceKey_draxcpxe(data, "D", day);
 
-        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        output = replaceKey_draxcpxe(output, "MMMM", months[time.getMonth()]);
-        output = replaceKey_draxcpxe(output, "MMM", months[time.getMonth()].substring(0, 3));
+        if (data.mask.indexOf("MMMM") >= 0) data = replaceKey_draxcpxe(data, "MMMM", months[time.getMonth()]);
+        if (data.mask.indexOf("MMM") >= 0) data = replaceKey_draxcpxe(data, "MMM", months[time.getMonth()].substring(0, 3));
         let month = time.getMonth() + 1;
-        output = replaceKey_draxcpxe(output, "MM", (month < 10 ? "0" : "") + month);
-        output = replaceKey_draxcpxe(output, "M", month);
+        if (data.mask.indexOf("MM") >= 0) data = replaceKey_draxcpxe(data, "MM", (month < 10 ? "0" : "") + month);
+        if (data.mask.indexOf("M") >= 0) data = replaceKey_draxcpxe(data, "M", month);
 
         let year = time.getFullYear();
-        output = replaceKey_draxcpxe(output, "YYYY", year);
-        output = replaceKey_draxcpxe(output, "YY", String(year).substring(2));
+        if (data.mask.indexOf("YYYY") >= 0) data = replaceKey_draxcpxe(data, "YYYY", year);
+        if (data.mask.indexOf("YY") >= 0) data = replaceKey_draxcpxe(data, "YY", String(year).substring(2));
 
-        output = replaceKey_draxcpxe(output, "RRR", getRelativeTime_draxcpxe(time, false));
-        output = replaceKey_draxcpxe(output, "RR", getRelativeTime_draxcpxe(time, true));
-
-        output = replaceKey_draxcpxe(output, "ap", ap);
-
-        return output;
+        return data.output;
     }
 
     /* Replace sections of text */
-    //input: text to be changed
+    //input: object of data mask and data to be changed
     //key: what to remove from the text
     //value: what to put in the text
-    function replaceKey_draxcpxe(input, key, value) {
-        while (input.indexOf(key) >= 0) {
-            input = input.substring(0, input.indexOf(key)) + value + input.substring(input.indexOf(key) + key.length);
+    function replaceKey_draxcpxe(data, key, value) {
+        let valueMask = "_______________________________________".substring(0, value.length);
+        while (data.mask.indexOf(key) >= 0) {
+            data.output = data.output.substring(0, data.mask.indexOf(key)) + value + data.output.substring(data.mask.indexOf(key) + key.length);
+            data.mask = data.mask.substring(0, data.mask.indexOf(key)) + valueMask + data.mask.substring(data.mask.indexOf(key) + key.length);
         }
-        return input;
+        return data;
     }
 
     /* Create relative timestamp */
@@ -262,6 +280,13 @@
         createInput_draxcpxe("Reblog Date"+createTooltip_draxcpxe("This is the timestamp that Pillowfort shows in the post header by default.").outerHTML, settings.reblogDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.reblogDate = this.value;
+            saveSettings_draxcpxe();
+        });
+        frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
+        frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
+        createInput_draxcpxe("Reblog Date Tooltip"+createTooltip_draxcpxe("This is the timestamp that shows up when hovering over the timestamp in the post header.").outerHTML, settings.reblogTooltip, frame1);
+        frame1.lastChild.addEventListener("keyup", function() {
+            settings.reblogTooltip = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);

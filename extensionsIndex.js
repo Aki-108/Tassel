@@ -32,12 +32,12 @@ let extensionsIndex = [
         {
             "name": "Reblogged to Community",
             "id": 3,
-            "version": "2.7",
+            "version": "2.8",
             "created": 1653984960000,
-            "updated": 1704369044651,
+            "updated": 1708200480000,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@22085c90d90d184829e73d93a0911513bef2eb4c/extensions/RebloggedToCommunity/RebloggedToCommunity.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@99ee075c5900773f7375ac9e768884eac0c11cc0/extensions/RebloggedToCommunity/RebloggedToCommunity.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5f2a25bf1998597454ecd652f521927bca05d6/extensions/RebloggedToCommunity/RebloggedToCommunity.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show where a post has been reblogged to.",
@@ -150,12 +150,12 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "1.2",
+                "version": "1.3",
                 "created": 1696017952450,
-                "updated": 1703533945712,
+                "updated": 1708337460000,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c4970c66f3ac9329b818db222823880a0783f528/extensions/ReadThis/ReadThis.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a4d6d0ed93a4b4db0f5b94c73bb7d61e8a0f01c9/extensions/ReadThis/ReadThis.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5afc9dfe248201b8b23ba0b5a2be72b5fa8c21/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
@@ -166,12 +166,12 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "0.5",
+                "version": "0.6",
                 "created": 1696333244573,
-                "updated": 1708119207819,
+                "updated": 1708357005467,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@535e05bbdfd9cf2fa90a164349c54f6bd3ea5b59/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4f2c58dde1defb7155dc15893568ec4602c85c4c/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7f64a859ac233305b7090ee4a879ee909c364abc/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470"
         },
@@ -216,12 +216,12 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.0",
+                "version": "1.1",
                 "created": 1708117680669,
-                "updated": 1708166933831,
+                "updated": 1708355444764,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@670af9576d19f848bc66a0f9dbd9a1eff2479c39/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@94a623f3109b48a17b1fa1ad0f54f255e0a20315/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         }
