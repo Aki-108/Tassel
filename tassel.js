@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.20
+// @version      1.5.21
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6496c8fabd4c8f4a011907ae7522f917302ea9a6/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@13076e5bf141144291a1366c43d032e0d6a16a5a/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@da4e368a7c5c2e9ae35d657aed3f0290086e3a2b/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9d87a3c28c769c70ed19cf500ec43db49e12798f/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f3ab09cf5e276fb944d0725993d5f3c4cddf1d41/jsonManager.js";
@@ -400,6 +400,11 @@
                     comment.style.animationIterationCount = "2";
                     comment.style.animationName = "blink";
                 }, 2000);
+            } else if (pair[0] === "tExtensionSettings") {
+                window.setTimeout(function() {
+                    let button = document.getElementById(pair[1]);
+                    if (button) button.click();
+                }, 500);
             }
         }
     }
