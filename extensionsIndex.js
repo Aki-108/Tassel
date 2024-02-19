@@ -150,12 +150,12 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "1.2",
+                "version": "1.3",
                 "created": 1696017952450,
-                "updated": 1703533945712,
+                "updated": 1708337460000,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c4970c66f3ac9329b818db222823880a0783f528/extensions/ReadThis/ReadThis.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a4d6d0ed93a4b4db0f5b94c73bb7d61e8a0f01c9/extensions/ReadThis/ReadThis.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5afc9dfe248201b8b23ba0b5a2be72b5fa8c21/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
@@ -216,12 +216,12 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.0",
+                "version": "1.1",
                 "created": 1708117680669,
-                "updated": 1708166933831,
+                "updated": 1708355444764,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@670af9576d19f848bc66a0f9dbd9a1eff2479c39/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@94a623f3109b48a17b1fa1ad0f54f255e0a20315/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         }
