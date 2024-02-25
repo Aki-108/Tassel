@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.1
+// @version      1.2
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -196,7 +196,7 @@
     //key: what to remove from the text
     //value: what to put in the text
     function replaceKey_draxcpxe(data, key, value) {
-        let valueMask = "_______________________________________".substring(0, value.length);
+        let valueMask = "_______________________________________".substring(0, String(value).length);
         while (data.mask.indexOf(key) >= 0) {
             data.output = data.output.substring(0, data.mask.indexOf(key)) + value + data.output.substring(data.mask.indexOf(key) + key.length);
             data.mask = data.mask.substring(0, data.mask.indexOf(key)) + valueMask + data.mask.substring(data.mask.indexOf(key) + key.length);
