@@ -32,12 +32,12 @@ let extensionsIndex = [
         {
             "name": "Reblogged to Community",
             "id": 3,
-            "version": "2.8",
+            "version": "2.9",
             "created": 1653984960000,
-            "updated": 1708200480000,
+            "updated": 1708891499668,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@99ee075c5900773f7375ac9e768884eac0c11cc0/extensions/RebloggedToCommunity/RebloggedToCommunity.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@662f225decfcd0172dd6e9e51e9827ed488aca2c/extensions/RebloggedToCommunity/RebloggedToCommunity.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5f2a25bf1998597454ecd652f521927bca05d6/extensions/RebloggedToCommunity/RebloggedToCommunity.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show where a post has been reblogged to.",
@@ -216,12 +216,12 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.2",
+                "version": "1.3",
                 "created": 1708117680669,
-                "updated": 1708875649458,
+                "updated": 1708891499668,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d5c64101e266774a2ed6e4725624a2851a95f362/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6277afe9e92f541d33dc01e442d83fcb9aec6882/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         }
