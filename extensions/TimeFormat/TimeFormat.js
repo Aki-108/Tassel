@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.1
+// @version      1.2
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
