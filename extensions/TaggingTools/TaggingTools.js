@@ -130,11 +130,13 @@
             dialog.innerHTML = body;
             dialog.getElementsByTagName("button")[0].addEventListener("click", function() {
                 document.getElementById("tasselTaggingToolsRulesModal").close();
+                document.body.classList.remove("modal-open");
             });
             dialog.children[0].style.display = "block";
             dialog.children[0].classList.add("in");
             if (!exists) document.body.appendChild(dialog);
             dialog.showModal();
+            document.body.classList.add("modal-open");
         });
     }
 
