@@ -6,7 +6,7 @@
 }
 
 #tasselTaggingToolsSuggestionBox button {
-    border: none;
+    border: 1px solid transparent;
     border-radius: .5em;
     padding: 2px 8px;
     margin: 4px;
