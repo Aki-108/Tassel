@@ -46,6 +46,14 @@ let toasts = [
     "text": "A new extension has been added.",
     "timestamp": 1708166933831,
     "new": true
+  },
+  {
+    "id": 24,
+    "extension": 7,
+    "title": "Tagging Tools Update",
+    "text": "You can now view community rules while reblogging.",
+    "timestamp": 1709375053746,
+    "new": false
   }
 ];
 

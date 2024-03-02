@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Reblogged to Community
-// @version      2.8
+// @version      2.9
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -244,7 +244,7 @@
             let dataLoading = document.createElement("a");
             dataLoading.classList.add("like"+postId);
             dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
-            notes[index].appendChild(dataLoading);
+            notes[index].children[0].appendChild(dataLoading);
 
             //start fetching post data
             if (document.getElementsByClassName("like"+postId).length > 1) continue;

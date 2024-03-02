@@ -6,7 +6,7 @@
 }
 
 #tasselTaggingToolsSuggestionBox button {
-    border: none;
+    border: 1px solid transparent;
     border-radius: .5em;
     padding: 2px 8px;
     margin: 4px;
@@ -117,6 +117,32 @@ body.dark-theme #tasselTaggingToolsRemoveButton {
 }
 body.dark-theme #tasselTaggingToolsRemoveButton:hover {
     background-color: #33738d;
+}
+
+#tasselTaggingToolsRulesButton {
+    margin-left: 0.5em;
+    border: 1px solid #232b40;
+    border-radius:0.5em;
+    background-color: white;
+    padding: 0.5em 1em;
+    color: #232b40;
+}
+#tasselTaggingToolsRulesButton:disabled {
+    opacity: 0.5;
+}
+body.dark-theme #tasselTaggingToolsRulesButton {
+    border-color: #3a3e47;
+    background-color: #1b1d20;
+    color: #d9dbe0;
+}
+
+#tasselTaggingToolsRulesModal {
+    border: none;
+    background: none;
+}
+#tasselTaggingToolsRulesModal::backdrop {
+    opacity: 0.95;
+    background-color: var(--pageBg);
 }
 
 @media(max-width:400px) {

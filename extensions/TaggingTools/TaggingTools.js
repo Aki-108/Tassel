@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      1.6
+// @version      2.0
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -65,6 +65,7 @@
             tasselJsonManager.modal.json.tags.forEach(function(tag) {
                 tags.push({tag:tag,count:1});
             });
+            addCommunityRulesButton_dshcgkhy();
         });
     }
 
@@ -76,6 +77,7 @@
         document.getElementById("picture_select").addEventListener("click", function() {togglePostType_dshcgkhy("photo")});
         document.getElementById("video").addEventListener("click", function() {togglePostType_dshcgkhy("video")});
         document.getElementById("embed").addEventListener("click", function() {togglePostType_dshcgkhy("link")});
+        addCommunityRulesButton_dshcgkhy();
     }
 
     /* Get post type for the static reblog page */
@@ -96,6 +98,64 @@
                 tags.push({tag:tag,count:1});
             });
         });
+        addCommunityRulesButton_dshcgkhy();
+    }
+
+    /* Create a button in the modal header */
+    function addCommunityRulesButton_dshcgkhy() {
+        let header = document.getElementsByClassName("header-create-post")[0];
+        let button = document.createElement("button");
+        button.id = "tasselTaggingToolsRulesButton";
+        button.innerHTML = "Rules";
+        button.addEventListener("click", function(event) {
+            event.preventDefault()
+            loadCommunityRules_dshcgkhy();
+        });
+        header.appendChild(button);
+        sortCommunities_dshcgkhy();
+    }
+
+    /* Load and display the community rules */
+    function loadCommunityRules_dshcgkhy() {
+        let select = document.getElementById("post_to") || document.getElementById("reblog-modal").getElementsByTagName("select")[0];
+        if (select.value === "current_user") return;
+        let community = select.selectedOptions[0].textContent;
+        $.get(`https://www.pillowfort.social/community/${community}`, function(data) {
+            let body = data.substring(data.indexOf("<!-- rules  info modal"));
+            body = body.substring(body.indexOf(">")+1);
+            body = body.substring(0, body.indexOf("<!-- flag modal -->"));
+            let exists = document.getElementById("tasselTaggingToolsRulesModal") ? true : false;
+            let dialog = document.getElementById("tasselTaggingToolsRulesModal") || document.createElement("dialog");
+            dialog.id = "tasselTaggingToolsRulesModal";
+            dialog.innerHTML = body;
+            dialog.getElementsByTagName("button")[0].addEventListener("click", function() {
+                document.getElementById("tasselTaggingToolsRulesModal").close();
+                document.body.classList.remove("modal-open");
+            });
+            dialog.children[0].style.display = "block";
+            dialog.children[0].classList.add("in");
+            if (!exists) document.body.appendChild(dialog);
+            dialog.showModal();
+            document.body.classList.add("modal-open");
+        });
+    }
+
+    /* Sort the list of communities to reblog to */
+    function sortCommunities_dshcgkhy() {
+        if (!settings.sortCommunities) return;
+        let select = document.getElementById("post_to") || document.getElementById("reblog-modal").getElementsByTagName("select")[0];
+        let options = Object.values(select.children).sort(function(a, b) {
+            if (a.value === "current_user") return 0;
+            if (b.value === "current_user") return 1;
+            return a.textContent.toUpperCase().localeCompare(b.textContent.toUpperCase());
+        });
+        Object.values(select.children).forEach(function(item) {
+            item.remove();
+        });
+        options.forEach(function(item) {
+            select.appendChild(item);
+        });
+        select.value = "current_user";
     }
 
     /* Remove previous default tag and add new one */
@@ -254,7 +314,7 @@
         let button = document.createElement("button");
         button.id = "tasselTaggingToolsCopyTags";
         button.title = "copy tags";
-        button.innerHTML = "🠗";
+        button.innerHTML = "&#x1F817;";
 
         //copy tags
         button.addEventListener("click", function(event) {
@@ -356,6 +416,13 @@
         content.appendChild(createSwitch_dshcgkhy("Auto-copy tags when reblogging", settings.autoCopy ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.autoCopy = this.checked;
+            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+            file.taggingTools = settings;
+            localStorage.setItem("tasselSettings2", JSON.stringify(file));
+        });
+        content.appendChild(createSwitch_dshcgkhy("Sort 'Reblog To' List" + createTooltip_dshcgkhy("This refers to the list of communities to choose from when reblogging a post.").outerHTML, settings.sortCommunities ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.sortCommunities = this.checked;
             let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
             file.taggingTools = settings;
             localStorage.setItem("tasselSettings2", JSON.stringify(file));
@@ -513,6 +580,20 @@
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.taggingTools = settings;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    /* Create an icon with hover popup */
+    function createTooltip_dshcgkhy(content) {
+        let icon = document.createElement("div");
+        icon.classList.add("tasselInfo");
+        icon.innerHTML = `
+            <div class='tasselTooltip'>
+                <div class='tasselTooltipBubble'>
+                    ${content}
+                </div>
+            </div>
+        `;
+        return icon;
     }
 
     function createSwitch_dshcgkhy(title="", state="") {

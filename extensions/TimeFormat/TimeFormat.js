@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.2
+// @version      1.3
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -19,7 +19,7 @@
         editDate: "Last edited RRR ago.",
         commentDate: "RRR ago",
         reblogNote: "RRR ago",
-        likeNote: "RRR ago"
+        likeNote: "RRR"
     };
     let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
