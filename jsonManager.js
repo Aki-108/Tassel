@@ -67,9 +67,9 @@ let tasselJsonManager = {
 
 initModal_quugasdg();
 function initModal_quugasdg() {
-    let postModal = document.getElementById("post-view-modal")
+    let postModal = document.getElementById("post-view-modal") || document.getElementById("reblog-modal");
     if (!postModal) return;
-    let postModalLink = document.getElementById("post-view-modal").getElementsByClassName("link_post")[0];
+    let postModalLink = postModal.getElementsByClassName("link_post")[0];
 
     let modalObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
