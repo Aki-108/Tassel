@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.0
+// @version      2.1
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -103,6 +103,7 @@
 
     /* Create a button in the modal header */
     function addCommunityRulesButton_dshcgkhy() {
+        if (document.getElementById("tasselTaggingToolsRulesButton")) return;
         let header = document.getElementsByClassName("header-create-post")[0];
         let button = document.createElement("button");
         button.id = "tasselTaggingToolsRulesButton";
