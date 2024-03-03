@@ -13,18 +13,21 @@ let tasselJsonManager = {
         ready: false,
         postId: null,
         page: null,
+        maxPage: null,
         comments: []
     },
     reblogs: {
         ready: false,
         postId: null,
         page: null,
+        maxPage: null,
         json: {}
     },
     likes: {
         ready: false,
         postId: null,
         page: null,
+        maxPage: null,
         json: {}
     },
     feed: {
@@ -136,6 +139,8 @@ function getCommentData_quugasdg(postId) {
     let commentPageButtons = document.getElementsByTagName("dir-pagination-controls")[0];
     if (commentPageButtons.getElementsByClassName("active").length > 0) page = commentPageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.comments.page = page;
+    let pages = Object.values(commentPageButtons.getElementsByTagName("li"));
+    tasselJsonManager.comments.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/comments?pageNum=${page}`, function(data) {
         tasselJsonManager.comments.comments = unpackComments_quugasdg(data.comments);
         tasselJsonManager.comments.comments.forEach(function(comment) {
@@ -153,6 +158,8 @@ function getReblogData_quugasdg(postId) {
     let reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
     if (reblogPageButtons.getElementsByClassName("active").length > 0) page = reblogPageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.reblogs.page = page;
+    let pages = Object.values(reblogPageButtons.getElementsByTagName("li"));
+    tasselJsonManager.reblogs.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/reblogs?p=${page}`, function(data) {
         tasselJsonManager.reblogs.json = data.reblog_batch;
         tasselJsonManager.reblogs.json.forEach(function(reblog) {
@@ -170,6 +177,8 @@ function getLikeData_quugasdg(postId) {
     let likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
     if (likePageButtons.getElementsByClassName("active").length > 0) page = likePageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.likes.page = page;
+    let pages = Object.values(likePageButtons.getElementsByTagName("li"));
+    tasselJsonManager.likes.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/likes?p=${page}`, function(data) {
         tasselJsonManager.likes.json = data.likes_batch;
         tasselJsonManager.likes.json.forEach(function(like) {
