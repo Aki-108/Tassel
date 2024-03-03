@@ -124,17 +124,18 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.3",
+            "version": "1.4",
             "created": 1693639280661,
-            "updated": 1703925817495,
+            "updated": 1709486400143,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@60354f1febf4d269a0ab6ee523bbee03219b2a19/extensions/PostCharts/PostCharts.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f69d5400fe9f1ed953cd1fbdf858b99eec29aa1e/extensions/PostCharts/PostCharts.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b742d455b779bb53e4da6a099add7f3195090188/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8bf9da04b0da5d2d2c21f532b61a8abb83f323b0/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
-                    "Shows a chart of notes on a post grouped by weekday or hour."
+                    "Shows a chart of notes on a post grouped by weekday or hour.",
+                    "Shows a chart of likes on a post by the source they came from."
             ]
         },
         {
