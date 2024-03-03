@@ -98,7 +98,8 @@ let extensionsIndex = [
             "features": [
                 "Suggests tags based on your previous posts.",
                 "Adds a button for copying tags when reblogging.",
-                "Set default tags that automatically apply to posts you make/reblog."
+                "Set default tags that automatically apply to posts you make/reblog.",
+                "View the rules of a community while reblogging to it.
             ]
         },
         {
