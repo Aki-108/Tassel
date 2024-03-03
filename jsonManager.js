@@ -73,7 +73,7 @@ function initModal_quugasdg() {
 
     let modalObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
-            if (mutationRecord.attributeName === "href") {
+            if (mutationRecord.attributeName === "href" || document.getElementById("reblog-modal")) {
                 let postId = mutationRecord.target.href;
                 postId = postId.substring(postId.search("/posts/")+7);
                 tasselJsonManager.modal.postId = postId;
