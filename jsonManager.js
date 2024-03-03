@@ -73,7 +73,7 @@ function initModal_quugasdg() {
 
     let modalObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
-            if (mutationRecord.attributeName === "href" || document.getElementById("reblog-modal")) {
+            if (mutationRecord.attributeName === "href") {
                 let postId = mutationRecord.target.href;
                 postId = postId.substring(postId.search("/posts/")+7);
                 tasselJsonManager.modal.postId = postId;
@@ -89,6 +89,10 @@ function initModal_quugasdg() {
                     tasselJsonManager.modal.ready = false;
                     tasselJsonManager.comments.ready = false;
                 }
+            } else if (document.getElementById("reblog-modal")) {
+                tasselJsonManager.modal = tasselJsonManager.post;
+                assignUsers_quugasdg(tasselJsonManager.modal.json);
+                trigger_quugasdg("tasselJsonManagerModalReady");
             }
         });
     });
