@@ -69,7 +69,7 @@
 
     /* Add eventlisteners for creating a new post */
     function initNewPostPage_dshcgkhy() {
-        if (document.URL !== "https://www.pillowfort.social/posts/new") return;
+        if (document.URL.indexOf("https://www.pillowfort.social/posts/new") != 0) return;
         togglePostType_dshcgkhy("text");
         document.getElementById("text").addEventListener("click", function() {togglePostType_dshcgkhy("text")});
         document.getElementById("picture_select").addEventListener("click", function() {togglePostType_dshcgkhy("photo")});
@@ -143,18 +143,20 @@
     function sortCommunities_dshcgkhy() {
         if (!settings.sortCommunities) return;
         let select = document.getElementById("post_to") || document.getElementById("reblog-modal").getElementsByTagName("select")[0];
-        let options = Object.values(select.children).sort(function(a, b) {
-            if (a.value === "current_user") return 0;
-            if (b.value === "current_user") return 1;
-            return a.textContent.toUpperCase().localeCompare(b.textContent.toUpperCase());
+        select.addEventListener("click", function() {
+            let options = Object.values(select.children).sort(function(a, b) {
+                if (a.value === "current_user") return 0;
+                if (b.value === "current_user") return 1;
+                return a.textContent.toUpperCase().localeCompare(b.textContent.toUpperCase());
+            });
+            Object.values(select.children).forEach(function(item) {
+                item.remove();
+            });
+            options.forEach(function(item) {
+                select.appendChild(item);
+            });
+            select.value = "current_user";
         });
-        Object.values(select.children).forEach(function(item) {
-            item.remove();
-        });
-        options.forEach(function(item) {
-            select.appendChild(item);
-        });
-        select.value = "current_user";
     }
 
     /* Remove previous default tag and add new one */
