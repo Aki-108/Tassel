@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      1.3
+// @version      1.4
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -17,12 +17,13 @@
     initTassel_icigqyni();
     if (document.getElementById("tasselJsonManagerModalReady")) document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
         //undo changes from previous modal opening
-        let links = Object.values(document.getElementById("post-view-modal").getElementsByClassName("link_post"));
-        let originalView = document.getElementById("post-view-modal").getElementsByClassName("tasselReadThisOldPost");
+        let modal = document.getElementById("post-view-modal") || document.getElementById("reblog-modal");
+        let links = Object.values(modal.getElementsByClassName("link_post"));
+        let originalView = modal.getElementsByClassName("tasselReadThisOldPost");
         if (originalView.length) {
             originalView[0].classList.remove("tasselReadThisOldPost");
-            document.getElementById("post-view-modal").getElementsByClassName("post-container")[0].classList.remove("tasselReadThisProcessed");
-            document.getElementById("post-view-modal").getElementsByClassName("tasselReadThisNewPost")[0].remove();
+            modal.getElementsByClassName("post-container")[0].classList.remove("tasselReadThisProcessed");
+            modal.getElementsByClassName("tasselReadThisNewPost")[0].remove();
         }
         processPosts_icigqyni([tasselJsonManager.modal.json], links);
     });
