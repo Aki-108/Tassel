@@ -143,20 +143,18 @@
     function sortCommunities_dshcgkhy() {
         if (!settings.sortCommunities) return;
         let select = document.getElementById("post_to") || document.getElementById("reblog-modal").getElementsByTagName("select")[0];
-        select.addEventListener("click", function() {
-            let options = Object.values(select.children).sort(function(a, b) {
-                if (a.value === "current_user") return 0;
-                if (b.value === "current_user") return 1;
-                return a.textContent.toUpperCase().localeCompare(b.textContent.toUpperCase());
-            });
-            Object.values(select.children).forEach(function(item) {
-                item.remove();
-            });
-            options.forEach(function(item) {
-                select.appendChild(item);
-            });
-            select.value = "current_user";
+        let options = Object.values(select.children).sort(function(a, b) {
+            if (a.value === "current_user") return 0;
+            if (b.value === "current_user") return 1;
+            return a.textContent.toUpperCase().localeCompare(b.textContent.toUpperCase());
         });
+        Object.values(select.children).forEach(function(item) {
+            item.remove();
+        });
+        options.forEach(function(item) {
+            select.appendChild(item);
+        });
+        select.value = "current_user";
     }
 
     /* Remove previous default tag and add new one */
