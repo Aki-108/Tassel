@@ -48,8 +48,6 @@
 
     /* Get post type for the reblog modal */
     function initReblogModal_dshcgkhy() {
-        if (!document.getElementById("post-view-modal")) return;
-        let postModalLink = document.getElementById("post-view-modal").getElementsByClassName("link_post")[0];
         //update again everytime the post changes
         document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
             newPostType = tasselJsonManager.modal.json.post_type;
@@ -103,6 +101,7 @@
 
     /* Create a button in the modal header */
     function addCommunityRulesButton_dshcgkhy() {
+        sortCommunities_dshcgkhy();
         if (document.getElementById("tasselTaggingToolsRulesButton")) return;
         let header = document.getElementsByClassName("header-create-post")[0];
         let button = document.createElement("button");
@@ -113,7 +112,6 @@
             loadCommunityRules_dshcgkhy();
         });
         header.appendChild(button);
-        sortCommunities_dshcgkhy();
     }
 
     /* Load and display the community rules */
