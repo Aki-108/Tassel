@@ -37,7 +37,7 @@
             document.head.append(style)
         })
     }
-
+    
     if (document.URL.split("/")[3] !== "posts") return;
     loadScript_gkgyjoep("https://unpkg.com/dygraphs@2.2.1/dist/dygraph.min.js")
         .then(() => init_gkgyjoep());
@@ -328,7 +328,7 @@
                 //Labeling
                 labels: ["Source", "Likes"],
                 legend: 'always',
-                title: 'Likes per Source',
+                title: 'Likes by Source',
                 labelsDiv: sourceGraphLabels,
                 pixelsPerLabel: 50,
 
@@ -399,7 +399,6 @@
 
         // This determines the bar width.
         let min_sep = Infinity;
-        console.log(min_sep);
         for (let i = 1; i < points.length; i++) {
             let sep = points[i].canvasx - points[i - 1].canvasx;
             if (sep < min_sep) min_sep = sep;
@@ -626,7 +625,7 @@
         }
 
         $.getJSON(`https://www.pillowfort.social/posts/${tasselJsonManager.post.postId}/likes?p=${page}`, function(data) {
-            if (data.likes_batch === null) {
+            if (data.likes_batch === null || data.likes_batch.length === 0) {
                 sortSources_gkgyjoep();
                 return;
             }
@@ -658,6 +657,12 @@
     /* Format data from like pages */
     function sortSources_gkgyjoep() {
         let writeIndex = 0;
+        if (sourceData.length === 0) {
+            document.getElementById("tasselNoteChartsProgressBar2").style.width = "100%";
+            document.getElementById("tasselNoteChartsProgressBar2").innerHTML = "100%";
+            document.getElementById("tasselNoteChartsProgress2").style.display = "none";
+            return;
+        }
         sourceData.forEach(function(item, index) {
             if (item > 0) {
                 sourceDataEdited[writeIndex] = [index, item];
