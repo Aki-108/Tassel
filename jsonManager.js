@@ -1,6 +1,7 @@
 let tasselJsonManager = {
     modal: {
         ready: false,
+        type: null,
         postId: null,
         json: {}
     },
@@ -77,18 +78,18 @@ function initModal_quugasdg() {
                     let postId = mutationRecord.target.href;
                     postId = postId.substring(postId.search("/posts/")+7);
                     tasselJsonManager.modal.postId = postId;
+                    tasselJsonManager.modal.type = "comments";
                     $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
                         tasselJsonManager.modal.json = data;
                         assignUsers_quugasdg(tasselJsonManager.modal.json);
                         tasselJsonManager.modal.ready = true;
                         trigger_quugasdg("tasselJsonManagerModalReady");
+                        console.log("trigged modal from href");
                     });
                     getCommentData_quugasdg(postId);
-                } else if (mutationRecord.attributeName === "style") {
-                    if (mutationRecord.target.style.display === "none") {
-                        tasselJsonManager.modal.ready = false;
-                        tasselJsonManager.comments.ready = false;
-                    }
+                } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
+                    tasselJsonManager.modal.ready = false;
+                    tasselJsonManager.comments.ready = false;
                 }
             });
         });
@@ -112,8 +113,10 @@ function initModal_quugasdg() {
                     tasselJsonManager.comments.ready = false;
                 } else {
                     tasselJsonManager.modal = tasselJsonManager.post;
+                    tasselJsonManager.modal.type = "reblog";
                     assignUsers_quugasdg(tasselJsonManager.modal.json);
                     trigger_quugasdg("tasselJsonManagerModalReady");
+                    console.log("trigged modal from style");
                 }
             });
         });
