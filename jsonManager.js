@@ -133,7 +133,7 @@ function initModal_quugasdg() {
             attributes: true,
             attributeFilter: ["href"]
         });
-        reblogObserver.observe(postModal, {
+        reblogObserver.observe(reblogModal, {
             attributes: true,
             attributeFilter: ["style"]
         });
