@@ -17,7 +17,10 @@
     initTassel_icigqyni();
     if (document.getElementById("tasselJsonManagerModalReady")) document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
         //undo changes from previous modal opening
-        let modal = document.getElementById("post-view-modal") || document.getElementById("reblog-modal");
+        let modal;
+        if (tasselJsonManager.modal.type === "reblog") modal = document.getElementById("reblog-modal");
+        else modal = document.getElementById("post-view-modal");
+        if (!modal) return;
         let links = Object.values(modal.getElementsByClassName("link_post"));
         let originalView = modal.getElementsByClassName("tasselReadThisOldPost");
         if (originalView.length) {
