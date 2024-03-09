@@ -50,6 +50,8 @@
     function initReblogModal_dshcgkhy() {
         //update again everytime the post changes
         document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
+            if (!tasselJsonManager.modal.ready) return;
+            addCommunityRulesButton_dshcgkhy();
             newPostType = tasselJsonManager.modal.json.post_type;
             if (newPostType === "picture") newPostType = "photo";
             else if (newPostType === "embed") newPostType = "link";
@@ -63,7 +65,6 @@
             tasselJsonManager.modal.json.tags.forEach(function(tag) {
                 tags.push({tag:tag,count:1});
             });
-            addCommunityRulesButton_dshcgkhy();
         });
     }
 
