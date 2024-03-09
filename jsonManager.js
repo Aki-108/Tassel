@@ -74,7 +74,7 @@ function initModal_quugasdg() {
 
         let modalObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutationRecord) {
-                if (mutationRecord.attributeName === "href") {
+                if (mutationRecord.attributeName === "href" && document.getElementById("post-view-modal").classList.contains("in")) {
                     let postId = mutationRecord.target.href;
                     postId = postId.substring(postId.search("/posts/")+7);
                     tasselJsonManager.modal.postId = postId;
@@ -84,7 +84,7 @@ function initModal_quugasdg() {
                         assignUsers_quugasdg(tasselJsonManager.modal.json);
                         tasselJsonManager.modal.ready = true;
                         trigger_quugasdg("tasselJsonManagerModalReady");
-                        console.log("trigged modal from href");
+                        console.log("triggered modal from href");
                     });
                     getCommentData_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
@@ -93,7 +93,6 @@ function initModal_quugasdg() {
                 }
             });
         });
-
         modalObserver.observe(postModalLink, {
             attributes: true,
             attributeFilter: ["href"]
@@ -106,19 +105,23 @@ function initModal_quugasdg() {
 
     let reblogModal = document.getElementById("reblog-modal");
     if (reblogModal) {
+        let reblogModalLink = reblogModal.getElementsByClassName("link_post")[0];
         let reblogObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutationRecord) {
-                if (mutationRecord.target.style.display === "none") {
-                    tasselJsonManager.modal.ready = false;
-                    tasselJsonManager.comments.ready = false;
-                } else {
+                if (mutationRecord.attributeName === "href" && document.getElementById("reblog-modal").classList.contains("in")) {
                     tasselJsonManager.modal = tasselJsonManager.post;
                     tasselJsonManager.modal.type = "reblog";
                     assignUsers_quugasdg(tasselJsonManager.modal.json);
                     trigger_quugasdg("tasselJsonManagerModalReady");
-                    console.log("trigged modal from style");
+                    console.log("triggered modal from style");
+                } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
+                    tasselJsonManager.modal.ready = false;
                 }
             });
+        });
+        reblogObserver.observe(reblogModalLink, {
+            attributes: true,
+            attributeFilter: ["href"]
         });
         reblogObserver.observe(postModal, {
             attributes: true,
