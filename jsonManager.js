@@ -84,7 +84,6 @@ function initModal_quugasdg() {
                         assignUsers_quugasdg(tasselJsonManager.modal.json);
                         tasselJsonManager.modal.ready = true;
                         trigger_quugasdg("tasselJsonManagerModalReady");
-                        console.log("triggered modal from href");
                     });
                     getCommentData_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
@@ -109,11 +108,22 @@ function initModal_quugasdg() {
         let reblogObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "href" && document.getElementById("reblog-modal").classList.contains("in")) {
-                    tasselJsonManager.modal = tasselJsonManager.post;
-                    tasselJsonManager.modal.type = "reblog";
-                    assignUsers_quugasdg(tasselJsonManager.modal.json);
-                    trigger_quugasdg("tasselJsonManagerModalReady");
-                    console.log("triggered modal from style");
+                    if (tasselJsonManager.post.ready) {
+                        tasselJsonManager.modal = tasselJsonManager.post;
+                        tasselJsonManager.modal.type = "reblog";
+                        assignUsers_quugasdg(tasselJsonManager.modal.json);
+                        trigger_quugasdg("tasselJsonManagerModalReady");
+                    } else {
+                        let postId = mutationRecord.target.href;
+                        postId = postId.substring(postId.search("/posts/")+7);
+                        $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+                            tasselJsonManager.modal.json = data;
+                            tasselJsonManager.modal.type = "reblog";
+                            assignUsers_quugasdg(tasselJsonManager.modal.json);
+                            tasselJsonManager.modal.ready = true;
+                            trigger_quugasdg("tasselJsonManagerModalReady");
+                        });
+                    }
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
                 }
