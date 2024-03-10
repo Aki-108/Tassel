@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Read This
-// @version      1.3
+// @version      1.4
 // @description  Open read-more's anywhere.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -17,12 +17,16 @@
     initTassel_icigqyni();
     if (document.getElementById("tasselJsonManagerModalReady")) document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
         //undo changes from previous modal opening
-        let links = Object.values(document.getElementById("post-view-modal").getElementsByClassName("link_post"));
-        let originalView = document.getElementById("post-view-modal").getElementsByClassName("tasselReadThisOldPost");
+        let modal;
+        if (tasselJsonManager.modal.type === "reblog") modal = document.getElementById("reblog-modal");
+        else modal = document.getElementById("post-view-modal");
+        if (!modal) return;
+        let links = Object.values(modal.getElementsByClassName("link_post"));
+        let originalView = modal.getElementsByClassName("tasselReadThisOldPost");
         if (originalView.length) {
             originalView[0].classList.remove("tasselReadThisOldPost");
-            document.getElementById("post-view-modal").getElementsByClassName("post-container")[0].classList.remove("tasselReadThisProcessed");
-            document.getElementById("post-view-modal").getElementsByClassName("tasselReadThisNewPost")[0].remove();
+            modal.getElementsByClassName("post-container")[0].classList.remove("tasselReadThisProcessed");
+            modal.getElementsByClassName("tasselReadThisNewPost")[0].remove();
         }
         processPosts_icigqyni([tasselJsonManager.modal.json], links);
     });
@@ -64,8 +68,9 @@
                 //create a new text-body without READ-MORE's
                 let fullPost = document.createElement("div");
                 fullPost.classList.add("tasselReadThisNewPost");
-                let contentFormated = post.content.replaceAll("[READ-MORE]", "<details class='tasselReadThisNewBlock'><summary>Read This...</summary>");
-                contentFormated = contentFormated.replaceAll("[/READ-MORE]", "</details>");
+                let contentFormated = post.content.replaceAll("[READ-MORE]", "</p><details class='tasselReadThisNewBlock'><summary>Read This...</summary><p>");
+                contentFormated = contentFormated.replaceAll("[/READ-MORE]", "</p></details><p>");
+                contentFormated = contentFormated.replaceAll("<p></p>", "");
                 fullPost.innerHTML = contentFormated;
 
                 let content = postEl.getElementsByClassName("content")[0].children[0];

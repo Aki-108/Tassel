@@ -123,6 +123,7 @@ body.dark-theme #tasselTaggingToolsRemoveButton:hover {
     margin-left: 0.5em;
     border: 1px solid #232b40;
     border-radius:0.5em;
+    height: 34px;
     background-color: white;
     padding: 0.5em 1em;
     color: #232b40;

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.0
+// @version      2.1
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -48,10 +48,10 @@
 
     /* Get post type for the reblog modal */
     function initReblogModal_dshcgkhy() {
-        if (!document.getElementById("post-view-modal")) return;
-        let postModalLink = document.getElementById("post-view-modal").getElementsByClassName("link_post")[0];
         //update again everytime the post changes
         document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
+            if (!tasselJsonManager.modal.ready) return;
+            addCommunityRulesButton_dshcgkhy();
             newPostType = tasselJsonManager.modal.json.post_type;
             if (newPostType === "picture") newPostType = "photo";
             else if (newPostType === "embed") newPostType = "link";
@@ -65,13 +65,12 @@
             tasselJsonManager.modal.json.tags.forEach(function(tag) {
                 tags.push({tag:tag,count:1});
             });
-            addCommunityRulesButton_dshcgkhy();
         });
     }
 
     /* Add eventlisteners for creating a new post */
     function initNewPostPage_dshcgkhy() {
-        if (document.URL !== "https://www.pillowfort.social/posts/new") return;
+        if (document.URL.indexOf("https://www.pillowfort.social/posts/new") != 0) return;
         togglePostType_dshcgkhy("text");
         document.getElementById("text").addEventListener("click", function() {togglePostType_dshcgkhy("text")});
         document.getElementById("picture_select").addEventListener("click", function() {togglePostType_dshcgkhy("photo")});
@@ -103,6 +102,8 @@
 
     /* Create a button in the modal header */
     function addCommunityRulesButton_dshcgkhy() {
+        sortCommunities_dshcgkhy();
+        if (document.getElementById("tasselTaggingToolsRulesButton")) return;
         let header = document.getElementsByClassName("header-create-post")[0];
         let button = document.createElement("button");
         button.id = "tasselTaggingToolsRulesButton";
@@ -112,7 +113,6 @@
             loadCommunityRules_dshcgkhy();
         });
         header.appendChild(button);
-        sortCommunities_dshcgkhy();
     }
 
     /* Load and display the community rules */

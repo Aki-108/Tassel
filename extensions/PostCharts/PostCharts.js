@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Charts
-// @version      1.3
+// @version      1.4
 // @description  Shows statistics of a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -11,8 +11,9 @@
 (function() {
     'use strict';
 
-    let likesData = [], reblogsData = [], commentsData = [], timeGraphData = [], weekGraphData = [[new Date(),0,0,0]], hourGraphData = [[new Date(),0,0,0]];
+    let likesData = [], reblogsData = [], commentsData = [], timeGraphData = [], weekGraphData = [[new Date(),0,0,0]], hourGraphData = [[new Date(),0,0,0]], sourceData = [], sourceDataEdited = [], sourceGraphData = [[0,0]], sourceGraphTitles = [];
     let GraphObjects = [];
+    let barWidth = 610;
 
     const loadScript_gkgyjoep = src => {
         return new Promise((resolve, reject) => {
@@ -36,7 +37,7 @@
             document.head.append(style)
         })
     }
-
+    
     if (document.URL.split("/")[3] !== "posts") return;
     loadScript_gkgyjoep("https://unpkg.com/dygraphs@2.2.1/dist/dygraph.min.js")
         .then(() => init_gkgyjoep());
@@ -107,6 +108,18 @@
                 <div>
                     <p>This is a stacked chart – the height of the bar equals the total number of shown notes, not the number of an individual category. The grey background indicates the hour in which the post was created.</p>
                 </div>
+                <hr>
+                <div id="tasselNoteChartsTopLine2">
+                    <button id="tasselNoteChartsSourceButton" class="tasselButton">Load Sources</button>
+                </div>
+                <div id="tasselNoteChartsProgress2">
+                    <div id="tasselNoteChartsProgressBar2">0%</div>
+                </div>
+                <div id="sourceGraph"></div>
+                <div id="sourceGraphLabels"></div>
+                <div>
+                    <p>The grey background indicates the original source of the post.</p>
+                </div>
             </div>
         `;
         timeGraphData.push([new Date(tasselJsonManager.post.json.publish_at), 0, 0, 0]);//start of data
@@ -119,6 +132,7 @@
         document.getElementById("tasselNoteChartsTopLine").children[1].addEventListener("click", function() {toggleSet_gkgyjoep(0)});
         document.getElementById("tasselNoteChartsTopLine").children[3].addEventListener("click", function() {toggleSet_gkgyjoep(1)});
         document.getElementById("tasselNoteChartsTopLine").children[5].addEventListener("click", function() {toggleSet_gkgyjoep(2)});
+        document.getElementById("tasselNoteChartsSourceButton").addEventListener("click", function() {loadSources_gkgyjoep(1)});
     }
 
     /* Create Dygraph objects */
@@ -298,6 +312,80 @@
         Object.values(document.getElementById("hourGraph").getElementsByClassName("dygraph-axis-label dygraph-axis-label-x")).forEach(function(item, index) {
             item.innerHTML = (index < 10 ? "0" : "") + index + ":00";
         });
+
+        GraphObjects[3] = new Dygraph(
+            document.getElementById("sourceGraph"),
+            sourceGraphData,
+            {
+                //Sized
+                width: 610,
+                height: 350,
+                highlightCircleSize: 10,
+                strokeWidth: 2,
+                axisLineWidth: 2,
+                axisLabelWidth: 50,
+
+                //Labeling
+                labels: ["Source", "Likes"],
+                legend: 'always',
+                title: 'Likes by Source',
+                labelsDiv: sourceGraphLabels,
+                pixelsPerLabel: 50,
+
+                //Other
+                rollPeriod: 0,
+                stepPlot: true,
+                fillGraph: true,
+                includeZero: true,
+                colors: ["#C36"],
+                visibility: [false],
+                connectSeparatedPoints: true,
+                stackedGraph: false,
+                plotter: barChartPlotter_gkgyjoep,
+                dateWindow: [-0.5, 4.5],
+                interactionModel: {},
+                gridLineColor: gLineColor,
+                axisLineColor: gLineColor,
+
+                axes: {
+                    x: {
+                        axisLabelFormatter: function(d, gran, opts) {
+                            if (sourceGraphTitles[d]) return sourceGraphTitles[d][0];
+                            else return "";
+                        },
+                        valueFormatter: function(x) {
+                            if (sourceGraphTitles[x]) return sourceGraphTitles[x][0] + " (" + sourceGraphTitles[x][1] + ")";
+                            else return "";
+                        }
+                    }
+                },
+                drawCallback: function(canvas, area, g) {
+                    let labels = Object.values(document.getElementById("sourceGraph").getElementsByClassName("dygraph-axis-label-x"));
+                    labels.forEach(function(item) {
+                        item.style.width = barWidth + "px";
+                    });
+                },
+                underlayCallback: function(canvas, area, g) {
+                    canvas.fillStyle = document.body.classList.contains("dark-theme") ? "rgb(52, 54, 57, 1.0)" : "rgba(200, 200, 200, 1.0)";
+
+                    function highlight_period(x_start, x_end) {
+                        var canvas_left_x = g.toDomXCoord(x_start);
+                        var canvas_right_x = g.toDomXCoord(x_end);
+                        var canvas_width = canvas_right_x - canvas_left_x;
+                        canvas.fillRect(canvas_left_x, area.y, canvas_width, area.h);
+                    }
+
+                    let created_at = sourceGraphTitles.findIndex(function(item) {
+                        return item[0] === tasselJsonManager.post.json.username
+                    });
+                    highlight_period(created_at-0.5, created_at+0.5);
+                }
+            }
+        );
+        Object.values(document.getElementById("sourceGraph").getElementsByClassName("dygraph-axis-label dygraph-axis-label-x")).forEach(function(item, index) {
+            if (sourceGraphTitles[item.innerHTML]) item.innerHTML = sourceGraphTitles[item.innerHTML][0];
+            else item.innerHTML = "";
+        });
     }
 
     /* Draw a bar-chart on the canvas */
@@ -316,6 +404,8 @@
             if (sep < min_sep) min_sep = sep;
         }
         let bar_width = Math.floor(2.0 / 3 * min_sep);
+        if (points.length === 1) bar_width = Math.min(bar_width, 305);
+        barWidth = bar_width;
 
         // Do the actual plotting.
         for (let i = 0; i < points.length; i++) {
@@ -521,5 +611,133 @@
                 last[a] = item[a];
             }
         });
+    }
+
+    /* Gather data from all like pages */
+    function loadSources_gkgyjoep(page) {
+        if (page === 1) {
+            document.getElementById("tasselNoteChartsTopLine2").style.display = "none";
+            //show progress bar
+            let progress = document.getElementById("tasselNoteChartsProgress2");
+            progress.style.display = "block";
+            progress.children[0].style.width = 0;
+            progress.children[0].innerHTML = "0%";
+        }
+
+        $.getJSON(`https://www.pillowfort.social/posts/${tasselJsonManager.post.postId}/likes?p=${page}`, function(data) {
+            if (data.likes_batch === null || data.likes_batch.length === 0) {
+                sortSources_gkgyjoep();
+                return;
+            }
+
+            let likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
+            let pages = Object.values(likePageButtons.getElementsByTagName("li"));
+            tasselJsonManager.likes.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
+
+            let percent = Math.min(Math.round(page * 50 / tasselJsonManager.likes.maxPage, 50)); //don't overshoot after rounding
+            document.getElementById("tasselNoteChartsProgressBar2").style.width = percent + "%";
+            document.getElementById("tasselNoteChartsProgressBar2").innerHTML = percent + "%";
+
+            for (let like of data.likes_batch) {
+                if (like.liked_via_reblog_id === null) {
+                    like.liked_via_reblog_id = 0;
+                }
+                if (sourceData[like.liked_via_reblog_id]) {
+                    sourceData[like.liked_via_reblog_id]++;
+                } else {
+                    sourceData[like.liked_via_reblog_id] = 1;
+                }
+            }
+            window.setTimeout(function() {
+                loadSources_gkgyjoep(page + 1);
+            }, 1000);
+        });
+    }
+
+    /* Format data from like pages */
+    function sortSources_gkgyjoep() {
+        let writeIndex = 0;
+        if (sourceData.length === 0) {
+            document.getElementById("tasselNoteChartsProgressBar2").style.width = "100%";
+            document.getElementById("tasselNoteChartsProgressBar2").innerHTML = "100%";
+            document.getElementById("tasselNoteChartsProgress2").style.display = "none";
+            return;
+        }
+        sourceData.forEach(function(item, index) {
+            if (item > 0) {
+                sourceDataEdited[writeIndex] = [index, item];
+                writeIndex++;
+            }
+        });
+        sourceDataEdited.forEach(function(item, index) {
+            if (item[0] === 0) {//for the cases older than Pillowfort is keeping track of this data
+                item[0] = `<abbr title="This data is older than Pillowfort's records.">???</abbr>`;
+                item[2] = null;
+                if (index+1 == sourceDataEdited.length) updateSourceGraph();
+            } else {
+                window.setTimeout(function() {
+                    $.getJSON('https://www.pillowfort.social/posts/'+item[0]+'/json', function(data) {
+                        let percent = Math.min(Math.round((index+1) * 50 / sourceDataEdited.length, 50)) + 50; //don't overshoot after rounding
+                        document.getElementById("tasselNoteChartsProgressBar2").style.width = percent + "%";
+                        document.getElementById("tasselNoteChartsProgressBar2").innerHTML = percent + "%";
+
+                        if (data.community_id) {
+                            item[0] = data.comm_name;
+                            item[2] = data.community_id;
+                        } else {
+                            item[0] = data.username;
+                            item[2] = null;
+                        }
+                        if (index+1 == sourceDataEdited.length) updateSourceGraph();
+                    }).fail(function(value) {
+                        item[0] = value.statusText;
+                        if (index+1 == sourceDataEdited.length) updateSourceGraph();
+                    });
+                }, index*1000);
+            }
+        });
+        //sourceDataEdited
+        //[0]: title
+        //[1]: value
+        //[2]: community id
+    }
+
+    /* Display data in graph */
+    function updateSourceGraph() {
+        //sort by name
+        sourceDataEdited = sourceDataEdited.sort(function(a, b) {
+            return b[0].localeCompare(a[0]);
+        });
+        //combine entries with the same name
+        for (let index = 0; index < sourceDataEdited.length - 1; index++) {
+            //for communities
+            if (sourceDataEdited[index][2] === sourceDataEdited[index + 1][2] && sourceDataEdited[index][2] != null) {
+                sourceDataEdited[index + 1][1] += sourceDataEdited[index][1];
+                sourceDataEdited[index][1] = 0;
+            //for users
+            } else if (sourceDataEdited[index][2] === null && sourceDataEdited[index + 1][2] === null && sourceDataEdited[index][0] === sourceDataEdited[index + 1][0]) {
+                sourceDataEdited[index + 1][1] += sourceDataEdited[index][1];
+                sourceDataEdited[index][1] = 0;
+            }
+        }
+        //sort by amount of likes
+        sourceDataEdited = sourceDataEdited.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+        //limit length of list
+        let maxLimit = 0;
+        sourceGraphData = [];
+        sourceDataEdited.forEach(function(item, index) {
+            if (index < 5) {
+                maxLimit = item[1];
+                sourceGraphData.push([sourceGraphData.length, item[1]]);
+                sourceGraphTitles.push([item[0], item[2] === null ? "user" : "community"]);
+            } else if (item[1] === maxLimit) {
+                sourceGraphData.push([sourceGraphData.length, item[1]]);
+                sourceGraphTitles.push([item[0], item[2] === null ? "user" : "community"]);
+            }
+        });
+        GraphObjects[3].updateOptions({'file':sourceGraphData, 'visibility': [true],'dateWindow':[-0.5, sourceGraphData.length-0.5]});
+        document.getElementById("tasselNoteChartsProgress2").style.display = "none";
     }
 })();

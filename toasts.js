@@ -54,6 +54,22 @@ let toasts = [
     "text": "You can now view community rules while reblogging.",
     "timestamp": 1709375053746,
     "new": false
+  },
+  {
+    "id": 25,
+    "extension": 0,
+    "title": "New Settings",
+    "text": "There are now more settings to customize the Pillowfort sidebar.",
+    "timestamp": 1710016016850,
+    "new": false
+  },
+  {
+    "id": 26,
+    "extension": 9,
+    "title": "Post Charts",
+    "text": "A new chart has been added.",
+    "timestamp": 1710016016850,
+    "new": false
   }
 ];
 

@@ -87,18 +87,19 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.0",
+            "version": "2.1",
             "created": 1678386060000,
-            "updated": 1709375053746,
+            "updated": 1710016177867,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bbe88e430ed5fa91114da21eeea742b4074d8b1e/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@95a5a3870139da99c4d5828cc766e0acf90ccfb8/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ba475113add8c187eb4ced05189f2db54304f37c/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@19c4a77a74afd3b7c726842690a5d7ac8737d10a/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
                 "Adds a button for copying tags when reblogging.",
-                "Set default tags that automatically apply to posts you make/reblog."
+                "Set default tags that automatically apply to posts you make/reblog.",
+                "View the rules of a community while reblogging to it."
             ]
         },
         {
@@ -123,17 +124,18 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.3",
+            "version": "1.4",
             "created": 1693639280661,
-            "updated": 1703925817495,
+            "updated": 1710016016850,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@60354f1febf4d269a0ab6ee523bbee03219b2a19/extensions/PostCharts/PostCharts.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f69d5400fe9f1ed953cd1fbdf858b99eec29aa1e/extensions/PostCharts/PostCharts.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01713109b14174f138240dea8f28425f2666d341/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8bf9da04b0da5d2d2c21f532b61a8abb83f323b0/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
-                    "Shows a chart of notes on a post grouped by weekday or hour."
+                    "Shows a chart of notes on a post grouped by weekday or hour.",
+                    "Shows a chart of likes on a post by the source they came from."
             ]
         },
         {
@@ -150,12 +152,12 @@ let extensionsIndex = [
         {
                 "name": "Read This",
                 "id": 11,
-                "version": "1.3",
+                "version": "1.4",
                 "created": 1696017952450,
-                "updated": 1708337460000,
+                "updated": 1710055821763,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a4d6d0ed93a4b4db0f5b94c73bb7d61e8a0f01c9/extensions/ReadThis/ReadThis.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7731455e6ad391d8b380b2616036f6f49f47811d/extensions/ReadThis/ReadThis.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5afc9dfe248201b8b23ba0b5a2be72b5fa8c21/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [

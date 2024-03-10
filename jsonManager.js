@@ -1,6 +1,7 @@
 let tasselJsonManager = {
     modal: {
         ready: false,
+        type: null,
         postId: null,
         json: {}
     },
@@ -13,18 +14,21 @@ let tasselJsonManager = {
         ready: false,
         postId: null,
         page: null,
+        maxPage: null,
         comments: []
     },
     reblogs: {
         ready: false,
         postId: null,
         page: null,
+        maxPage: null,
         json: {}
     },
     likes: {
         ready: false,
         postId: null,
         page: null,
+        maxPage: null,
         json: {}
     },
     feed: {
@@ -64,40 +68,76 @@ let tasselJsonManager = {
 
 initModal_quugasdg();
 function initModal_quugasdg() {
-    let postModal = document.getElementById("post-view-modal")
-    if (!postModal) return;
-    let postModalLink = document.getElementById("post-view-modal").getElementsByClassName("link_post")[0];
+    let postModal = document.getElementById("post-view-modal");
+    if (postModal) {
+        let postModalLink = postModal.getElementsByClassName("link_post")[0];
 
-    let modalObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutationRecord) {
-            if (mutationRecord.attributeName === "href") {
-                let postId = mutationRecord.target.href;
-                postId = postId.substring(postId.search("/posts/")+7);
-                tasselJsonManager.modal.postId = postId;
-                $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-                    tasselJsonManager.modal.json = data;
-                    assignUsers_quugasdg(tasselJsonManager.modal.json);
-                    tasselJsonManager.modal.ready = true;
-                    trigger_quugasdg("tasselJsonManagerModalReady");
-                });
-                getCommentData_quugasdg(postId);
-            } else if (mutationRecord.attributeName === "style") {
-                if (mutationRecord.target.style.display === "none") {
+        let modalObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                if (mutationRecord.attributeName === "href" && document.getElementById("post-view-modal").classList.contains("in")) {
+                    let postId = mutationRecord.target.href;
+                    postId = postId.substring(postId.search("/posts/")+7);
+                    tasselJsonManager.modal.postId = postId;
+                    tasselJsonManager.modal.type = "comments";
+                    $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+                        tasselJsonManager.modal.json = data;
+                        assignUsers_quugasdg(tasselJsonManager.modal.json);
+                        tasselJsonManager.modal.ready = true;
+                        trigger_quugasdg("tasselJsonManagerModalReady");
+                    });
+                    getCommentData_quugasdg(postId);
+                } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
                     tasselJsonManager.comments.ready = false;
                 }
-            }
+            });
         });
-    });
+        modalObserver.observe(postModalLink, {
+            attributes: true,
+            attributeFilter: ["href"]
+        });
+        modalObserver.observe(postModal, {
+            attributes: true,
+            attributeFilter: ["style"]
+        });
+    }
 
-    modalObserver.observe(postModalLink, {
-        attributes: true,
-        attributeFilter: ["href"]
-    });
-    modalObserver.observe(postModal, {
-        attributes: true,
-        attributeFilter: ["style"]
-    });
+    let reblogModal = document.getElementById("reblog-modal");
+    if (reblogModal) {
+        let reblogModalLink = reblogModal.getElementsByClassName("link_post")[0];
+        let reblogObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                if (mutationRecord.attributeName === "href" && document.getElementById("reblog-modal").classList.contains("in")) {
+                    if (tasselJsonManager.post.ready) {
+                        tasselJsonManager.modal = tasselJsonManager.post;
+                        tasselJsonManager.modal.type = "reblog";
+                        assignUsers_quugasdg(tasselJsonManager.modal.json);
+                        trigger_quugasdg("tasselJsonManagerModalReady");
+                    } else {
+                        let postId = mutationRecord.target.href;
+                        postId = postId.substring(postId.search("/posts/")+7);
+                        $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+                            tasselJsonManager.modal.json = data;
+                            tasselJsonManager.modal.type = "reblog";
+                            assignUsers_quugasdg(tasselJsonManager.modal.json);
+                            tasselJsonManager.modal.ready = true;
+                            trigger_quugasdg("tasselJsonManagerModalReady");
+                        });
+                    }
+                } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
+                    tasselJsonManager.modal.ready = false;
+                }
+            });
+        });
+        reblogObserver.observe(reblogModalLink, {
+            attributes: true,
+            attributeFilter: ["href"]
+        });
+        reblogObserver.observe(reblogModal, {
+            attributes: true,
+            attributeFilter: ["style"]
+        });
+    }
 }
 
 initSinglePost_quugasdg();
@@ -136,6 +176,8 @@ function getCommentData_quugasdg(postId) {
     let commentPageButtons = document.getElementsByTagName("dir-pagination-controls")[0];
     if (commentPageButtons.getElementsByClassName("active").length > 0) page = commentPageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.comments.page = page;
+    let pages = Object.values(commentPageButtons.getElementsByTagName("li"));
+    tasselJsonManager.comments.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/comments?pageNum=${page}`, function(data) {
         tasselJsonManager.comments.comments = unpackComments_quugasdg(data.comments);
         tasselJsonManager.comments.comments.forEach(function(comment) {
@@ -153,6 +195,8 @@ function getReblogData_quugasdg(postId) {
     let reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
     if (reblogPageButtons.getElementsByClassName("active").length > 0) page = reblogPageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.reblogs.page = page;
+    let pages = Object.values(reblogPageButtons.getElementsByTagName("li"));
+    tasselJsonManager.reblogs.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/reblogs?p=${page}`, function(data) {
         tasselJsonManager.reblogs.json = data.reblog_batch;
         tasselJsonManager.reblogs.json.forEach(function(reblog) {
@@ -170,6 +214,8 @@ function getLikeData_quugasdg(postId) {
     let likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
     if (likePageButtons.getElementsByClassName("active").length > 0) page = likePageButtons.getElementsByClassName("active")[0].textContent;
     tasselJsonManager.likes.page = page;
+    let pages = Object.values(likePageButtons.getElementsByTagName("li"));
+    tasselJsonManager.likes.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/likes?p=${page}`, function(data) {
         tasselJsonManager.likes.json = data.likes_batch;
         tasselJsonManager.likes.json.forEach(function(like) {

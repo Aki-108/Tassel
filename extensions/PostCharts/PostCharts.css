@@ -8,18 +8,21 @@ body.dark-theme #tasselChartPaneBox {
     background-color: #1B1D20;
 }
 
-#tasselNoteChartsTopLine {
+#tasselNoteChartsTopLine,
+#tasselNoteChartsTopLine2 {
     display:flex;
     justify-content:space-around;
     margin-bottom: 1em;
 }
 
-#tasselNoteChartsTopLine .tasselButton {
+#tasselNoteChartsTopLine .tasselButton,
+#tasselNoteChartsTopLine2 .tasselButton{
     width:33%;
     margin: 0 .5em;
 }
 
-#tasselNoteChartsProgress {
+#tasselNoteChartsProgress,
+#tasselNoteChartsProgress2 {
     display:none;
     width:100%;
     background-color:#ddd;
@@ -28,11 +31,13 @@ body.dark-theme #tasselChartPaneBox {
     border-radius: 0.5em;
     overflow:hidden;
 }
-body.dark-theme #tasselNoteChartsProgress {
+body.dark-theme #tasselNoteChartsProgress,
+body.dark-theme #tasselNoteChartsProgress2 {
     background-color: #23282e;
 }
 
-#tasselNoteChartsProgressBar {
+#tasselNoteChartsProgressBar,
+#tasselNoteChartsProgressBar2 {
     width:0;
     height: 38px;
     background-color: #007D53;
@@ -42,16 +47,28 @@ body.dark-theme #tasselNoteChartsProgress {
     transition:width 0.5s ease-out;
     font-size:24px;
 }
-body.dark-theme #tasselNoteChartsProgressBar {
+body.dark-theme #tasselNoteChartsProgressBar,
+body.dark-theme #tasselNoteChartsProgressBar2 {
     background-color: #31734e;
 }
 
 #timeGraphLabels,
 #weekGraphLabels,
-#hourGraphLabels {
+#hourGraphLabels,
+#sourceGraphLabels {
     text-align: center;
     line-height: 1em;
     margin: 1em;
+}
+
+#sourceGraph div div {
+    display: grid;
+    justify-content: center;
+}
+#sourceGraph .dygraph-axis-label-x {
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .dygraph-axis-label {

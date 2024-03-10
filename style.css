@@ -28,6 +28,44 @@ break {
 	filter: var(--iconColor);
 }
 
+.tasselRemoveSidebarElement {
+	display: none;
+}
+.visible .tasselRemoveSidebarElement {
+	display: block;
+}
+
+#tasselCollapsedSidebarExpander,
+#tasselExpandedSidebarExpander {
+	width: 100%;
+	height: 20px;
+	background: none;
+	border: none;
+	display: grid;
+	justify-content: center;  
+	overflow: hidden;
+}
+#tasselCollapsedSidebarExpander div,
+#tasselExpandedSidebarExpander div {
+	width: 10px;
+	height: 10px;
+	border: 2px solid transparent;
+	border-top-color: white;
+	border-right-color: white;
+	transform: rotate(135deg);
+	translate: 0 1px;
+}
+body.dark-theme #tasselCollapsedSidebarExpander div,
+body.dark-theme #tasselExpandedSidebarExpander div {
+	border-top-color: #bdbdbd;
+	border-right-color: #bdbdbd;
+}
+.visible #tasselCollapsedSidebarExpander div,
+.visible #tasselExpandedSidebarExpander div {
+	transform: rotate(-45deg) !important;
+	translate: 0 7px !important;
+}
+
 #tasselToast {
 	height: max-content;
 	max-width: 230px;
@@ -202,6 +240,12 @@ body.dark-theme #tasselModalSidebar {
 
 #tasselModalContent h2 {
 	font-size: 1.5em;
+}
+#tasselModalContent h3 {
+	font-size: 1.4em;
+}
+#tasselModalContent h4 {
+	font-size: 1.3em;
 }
 
 #tasselModalContent hr {
@@ -381,6 +425,26 @@ body.dark-theme .tasselExtensionWIP {
 body.dark-theme #tasselJSONView {
 	background: #1b1d20; 
 	color: #d9dbe0;
+}
+
+#tasselSettingsSidebarSection {
+	border-left: 4px solid #e3e3e3;
+	padding-left: 10px;
+}
+body.dark-theme #tasselSettingsSidebarSection {
+	border-color: #3e3e3e;
+}
+#tasselSettingsSidebarSection summary {
+	margin-bottom: 5px;
+}
+#tasselSettingsSidebarSection summary::marker {
+	font-size: 1.4em;
+}
+#tasselSettingsSidebarSection summary .tasselInfo {
+	line-height: 1.1em;
+}
+#tasselSettingsSidebarSection h3 {
+	display: inline;
 }
 
 .tasselButton {
