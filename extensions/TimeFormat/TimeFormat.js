@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.3
+// @version      1.4
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -225,7 +225,7 @@
             63_113_904_000//730.485 days - 2 years
         ];
         let delta = new Date().getTime() - date.getTime();
-        let rounded = Math.floor(delta / times[6]); //initialize for "years"
+        let rounded = Math.floor(delta / 31_556_952_000); //initialize for "years"
         for (let i = 0; i <= 6; i++) {
             if (delta < times[i+1]) {
                 rounded = Math.floor(delta / times[i]);
