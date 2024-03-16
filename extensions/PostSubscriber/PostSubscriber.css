@@ -279,6 +279,18 @@ body.dark-theme #tasselPostSubscriberColor {
     #tasselPostSubscriberModalContent {
         max-height: calc(100vh - 104px);
     }
+
+    [id^=tasselPostSubscriberNewComment] {
+        width: max-content;
+        height: 1em;
+        margin: 5px;
+        border-radius: 3px;
+        padding: 0.2em;
+        background-color: #2C405A;
+    }
+    body.dark-theme [id^=tasselPostSubscriberNewComment] {
+        background-color: #23282E;
+    }
 }
 
 @media(max-width:550px) {
