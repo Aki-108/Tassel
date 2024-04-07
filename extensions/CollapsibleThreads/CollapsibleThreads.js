@@ -20,6 +20,7 @@
     };
     const mutationObserver = new MutationObserver(mutationCallback);
     if (loadingIndicator != null) mutationObserver.observe(loadingIndicator, mutationConfig);
+    document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", init_sicrjulu);
 
     function init_sicrjulu() {
         let headers = document.getElementsByClassName("header clearfix");
