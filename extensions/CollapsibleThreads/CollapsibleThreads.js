@@ -25,6 +25,8 @@
     function init_sicrjulu() {
         let headers = document.getElementsByClassName("header clearfix");
         for (let el of headers) {
+            if (el.classList.contains("tasselCollapsibleThreadsProcessed")) continue;
+            else el.classList.add("tasselCollapsibleThreadsProcessed");
             //add button to collapse comment
             let buttonComment = document.createElement("button");
             buttonComment.title = "collapse comment";
