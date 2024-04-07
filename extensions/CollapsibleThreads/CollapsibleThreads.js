@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Collapsible Threads
-// @version      1.4
+// @version      1.5
 // @description  Collapse Comments and Threads
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -22,11 +22,6 @@
     if (loadingIndicator != null) mutationObserver.observe(loadingIndicator, mutationConfig);
 
     function init_sicrjulu() {
-        let style = document.createElement("style");
-        style.innerHTML += ".tasselCollapsibleThreadsIcons{filter: brightness(0) saturate(100%) invert(36%) sepia(44%) saturate(754%) hue-rotate(149deg) brightness(95%) contrast(89%)}";
-        style.innerHTML += "body.dark-theme .tasselCollapsibleThreadsIcons{filter: brightness(0) saturate(100%) invert(36%) sepia(44%) saturate(754%) hue-rotate(149deg) brightness(95%) contrast(89%) brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%)}";
-        document.head.appendChild(style);
-
         let headers = document.getElementsByClassName("header clearfix");
         for (let el of headers) {
             //add button to collapse comment
@@ -34,7 +29,7 @@
             buttonComment.title = "collapse comment";
             buttonComment.classList.add("collapseButton", "tasselCollapsibleThreadsIcons");
             buttonComment.innerHTML = `
-                <svg class="svg-blue-dark" style="transition:.2s transform;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <svg class="svg-blue-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                     <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
                         M 1 14   L 10 5   L 19 14
                     "/>
@@ -45,7 +40,7 @@
                     //show
                     Object.values(comment.children).forEach(function(item){
                         if (!item.classList.contains("header")) {
-                            item.style.display = "block";
+                            item.classList.remove("collapsed");
                         }
                     });
                     this.children[0].style.transform = "rotate(0deg)";
@@ -54,7 +49,7 @@
                     //hide
                     Object.values(comment.children).forEach(function(item){
                         if (!item.classList.contains("header")) {
-                            item.style.display = "none";
+                            item.classList.add("collapsed");
                         }
                     });
                     this.children[0].style.transform = "rotate(180deg)";
@@ -68,7 +63,7 @@
             buttonThread.title = "collapse thread";
             buttonThread.classList.add("collapseButton", "tasselCollapsibleThreadsIcons");
             buttonThread.innerHTML = `
-                <svg class="svg-blue-dark" style="transition:.2s transform;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <svg class="svg-blue-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                     <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
                         M 1 12   L 10 3   L 19 12
                         M 1 20   L 10 11   L 19 20
@@ -81,7 +76,7 @@
                     for (let comment of comments) {
                         Object.values(comment.children).forEach(function(item){
                             if (!item.classList.contains("header")) {
-                                item.style.display = "block";
+                                item.classList.remove("collapsed");
                             }
                         });
                         Object.values(comment.getElementsByClassName("collapseButton")).forEach(function(item) {
@@ -94,7 +89,7 @@
                     for (let comment of comments) {
                         Object.values(comment.children).forEach(function(item){
                             if (!item.classList.contains("header")) {
-                                item.style.display = "none";
+                                item.classList.add("collapsed");
                             }
                         });
                         Object.values(comment.getElementsByClassName("collapseButton")).forEach(function(item) {
@@ -105,6 +100,54 @@
                 }
             });
             el.getElementsByClassName("comment-buttons")[0].appendChild(buttonThread);
+
+            //add button to expand to full width
+            let buttonWidth = document.createElement("button");
+            buttonWidth.title = "widen comment";
+            buttonWidth.classList.add("widenButton", "tasselCollapsibleThreadsIcons");
+            buttonWidth.innerHTML = `
+                <svg class="svg-blue-dark" xmlns="http://www.w3.org/2000/svg" width="10" height="20" viewBox="0 0 10 20">
+                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
+                        M 9 1   L 1 10   L 9 19
+                    "/>
+                </svg>`;
+            buttonWidth.addEventListener("click", function() {
+                //find position in thread
+                let level = 0;
+                let el = this;
+                let comment;
+                for (let a = 0; a < 200; a++) {
+                    if (el.classList.contains("thread")) break;
+                    else if (el.classList.contains("child-comment")) {
+                        level++;
+                        if (comment === undefined) comment = el;
+                    }
+                    el = el.parentNode;
+                }
+
+                //add styling for level of indentation
+                if (!document.getElementById(`widened${level}`)) {
+                    let style = document.createElement("style");
+                    style.id = `widened${level}`;
+                    style.innerHTML += `
+                    .child-comment.widened.widened${level} {
+                        margin-left: ${(level - 1) * -19}px;
+                    }`;
+                    document.head.appendChild(style);
+                }
+
+                //reset and assign classes
+                let undo = comment.classList.contains("widened");
+                let widened = document.getElementsByClassName("widened");
+                for (let child of widened) child.classList.remove("widened");
+                if (!undo) comment.classList.add("widened", `widened${level}`);
+            });
+            //add button to every child comment
+            if (el.parentNode.parentNode.classList.contains("child-comment")) {
+                let commentBody = el.parentNode.getElementsByClassName("body")[0];
+                commentBody.classList.add("tasselCollapsibleThreadsChild");
+                commentBody.appendChild(buttonWidth);
+            }
         }
     }
 })();
