@@ -152,6 +152,11 @@ function initSinglePost_quugasdg() {
         assignUsers_quugasdg(tasselJsonManager.post.json);
         tasselJsonManager.post.ready = true;
         trigger_quugasdg("tasselJsonManagerPostReady");
+
+        tasselJsonManager.modal = tasselJsonManager.post;
+        tasselJsonManager.modal.type = "reblog";
+        assignUsers_quugasdg(tasselJsonManager.modal.json);
+        trigger_quugasdg("tasselJsonManagerModalReady");
     });
 
     if (document.getElementsByTagName("dir-pagination-controls").length < 1) return;
