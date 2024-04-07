@@ -70,7 +70,7 @@ let extensionsIndex = [
             "updated": 1712498779142,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@248ea28c71adabbac4787340a972964b2343b60c/extensions/CollapsibleThreads/CollapsibleThreads.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e0a855b911d3a9d9b35de77889aadb26926d5683/extensions/CollapsibleThreads/CollapsibleThreads.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ceadc9675a31c0782d084e991db3f8876587f46b/extensions/CollapsibleThreads/CollapsibleThreads.css",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
