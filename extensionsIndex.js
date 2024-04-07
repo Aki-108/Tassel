@@ -65,12 +65,13 @@ let extensionsIndex = [
         {
             "name": "Collapsible Threads",
             "id": 5,
-            "version": "1.4",
+            "version": "1.5",
             "created": 1674985800000,
-            "updated": 1691331914705,
+            "updated": 1712498779142,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@de4ae2b1a2f779a8168276c88cd9b9daf5b99e3e/extensions/CollapsibleThreads.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@248ea28c71adabbac4787340a972964b2343b60c/extensions/CollapsibleThreads/CollapsibleThreads.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ceadc9675a31c0782d084e991db3f8876587f46b/extensions/CollapsibleThreads/CollapsibleThreads.css",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
         {
@@ -158,7 +159,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7731455e6ad391d8b380b2616036f6f49f47811d/extensions/ReadThis/ReadThis.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@dd5afc9dfe248201b8b23ba0b5a2be72b5fa8c21/extensions/ReadThis/ReadThis.css",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@97934ec62c114b93f294ddc3d3369702e83118b8/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
                         "Opens a Read-More without opening the post.",
@@ -218,12 +219,12 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.4",
+                "version": "1.5",
                 "created": 1708117680669,
-                "updated": 1710181033664,
+                "updated": 1710600180000,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4114d4e78e8fda9e7c1b1822424b05d03eac7d40/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a42fdd44b92e264aab1c70c88b479919ba6fe38d/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         }

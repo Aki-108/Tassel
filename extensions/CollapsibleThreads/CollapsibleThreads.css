@@ -1,0 +1,53 @@
+.tasselCollapsibleThreadsIcons {
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    filter: brightness(0) saturate(100%) invert(36%) sepia(44%) saturate(754%) hue-rotate(149deg) brightness(95%) contrast(89%);
+}
+.tasselCollapsibleThreadsIcons:focus {
+    border: 1px solid transparent !important;
+}
+body.dark-theme .tasselCollapsibleThreadsIcons{
+    filter: brightness(0) saturate(100%) invert(36%) sepia(44%) saturate(754%) hue-rotate(149deg) brightness(95%) contrast(89%) brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%)
+}
+.tasselCollapsibleThreadsIcons svg {
+    transition:.2s transform;
+}
+
+.comment .body.tasselCollapsibleThreadsChild {
+    display: grid;
+    gap: 0 10px;
+    grid-template-areas: "a b" "c c";
+    grid-template-columns: 0 10px auto;
+    padding-left: 0;
+}
+
+.widenButton {
+    width: 10px;
+    height: 100%;
+    grid-area: a-end;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background: none;
+}
+.widened .widenButton svg {
+    transform: rotate(180deg);
+}
+.widened .child-comment .widenButton svg {
+    transform: none;
+}
+
+.main.comment .body .display-comment {  /*position overwrite for comment text*/
+    grid-area: b-end;
+}
+.main.comment .body div {   /*default position for all comment content*/
+    grid-area: c-end;
+}
+
+.child-comment {
+    transition: margin-left .2s;
+}
+
+.main.comment .collapsed {
+    display: none;
+}
