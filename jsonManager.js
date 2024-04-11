@@ -66,6 +66,10 @@ let tasselJsonManager = {
     }
 }
 
+let loadingInterval = {
+    homeFeed: null,
+}
+
 initModal_quugasdg();
 function initModal_quugasdg() {
     let postModal = document.getElementById("post-view-modal");
@@ -260,6 +264,12 @@ function initHomeFeed_quugasdg() {
         attributes: true,
         attributeFilter: ["style"]
     });
+    loadingInterval.homeFeed = window.setInterval(function() {
+        if (loadingIndicator.style.display === "none" && !tasselJsonManager.feed.ready) {
+            clearInterval(loadingInterval.homeFeed);
+            loadHomeFeed_quugasdg();
+        }
+    }, 1000);
 }
 
 function loadHomeFeed_quugasdg() {
