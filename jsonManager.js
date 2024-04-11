@@ -77,15 +77,7 @@ function initModal_quugasdg() {
                 if (mutationRecord.attributeName === "href" && document.getElementById("post-view-modal").classList.contains("in")) {
                     let postId = mutationRecord.target.href;
                     postId = postId.substring(postId.search("/posts/")+7);
-                    tasselJsonManager.modal.postId = postId;
-                    tasselJsonManager.modal.type = "comments";
-                    $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-                        tasselJsonManager.modal.json = data;
-                        assignUsers_quugasdg(tasselJsonManager.modal.json);
-                        tasselJsonManager.modal.ready = true;
-                        trigger_quugasdg("tasselJsonManagerModalReady");
-                    });
-                    getCommentData_quugasdg(postId);
+                    loadCommentModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
                     tasselJsonManager.comments.ready = false;
@@ -108,22 +100,9 @@ function initModal_quugasdg() {
         let reblogObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "href" && document.getElementById("reblog-modal").classList.contains("in")) {
-                    if (tasselJsonManager.post.ready) {
-                        tasselJsonManager.modal = tasselJsonManager.post;
-                        tasselJsonManager.modal.type = "reblog";
-                        assignUsers_quugasdg(tasselJsonManager.modal.json);
-                        trigger_quugasdg("tasselJsonManagerModalReady");
-                    } else {
-                        let postId = mutationRecord.target.href;
-                        postId = postId.substring(postId.search("/posts/")+7);
-                        $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
-                            tasselJsonManager.modal.json = data;
-                            tasselJsonManager.modal.type = "reblog";
-                            assignUsers_quugasdg(tasselJsonManager.modal.json);
-                            tasselJsonManager.modal.ready = true;
-                            trigger_quugasdg("tasselJsonManagerModalReady");
-                        });
-                    }
+                    let postId = mutationRecord.target.href;
+                    postId = postId.substring(postId.search("/posts/")+7);
+                    loadReblogModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
                 }
@@ -136,6 +115,35 @@ function initModal_quugasdg() {
         reblogObserver.observe(reblogModal, {
             attributes: true,
             attributeFilter: ["style"]
+        });
+    }
+}
+
+function loadCommentModal_quugasdg(postId) {
+    tasselJsonManager.modal.postId = postId;
+    tasselJsonManager.modal.type = "comments";
+    $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+        tasselJsonManager.modal.json = data;
+        assignUsers_quugasdg(tasselJsonManager.modal.json);
+        tasselJsonManager.modal.ready = true;
+        trigger_quugasdg("tasselJsonManagerModalReady");
+    });
+    getCommentData_quugasdg(postId);
+}
+
+function loadReblogModal_quugasdg(postId) {
+    if (tasselJsonManager.post.ready && tasselJsonManager.post.postId == postId) {
+        tasselJsonManager.modal = tasselJsonManager.post;
+        tasselJsonManager.modal.type = "reblog";
+        assignUsers_quugasdg(tasselJsonManager.modal.json);
+        trigger_quugasdg("tasselJsonManagerModalReady");
+    } else {
+        $.getJSON(`https://www.pillowfort.social/posts/${postId}/json`, function(data) {
+            tasselJsonManager.modal.json = data;
+            tasselJsonManager.modal.type = "reblog";
+            assignUsers_quugasdg(tasselJsonManager.modal.json);
+            tasselJsonManager.modal.ready = true;
+            trigger_quugasdg("tasselJsonManagerModalReady");
         });
     }
 }
@@ -244,27 +252,31 @@ function initHomeFeed_quugasdg() {
     let homeObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let time = "";
-                if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
-                $.getJSON(`https://www.pillowfort.social/home/json${time}`, function(data) {
-                    data.posts.forEach(function(post) {
-                        assignUsers_quugasdg(post);
-                    });
-                    tasselJsonManager.feed.type = 'home';
-                    tasselJsonManager.feed.pages++;
-                    tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts.push(...data.posts);
-                    tasselJsonManager.feed.ready = true;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadHomeFeed_quugasdg();
             }
         });
     });
     homeObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadHomeFeed_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let time = "";
+    if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
+    $.getJSON(`https://www.pillowfort.social/home/json${time}`, function(data) {
+        data.posts.forEach(function(post) {
+            assignUsers_quugasdg(post);
+        });
+        tasselJsonManager.feed.type = 'home';
+        tasselJsonManager.feed.pages++;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts.push(...data.posts);
+        tasselJsonManager.feed.ready = true;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
@@ -276,29 +288,33 @@ function initCommFeed_quugasdg() {
     let commObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let time = "";
-                if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
-                let jsonURL = "/posts/json";
-                if (document.URL.split("/")[5] === "tagged") jsonURL = `/tagged_json?tag=${document.URL.split("/")[6]}&`;
-                $.getJSON(`https://www.pillowfort.social/community/${document.URL.split("/")[4]}${jsonURL}${time}`, function(data) {
-                    data.forEach(function(post) {
-                        assignUsers_quugasdg(post);
-                    });
-                    tasselJsonManager.feed.type = 'community'
-                    tasselJsonManager.feed.pages++;
-                    tasselJsonManager.feed.time = data[data.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts.push(...data);
-                    tasselJsonManager.feed.ready = true;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadCommFeed_quugasdg();
             }
         });
     });
     commObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadCommFeed_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let time = "";
+    if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
+    let jsonURL = "/posts/json";
+    if (document.URL.split("/")[5] === "tagged") jsonURL = `/tagged_json?tag=${document.URL.split("/")[6]}&`;
+    $.getJSON(`https://www.pillowfort.social/community/${document.URL.split("/")[4]}${jsonURL}${time}`, function(data) {
+        data.forEach(function(post) {
+            assignUsers_quugasdg(post);
+        });
+        tasselJsonManager.feed.type = 'community'
+        tasselJsonManager.feed.pages++;
+        tasselJsonManager.feed.time = data[data.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts.push(...data);
+        tasselJsonManager.feed.ready = true;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
@@ -310,36 +326,40 @@ function initFortFeed_quugasdg() {
     let fortObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let page = 1;
-                let pageButton = Object.values(
-                    document.getElementsByTagName("li")
-                ).find(function(item) {
-                    return item.classList.contains("active")
-                });
-                if (pageButton) page = pageButton.textContent;
-                let jsonURL = "/";
-                if (document.URL.split("/")[4] === "tagged") jsonURL = `/tagged/${document.URL.split("/")[5]}/`;
-                if (document.URL.split("/")[4] === "original") jsonURL = `/original/`;
-                if (document.URL.split("/")[4] === "reblogs") jsonURL = `/reblogs/`;
-                $.getJSON(`https://www.pillowfort.social/${document.URL.split("/")[3]}${jsonURL}json?p=${page}`, function(data) {
-                    data.posts.forEach(function(post) {
-                        assignUsers_quugasdg(post);
-                    });
-                    tasselJsonManager.feed.type = 'fort';
-                    tasselJsonManager.feed.pages = 1;
-                    tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts = data.posts;
-                    tasselJsonManager.feed.ready = true;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadFortFeed_quugasdg();
             }
         });
     });
     fortObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadFortFeed_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let page = 1;
+    let pageButton = Object.values(
+        document.getElementsByTagName("li")
+    ).find(function(item) {
+        return item.classList.contains("active")
+    });
+    if (pageButton) page = pageButton.textContent;
+    let jsonURL = "/";
+    if (document.URL.split("/")[4] === "tagged") jsonURL = `/tagged/${document.URL.split("/")[5]}/`;
+    if (document.URL.split("/")[4] === "original") jsonURL = `/original/`;
+    if (document.URL.split("/")[4] === "reblogs") jsonURL = `/reblogs/`;
+    $.getJSON(`https://www.pillowfort.social/${document.URL.split("/")[3]}${jsonURL}json?p=${page}`, function(data) {
+        data.posts.forEach(function(post) {
+            assignUsers_quugasdg(post);
+        });
+        tasselJsonManager.feed.type = 'fort';
+        tasselJsonManager.feed.pages = 1;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts = data.posts;
+        tasselJsonManager.feed.ready = true;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
@@ -351,27 +371,31 @@ function initSearch_quugasdg() {
     let searchObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let time = "";
-                if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
-                $.getJSON(`https://www.pillowfort.social/search/posts/${document.URL.split("/")[4]}/json${time}`, function(data) {
-                    data.posts_by_tag.posts_by_tag.forEach(function(post) {
-                        assignUsers_quugasdg(post);
-                    });
-                    tasselJsonManager.feed.type = 'search';
-                    tasselJsonManager.feed.pages++;
-                    tasselJsonManager.feed.time = data.posts_by_tag.posts_by_tag[data.posts_by_tag.posts_by_tag.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts.push(...data.posts_by_tag.posts_by_tag);
-                    tasselJsonManager.feed.ready = true;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadSearch_quugasdg();
             }
         });
     });
     searchObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadSearch_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let time = "";
+    if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
+    $.getJSON(`https://www.pillowfort.social/search/posts/${document.URL.split("/")[4]}/json${time}`, function(data) {
+        data.posts_by_tag.posts_by_tag.forEach(function(post) {
+            assignUsers_quugasdg(post);
+        });
+        tasselJsonManager.feed.type = 'search';
+        tasselJsonManager.feed.pages++;
+        tasselJsonManager.feed.time = data.posts_by_tag.posts_by_tag[data.posts_by_tag.posts_by_tag.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts.push(...data.posts_by_tag.posts_by_tag);
+        tasselJsonManager.feed.ready = true;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
@@ -383,29 +407,33 @@ function initDraftFeed_quugasdg() {
     let draftObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let page = 1;
-                let pageButton = Object.values(
-                    document.getElementsByTagName("li")
-                ).find(function(item) {
-                    return item.classList.contains("active")
-                });
-                if (pageButton) page = pageButton.textContent;
-                $.getJSON(`https://www.pillowfort.social/drafts/json?p=${page}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
-                    tasselJsonManager.feed.type = 'drafts';
-                    tasselJsonManager.feed.pages = 1;
-                    tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts = data.posts;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadDraftFeed_quugasdg()
             }
         });
     });
     draftObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadDraftFeed_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let page = 1;
+    let pageButton = Object.values(
+        document.getElementsByTagName("li")
+    ).find(function(item) {
+        return item.classList.contains("active")
+    });
+    if (pageButton) page = pageButton.textContent;
+    $.getJSON(`https://www.pillowfort.social/drafts/json?p=${page}`, function(data) {
+        tasselJsonManager.feed.ready = true;
+        tasselJsonManager.feed.type = 'drafts';
+        tasselJsonManager.feed.pages = 1;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts = data.posts;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
@@ -417,29 +445,33 @@ function initQueueFeed_quugasdg() {
     let queueObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let page = 1;
-                /*let pageButton = Object.values(
-                    document.getElementsByTagName("li")
-                ).find(function(item) {
-                    return item.classList.contains("active")
-                });
-                if (pageButton) page = pageButton.textContent;*/
-                $.getJSON(`https://www.pillowfort.social/queued_posts/json?p=${page}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
-                    tasselJsonManager.feed.type = 'queue';
-                    tasselJsonManager.feed.pages = 1;
-                    tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts = data.posts;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadQueueFeed_quugasdg();
             }
         });
     });
     queueObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadQueueFeed_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let page = 1;
+    /*let pageButton = Object.values(
+                    document.getElementsByTagName("li")
+                ).find(function(item) {
+                    return item.classList.contains("active")
+                });
+                if (pageButton) page = pageButton.textContent;*/
+    $.getJSON(`https://www.pillowfort.social/queued_posts/json?p=${page}`, function(data) {
+        tasselJsonManager.feed.ready = true;
+        tasselJsonManager.feed.type = 'queue';
+        tasselJsonManager.feed.pages = 1;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts = data.posts;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
@@ -451,29 +483,33 @@ function initScheduleFeed_quugasdg() {
     let scheduleObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             if (mutationRecord.target.style.display === "none") {
-                tasselJsonManager.feed.ready = false;
-                let page = 1;
-                /*let pageButton = Object.values(
-                    document.getElementsByTagName("li")
-                ).find(function(item) {
-                    return item.classList.contains("active")
-                });
-                if (pageButton) page = pageButton.textContent;*/
-                $.getJSON(`https://www.pillowfort.social/scheduled_posts/json?p=${page}`, function(data) {
-                    tasselJsonManager.feed.ready = true;
-                    tasselJsonManager.feed.type = 'schedule';
-                    tasselJsonManager.feed.pages = 1;
-                    tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
-                    tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
-                    tasselJsonManager.feed.posts = data.posts;
-                    trigger_quugasdg("tasselJsonManagerFeedReady");
-                });
+                loadScheduleFeed_quugasdg();
             }
         });
     });
     scheduleObserver.observe(loadingIndicator, {
         attributes: true,
         attributeFilter: ["style"]
+    });
+}
+
+function loadScheduleFeed_quugasdg() {
+    tasselJsonManager.feed.ready = false;
+    let page = 1;
+    /*let pageButton = Object.values(
+                    document.getElementsByTagName("li")
+                ).find(function(item) {
+                    return item.classList.contains("active")
+                });
+                if (pageButton) page = pageButton.textContent;*/
+    $.getJSON(`https://www.pillowfort.social/scheduled_posts/json?p=${page}`, function(data) {
+        tasselJsonManager.feed.ready = true;
+        tasselJsonManager.feed.type = 'schedule';
+        tasselJsonManager.feed.pages = 1;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
+        tasselJsonManager.feed.posts = data.posts;
+        trigger_quugasdg("tasselJsonManagerFeedReady");
     });
 }
 
