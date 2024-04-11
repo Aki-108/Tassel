@@ -68,6 +68,9 @@ let tasselJsonManager = {
 
 let loadingInterval = {
     homeFeed: null,
+    commFeed: null,
+    fortFeed: null,
+    searchFeed: null,
 }
 
 initModal_quugasdg();
@@ -266,13 +269,13 @@ function initHomeFeed_quugasdg() {
     });
     loadingInterval.homeFeed = window.setInterval(function() {
         if (loadingIndicator.style.display === "none" && !tasselJsonManager.feed.ready) {
-            clearInterval(loadingInterval.homeFeed);
             loadHomeFeed_quugasdg();
         }
     }, 1000);
 }
 
 function loadHomeFeed_quugasdg() {
+    clearInterval(loadingInterval.homeFeed);
     tasselJsonManager.feed.ready = false;
     let time = "";
     if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
@@ -306,9 +309,15 @@ function initCommFeed_quugasdg() {
         attributes: true,
         attributeFilter: ["style"]
     });
+    loadingInterval.commFeed = window.setInterval(function() {
+        if (loadingIndicator.style.display === "none" && !tasselJsonManager.feed.ready) {
+            loadCommFeed_quugasdg();
+        }
+    }, 1000);
 }
 
 function loadCommFeed_quugasdg() {
+    clearInterval(loadingInterval.commFeed);
     tasselJsonManager.feed.ready = false;
     let time = "";
     if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
@@ -344,9 +353,15 @@ function initFortFeed_quugasdg() {
         attributes: true,
         attributeFilter: ["style"]
     });
+    loadingInterval.fortFeed = window.setInterval(function() {
+        if (loadingIndicator.style.display === "none" && !tasselJsonManager.feed.ready) {
+            loadFortFeed_quugasdg();
+        }
+    }, 1000);
 }
 
 function loadFortFeed_quugasdg() {
+    clearInterval(loadingInterval.fortFeed);
     tasselJsonManager.feed.ready = false;
     let page = 1;
     let pageButton = Object.values(
@@ -389,9 +404,15 @@ function initSearch_quugasdg() {
         attributes: true,
         attributeFilter: ["style"]
     });
+    loadingInterval.searchFeed = window.setInterval(function() {
+        if (loadingIndicator.style.display === "none" && !tasselJsonManager.feed.ready) {
+            loadSearch_quugasdg();
+        }
+    }, 1000);
 }
 
 function loadSearch_quugasdg() {
+    clearInterval(loadingInterval.searchFeed);
     tasselJsonManager.feed.ready = false;
     let time = "";
     if (tasselJsonManager.feed.time) time = `?last_timestamp=${tasselJsonManager.feed.time}`;
