@@ -102,7 +102,6 @@
 
     /* Create a button in the modal header */
     function addCommunityRulesButton_dshcgkhy() {
-        sortCommunities_dshcgkhy();
         if (document.getElementById("tasselTaggingToolsRulesButton")) return;
         let header = document.getElementsByClassName("header-create-post")[0];
         let button = document.createElement("button");
@@ -138,24 +137,6 @@
             dialog.showModal();
             document.body.classList.add("modal-open");
         });
-    }
-
-    /* Sort the list of communities to reblog to */
-    function sortCommunities_dshcgkhy() {
-        if (!settings.sortCommunities) return;
-        let select = document.getElementById("post_to") || document.getElementById("reblog-modal").getElementsByTagName("select")[0];
-        let options = Object.values(select.children).sort(function(a, b) {
-            if (a.value === "current_user") return 0;
-            if (b.value === "current_user") return 1;
-            return a.textContent.toUpperCase().localeCompare(b.textContent.toUpperCase());
-        });
-        Object.values(select.children).forEach(function(item) {
-            item.remove();
-        });
-        options.forEach(function(item) {
-            select.appendChild(item);
-        });
-        select.value = "current_user";
     }
 
     /* Remove previous default tag and add new one */
@@ -416,13 +397,6 @@
         content.appendChild(createSwitch_dshcgkhy("Auto-copy tags when reblogging", settings.autoCopy ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.autoCopy = this.checked;
-            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
-            file.taggingTools = settings;
-            localStorage.setItem("tasselSettings2", JSON.stringify(file));
-        });
-        content.appendChild(createSwitch_dshcgkhy("Sort 'Reblog To' List" + createTooltip_dshcgkhy("This refers to the list of communities to choose from when reblogging a post.").outerHTML, settings.sortCommunities ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings.sortCommunities = this.checked;
             let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
             file.taggingTools = settings;
             localStorage.setItem("tasselSettings2", JSON.stringify(file));
