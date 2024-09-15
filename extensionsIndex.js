@@ -236,7 +236,7 @@ let extensionsIndex = [
                 "updated": 1726413656706,
                 "author": "Aki108",
                 "description": "",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@243ad1924f64f1aec197481ac6369ba45da91f4a/extensions/ForAccessiblity.js"
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@243ad1924f64f1aec197481ac6369ba45da91f4a/extensions/ForAccessibility.js"
         }
 ];
 
