@@ -40,7 +40,7 @@
         });
     });
 
-    window.setTimeout(init_pdmmlnvi, 0);
+    window.setTimeout(init_pdmmlnvi, 1000);
     function init_pdmmlnvi() {
         let editor = document.getElementsByClassName("main","create-post-main");
         if (editor.length > 0) {
@@ -66,29 +66,35 @@
         }
 
         document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
-            let imgs = Object.values(document.getElementsByTagName("img"));
-            imgs = imgs.filter(function(img) {
-                return img.alt.length > 0 && !img.classList.contains("svg-purple-dark");
+            let post = document.getElementsByClassName("post main");
+            if (post.length === 0) return;
+            Object.values(post[0].getElementsByTagName("img")).forEach(function(img) {
+                addAltText(img);
             });
-            imgs.forEach(function(img) {
-                let altText = document.createElement("p");
-                altText.style = "background: var(--tag_bg); padding: 0.5em;";
-                altText.innerHTML = "Alt: " + img.alt;
-                img.after(altText);
+        });
+
+        document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", function() {
+            let comments = document.getElementById("comments");
+            if (!comments) return;
+            Object.values(comments.getElementsByTagName("img")).forEach(function(img) {
+                addAltText(img);
             });
         });
 
         document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", function() {
-            let imgs = Object.values(document.getElementsByTagName("img"));
-            imgs = imgs.filter(function(img) {
-                return img.alt.length > 0;
-            });
-            imgs.forEach(function(img) {
-                let altText = document.createElement("p");
-                altText.style = "background: var(--tag_bg); padding: 0.5em;";
-                altText.innerHTML = "Alt: " + img.alt;
-                img.after(altText);
+            let feed = document.getElementById("homeFeedCtrlId") || document.getElementById("userBlogPosts") || document.getElementById("communityPostsFeed") || document.getElementById("searchFeedCtrl") || document.getElementById("drafts-page") || document.getElementById("queuedPostsCtrlId");
+            if (!feed) return;
+            Object.values(feed.getElementsByTagName("img")).forEach(function(img) {
+                addAltText(img);
             });
         });
+    }
+
+    function addAltText(img) {
+        if (img.alt.length === 0 || img.classList.contains("svg-purple-dark")) return;
+        let altText = document.createElement("p");
+        altText.style = "background: var(--tag_bg); padding: 0.5em;";
+        altText.innerHTML = "Alt: " + img.alt;
+        img.after(altText);
     }
 })();
