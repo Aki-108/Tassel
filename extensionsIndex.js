@@ -227,6 +227,16 @@ let extensionsIndex = [
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a42fdd44b92e264aab1c70c88b479919ba6fe38d/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
+        },
+        {
+                "name": "For Accessibility",
+                "id": 17,
+                "version": "0.1",
+                "created": 1726413656706,
+                "updated": 1726413656706,
+                "author": "Aki108",
+                "description": "",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@243ad1924f64f1aec197481ac6369ba45da91f4a/extensions/ForAccessiblity.js"
         }
 ];
 
