@@ -40,7 +40,7 @@
         });
     });
 
-    window.setTimeout(init_pdmmlnvi, 1000);
+    window.setTimeout(init_pdmmlnvi, 0);
     function init_pdmmlnvi() {
         let editor = document.getElementsByClassName("main","create-post-main");
         if (editor.length > 0) {
