@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.3
+// @version      1.6
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -74,7 +74,7 @@
 
             //post header
             //get formated reblog date
-            let reblogged = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogDate);
+            let reblogged = formatDate_draxcpxe(new Date(post.publish_at || post.created_at), settings.reblogDate);
             if (settings.reblogDate.length === 0) reblogged = element.innerHTML;
             //get formated publish date
             let posted = "";
@@ -94,13 +94,14 @@
             //set formated tooltip
             if (settings.reblogTooltip.length > 0) {
                 if (post.original_post) element.title = formatDate_draxcpxe(new Date(post.original_post.publish_at), settings.reblogTooltip);
-                else element.title = formatDate_draxcpxe(new Date(post.publish_at), settings.reblogTooltip);
+                else element.title = formatDate_draxcpxe(new Date(post.publish_at || post.created_at), settings.reblogTooltip);
             }
         }
     }
 
     /* Apply changes to the comments */
     function processComments_draxcpxe() {
+        console.log("format comments");
         if (settings.commentDate.length === 0) return;
         for (let comment of tasselJsonManager.comments.comments) {
             let commentElement = document.getElementById(comment.id);
@@ -125,7 +126,7 @@
             if (element === undefined) continue;
             if (element.classList.contains("tasselTimeFormatProcessed")) continue;
             element.classList.add("tasselTimeFormatProcessed");
-            element.children[1].innerHTML = formatDate_draxcpxe(new Date(reblog.publish_at), settings.reblogNote);
+            element.children[1].innerHTML = formatDate_draxcpxe(new Date(reblog.publish_at || reblog.created_at), settings.reblogNote);
         }
     }
 
@@ -211,7 +212,7 @@
             ["min", "minute", "minutes"],
             ["h", "hour", "hours"],
             ["d", "day", "days"],
-            ["w", "week", "weeks"],
+            //["w", "week", "weeks"],
             ["m", "month", "months"],
             ["y", "year", "years"]
         ];
@@ -220,19 +221,19 @@
             60_000,//1 minute
             3_600_000,//1 hour
             86_400_000,//1 day
-            1_209_600_000,//14 days - 2 weeks
+            //1_209_600_000,//14 days - 2 weeks
             2_630_880_000,//30.45 days - 1 month
             63_113_904_000//730.485 days - 2 years
         ];
         let delta = new Date().getTime() - date.getTime();
-        let rounded = Math.floor(delta / times[6]); //initialize for "years"
-        for (let i = 0; i <= 6; i++) {
+        let rounded = Math.floor(delta / 31_556_952_000); //initialize for "years"
+        for (let i = 0; i <= 5; i++) {
             if (delta < times[i+1]) {
                 rounded = Math.floor(delta / times[i]);
                 return rounded + " " + units[i][short ? 0 : rounded === 1 ? 1 : 2];
             }
         }
-        return rounded + " " + units[6][short ? 0 : rounded === 1 ? 1 : 2]; //use "years" if nothing else fits
+        return rounded + " " + units[5][short ? 0 : rounded === 1 ? 1 : 2]; //use "years" if nothing else fits
     }
 
     /* Add elements to the Tassel menu */

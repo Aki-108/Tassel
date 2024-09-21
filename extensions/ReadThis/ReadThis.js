@@ -68,8 +68,9 @@
                 //create a new text-body without READ-MORE's
                 let fullPost = document.createElement("div");
                 fullPost.classList.add("tasselReadThisNewPost");
-                let contentFormated = post.content.replaceAll("[READ-MORE]", "<details class='tasselReadThisNewBlock'><summary>Read This...</summary>");
-                contentFormated = contentFormated.replaceAll("[/READ-MORE]", "</details>");
+                let contentFormated = post.content.replaceAll("[READ-MORE]", "</p><details class='tasselReadThisNewBlock'><summary>Read This...</summary><p>");
+                contentFormated = contentFormated.replaceAll("[/READ-MORE]", "</p></details><p>");
+                contentFormated = contentFormated.replaceAll("<p></p>", "");
                 fullPost.innerHTML = contentFormated;
 
                 let content = postEl.getElementsByClassName("content")[0].children[0];

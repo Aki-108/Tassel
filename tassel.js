@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.5.23
+// @version      1.6.3
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9547117ef4684f9b41d64b273cc0cddab371a734/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a2701f11437514c8b0e10cbabe20ab7f01dd0963/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9d87a3c28c769c70ed19cf500ec43db49e12798f/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f3ab09cf5e276fb944d0725993d5f3c4cddf1d41/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b50ba507dcac2748244c7085a93a74b50935da93/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d9341544192a3eb0df9cafda37675949fcc9c7fa/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@38ccb1192a44c1e2d90c7930855cafc3bc5f040d/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -48,6 +48,7 @@
             "toastRead": -1
         }
     }).tassel;
+    if (!settings2.sidebar) settings2.sidebar = {};
     let sortOrder = "new";//order in which to display extensions in the list
 
     //src: https://aaronsmith.online/easily-load-an-external-script-using-javascript/
@@ -93,7 +94,11 @@
         initToast_xcajbuzn();
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
-        if (settings2.rememberPostSettings) setPrivacySettings();
+        if (settings2.rememberPostSettings) setPrivacySettings_xcajbuzn();
+
+        let eventFeed = document.createElement("div");
+        eventFeed.id = "tasselEvents";
+        document.getElementsByTagName("body")[0].appendChild(eventFeed);
     }
 
     function initJsonManager_xcajbuzn() {
@@ -103,7 +108,8 @@
         document.body.appendChild(modalReady);
         modalReady.addEventListener("click", function() {console.log("modal data ready")});
         if (settings2.bottomPermalink) modalReady.addEventListener("click", function() {
-            let nav = document.getElementById("post-view-modal").getElementsByClassName("post-nav-left");
+            let modal = document.getElementById("post-view-modal") || document.getElementById("reblog-modal");
+            let nav = modal.getElementsByClassName("post-nav-left");
             Object.values(nav).forEach(function(item, index) {
                 if (!tasselJsonManager.modal.ready) return;
                 if (item.classList.contains("tasselPermalinked")) {
@@ -126,58 +132,58 @@
         postReady.id = "tasselJsonManagerPostReady";
         postReady.style.display = "none";
         document.body.appendChild(postReady);
-        postReady.addEventListener("click", function() {console.log("post data ready")});
+        postReady.addEventListener("click", function() {console.log("post data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"post data ready"});});
 
         let commentReady = document.createElement("button");
         commentReady.id = "tasselJsonManagerCommentReady";
         commentReady.style.display = "none";
         document.body.appendChild(commentReady);
-        commentReady.addEventListener("click", function() {console.log("comment data ready")});
+        commentReady.addEventListener("click", function() {console.log("comment data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"comment data ready"});});
 
         let reblogReady = document.createElement("button");
         reblogReady.id = "tasselJsonManagerReblogReady";
         reblogReady.style.display = "none";
         document.body.appendChild(reblogReady);
-        reblogReady.addEventListener("click", function() {console.log("reblog data ready")});
+        reblogReady.addEventListener("click", function() {console.log("reblog data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"reblog data ready"});});
 
         let likeReady = document.createElement("button");
         likeReady.id = "tasselJsonManagerLikeReady";
         likeReady.style.display = "none";
         document.body.appendChild(likeReady);
-        likeReady.addEventListener("click", function() {console.log("like data ready")});
+        likeReady.addEventListener("click", function() {console.log("like data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"like data ready"});});
 
         let feedReady = document.createElement("button");
         feedReady.id = "tasselJsonManagerFeedReady";
         feedReady.style.display = "none";
         document.body.appendChild(feedReady);
-        feedReady.addEventListener("click", function() {console.log("feed data ready")});
+        feedReady.addEventListener("click", function() {console.log("feed data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"feed data ready"});});
         if (settings2.bottomPermalink) feedReady.addEventListener("click", function() {
-            addBottomPermalink();
+            addBottomPermalink_xcajbuzn();
         });
 
         let followersReady = document.createElement("button");
         followersReady.id = "tasselJsonManagerFollowersReady";
         followersReady.style.display = "none";
         document.body.appendChild(followersReady);
-        followersReady.addEventListener("click", function() {console.log("followers data ready")});
+        followersReady.addEventListener("click", function() {console.log("followers data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of followers ready"});});
 
         let followingReady = document.createElement("button");
         followingReady.id = "tasselJsonManagerFollowingReady";
         followingReady.style.display = "none";
         document.body.appendChild(followingReady);
-        followingReady.addEventListener("click", function() {console.log("following data ready")});
+        followingReady.addEventListener("click", function() {console.log("following data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of following ready"});});
 
         let mutualsReady = document.createElement("button");
         mutualsReady.id = "tasselJsonManagerMutualsReady";
         mutualsReady.style.display = "none";
         document.body.appendChild(mutualsReady);
-        mutualsReady.addEventListener("click", function() {console.log("mutuals data ready")});
+        mutualsReady.addEventListener("click", function() {console.log("mutuals data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of mutals ready"});});
 
         let communitiesReady = document.createElement("button");
         communitiesReady.id = "tasselJsonManagerCommunitiesReady";
         communitiesReady.style.display = "none";
         document.body.appendChild(communitiesReady);
-        communitiesReady.addEventListener("click", function() {console.log("community data ready")});
+        communitiesReady.addEventListener("click", function() {console.log("community data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of communities ready"});});
 
         loadScript_xcajbuzn(jsonManager);
     }
@@ -190,6 +196,7 @@
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
         let settingsSmall = document.createElement("a");
         settingsSmall.href = "";//add a link to comply with accessibility requirements but don't open the link
+        if (settings2.sidebar.collapsedTassel) settingsSmall.classList.add("tasselRemoveSidebarElement");
         settingsSmall.addEventListener("click", function(event) {
             event.preventDefault();
         });
@@ -212,6 +219,7 @@
             event.preventDefault();
         });
         settingsBigWrapper.addEventListener("click", openModal_xcajbuzn);
+        if (settings2.sidebar.expandedTassel) settingsBigWrapper.classList.add("tasselRemoveSidebarElement");
         let settingsBig = document.createElement("div");
         settingsBig.classList.add("sidebar-topic", "tasselSidebarBig");
         let image = icon.children[0];
@@ -221,6 +229,36 @@
         settingsBig.innerHTML += "Tassel";
         settingsBigWrapper.appendChild(settingsBig);
         sidebarBig.appendChild(settingsBigWrapper);
+
+        if (!settings2.sidebar.expandedEpander) return;
+        let anyHidden = Object.values(settings2.sidebar).some(function(item) {
+            return item;
+        });
+        if (anyHidden) {
+            let sidebarBig = document.getElementById("expanded-bar-container");
+            let sidebarBottom = sidebarBig.getElementsByClassName("sidebar-bottom")[0];
+            sidebarBottom.children[6].style.display = "none";
+            let button = document.createElement("button");
+            button.id = "tasselExpandedSidebarExpander";
+            button.setAttribute("aria-label", "show hidden elements");
+            button.innerHTML = `<div></div>`;
+            sidebarBottom.appendChild(button);
+            button.addEventListener("click", function() {
+                let sidebar = document.getElementById("expanded-bar-container").parentNode;
+                if (sidebar.classList.contains("visible")) sidebar.classList.remove("visible");
+                else sidebar.classList.add("visible");
+            });
+            let button2 = document.createElement("button");
+            button2.id = "tasselCollapsedSidebarExpander";
+            button2.setAttribute("aria-label", "show hidden elements");
+            button2.innerHTML = `<div></div>`;
+            sidebarBig.parentNode.getElementsByClassName("sidebar-collapsed")[1].appendChild(button2);
+            button2.addEventListener("click", function() {
+                let sidebar = document.getElementById("expanded-bar-container").parentNode;
+                if (sidebar.classList.contains("visible")) sidebar.classList.remove("visible");
+                else sidebar.classList.add("visible");
+            });
+        }
     }
 
     /* Create the modal basis with sidebar */
@@ -289,6 +327,40 @@
             style.appendChild(document.createTextNode(css));
         }
         document.head.appendChild(style);
+
+        if (settings2.sidebar.expandedPost) getSidebarElement_xcajbuzn("https://www.pillowfort.social/posts/new").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedDrafts && getSidebarElement_xcajbuzn("https://www.pillowfort.social/drafts")) getSidebarElement_xcajbuzn("https://www.pillowfort.social/drafts").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedQueue && getSidebarElement_xcajbuzn("https://www.pillowfort.social/queued_posts")) getSidebarElement_xcajbuzn("https://www.pillowfort.social/queued_posts").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedInbox) getSidebarElement_xcajbuzn("https://www.pillowfort.social/messages").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedNotifications) getSidebarElement_xcajbuzn("https://www.pillowfort.social/notifs_dash").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedCommunities) getSidebarElement_xcajbuzn("https://www.pillowfort.social/communities").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedSearch) document.getElementById("searchme").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedFilters) {
+            Object.values(document.getElementById("expanded-bar-container").getElementsByTagName("a")).find(function(item) {
+                return item.getAttribute("data-target") === "#filtersModal"
+            }).classList.add("tasselRemoveSidebarElement");
+        }
+        if (settings2.sidebar.expandedBlocklist) getSidebarElement_xcajbuzn("https://www.pillowfort.social/block_list").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedPremium) getSidebarElement_xcajbuzn("https://www.pillowfort.social/subscriptions/show").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedSettings) getSidebarElement_xcajbuzn("https://www.pillowfort.social/settings").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedFollowers) getSidebarElement_xcajbuzn("https://www.pillowfort.social/followers").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedFollowing) getSidebarElement_xcajbuzn("https://www.pillowfort.social/following").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedMutuals) getSidebarElement_xcajbuzn("https://www.pillowfort.social/mutuals").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedInvites) getSidebarElement_xcajbuzn("https://www.pillowfort.social/generate_invites").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedDonations) getSidebarElement_xcajbuzn("https://www.pillowfort.social/donations").classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.expandedAbout) getSidebarElement_xcajbuzn("https://www.pillowfort.social/about").parentNode.classList.add("tasselRemoveSidebarElement");
+
+        if (settings2.sidebar.collapsedPost) getSidebarElement_xcajbuzn("https://www.pillowfort.social/posts/new", true).classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.collapsedInbox) getSidebarElement_xcajbuzn("https://www.pillowfort.social/messages", true).classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.collapsedNotifications) getSidebarElement_xcajbuzn("https://www.pillowfort.social/notifs_dash", true).classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.collapsedCommunities) getSidebarElement_xcajbuzn("https://www.pillowfort.social/communities", true).classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.collapsedFilters) {
+            Object.values(document.getElementsByClassName("sidebar-collapsed")[1].children).find(function(item) {
+                return item.getAttribute("data-target") === "#filtersModal"
+            }).classList.add("tasselRemoveSidebarElement");
+        }
+        if (settings2.sidebar.collapsedBlocklist) getSidebarElement_xcajbuzn("https://www.pillowfort.social/block_list", true).classList.add("tasselRemoveSidebarElement");
+        if (settings2.sidebar.collapsedSettings) getSidebarElement_xcajbuzn("https://www.pillowfort.social/settings", true).classList.add("tasselRemoveSidebarElement");
     }
 
     /* Create the basis for toasts */
@@ -361,6 +433,23 @@
             saveSettings_xcajbuzn();
             this.classList.add("fade-out");
         });
+    }
+
+    /* Create event log for debug more */
+    function pushEvent_xcajbuzn(data) {
+        if (!settings2.debug) return;
+        let event = document.createElement("div");
+        event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+        event.id = "event" + Math.random();
+        document.getElementById("tasselEvents").appendChild(event);
+        window.setTimeout(function() {
+            event.classList.add("fade-out");
+            window.setTimeout(function() {
+                event.remove();
+            }, 5000);
+        }, 30000);
     }
 
     /* Open modal when URL parameters say so and highlight specific elements */
@@ -444,7 +533,7 @@
         let header = document.createElement("div");
         header.id = "tasselModalContentExtensionsHeader";
             let note = document.createElement("p");
-            note.innerHTML = "Select the extensions you want to use. Changes will become active after a page reload.";
+            note.innerHTML = "Select the extensions you want to use. Changes might need a page reload to become active.";
             header.appendChild(note);
 
             let sortLabel = document.createElement("label");
@@ -544,14 +633,23 @@
               checkbox.type = "checkbox";
               checkbox.setAttribute("extension", data.id);
               checkbox.addEventListener("click", function() {
-                toggleExtension_xcajbuzn(this.getAttribute("extension"));
+                  let id = this.getAttribute("extension");
+                  toggleExtension_xcajbuzn(id);
+                  if (this.checked) {
+                      let extension = extensionsIndex.find(function(data) {
+                          return data.id == id;
+                      });
+                      if (!extension) return;
+                      if (extension.css) loadStyle_xcajbuzn(extension.css);
+                      if (extension.src) loadScript_xcajbuzn(extension.src);
+                  }
               });
-              let entry = settings2.extensions.find(function(value) {
+            let entry = settings2.extensions.find(function(value) {
                 return value.id == data.id;
-              });
-              if (entry != null) {
+            });
+            if (entry != null) {
                 checkbox.checked = true;
-              }
+            }
             sidebar.appendChild(checkbox);
             let link = document.createElement("a");
               link.classList.add("link_post");
@@ -681,7 +779,7 @@
         let title2 = document.createElement("h2");
         title2.innerHTML = "Appearance";
         content.appendChild(title2);
-        content.appendChild(createSwitch_xcajbuzn("Shorten Expended Sidebar", settings2.shortenSidebar ? "checked" : ""));
+        content.appendChild(createSwitch_xcajbuzn("Shorten Expanded Sidebar", settings2.shortenSidebar ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.shortenSidebar = this.checked;
             saveSettings_xcajbuzn();
@@ -716,6 +814,161 @@
             settings2.noFrames = this.checked;
             saveSettings_xcajbuzn();
         });
+        let section1 = document.createElement("details");
+        section1.id = "tasselSettingsSidebarSection";
+        content.appendChild(section1);
+        section1.innerHTML = `<summary><h3>Sidebar</h3>${createTooltip_xcajbuzn("Click the arrow to view more options.").outerHTML}</summary>`;
+        section1.appendChild(createSwitch_xcajbuzn("Add a button to view the full sidebar", settings2.sidebar.expandedEpander ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedEpander = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        let heading1 = document.createElement("h4");
+        heading1.innerHTML = 'Expanded'
+        section1.appendChild(heading1);
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Post'", settings2.sidebar.expandedPost ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedPost = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Drafts'", settings2.sidebar.expandedDrafts ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedDrafts = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Queue'", settings2.sidebar.expandedQueue ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedQueue = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Inbox'", settings2.sidebar.expandedInbox ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedInbox = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Notifications'", settings2.sidebar.expandedNotifications ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedNotifications = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Subscriptions'" + createTooltip_xcajbuzn("This is part of the Post Subscriber extension.").outerHTML, settings2.sidebar.expandedSubscriptions ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedSubscriptions = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Communities'", settings2.sidebar.expandedCommunities ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedCommunities = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Search'", settings2.sidebar.expandedSearch ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedSearch = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Filters & Blacklist' / 'Advanced Blacklist'", settings2.sidebar.expandedFilters ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedFilters = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Blocked Users'", settings2.sidebar.expandedBlocklist ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedBlocklist = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'PF Premium'", settings2.sidebar.expandedPremium ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedPremium = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Settings'", settings2.sidebar.expandedSettings ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedSettings = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Tassel'", settings2.sidebar.expandedTassel ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedTassel = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Followers'", settings2.sidebar.expandedFollowers ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedFollowers = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Following'", settings2.sidebar.expandedFollowing ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedFollowing = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Mutuals'", settings2.sidebar.expandedMutuals ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedMutuals = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Invites'", settings2.sidebar.expandedInvites ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedInvites = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Donate!'", settings2.sidebar.expandedDonations ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedDonations = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'About & Contact'", settings2.sidebar.expandedAbout ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.expandedAbout = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        let heading2 = document.createElement("h4");
+        heading2.innerHTML = 'Collapsed'
+        section1.appendChild(heading2);
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'New Post'", settings2.sidebar.collapsedPost ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedPost = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Inbox'", settings2.sidebar.collapsedInbox ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedInbox = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Notifications'", settings2.sidebar.collapsedNotifications ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedNotifications = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Subscriptions'" + createTooltip_xcajbuzn("This is part of the Post Subscriber extension.").outerHTML, settings2.sidebar.collapsedSubscriptions ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedSubscriptions = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Communities'", settings2.sidebar.collapsedCommunities ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedCommunities = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Filters & Blacklist' / 'Advanced Blacklist'", settings2.sidebar.collapsedFilters ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedFilters = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Blocked Users'", settings2.sidebar.collapsedBlocklist ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedBlocklist = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Settings'", settings2.sidebar.collapsedSettings ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedSettings = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        section1.appendChild(createSwitch_xcajbuzn("Remove 'Tassel'", settings2.sidebar.collapsedTassel ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.sidebar.collapsedTassel = this.checked;
+            saveSettings_xcajbuzn();
+        });
 
         //Other
         content.appendChild(document.createElement("hr"));
@@ -735,6 +988,11 @@
         content.appendChild(createSwitch_xcajbuzn("Remember Privacy Settings", settings2.rememberPostSettings ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.rememberPostSettings = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Debug Mode", settings2.debug ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.debug = this.checked;
             saveSettings_xcajbuzn();
         });
 
@@ -865,6 +1123,16 @@
         content.appendChild(grid3);
     }
 
+    function getSidebarElement_xcajbuzn(href, collapsed) {
+        let sidebar = Object.values(document.getElementById("expanded-bar-container").getElementsByTagName("a"));
+        if (collapsed) sidebar = Object.values(document.getElementsByClassName("sidebar-collapsed")[1].children);
+        for (let child of sidebar) {
+            if (child.href !== href) continue;
+            return child;
+        }
+        return null;
+    }
+
     /* Read a JSON file and save it's data as localStorage */
     //source: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsText#javascript
     function readFile_xcajbuzn(file) {
@@ -924,7 +1192,7 @@
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
-    function addBottomPermalink() {
+    function addBottomPermalink_xcajbuzn() {
         if (tasselJsonManager.feed.type === 'drafts') return;
         if (tasselJsonManager.feed.type === 'queue') return;
         if (tasselJsonManager.feed.type === 'schedule') return;
@@ -944,7 +1212,7 @@
         });
     }
 
-    function setPrivacySettings() {
+    function setPrivacySettings_xcajbuzn() {
         if (!document.getElementById("privacy")) return;
         //init settings
         if (!settings2.postSettings) settings2.postSettings = {};
@@ -972,6 +1240,20 @@
         if (settings2.postSettings.rebloggable === false) document.getElementsByClassName("toggle")[2].click();
         if (settings2.postSettings.commentable === false) document.getElementsByClassName("toggle")[3].click();
         if (settings2.postSettings.nsfw === true) document.getElementsByClassName("toggle")[4].click();
+    }
+
+    /* Create an icon with hover popup */
+    function createTooltip_xcajbuzn(content) {
+        let icon = document.createElement("div");
+        icon.classList.add("tasselInfo");
+        icon.innerHTML = `
+            <div class='tasselTooltip'>
+                <div class='tasselTooltipBubble'>
+                    ${content}
+                </div>
+            </div>
+        `;
+        return icon;
     }
 
     /* Create an HTML element of a checkbox with lable */

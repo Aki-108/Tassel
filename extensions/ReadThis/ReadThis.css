@@ -5,6 +5,19 @@
 .tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
     line-height: 1.2em;
+    font-weight: normal;
+}
+li .tasselReadThisNewBlock {
+    box-shadow: -51px 0px 0px 0px var(--postBgColor), -61px 0px 0px 0px var(--postHeaderFooter);
+}
+li li .tasselReadThisNewBlock {
+    box-shadow: -91px 0px 0px 0px var(--postBgColor), -101px 0px 0px 0px var(--postHeaderFooter);
+}
+li li li .tasselReadThisNewBlock {
+    box-shadow: -131px 0px 0px 0px var(--postBgColor), -141px 0px 0px 0px var(--postHeaderFooter);
+}
+li li li li .tasselReadThisNewBlock {
+    box-shadow: -171px 0px 0px 0px var(--postBgColor), -181px 0px 0px 0px var(--postHeaderFooter);
 }
 blockquote .tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--blockquote_bg), -20px 0px 0px 0px var(--postHeaderFooter);
