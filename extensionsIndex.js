@@ -229,14 +229,14 @@ let extensionsIndex = [
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
         {
-                "name": "For Accessibility",
+                "name": "Added Accessibility",
                 "id": 17,
-                "version": "0.1",
+                "version": "0.2",
                 "created": 1726413656706,
-                "updated": 1726413656706,
+                "updated": 1726922498565,
                 "author": "Aki108",
                 "description": "",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@74c018cb6cd355a880015f4377edb3180ca77873/extensions/ForAccessibility.js"
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@18d016be81b0ad3a3db7caee053f3a8fee569f1e/extensions/AddedAccessibility/AddedAccessibility.js"
         }
 ];
 
