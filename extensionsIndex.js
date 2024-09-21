@@ -231,12 +231,13 @@ let extensionsIndex = [
         {
                 "name": "Added Accessibility",
                 "id": 17,
-                "version": "0.2",
+                "version": "0.1",
                 "created": 1726413656706,
                 "updated": 1726922498565,
                 "author": "Aki108",
-                "description": "",
+                "description": "Changes to Alt Text.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@18d016be81b0ad3a3db7caee053f3a8fee569f1e/extensions/AddedAccessibility/AddedAccessibility.js"
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4e8c896c47805c6721971ef4d92089397a2861d5/extensions/AddedAccessibility/AddedAccessibility.css",
         }
 ];
 
