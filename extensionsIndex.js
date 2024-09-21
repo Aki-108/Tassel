@@ -219,9 +219,9 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.5",
+                "version": "1.6",
                 "created": 1708117680669,
-                "updated": 1710600180000,
+                "updated": 1712847180000,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/TimeFormat/TimeFormat.js",
