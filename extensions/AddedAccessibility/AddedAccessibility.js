@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Added Accessibility
-// @version      0.1
+// @version      0.2
 // @description  Accessibility Tools
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -22,10 +22,8 @@
                     altInput.addEventListener("keyup", function() {
                         document.getElementById(this.getAttribute("image")).alt = this.value;
                     });
-                    console.log(altInput);
                     node.after(altInput);
                     node.id = id;
-                    console.log(node);
                 } else {
                     let altInputs = Object.values(document.getElementsByClassName("tasselAddedAccessiblityEditorInput"));
                     altInputs.forEach(function(input) {
@@ -48,8 +46,10 @@
                 editor = editor[0];
                 $.get(document.URL, function(data) {
                     let html = document.createElement("body");
-                    html.innerHTML = data.substring(data.search("<body>")+6, data.search("</body>"));
-                    let content = html.children[21].children[0].children[3].children[0].children[1].value;
+                    html.innerHTML = data.substring(data.search("<body"), data.search("</body>")+7);
+                    let content = Object.values(html.children).filter(function(item) {return item.classList.contains("new-post")})[0];
+                    content = content.children[0].children[3].children[0];
+                    content = content.children[1].value || content.children[2].value;
                     editor.innerHTML = content;
 
                     let imgs = Object.values(editor.getElementsByTagName("img"));
