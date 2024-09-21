@@ -117,6 +117,31 @@ body.dark-theme #tasselExpandedSidebarExpander div {
 	border-width: 0px;
 }
 
+#tasselEvents {
+	position: fixed;
+	bottom: 10px;
+	left: 10px;
+	opacity: 0.8;
+	z-index: 999;
+}
+#tasselEvents div {
+	box-sizing: border-box;
+	border: 1px solid transparent;
+	font-family: 'Consolas', 'Lucida Console', monospace;
+	font-size: 10px;
+	color: white;
+}
+#tasselEvents div.fade-out {
+	opacity: 0;
+	transition: 5s opacity;
+}
+#tasselEvents div p {
+	width: max-content;
+	margin: 0;
+	padding: 1px 4px;
+	background: black;
+}
+
 .tasselButtonSmall {
 	margin-right: 0.5em;
 	margin-bottom: 0.5em;
