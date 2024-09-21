@@ -227,6 +227,18 @@ let extensionsIndex = [
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a42fdd44b92e264aab1c70c88b479919ba6fe38d/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@398782240546962f0308b3345d867d63300add16/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
+        },
+        {
+                "name": "Added Accessibility",
+                "id": 17,
+                "version": "0.1",
+                "created": 1726413656706,
+                "updated": 1726922498565,
+                "author": "Aki108",
+                "description": "Changes to Alt Text.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@18d016be81b0ad3a3db7caee053f3a8fee569f1e/extensions/AddedAccessibility/AddedAccessibility.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ec058d3c4873e281c073b09cc9de8c4dcbbedae3/extensions/AddedAccessibility/AddedAccessibility.css",
+                "post": "https://www.pillowfort.social/posts/5332841"
         }
 ];
 
