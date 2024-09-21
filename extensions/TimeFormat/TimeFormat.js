@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.5
+// @version      1.6
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -101,6 +101,7 @@
 
     /* Apply changes to the comments */
     function processComments_draxcpxe() {
+        console.log("format comments");
         if (settings.commentDate.length === 0) return;
         for (let comment of tasselJsonManager.comments.comments) {
             let commentElement = document.getElementById(comment.id);
@@ -232,7 +233,7 @@
                 return rounded + " " + units[i][short ? 0 : rounded === 1 ? 1 : 2];
             }
         }
-        return rounded + " " + units[6][short ? 0 : rounded === 1 ? 1 : 2]; //use "years" if nothing else fits
+        return rounded + " " + units[5][short ? 0 : rounded === 1 ? 1 : 2]; //use "years" if nothing else fits
     }
 
     /* Add elements to the Tassel menu */

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.6.2
+// @version      1.6.3
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3ae050bd4bafb38e425e7c39ae435d847a2ae7b0/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e015817204766043d4d60fac073869027f308f17/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b614ac879da4c6a7ee56cd6ed239da84e9065eb9/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9c80463630a1db78cddba3f762c1e5eb46528b5d/jsonManager.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b50ba507dcac2748244c7085a93a74b50935da93/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d9341544192a3eb0df9cafda37675949fcc9c7fa/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@38ccb1192a44c1e2d90c7930855cafc3bc5f040d/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -95,6 +95,10 @@
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
         if (settings2.rememberPostSettings) setPrivacySettings_xcajbuzn();
+
+        let eventFeed = document.createElement("div");
+        eventFeed.id = "tasselEvents";
+        document.getElementsByTagName("body")[0].appendChild(eventFeed);
     }
 
     function initJsonManager_xcajbuzn() {
@@ -128,31 +132,31 @@
         postReady.id = "tasselJsonManagerPostReady";
         postReady.style.display = "none";
         document.body.appendChild(postReady);
-        postReady.addEventListener("click", function() {console.log("post data ready")});
+        postReady.addEventListener("click", function() {console.log("post data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"post data ready"});});
 
         let commentReady = document.createElement("button");
         commentReady.id = "tasselJsonManagerCommentReady";
         commentReady.style.display = "none";
         document.body.appendChild(commentReady);
-        commentReady.addEventListener("click", function() {console.log("comment data ready")});
+        commentReady.addEventListener("click", function() {console.log("comment data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"comment data ready"});});
 
         let reblogReady = document.createElement("button");
         reblogReady.id = "tasselJsonManagerReblogReady";
         reblogReady.style.display = "none";
         document.body.appendChild(reblogReady);
-        reblogReady.addEventListener("click", function() {console.log("reblog data ready")});
+        reblogReady.addEventListener("click", function() {console.log("reblog data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"reblog data ready"});});
 
         let likeReady = document.createElement("button");
         likeReady.id = "tasselJsonManagerLikeReady";
         likeReady.style.display = "none";
         document.body.appendChild(likeReady);
-        likeReady.addEventListener("click", function() {console.log("like data ready")});
+        likeReady.addEventListener("click", function() {console.log("like data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"like data ready"});});
 
         let feedReady = document.createElement("button");
         feedReady.id = "tasselJsonManagerFeedReady";
         feedReady.style.display = "none";
         document.body.appendChild(feedReady);
-        feedReady.addEventListener("click", function() {console.log("feed data ready")});
+        feedReady.addEventListener("click", function() {console.log("feed data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"feed data ready"});});
         if (settings2.bottomPermalink) feedReady.addEventListener("click", function() {
             addBottomPermalink_xcajbuzn();
         });
@@ -161,25 +165,25 @@
         followersReady.id = "tasselJsonManagerFollowersReady";
         followersReady.style.display = "none";
         document.body.appendChild(followersReady);
-        followersReady.addEventListener("click", function() {console.log("followers data ready")});
+        followersReady.addEventListener("click", function() {console.log("followers data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of followers ready"});});
 
         let followingReady = document.createElement("button");
         followingReady.id = "tasselJsonManagerFollowingReady";
         followingReady.style.display = "none";
         document.body.appendChild(followingReady);
-        followingReady.addEventListener("click", function() {console.log("following data ready")});
+        followingReady.addEventListener("click", function() {console.log("following data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of following ready"});});
 
         let mutualsReady = document.createElement("button");
         mutualsReady.id = "tasselJsonManagerMutualsReady";
         mutualsReady.style.display = "none";
         document.body.appendChild(mutualsReady);
-        mutualsReady.addEventListener("click", function() {console.log("mutuals data ready")});
+        mutualsReady.addEventListener("click", function() {console.log("mutuals data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of mutals ready"});});
 
         let communitiesReady = document.createElement("button");
         communitiesReady.id = "tasselJsonManagerCommunitiesReady";
         communitiesReady.style.display = "none";
         document.body.appendChild(communitiesReady);
-        communitiesReady.addEventListener("click", function() {console.log("community data ready")});
+        communitiesReady.addEventListener("click", function() {console.log("community data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of communities ready"});});
 
         loadScript_xcajbuzn(jsonManager);
     }
@@ -429,6 +433,23 @@
             saveSettings_xcajbuzn();
             this.classList.add("fade-out");
         });
+    }
+
+    /* Create event log for debug more */
+    function pushEvent_xcajbuzn(data) {
+        if (!settings2.debug) return;
+        let event = document.createElement("div");
+        event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+        event.id = "event" + Math.random();
+        document.getElementById("tasselEvents").appendChild(event);
+        window.setTimeout(function() {
+            event.classList.add("fade-out");
+            window.setTimeout(function() {
+                event.remove();
+            }, 5000);
+        }, 30000);
     }
 
     /* Open modal when URL parameters say so and highlight specific elements */
@@ -967,6 +988,11 @@
         content.appendChild(createSwitch_xcajbuzn("Remember Privacy Settings", settings2.rememberPostSettings ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.rememberPostSettings = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Debug Mode", settings2.debug ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.debug = this.checked;
             saveSettings_xcajbuzn();
         });
 
