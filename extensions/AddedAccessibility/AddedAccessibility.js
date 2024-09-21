@@ -1,6 +1,5 @@
 // ==UserScript==
-// @name         For Accessibility
-// @namespace    http://tampermonkey.net/
+// @name         Added Accessibility
 // @version      0.1
 // @description  Accessibility Tools
 // @author       Aki108
@@ -15,11 +14,11 @@
         mutations.forEach(function(mutationRecord) {
             mutationRecord.addedNodes.forEach(function(node) {
                 if (node.tagName === "IMG" && node.id.length === 0) {
-                    let id = "tasselForAccessiblityImage" + Math.random();
+                    let id = "tasselAddedAccessiblityImage" + Math.random();
                     let altInput = document.createElement("textarea");
-                    altInput.classList.add("tasselForAccessiblityEditorInput");
+                    altInput.classList.add("tasselAddedAccessiblityEditorInput");
                     altInput.setAttribute("image", id);
-                    altInput.placeholder = "alt text";
+                    altInput.placeholder = "Alternative Text";
                     altInput.addEventListener("keyup", function() {
                         document.getElementById(this.getAttribute("image")).alt = this.value;
                     });
@@ -28,7 +27,7 @@
                     node.id = id;
                     console.log(node);
                 } else {
-                    let altInputs = Object.values(document.getElementsByClassName("tasselForAccessiblityEditorInput"));
+                    let altInputs = Object.values(document.getElementsByClassName("tasselAddedAccessiblityEditorInput"));
                     altInputs.forEach(function(input) {
                         input.value = document.getElementById(input.getAttribute("image")).alt;
                         input.addEventListener("keyup", function() {
@@ -40,20 +39,36 @@
         });
     });
 
-    window.setTimeout(init_pdmmlnvi, 0);
+    init_pdmmlnvi();
     function init_pdmmlnvi() {
         let editor = document.getElementsByClassName("main","create-post-main");
         if (editor.length > 0) {
             editor = editor[0].getElementsByClassName("fr-element","fr-view");
             if (editor.length > 0) {
                 editor = editor[0];
-                console.log(document.getElementById("post_content").value);
                 $.get(document.URL, function(data) {
-                    console.log("data fetched!!!");
                     let html = document.createElement("body");
                     html.innerHTML = data.substring(data.search("<body>")+6, data.search("</body>"));
                     let content = html.children[21].children[0].children[3].children[0].children[1].value;
                     editor.innerHTML = content;
+
+                    let imgs = Object.values(editor.getElementsByTagName("img"));
+                    imgs.forEach(function(img) {
+                        let id = "tasselAddedAccessiblityImage" + Math.random();
+                        let altInput = document.createElement("textarea");
+                        altInput.classList.add("tasselAddedAccessiblityEditorInput");
+                        altInput.setAttribute("image", id);
+                        altInput.placeholder = "Alternative Text";
+                        altInput.value = img.alt;
+                        altInput.addEventListener("keyup", function(event) {
+                            if (event.keyCode == 13) {
+                                event.preventDefault();
+                            }
+                            document.getElementById(this.getAttribute("image")).alt = this.value;
+                        });
+                        img.after(altInput);
+                        img.id = id;
+                    });
                 })
                 .fail(function() {
                     console.log("failed");
@@ -88,10 +103,19 @@
                 addAltText(img);
             });
         });
+
+        document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
+            let modal = document.getElementById("single-post-container") || document.getElementById("reblog-modal");
+            if (!modal) return;
+            Object.values(modal.getElementsByTagName("img")).forEach(function(img) {
+                addAltText(img);
+            });
+        });
     }
 
     function addAltText(img) {
-        if (img.alt.length === 0 || img.classList.contains("svg-purple-dark")) return;
+        if (img.alt.length === 0 || img.classList.contains("svg-purple-dark") || img.classList.contains("tasselAddedAccessiblityProcessed")) return;
+        img.classList.add("tasselAddedAccessiblityProcessed");
         let altText = document.createElement("p");
         altText.style = "background: var(--tag_bg); padding: 0.5em;";
         altText.innerHTML = "Alt: " + img.alt;
