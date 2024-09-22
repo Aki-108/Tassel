@@ -231,12 +231,12 @@ let extensionsIndex = [
         {
                 "name": "Added Accessibility",
                 "id": 17,
-                "version": "0.1",
+                "version": "0.2",
                 "created": 1726413656706,
-                "updated": 1726922498565,
+                "updated": 1726935447157,
                 "author": "Aki108",
                 "description": "Changes to Alt Text.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/AddedAccessibility/AddedAccessibility.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@409433726d79cf8a63bc844023b03abe0eee6eca/extensions/AddedAccessibility/AddedAccessibility.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/5332841"
         }
