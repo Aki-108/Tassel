@@ -237,7 +237,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Changes to Alt Text.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@409433726d79cf8a63bc844023b03abe0eee6eca/extensions/AddedAccessibility/AddedAccessibility.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/AddedAccessibility/AddedAccessibility.css",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1a2c16a6b1ad53367e1b8c46e2dc00311d4f9b2d/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/5332841"
         }
 ];
