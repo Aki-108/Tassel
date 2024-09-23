@@ -284,7 +284,8 @@
                     </div>
                 </div>
             `;
-            if (item.comments - item.commentsSeen) entry.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")[0].innerHTML = `<div><h5>${item.comments - item.commentsSeen}</h5><p>new</p></div>`;
+            if (item.comments - item.commentsSeen > 0) entry.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")[0].innerHTML = `<div><h5>${item.comments - item.commentsSeen}</h5><p>new</p></div>`;
+            else if (item.comments - item.commentsSeen < 0) item.commentsSeen = item.comments;
             modal.appendChild(entry);
             document.getElementById(`tPSread${item.id}`).addEventListener("click", function() {
                 for (let a = 0, el = this; a < 100; a++, el = el.parentNode) {
@@ -488,6 +489,7 @@
     function initSinglePost_ltapluah() {
         if (document.URL.search("/posts/") !== 29) return;
         if (document.URL.search("/posts/new") === 29) return;
+        pushEvent_ltapluah({source:"Post Subscriber",text:"single post loading"});
 
         let subscribed = subscriptions.subscriptions.some(function(item) {
             return item.id === tasselJsonManager.post.json.id;
@@ -558,6 +560,7 @@
             updateSidebarCounter_ltapluah();
             return;
         }
+        pushEvent_ltapluah({source:"Post Subscriber",text:"checking for comments"});
 
         loadSubscriptions_ltapluah();
         subscriptions.lastCheck = now;
@@ -654,5 +657,22 @@
     /* Save list of subscriped posts to local storage */
     function saveSubscriptions_ltapluah() {
         localStorage.setItem("tasselPostSubscriber", JSON.stringify(subscriptions));
+    }
+
+    /* Create event log for debug more */
+    function pushEvent_ltapluah(data) {
+        if (!tasselSettings.tassel.debug) return;
+        let event = document.createElement("div");
+        event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+        event.id = "event" + Math.random();
+        document.getElementById("tasselEvents").appendChild(event);
+        window.setTimeout(function() {
+            event.classList.add("fade-out");
+            window.setTimeout(function() {
+                event.remove();
+            }, 5000);
+        }, 30000);
     }
 })();
