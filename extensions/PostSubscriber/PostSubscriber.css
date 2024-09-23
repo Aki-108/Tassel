@@ -283,7 +283,7 @@ body.dark-theme #tasselPostSubscriberColor {
     [id^=tasselPostSubscriberNewComment] {
         width: max-content;
         height: 1em;
-        margin: 5px;
+        margin: 3px;
         border-radius: 3px;
         padding: 0.2em;
         background-color: #2C405A;
