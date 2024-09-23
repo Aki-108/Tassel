@@ -22,7 +22,7 @@ let extensionsIndex = [
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@37b1a9099b160afc0a48a5279d38c52bf95ddd25/extensions/PostSubscriber/PostSubscriber.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@deb10eee2184ed8e5ab49234fded156d2e8cf69c/extensions/PostSubscriber/PostSubscriber.css",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6c5b1dbe1cde0757192cf0520b56669739aa259e/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
