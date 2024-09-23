@@ -25,10 +25,10 @@
     init_ltapluah();
     function init_ltapluah() {
         initTassel_ltapluah();
-        addJsonEvents_ltapluah();
         loadSubscriptions_ltapluah();
         initSidebar_ltapluah();
         initModal_ltapluah();
+        addJsonEvents_ltapluah();
 
         //start checking for new comments
         checkAll_ltapluah();
@@ -493,10 +493,7 @@
         if (document.URL.search("/posts/") !== 29) return;
         if (document.URL.search("/posts/new") === 29) return;
         if (!tasselJsonManager.post.ready) return;
-        pushEvent_ltapluah({source:"Post Subscriber",text:"single post loading"});
 
-        console.log(tasselJsonManager);
-        console.log(subscriptions);
         let subscribed = subscriptions.subscriptions.some(function(item) {
             return item.id === tasselJsonManager.post.json.id;
         });
@@ -526,6 +523,7 @@
                 saveSubscriptions_ltapluah();
             });
         }
+        pushEvent_ltapluah({source:"Post Subscriber",text:"single post loaded"});
     }
 
     //(un-)subscribe to a post
