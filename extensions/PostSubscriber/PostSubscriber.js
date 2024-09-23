@@ -25,10 +25,10 @@
     init_ltapluah();
     function init_ltapluah() {
         initTassel_ltapluah();
+        addJsonEvents_ltapluah();
         loadSubscriptions_ltapluah();
         initSidebar_ltapluah();
         initModal_ltapluah();
-        addJsonEvents_ltapluah();
 
         //start checking for new comments
         checkAll_ltapluah();
@@ -46,11 +46,14 @@
         });
         document.getElementById("tasselJsonManagerPostReady").addEventListener("click", initSinglePost_ltapluah);
         document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", highlightComments_ltapluah);
+        initSinglePost_ltapluah();
+        highlightComments_ltapluah();
     }
 
     //add the "new" marking to comments
     function highlightComments_ltapluah() {
         if (subscriptions.subscriptions.length === 0) return;
+        if (!tasselJsonManager.comments.ready) return;
         let pivotTime = subscriptions.subscriptions.find(function(item) {
             return item.id == tasselJsonManager.comments.postId;
         });
@@ -489,6 +492,7 @@
     function initSinglePost_ltapluah() {
         if (document.URL.search("/posts/") !== 29) return;
         if (document.URL.search("/posts/new") === 29) return;
+        if (!tasselJsonManager.post.ready) return;
         pushEvent_ltapluah({source:"Post Subscriber",text:"single post loading"});
 
         let subscribed = subscriptions.subscriptions.some(function(item) {
