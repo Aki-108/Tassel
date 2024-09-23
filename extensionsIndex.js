@@ -169,14 +169,19 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "0.6",
+                "version": "1.0",
                 "created": 1696333244573,
-                "updated": 1708357005467,
+                "updated": 1727098281772,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf71ff236831db8fb1b441ca7a2cc21acf11303a/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/FortArchive/FortArchive.css",
-                "post": "https://www.pillowfort.social/posts/3798470"
+                "post": "https://www.pillowfort.social/posts/3798470",
+                "features": [
+                        "See small previous of posts.",
+                        "Jump to any point in time.",
+                        "View the archive oldest posts first."
+                ]
         },
         {
                 "name": "Hide Numbers",
