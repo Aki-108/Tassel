@@ -495,6 +495,8 @@
         if (!tasselJsonManager.post.ready) return;
         pushEvent_ltapluah({source:"Post Subscriber",text:"single post loading"});
 
+        console.log(tasselJsonManager);
+        console.log(subscriptions);
         let subscribed = subscriptions.subscriptions.some(function(item) {
             return item.id === tasselJsonManager.post.json.id;
         });
