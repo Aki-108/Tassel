@@ -518,6 +518,7 @@
                 let subscriptionData = subscriptions.subscriptions.find(function(item) {
                     return item.id === tasselJsonManager.post.json.id;
                 });
+                if (!subscriptionData) return;
                 subscriptionData.visited = openTime;
                 subscriptionData.commentsSeen = subscriptionData.comments;
                 saveSubscriptions_ltapluah();
