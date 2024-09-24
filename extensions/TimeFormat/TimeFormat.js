@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.6
+// @version      1.7
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -19,7 +19,8 @@
         editDate: "Last edited RRR ago.",
         commentDate: "RRR ago",
         reblogNote: "RRR ago",
-        likeNote: "RRR"
+        likeNote: "RRR",
+        activityDate: ""
     };
     let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -71,6 +72,14 @@
             if (postElement === undefined) continue;
             if (postElement.post.classList.contains("tasselTimeFormatProcessed")) continue;
             postElement.post.classList.add("tasselTimeFormatProcessed");
+
+            //post footer
+            let activity = formatDate_draxcpxe(new Date(post.last_activity || post.created_at), settings.activityDate);
+            let footer = postElement.post.getElementsByClassName("post-nav-left")[0];
+            let activityDiv = document.createElement("div");
+            activityDiv.classList.add("tasselTimeFormatActivity", "tag-text");
+            activityDiv.innerHTML = activity;
+            if (settings.reblogDate.length > 0) footer.appendChild(activityDiv);
 
             //post header
             //get formated reblog date
@@ -212,7 +221,6 @@
             ["min", "minute", "minutes"],
             ["h", "hour", "hours"],
             ["d", "day", "days"],
-            //["w", "week", "weeks"],
             ["m", "month", "months"],
             ["y", "year", "years"]
         ];
@@ -221,7 +229,6 @@
             60_000,//1 minute
             3_600_000,//1 hour
             86_400_000,//1 day
-            //1_209_600_000,//14 days - 2 weeks
             2_630_880_000,//30.45 days - 1 month
             63_113_904_000//730.485 days - 2 years
         ];
@@ -299,13 +306,13 @@
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
-        /*createInput("Edit Date", settings.editDate, frame1);
+        createInput_draxcpxe("Activity Date"+createTooltip_draxcpxe("This will show the time of the last activity on a post in its footer.").outerHTML, settings.activityDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
-            settings.editDate = this.value;
-            saveSettings();
+            settings.activityDate = this.value;
+            saveSettings_draxcpxe();
         });
-        frame1.lastChild.addEventListener("focus", showPreview);
-        frame1.lastChild.addEventListener("blur", hidePreview);*/
+        frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
+        frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Comment Date", settings.commentDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.commentDate = this.value;
