@@ -1,3 +1,8 @@
+.tasselTimeFormatActivity {
+        display: inline-block;
+        font-size: 14px;
+}
+
 #tasselTimeFormatSettings {
         margin-bottom: 10px;
         display: grid;
