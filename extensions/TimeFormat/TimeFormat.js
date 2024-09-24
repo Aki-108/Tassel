@@ -12,6 +12,7 @@
     'use strict';
 
     let permaLinks; //array of perma-link elements
+    let tasselSettings = JSON.parse(localStorage.getItem("tasselSettings2"));
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).timeFormat || {
         reblogDate: "RRR ago",
         reblogTooltip: "MMM DD, YYYY @ hh:mm ap",
@@ -28,15 +29,21 @@
     init_draxcpxe();
     function init_draxcpxe() {
         initTassel_draxcpxe();
+        loadFeed_draxcpxe();
         if (document.getElementById("tasselJsonManagerFeedReady")) document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", loadFeed_draxcpxe);
+        loadSinglePost_draxcpxe();
         if (document.getElementById("tasselJsonManagerPostReady")) document.getElementById("tasselJsonManagerPostReady").addEventListener("click", loadSinglePost_draxcpxe);
+        processComments_draxcpxe();
         if (document.getElementById("tasselJsonManagerCommentReady")) document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", processComments_draxcpxe);
+        processReblogs_draxcpxe();
         if (document.getElementById("tasselJsonManagerReblogReady")) document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", processReblogs_draxcpxe);
+        processLikes_draxcpxe();
         if (document.getElementById("tasselJsonManagerLikeReady")) document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", processLikes_draxcpxe);
     }
 
     /* Get the posts from the feed and hand them to the post processor */
     function loadFeed_draxcpxe() {
+        if (!tasselJsonManager.feed.ready) return;
         if (tasselJsonManager.feed.type === "queue") return;
         if (tasselJsonManager.feed.type === "schedule") return;
         let posts = [];
@@ -53,14 +60,17 @@
             });
         });
         processPosts_draxcpxe(tasselJsonManager.feed.posts, posts);
+        pushEvent_draxcpxe({source:"Time Format",text:"feed loaded"});
     }
 
     /* Get post from JSON Manager and process it */
     function loadSinglePost_draxcpxe() {
+        if (!tasselJsonManager.post.ready) return;
         processPosts_draxcpxe([tasselJsonManager.post.json], [{
             id: tasselJsonManager.post.json.original_post ? tasselJsonManager.post.json.original_post_id : tasselJsonManager.post.json.id,
             post: document.getElementsByClassName("post-container")[0]
         }]);
+        pushEvent_draxcpxe({source:"Time Format",text:"single post loaded"});
     }
 
     /* Apply changes to the posts */
@@ -110,7 +120,7 @@
 
     /* Apply changes to the comments */
     function processComments_draxcpxe() {
-        console.log("format comments");
+        if (!tasselJsonManager.comments.ready) return;
         if (settings.commentDate.length === 0) return;
         for (let comment of tasselJsonManager.comments.comments) {
             let commentElement = document.getElementById(comment.id);
@@ -122,10 +132,12 @@
             text.lastChild.textContent = "";
             text.children[1].innerHTML = formatDate_draxcpxe(new Date(comment.created_at), settings.commentDate);
         }
+        pushEvent_draxcpxe({source:"Time Format",text:"comments loaded"});
     }
 
     /* Apply changes to the reblog list */
     function processReblogs_draxcpxe() {
+        if (!tasselJsonManager.reblogs.ready) return;
         if (settings.reblogNote.length === 0) return;
         let links = Object.values(document.getElementsByClassName("reblog-note"));
         for (let reblog of tasselJsonManager.reblogs.json) {
@@ -137,10 +149,12 @@
             element.classList.add("tasselTimeFormatProcessed");
             element.children[1].innerHTML = formatDate_draxcpxe(new Date(reblog.publish_at || reblog.created_at), settings.reblogNote);
         }
+        pushEvent_draxcpxe({source:"Time Format",text:"reblogs loaded"});
     }
 
     /* Apply changes to the like list */
     function processLikes_draxcpxe() {
+        if (!tasselJsonManager.likes.ready) return;
         if (settings.likeNote.length === 0) return;
         let links = Object.values(document.getElementById("likes").children);
         for (let index in links) {
@@ -151,6 +165,7 @@
             element.classList.add("tasselTimeFormatProcessed");
             element.children[0].children[1].innerHTML = formatDate_draxcpxe(new Date(tasselJsonManager.likes.json[index - 1].created_at), settings.likeNote);
         }
+        pushEvent_draxcpxe({source:"Time Format",text:"likes loaded"});
     }
 
     /* Format date to the desired form */
@@ -412,6 +427,23 @@
         input.id = id;
         input.value = value || "";
         context.appendChild(input);
+    }
+
+    /* Create event log for debug more */
+    function pushEvent_draxcpxe(data) {
+        if (!tasselSettings.tassel.debug) return;
+        let event = document.createElement("div");
+        event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+        event.id = "event" + Math.random();
+        document.getElementById("tasselEvents").appendChild(event);
+        window.setTimeout(function() {
+            event.classList.add("fade-out");
+            window.setTimeout(function() {
+                event.remove();
+            }, 5000);
+        }, 30000);
     }
 
     /*
