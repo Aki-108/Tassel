@@ -1,6 +1,9 @@
 .tasselTimeFormatActivity {
         display: inline-block;
-        font-size: 14px;
+}
+.post .post-nav .tag-text.tasselTimeFormatActivity {
+        float: unset;
+        padding: unset;
 }
 
 #tasselTimeFormatSettings {
