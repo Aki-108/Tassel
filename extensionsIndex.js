@@ -226,11 +226,11 @@ let extensionsIndex = [
                 "id": 16,
                 "version": "1.7",
                 "created": 1708117680669,
-                "updated": 1727204692938,
+                "updated": 1727208430543,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c0981b3f88984027847ac229e38be22934fbb9ad/extensions/TimeFormat/TimeFormat.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c0981b3f88984027847ac229e38be22934fbb9ad/extensions/TimeFormat/TimeFormat.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf052368800aa2f57045d9f2f74b0916f51f09bf/extensions/TimeFormat/TimeFormat.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf052368800aa2f57045d9f2f74b0916f51f09bf/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
         {
