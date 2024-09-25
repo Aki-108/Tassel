@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.5
+// @version      1.6
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -11,8 +11,8 @@
 (function() {
     'use strict';
 
+    let tasselSettings = JSON.parse(localStorage.getItem("tasselSettings2"));
     let mutelist = JSON.parse(localStorage.getItem("tasselUserMuting")) || [];
-
     if (document.getElementById("tasselJsonManagerFeedReady")) document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", loadFeed_gatzfpvu);
     if (document.getElementById("tasselJsonManagerCommentReady")) document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", loadComments_gatzfpvu);
 
@@ -79,9 +79,11 @@
             && post.username === user.username //only count if user matches the one from the mutelist
             && user.rebloggedBy; //only count if reblogs by that user should be removed
             if (!originalPost && !rebloggedFrom && !rebloggedBy) continue;
+            if (((originalUser !== undefined && originalUser.nsfw) || (user !== undefined && user.nsfw)) && !(post.nsfw || (post.original_post !== undefined && post.original_post.nsfw))) continue;
 
             postElement.post.style.display = "none";
         }
+        pushEvent_gatzfpvu({source:"User Muting",text:"posts processed"});
     }
 
     /* Get comments from JSON Manager and process them */
@@ -180,6 +182,7 @@
             <div class="heading"><div>original posts</div></div>
             <div class="heading"><div>reblogged from</div></div>
             <div class="heading"><div>reblogged by</div></div>
+            <div class="heading"><div>only NSFW</div></div>
             <div class="heading"><div>comments</div></div>
         `;
         for (let muted of mutelist) {
@@ -188,6 +191,7 @@
                 <input type="checkbox" key="originalPost" ${muted.originalPost ? "checked" : ""}></input>
                 <input type="checkbox" key="rebloggedFrom" ${muted.rebloggedFrom ? "checked" : ""}></input>
                 <input type="checkbox" key="rebloggedBy" ${muted.rebloggedBy ? "checked" : ""}></input>
+                <input type="checkbox" key="nsfw" ${muted.nsfw ? "checked" : ""}></input>
                 <input type="checkbox" key="comments" ${muted.comments ? "checked" : ""}></input>
             `;
         }
@@ -221,6 +225,11 @@
             rebloggedBy.setAttribute("key", "rebloggedBy");
             rebloggedBy.addEventListener("click", toggleSetting_gatzfpvu);
             table1.appendChild(rebloggedBy);
+            let nsfw = document.createElement("input");
+            nsfw.type = "checkbox";
+            nsfw.setAttribute("key", "nsfw");
+            nsfw.addEventListener("click", toggleSetting_gatzfpvu);
+            table1.appendChild(nsfw);
             let comments = document.createElement("input");
             comments.type = "checkbox";
             comments.setAttribute("key", "comments");
@@ -235,16 +244,34 @@
     function toggleSetting_gatzfpvu() {
         let inputs = Object.values(document.getElementById("tasselUserMutingSettingsTable").getElementsByTagName("input"));
         mutelist = [];
-        for (let a = 0; a < inputs.length; a += 5) {
+        for (let a = 0; a < inputs.length; a += 6) {
             if (inputs[a].value === "") continue;
             mutelist.push({
                 username: inputs[a].value,
                 originalPost: inputs[a+1].checked,
                 rebloggedFrom: inputs[a+2].checked,
                 rebloggedBy: inputs[a+3].checked,
-                comments: inputs[a+4].checked
+                nsfw: inputs[a+4].checked,
+                comments: inputs[a+5].checked
             });
         }
         localStorage.setItem("tasselUserMuting", JSON.stringify(mutelist));
+    }
+
+    /* Create event log for debug more */
+    function pushEvent_gatzfpvu(data) {
+        if (!tasselSettings.tassel.debug) return;
+        let event = document.createElement("div");
+        event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+        event.id = "event" + Math.random();
+        document.getElementById("tasselEvents").appendChild(event);
+        window.setTimeout(function() {
+            event.classList.add("fade-out");
+            window.setTimeout(function() {
+                event.remove();
+            }, 5000);
+        }, 30000);
     }
 })();
