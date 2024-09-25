@@ -229,19 +229,19 @@ let extensionsIndex = [
                 "updated": 1727275903270,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1a56d8e94c945996fe613b4cb8773573ce9829ea/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@13ff3294010f92518632a246c304c51c0b306c1d/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf052368800aa2f57045d9f2f74b0916f51f09bf/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
         {
                 "name": "Added Accessibility",
                 "id": 17,
-                "version": "0.2",
+                "version": "0.3",
                 "created": 1726413656706,
-                "updated": 1726935447157,
+                "updated": 1727275903270,
                 "author": "Aki108",
                 "description": "Changes to Alt Text.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@409433726d79cf8a63bc844023b03abe0eee6eca/extensions/AddedAccessibility/AddedAccessibility.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@13ff3294010f92518632a246c304c51c0b306c1d/extensions/AddedAccessibility/AddedAccessibility.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1a2c16a6b1ad53367e1b8c46e2dc00311d4f9b2d/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/5332841"
         }
