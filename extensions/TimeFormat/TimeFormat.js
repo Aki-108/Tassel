@@ -84,7 +84,7 @@
             postElement.post.classList.add("tasselTimeFormatProcessed");
 
             //post footer
-            let activity = formatDate_draxcpxe(new Date(post.last_activity || post.original_post.last_activity || post.original_post.publish_at || post.original_post.created_at || post.publish_at || post.created_at), settings.activityDate);
+            let activity = formatDate_draxcpxe(new Date(post.comments_count	> 0 ? post.last_activity || post.original_post.last_activity : post.original_post.publish_at || post.publish_at), settings.activityDate);
             let footer = postElement.post.getElementsByClassName("post-nav-left")[0];
             let activityDiv = document.createElement("div");
             activityDiv.classList.add("tasselTimeFormatActivity", "tag-text");
