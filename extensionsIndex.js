@@ -21,7 +21,7 @@ let extensionsIndex = [
             "updated": 1727082245507,
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ecb317b5bf34b9047cf817621c4ec3c5a1cab5fc/extensions/PostSubscriber/PostSubscriber.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6ae89707b6f69fd55e9cd1c11cca6c779b6308a5/extensions/PostSubscriber/PostSubscriber.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@227eed8864ec2898f33a763edb823616b5d970d9/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
@@ -229,7 +229,7 @@ let extensionsIndex = [
                 "updated": 1727415816032,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f6747696d760aaaeb38e6f4dc0962d77c73d03a8/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6ae89707b6f69fd55e9cd1c11cca6c779b6308a5/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf052368800aa2f57045d9f2f74b0916f51f09bf/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
