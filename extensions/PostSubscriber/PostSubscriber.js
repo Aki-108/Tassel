@@ -474,7 +474,9 @@
         let subscribe = document.createElement("button");
         subscribe.id = "tasselPostSubscriberModalSubscribe";
         subscribe.classList.add("nav-tab");
-        subscribe.appendChild(icon.cloneNode(true));
+        let localIcon = icon.cloneNode(true);
+        localIcon.classList.add("svg-blue");
+        subscribe.appendChild(localIcon);
         subscribe.firstChild.firstChild.style.width = "22px";
         subscribe.addEventListener("click", function() {
             toggleSubscription_ltapluah(this, tasselJsonManager.modal.json);
