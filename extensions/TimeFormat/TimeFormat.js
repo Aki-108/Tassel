@@ -89,7 +89,7 @@
             let activityDiv = document.createElement("div");
             activityDiv.classList.add("tasselTimeFormatActivity", "tag-text");
             activityDiv.innerHTML = activity;
-            if (settings.reblogDate.length > 0) footer.appendChild(activityDiv);
+            if (settings.reblogDate.length > 0 && document.URL !== "https://www.pillowfort.social/drafts") footer.appendChild(activityDiv);
 
             //post header
             //get formated reblog date
