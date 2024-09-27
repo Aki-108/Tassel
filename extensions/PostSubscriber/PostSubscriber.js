@@ -498,7 +498,7 @@
             return item.id === tasselJsonManager.post.json.id;
         });
 
-        let navigation = document.getElementsByClassName("post-nav")[0];
+        let navigation = document.getElementsByClassName("post-nav-left")[0];
         let subscribe = document.createElement("button");
         subscribe.id = "tasselPostSubscriberModalSubscribe";
         subscribe.classList.add("nav-tab");
