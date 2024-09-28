@@ -54,9 +54,6 @@ body.dark-theme #tasselPostSubscriberSidebarCounter {
 body.dark-theme .subscribed {
     filter: brightness(0) saturate(100%) invert(59%) sepia(85%) saturate(375%) hue-rotate(296deg) brightness(80%) contrast(100%);
 }
-#userBlogPosts .subscribed {
-    filter: none;
-}
 
 
 /*-----------------------Modal--------------------------*/
@@ -286,7 +283,7 @@ body.dark-theme #tasselPostSubscriberColor {
     [id^=tasselPostSubscriberNewComment] {
         width: max-content;
         height: 1em;
-        margin: 3px;
+        margin: 5px;
         border-radius: 3px;
         padding: 0.2em;
         background-color: #2C405A;
