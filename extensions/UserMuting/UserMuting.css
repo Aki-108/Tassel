@@ -2,7 +2,7 @@
 	width: 21em;
 	margin-bottom: 0.5em;
 	display: grid;
-	grid-template-columns: auto 2em 2em 2em 2em;
+	grid-template-columns: auto 2em 2em 2em 2em 2em;
 	gap: 4px 0;
 }
 

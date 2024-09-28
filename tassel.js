@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.6.4
+// @version      1.7.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,9 +14,9 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@544ed914d8453c04194f1fb4fb97631b224f40d5/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d9341544192a3eb0df9cafda37675949fcc9c7fa/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@38ccb1192a44c1e2d90c7930855cafc3bc5f040d/style.css";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d33c7f4a8bf856379b26460503e71724ef8c5c8c/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@429bc1feff4fefec15c517dba95874d80e1e62e5/toasts.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@870c41b2942f50e0051f9b1a6e2971d868e9e035/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/jsonManager.js";
 
     let icon = document.createElement("div");
@@ -49,6 +49,7 @@
         }
     }).tassel;
     if (!settings2.sidebar) settings2.sidebar = {};
+    if (!settings2.postFooter) settings2.postFooter = {};
     let sortOrder = "new";//order in which to display extensions in the list
 
     //src: https://aaronsmith.online/easily-load-an-external-script-using-javascript/
@@ -121,7 +122,7 @@
                 link.title = "link to post";
                 link.classList.add("link_post", "svg-blue", "tasselPermalinked");
                 link.href = `/posts/${tasselJsonManager.modal.json.original_post_id || tasselJsonManager.modal.json.id}`;
-                link.style = "margin: 0 21px;";
+                link.style = "margin: 0 0 0 20px;";
                 link.innerHTML = `<img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg" style="height: 20px;">`;
                 item.appendChild(link);
                 item.classList.add("tasselPermalinked");
@@ -318,6 +319,21 @@
         if (settings2.goldToBlue) css += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
         if (settings2.noFrames) css += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
 
+        //Post footer
+        if (settings2.postFooter.swapLeftRight) css += ".post .post-nav .post-nav-left {float: right; padding-right: 20px;} .post .post-nav .post-nav-right {float: left; padding-right: 0;}";
+        css += ".post .post-nav .post-nav-left, .post .post-nav .post-nav-right {display: grid; grid-auto-flow: column; align-items: baseline;} .post-nav .post-nav-left {float: left;}";//prepare for reordering
+        if (settings2.postFooter.comments !== 0) css += `.post .post-nav .post-nav-left a.nav-tab {order: ${settings2.postFooter.comments || 0};}`;
+        if (settings2.postFooter.reblog !== 0) css += `.post .post-nav .post-nav-left span:has(> a.nav-tab) {order: ${settings2.postFooter.reblog || 0};}`;
+        if (settings2.postFooter.like !== 0) css += `.post .post-nav .post-nav-left span:has(> span a.like-button), .post .post-nav .post-nav-left span:has(> a.like-button) {order: ${settings2.postFooter.like || 0};}`;
+        if (settings2.postFooter.permalink !== 0) css += `.post .post-nav .post-nav-left .tasselPermalinked {order: ${settings2.postFooter.permalink || 0};}`;
+        if (settings2.postFooter.subscribe !== 0) css += `.post .post-nav .post-nav-left #tasselPostSubscriberModalSubscribe {order: ${settings2.postFooter.subscribe || 0};}`;
+        if (settings2.postFooter.activity !== 0) css += `.post .post-nav .post-nav-left .tasselTimeFormatActivity {order: ${settings2.postFooter.activity || 0};}`;
+        if (settings2.postFooter.flag !== 0) css += `.post .post-nav .post-nav-right span:has(> a.flag-button) {order: ${settings2.postFooter.flag || 0};}`;
+        if (settings2.postFooter.edit !== 0) css += `.post .post-nav .post-nav-right span:has(> a img.edit-img) {order: ${settings2.postFooter.edit || 0};}`;
+        if (settings2.postFooter.delete !== 0) css += `.post .post-nav .post-nav-right span:has(> a.pointer-cursor) {order: ${settings2.postFooter.delete || 0};}`;
+        if (settings2.postFooter.blockPost !== 0) css += `.post .post-nav .post-nav-right span:has(> a:not([id^='post'])) {order: ${settings2.postFooter.blockPost || 0};}`;
+
+        //Apply new styling to page
         //src: https://stackoverflow.com/q/3922139
         let style = document.createElement("style");
         style.setAttribute('type', 'text/css');
@@ -328,6 +344,7 @@
         }
         document.head.appendChild(style);
 
+        //Sidebar
         if (settings2.sidebar.expandedPost) getSidebarElement_xcajbuzn("https://www.pillowfort.social/posts/new").classList.add("tasselRemoveSidebarElement");
         if (settings2.sidebar.expandedDrafts && getSidebarElement_xcajbuzn("https://www.pillowfort.social/drafts")) getSidebarElement_xcajbuzn("https://www.pillowfort.social/drafts").classList.add("tasselRemoveSidebarElement");
         if (settings2.sidebar.expandedQueue && getSidebarElement_xcajbuzn("https://www.pillowfort.social/queued_posts")) getSidebarElement_xcajbuzn("https://www.pillowfort.social/queued_posts").classList.add("tasselRemoveSidebarElement");
@@ -779,11 +796,6 @@
         let title2 = document.createElement("h2");
         title2.innerHTML = "Appearance";
         content.appendChild(title2);
-        content.appendChild(createSwitch_xcajbuzn("Shorten Expanded Sidebar", settings2.shortenSidebar ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings2.shortenSidebar = this.checked;
-            saveSettings_xcajbuzn();
-        });
         content.appendChild(createSwitch_xcajbuzn("Highlight Linked Comments", settings2.highlightComments ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.highlightComments = this.checked;
@@ -817,7 +829,12 @@
         let section1 = document.createElement("details");
         section1.id = "tasselSettingsSidebarSection";
         content.appendChild(section1);
-        section1.innerHTML = `<summary><h3>Sidebar</h3>${createTooltip_xcajbuzn("Click the arrow to view more options.").outerHTML}</summary>`;
+        section1.innerHTML = `<summary><h3>Sidebar</h3>${createTooltip_xcajbuzn("Click the arrow to view more sidebar options.").outerHTML}</summary>`;
+        section1.appendChild(createSwitch_xcajbuzn("Shorten Expanded Sidebar", settings2.shortenSidebar ? "checked" : ""));
+        section1.lastChild.children[0].addEventListener("change", function() {
+            settings2.shortenSidebar = this.checked;
+            saveSettings_xcajbuzn();
+        });
         section1.appendChild(createSwitch_xcajbuzn("Add a button to view the full sidebar", settings2.sidebar.expandedEpander ? "checked" : ""));
         section1.lastChild.children[0].addEventListener("change", function() {
             settings2.sidebar.expandedEpander = this.checked;
@@ -967,6 +984,74 @@
         section1.appendChild(createSwitch_xcajbuzn("Remove 'Tassel'", settings2.sidebar.collapsedTassel ? "checked" : ""));
         section1.lastChild.children[0].addEventListener("change", function() {
             settings2.sidebar.collapsedTassel = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        let section2 = document.createElement("details");
+        section2.id = "tasselSettingsFooterSection";
+        content.appendChild(section2);
+        section2.innerHTML = `<summary><h3>Post Footer</h3>${createTooltip_xcajbuzn("Click the arrow to view more post footer options.").outerHTML}</summary>`;
+        section2.appendChild(createSwitch_xcajbuzn("Swap left and right", settings2.postFooter.swapLeftRight ? "checked" : ""));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.swapLeftRight = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        let info2 = document.createElement("p");
+        info2.innerHTML = "Position values of zero are the default and have no effect.";
+        section2.appendChild(info2);
+        let heading3 = document.createElement("h4");
+        heading3.innerHTML = 'Interaction Area'
+        section2.appendChild(heading3);
+        section2.appendChild(createNumericInput_xcajbuzn("Comment Position", settings2.postFooter.comments));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.comments = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Reblog Position", settings2.postFooter.reblog));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.reblog = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Like Position", settings2.postFooter.like));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.like = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Permalink Position" + createTooltip_xcajbuzn("This refers to the bottom permalink you can add with Tassel.").outerHTML, settings2.postFooter.permalink));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.permalink = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Subscribe Position" + createTooltip_xcajbuzn("Post subscribing is part of the Post Subscriber extension.").outerHTML, settings2.postFooter.subscribe));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.subscribe = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Activity Position" + createTooltip_xcajbuzn("The activity timestamp is part of the Time Format extension.").outerHTML, settings2.postFooter.activity));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.activity = this.value;
+            saveSettings_xcajbuzn();
+        });
+        let heading4 = document.createElement("h4");
+        heading4.innerHTML = 'Flagging Area'
+        section2.appendChild(heading4);
+        section2.appendChild(createNumericInput_xcajbuzn("Flag Position", settings2.postFooter.flag));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.flag = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Edit Position", settings2.postFooter.edit));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.edit = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Delete Position", settings2.postFooter.delete));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.delete = this.value;
+            saveSettings_xcajbuzn();
+        });
+        section2.appendChild(createNumericInput_xcajbuzn("Block Position" + createTooltip_xcajbuzn("Post blocking is part of the Advanced Blacklist extension.").outerHTML, settings2.postFooter.blockPost));
+        section2.lastChild.children[0].addEventListener("change", function() {
+            settings2.postFooter.blockPost = this.value;
             saveSettings_xcajbuzn();
         });
 
@@ -1207,7 +1292,7 @@
             nav.classList.add("tasselPermalinked");
             let link = item.cloneNode(true);
             link.classList.add("tasselPermalinked");
-            link.style = "margin: 0 21px;";
+            link.style = "margin: 0 0 0 20px;";
             nav.appendChild(link);
         });
     }
@@ -1266,5 +1351,17 @@
           <label for="${id}">${title}</label>
         `;
         return toggle;
+    }
+
+    /* Create an HTML element of a numeric input field with a label */
+    function createNumericInput_xcajbuzn(title="", value=0, _class=Math.random()) {
+        let id = "tasselNumeric" + Math.random();
+        let frame = document.createElement("div");
+        frame.classList.add("tasselNumeric");
+        frame.innerHTML = `
+          <input id="${id}" type="number" class="${_class}" value="${value}">
+          <label for="${id}">${title}</label>
+        `;
+        return frame;
     }
 })();

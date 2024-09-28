@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      0.6
+// @version      1.0
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*

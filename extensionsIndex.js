@@ -16,13 +16,13 @@ let extensionsIndex = [
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "2.10",
+            "version": "3.0",
             "created": 1661764440000,
-            "updated": 1707555075119,
+            "updated": 1727516314553,
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/PostSubscriber/PostSubscriber.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/PostSubscriber/PostSubscriber.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5748e0a1dadb7bca17734bcf7af20079581e103/extensions/PostSubscriber/PostSubscriber.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3e1f37c1ace0fb5e286043dc5221051f804c5935/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -169,14 +169,19 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "0.6",
+                "version": "1.0",
                 "created": 1696333244573,
-                "updated": 1708357005467,
+                "updated": 1727098281772,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf71ff236831db8fb1b441ca7a2cc21acf11303a/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/FortArchive/FortArchive.css",
-                "post": "https://www.pillowfort.social/posts/3798470"
+                "post": "https://www.pillowfort.social/posts/3798470",
+                "features": [
+                        "See small previous of posts.",
+                        "Jump to any point in time.",
+                        "View the archive oldest posts first."
+                ]
         },
         {
                 "name": "Hide Numbers",
@@ -203,13 +208,13 @@ let extensionsIndex = [
         {
                 "name": "User Muting",
                 "id": 15,
-                "version": "1.5",
+                "version": "1.6",
                 "created": 1703613662842,
-                "updated": 1706429014475,
+                "updated": 1727266512029,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/UserMuting/UserMuting.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/UserMuting/UserMuting.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a926271075120baad706cd2abced49e522263686/extensions/UserMuting/UserMuting.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a926271075120baad706cd2abced49e522263686/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
                         "Remove posts/reblogs of someone.",
@@ -219,25 +224,25 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.6",
+                "version": "1.7",
                 "created": 1708117680669,
-                "updated": 1712847180000,
+                "updated": 1727415816032,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/TimeFormat/TimeFormat.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/TimeFormat/TimeFormat.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5748e0a1dadb7bca17734bcf7af20079581e103/extensions/TimeFormat/TimeFormat.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5748e0a1dadb7bca17734bcf7af20079581e103/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
         {
                 "name": "Added Accessibility",
                 "id": 17,
-                "version": "0.2",
+                "version": "0.3",
                 "created": 1726413656706,
-                "updated": 1726935447157,
+                "updated": 1727275903270,
                 "author": "Aki108",
                 "description": "Changes to Alt Text.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@409433726d79cf8a63bc844023b03abe0eee6eca/extensions/AddedAccessibility/AddedAccessibility.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/AddedAccessibility/AddedAccessibility.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@13ff3294010f92518632a246c304c51c0b306c1d/extensions/AddedAccessibility/AddedAccessibility.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1a2c16a6b1ad53367e1b8c46e2dc00311d4f9b2d/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/5332841"
         }
 ];

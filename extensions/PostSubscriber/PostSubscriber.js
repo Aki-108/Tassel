@@ -1,89 +1,64 @@
 // ==UserScript==
-// @name         Post Subscriber V2
-// @version      2.10
+// @name         Post Subscriber V3
+// @version      3.0
 // @description  Get notified when there are new comments in a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
-// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    let newBrowser = typeof HTMLDialogElement === 'function';//check if the browser supports the <dialog> element
-    let subscribed = false;
-    let thisPost = {};
+    let tasselSettings = JSON.parse(localStorage.getItem("tasselSettings2"));
+    let settings = tasselSettings.postSubscriber;
+    if (!settings) settings = {"color":"#ff7fc5","interval":1200000};
+    let subscriptions = {"subscriptions":[]};
     let openTime = new Date().getTime();
-
-    let tasselSettings = JSON.parse(localStorage.getItem("tasselSettings2")).tassel;
-    let hideNumbersSettings = JSON.parse(localStorage.getItem("tasselSettings2")).hideNumbers || {};
-    let settings = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
-    if (settings.postSubscriber) {
-        settings = settings.postSubscriber;
-    } else {
-        settings = {
-            "color": "#ff7fc5",
-            "interval": 1200000,
-            "loadingIndicator": true
-        };
-    }
-    let subscriptions;
-    loadSubscriptions_ltapluah();
+    let newBrowser = typeof HTMLDialogElement === 'function';
 
     let icon = document.createElement("div");
-    icon.innerHTML = "<svg style='overflow:visible;' class='sidebar-img tasselIconColor' viewBox='0 0 14 14'><title>Subscriptions</title><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M5.5 13.5h-3q-2 0 -2 -2v-8.5q0 -2 2 -2h8.5q2 0 2 2v5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 4h7.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 7h4.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 10h4'></path><g xmlns='http://www.w3.org/2000/svg' transform='scale(0.5),translate(10,10)'><path xmlns='http://www.w3.org/2000/svg' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z' transform='translate(-15.024 -14.708)' style='fill:none;stroke:#58b6dd;stroke-width:1.6px'></path></g></svg>";
+    icon.innerHTML = "<svg style='overflow:visible;' class='sidebar-img tasselIconColor' viewBox='0 0 14 14'><title>Subscriptions</title><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M5.5 13.5h-3q-2 0 -2 -2v-8.5q0 -2 2 -2h8.5q2 0 2 2v5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 4h7.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 7h4.5'></path><path xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#58b6dd' stroke-width='.8' d='M3 10h4'></path><g xmlns='http://www.w3.org/2000/svg' transform='scale(0.5),translate(10,10)'><path xmlns='http://www.w3.org/2000/svg' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z' transform='translate(-15.024 -14.708)' style='stroke:#58b6dd;stroke-width:1.6px' class='tasselPostSubscriberIcon'></path></g></svg>";
     let iconUnsub = "<svg class='tasselIconColor' width='100%' height='100%' viewBox='0 0 20 22'><title>unsubscribe</title><path xmlns='http://www.w3.org/2000/svg' transform='translate(-15.024 -14.708)' style='fill:none;stroke:#58b6dd;stroke-width:1.7px' d='M19.653 33.124h-2.817c-.289 0-.578-.02-.867-.04a.436.436 0 01-.307-.561c.177-.319.359-.635.544-.949.274-.466.559-.926.828-1.4.349-.609.7-1.217 1.022-1.839a2.149 2.149 0 00.185-.661 9.817 9.817 0 00.068-1.471c0-.871.011-1.743.02-2.614a6.175 6.175 0 01.5-2.445 6.93 6.93 0 01.986-1.622 6.661 6.661 0 013.694-2.288c.089-.022.127-.053.123-.151a2.576 2.576 0 01.081-.835 1.2 1.2 0 01.982-.915 1.319 1.319 0 011.068.219 1.282 1.282 0 01.514.863c.032.23.033.464.044.7 0 .059.012.087.082.1a7.247 7.247 0 011.569.574 6.471 6.471 0 011.342.888 7.087 7.087 0 011.473 1.787 5.493 5.493 0 01.564 1.28 7.837 7.837 0 01.226 1.125c.05.431.052.868.067 1.3.013.374.015.747.022 1.121l.021 1.216c.006.29.007.579.022.869a3.2 3.2 0 00.073.669 3.043 3.043 0 00.281.634c.2.375.42.742.636 1.11.288.491.583.977.871 1.468q.363.62.716 1.246a.4.4 0 01-.159.507.549.549 0 01-.358.084q-3.194.015-6.388.022c-.165 0-.159 0-.179.171a2.233 2.233 0 01-.607 1.324 2.071 2.071 0 01-1.319.672 2.211 2.211 0 01-1.678-.454 2.243 2.243 0 01-.822-1.365 1.308 1.308 0 01-.023-.217c0-.092-.03-.134-.134-.134-.99.013-1.978.012-2.966.012z'/><path stroke='#58b6dd' stroke-width='2px' d='M3 3l14 17'/></svg>";
 
-    let commentContainer = document.getElementsByClassName("comments-container")[0];
-    let postModal = document.getElementById("post-view-modal");
-    let styleObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutationRecord) {
-            if (commentContainer) {//for single posts
-                if (subscribed) highlightComments_ltapluah();
-            }
-            if (postModal != null && postModal.classList.contains("in")) {
-                initModal_ltapluah();
-            }
-        });
-    });
-
-    //start initialization
-    if (document.getElementsByClassName("sidebar-expanded").length > 0) init_ltapluah();
-    else waitForKeyElements(".sidebar-expanded", init_ltapluah);
-    if (document.getElementById("post-view-modal")) initModal_ltapluah();
-    else waitForKeyElements("#post-view-modal", initModal_ltapluah);
+    init_ltapluah();
     function init_ltapluah() {
-        if (document.getElementsByClassName("postSubscriberIcon").length > 0) return;
-        initSidebar_ltapluah();
         initTassel_ltapluah();
-        initSinglePost_ltapluah();
-
-        if (commentContainer) {
-            styleObserver.observe(commentContainer, {
-                childList: true
-            });
-            if (subscribed) highlightComments_ltapluah();
-        }
-        if (postModal) {
-            styleObserver.observe(postModal, {
-                attributes: true,
-                attributeFilter: ["style"]
-            });
-        }
+        loadSubscriptions_ltapluah();
+        initSidebar_ltapluah();
+        initModal_ltapluah();
+        addJsonEvents_ltapluah();
 
         //start checking for new comments
         checkAll_ltapluah();
         window.setInterval(checkAll_ltapluah, 600000);//check every ten minutes
     }
 
+    //add events to JSON Manager triggers
+    function addJsonEvents_ltapluah() {
+        document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
+            let subscribed = subscriptions.subscriptions.some(function(item) {
+                return item.id == tasselJsonManager.modal.postId;
+            });
+            if (subscribed) document.getElementById("tasselPostSubscriberModalSubscribe").classList.add("subscribed");
+            else document.getElementById("tasselPostSubscriberModalSubscribe").classList.remove("subscribed");
+        });
+        document.getElementById("tasselJsonManagerPostReady").addEventListener("click", initSinglePost_ltapluah);
+        document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", highlightComments_ltapluah);
+        initSinglePost_ltapluah();
+        highlightComments_ltapluah();
+    }
+
     //add the "new" marking to comments
     function highlightComments_ltapluah() {
         if (subscriptions.subscriptions.length === 0) return;
+        if (!tasselJsonManager.comments.ready) return;
         let pivotTime = subscriptions.subscriptions.find(function(item) {
-            return item.id === thisPost.id;
-        }).visited;
+            return item.id == tasselJsonManager.comments.postId;
+        });
+        if (!pivotTime) return;
+        pivotTime = pivotTime.visited;
         let comments = document.getElementsByClassName("comment");
         let newCounter = 0;
         for (let a = 0; a < comments.length; a++) {
@@ -114,83 +89,69 @@
         document.getElementById("tasselModalSidebarPostSubscriber").addEventListener("click", tasselDisplaySettings_ltapluah);
     }
 
-    //add elements to the sidebar
+    //add buttons to the sidebar
     function initSidebar_ltapluah() {
-        //add button to collapsed sidebar
+        //collapsed sidebar
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
-        let subscriptionSmall = document.createElement("a");
-        subscriptionSmall.href = "";//add a link to comply with accessibility requirements but don't open the link
-        subscriptionSmall.addEventListener("click", function(event) {
-            event.preventDefault();
-        });
-        subscriptionSmall.classList.add("postSubscriberIcon", "sidebar-icon");
-        subscriptionSmall.title = "Subscriptions";
-        subscriptionSmall.appendChild(icon.cloneNode(true));
-        subscriptionSmall.children[0].style.height = "40px";
-        subscriptionSmall.children[0].children[0].style.transition = "transform 2s";
-        subscriptionSmall.children[0].children[0].style.transform = "rotate(0deg)";
-        subscriptionSmall.children[0].children[0].classList.add("postSubscriberSpinner");
+        let subscriptionsSmall = document.createElement("button");
+        subscriptionsSmall.id = "tasselPostSubscriberSidebarSmall";
+        if (tasselSettings.tassel.sidebar && tasselSettings.tassel.sidebar.collapsedSubscriptions) subscriptionsSmall.classList.add("tasselRemoveSidebarElement");
+        subscriptionsSmall.title = "Subscriptions";
+        subscriptionsSmall.appendChild(icon.cloneNode(true));
         let notificationBubble = document.createElement("div");
-        notificationBubble.id = "postSubscriberNotificationBubble";
-        subscriptionSmall.children[0].appendChild(notificationBubble);
-        subscriptionSmall.addEventListener("click", showPopup_ltapluah);
-        sidebarSmall.insertBefore(subscriptionSmall, sidebarSmall.children[3]);
+        notificationBubble.id = "tasselPostSubscriberSidebarBubble";
+        subscriptionsSmall.children[0].appendChild(notificationBubble);
+        sidebarSmall.insertBefore(subscriptionsSmall, sidebarSmall.children[3]);
+        subscriptionsSmall.addEventListener("click", openModal_ltapluah);
 
-        //add button to expanded sidebar
-        let sidebarBig = document.getElementsByClassName("sidebar-expanded")[1];
-        let subscriptionBigWrapper = document.createElement("a");
-        subscriptionBigWrapper.href = "";//add a link to comply with accessibility requirements but don't open the link
-        subscriptionBigWrapper.addEventListener("click", function(event) {
-            event.preventDefault();
-        });
-        subscriptionBigWrapper.addEventListener("click", showPopup_ltapluah);
-        let subscriptionBig = document.createElement("div");
-        if (tasselSettings.shortenSidebar) {
-            subscriptionBig.style.marginTop = "8px";
-            subscriptionBig.style.marginBottom = "8px";
-        }
-        subscriptionBig.classList.add("postSubscriberIcon", "sidebar-topic");
-        subscriptionBig.appendChild(icon.cloneNode(true).children[0]);
-        subscriptionBig.children[0].style.transition = "transform 2s";
-        subscriptionBig.children[0].style.transform = "rotate(0deg)";
-        subscriptionBig.children[0].classList.add("postSubscriberSpinner");
-        subscriptionBig.innerHTML += "Subscriptions";
+        //expanded sidebar
+        let sidebarBig = document.getElementById("expanded-bar-container").children[0];
+        let subscriptionsBig = document.createElement("button");
+        subscriptionsBig.id = "tasselPostSubscriberSidebarBig";
+        subscriptionsBig.classList.add("sidebar-topic");
+        if (tasselSettings.tassel.sidebar && tasselSettings.tassel.sidebar.expandedSubscriptions) subscriptionsBig.classList.add("tasselRemoveSidebarElement");
+        subscriptionsBig.appendChild(icon.cloneNode(true));
+        subscriptionsBig.innerHTML += "Subscriptions";
         let counter = document.createElement("div");
+        counter.id = "tasselPostSubscriberSidebarCounter";
         counter.classList.add("sidebar-num");
-        counter.style.paddingTop = "7px";
-        if (hideNumbersSettings.subscriptionZero) counter.style.display = "none";
-        counter.id = "postSubscriberNotificationCounter";
         counter.innerHTML = "0";
-        subscriptionBig.appendChild(counter);
-        subscriptionBigWrapper.appendChild(subscriptionBig);
+        if (tasselSettings.hideNumbers && (tasselSettings.hideNumbers.subscriptionZero || tasselSettings.hideNumbers.subscription)) counter.style.display = "none";
+        subscriptionsBig.appendChild(counter);
         for (let child of sidebarBig.children) {
             if (child.href !== "https://www.pillowfort.social/communities") continue;
-            sidebarBig.insertBefore(subscriptionBigWrapper, child);
+            sidebarBig.insertBefore(subscriptionsBig, child);
             break;
         }
+        subscriptionsBig.addEventListener("click", openModal_ltapluah);
 
-        //make sidebar bigger but only if Tassel isn't installed
-        if (document.getElementById("tasselModalSidebar") != null) return;
-        document.getElementsByClassName("sidebar site-sidebar")[0].style.marginTop = "10px";
-        document.getElementById("expanded-bar-container").style.maxHeight = "calc(100vh - 100px)";
-        document.getElementsByClassName("sidebar-bottom sidebar-expanded")[0].style.width = "100%";
+        updateSidebarCounter_ltapluah();
     }
 
-    //show the popup of subscriptions
-    function showPopup_ltapluah() {
-        document.body.style.overflow = 'hidden';//disable scrolling of the body when the modal is open
-        let modal = document.getElementById("postSubscriberModal");
-        //generate the modal if it doesn't already exist
-        if (!modal) {
-            if (newBrowser) {
-                modal = document.createElement("dialog");
-                modal.id = "postSubscriberModal";
-                modal.setAttribute("aria-labelledby", "tasselPostSubscriberModalHeader");
-                modal.innerHTML = `
+    //generate / open the subscriptions modal
+    function openModal_ltapluah() {
+        document.body.classList.add("modal-open");
+        if (!newBrowser) {
+            openLegacyModal_ltapluah();
+            return;
+        }
+
+        let modal = document.getElementById("tasselPostSubscriberModal");
+        if (modal) {
+            listSubscriptions_ltapluah();
+            modal.showModal();
+            return;
+        }
+
+        //create modal
+        modal = document.createElement("dialog");
+        modal.id = "tasselPostSubscriberModal";
+        modal.setAttribute("aria-labelledby", "tasselPostSubscriberModalHeader");
+        modal.innerHTML = `
                 <div class="nomargin">
                     <div id="tasselPostSubscriberModalHeader" class="nomargin">
                         <div style='padding: 10px 15px 5px 20px;'>
-                            <button class='close' type='button' title='Close' onclick="document.getElementById('postSubscriberModal').close();">
+                            <button class='close' type='button' title='Close' onclick="document.getElementById('tasselPostSubscriberModal').close();">
                                 <span style='color:gray;'>x</span>
                             </button>
                             <h4 class='modal-title'>Subscriptions</h4>
@@ -198,62 +159,67 @@
                     </div>
                     <div id="tasselPostSubscriberModalSubHeader">
                         <div>
-                            <button class="tasselButtonSmall" id="postSubscriberCheck">update all</button>
+                            <button class="tasselButtonSmall" id="tasselPostSubscriberCheckAll">update all</button>
                             <button class="tasselButtonSmall" id="tasselPostSubscriberReadAll">mark all as read</button>
                             <button class="tasselButtonSmall" id="tasselPostSubscriberUnsubAll">unsubscribe all</button>
                             <button class="tasselButtonSmall" id="tasselPostSubscriberOpenOptions">settings</button>
                         </div>
                         <span id="tasselPostSubscriberCheckTime" class="nowrap">last update: ${timeToRel_ltapluah(subscriptions.lastCheck)} ago</span>
                     </div>
-                    <div id='postSubscriberModalContent'></div>
+                    <div id='tasselPostSubscriberModalContent'></div>
                 </div>
                 `;
-                document.body.appendChild(modal);
-                modal.addEventListener("close", function() {
-                    document.body.style.overflow = "auto";//reanable scrolling of the body when the modal is closed
-                });
-                modal.addEventListener("click", function(e) {
-                    const bounds = modal.getBoundingClientRect();
-                    if (e.clientX < bounds.left ||
-                        e.clientX > bounds.right ||
-                        e.clientY < bounds.top ||
-                        e.clientY > bounds.bottom) {
-                        modal.close();
-                    }
-                });
-                //button event listenrs
-                document.getElementById("postSubscriberCheck").addEventListener("click", function() {
-                    checkAll_ltapluah(true);
-                });
-                document.getElementById("tasselPostSubscriberReadAll").addEventListener("click", function() {
-                    Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")).forEach(function(item) {
-                        item.innerHTML = "";
-                    });
-                    subscriptions.subscriptions.forEach(function(item) {
-                        item.commentsSeen = item.comments;
-                    });
-                    saveSubscriptions_ltapluah();
-                    updateSidebarCounter_ltapluah();
-                });
-                document.getElementById("tasselPostSubscriberUnsubAll").addEventListener("click", function() {
-                    subscriptions.subscriptions = [];
-                    saveSubscriptions_ltapluah();
-                    updateSidebarCounter_ltapluah();
-                    document.getElementById("postSubscriberModalContent").innerHTML = `<p style="margin: 1em;">You don't have any subscriptions yet.</p>`;
-                });
-                document.getElementById("tasselPostSubscriberOpenOptions").addEventListener("click", function() {
-                    modal.close();
-                    document.getElementsByClassName("tasselSidebarBig")[0].click()
-                    tasselDisplaySettings_ltapluah();
-                });
-            } else {
-                modal = document.createElement("div");
-                modal.style = "position: fixed;width: 100vw;height: 100vh;top: 0;padding-top: 50px;display: grid;align-items: center;z-index: 90;";
-                modal.innerHTML = `
-                    <div id="postSubscriberModal" style="margin: auto;">
+        document.body.appendChild(modal);
+        modal.addEventListener("close", function() {
+            document.body.classList.remove("modal-open");//reanable scrolling of the body when the modal is closed
+        });
+        modal.addEventListener("click", function(e) {
+            const bounds = modal.getBoundingClientRect();
+            if (e.clientX < bounds.left ||
+                e.clientX > bounds.right ||
+                e.clientY < bounds.top ||
+                e.clientY > bounds.bottom) {
+                modal.close();
+            }
+        });
+        //button event listenrs
+        document.getElementById("tasselPostSubscriberCheckAll").addEventListener("click", function() {
+            checkAll_ltapluah(true);
+        });
+        document.getElementById("tasselPostSubscriberReadAll").addEventListener("click", function() {
+            Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")).forEach(function(item) {
+                item.innerHTML = "";
+            });
+            subscriptions.subscriptions.forEach(function(item) {
+                item.commentsSeen = item.comments;
+            });
+            saveSubscriptions_ltapluah();
+            updateSidebarCounter_ltapluah();
+        });
+        document.getElementById("tasselPostSubscriberUnsubAll").addEventListener("click", function() {
+            subscriptions.subscriptions = [];
+            saveSubscriptions_ltapluah();
+            updateSidebarCounter_ltapluah();
+            document.getElementById("postSubscriberModalContent").innerHTML = `<p style="margin: 1em;">You don't have any subscriptions yet.</p>`;
+        });
+        document.getElementById("tasselPostSubscriberOpenOptions").addEventListener("click", function() {
+            modal.close();
+            document.getElementsByClassName("tasselSidebarBig")[0].click()
+            tasselDisplaySettings_ltapluah();
+        });
+        listSubscriptions_ltapluah();
+        modal.showModal();
+    }
+
+    //generate the subscriptions modal for browsers without dialogs
+    function openLegacyModal_ltapluah() {
+        let modal = document.createElement("div");
+        modal.style = "position: fixed;width: 100vw;height: 100vh;top: 0;padding-top: 50px;display: grid;align-items: center;z-index: 90;";
+        modal.innerHTML = `
+                    <div id="tasselPostSubscriberModal" style="margin: auto;">
                     <div id="tasselPostSubscriberModalHeader" class="nomargin">
                         <div style='padding: 10px 15px 5px 20px;'>
-                            <button class='close' type='button' title='Close' onclick="document.getElementById('postSubscriberModal').parentNode.remove();document.body.style.overflow = 'auto';">
+                            <button class='close' type='button' title='Close' onclick="document.getElementById('tasselPostSubscriberModal').parentNode.remove();document.body.style.overflow = 'auto';">
                                 <span style='color:gray'>x</span>
                             </button>
                             <h4 class='modal-title'>Subscriptions</h4>
@@ -261,30 +227,33 @@
                     </div>
                     <div id="tasselPostSubscriberModalSubHeader">
                         <div style="height: 28px;overflow: hidden;">
-                            <button class="tasselButtonSmall" id="postSubscriberCheck">update all</button>
+                            <button class="tasselButtonSmall" id="tasselPostSubscriberCheckAll">update all</button>
                         </div>
                         <span id="tasselPostSubscriberCheckTime" class="nowrap">last update: ${timeToRel_ltapluah(subscriptions.lastCheck)} ago</span>
                         <br>
                         <span>Notice: You're using an old browser. Use a newer version for a better experience.<span>
                     </div>
-                    <div id='postSubscriberModalContent'></div>
+                    <div id='tasselPostSubscriberModalContent'></div>
                     </div>
                 `;
-                document.body.appendChild(modal);
-                document.getElementById("postSubscriberCheck").addEventListener("click", function() {
-                    checkAll_ltapluah(true);
-                });
-            }
-        }
-        if (newBrowser) modal.showModal();
+        document.body.appendChild(modal);
+        document.getElementById("tasselPostSubscriberCheckAll").addEventListener("click", function() {
+            checkAll_ltapluah(true);
+        });
+        listSubscriptions_ltapluah();
+    }
 
+    //fill the modal with all subscriped posts
+    function listSubscriptions_ltapluah() {
+        let modal = document.getElementById("tasselPostSubscriberModalContent");
+        if (!modal) return;
+        loadSubscriptions_ltapluah();
         if (subscriptions.subscriptions.length === 0) {
-            document.getElementById("postSubscriberModalContent").innerHTML = `<p style="margin: 1em;">You don't have any subscriptions yet.</p>`;
+            modal.innerHTML = `<p style="margin: 1em;">You don't have any subscriptions yet.</p>`;
             return;
         }
 
-        //generate list of subscriptions
-        document.getElementById("postSubscriberModalContent").innerHTML = "";
+        modal.innerHTML = "";
         subscriptions.subscriptions.forEach(function(item, index) {
             let entry = document.createElement("div");
             entry.classList.add("tasselPostSubscriberModalEntry");
@@ -318,8 +287,9 @@
                     </div>
                 </div>
             `;
-            if (item.comments - item.commentsSeen) entry.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")[0].innerHTML = `<div><h5>${item.comments - item.commentsSeen}</h5><p>new</p></div>`;
-            document.getElementById("postSubscriberModalContent").appendChild(entry);
+            if (item.comments - item.commentsSeen > 0) entry.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic")[0].innerHTML = `<div><h5>${item.comments - item.commentsSeen}</h5><p>new</p></div>`;
+            else if (item.comments - item.commentsSeen < 0) item.commentsSeen = item.comments;
+            modal.appendChild(entry);
             document.getElementById(`tPSread${item.id}`).addEventListener("click", function() {
                 for (let a = 0, el = this; a < 100; a++, el = el.parentNode) {
                     if (el.classList.contains("tasselPostSubscriberModalEntry")) {
@@ -338,6 +308,7 @@
                 updateSidebarCounter_ltapluah();
             });
             document.getElementById(`tPSunsub${item.id}`).addEventListener("click", function() {
+                let id = this.getAttribute("postid");
                 let el = this;
                 for (let a = 0; a < 100; a++) {
                     if (el.classList.contains("tasselPostSubscriberModalEntry")) {
@@ -345,8 +316,11 @@
                         break;
                     } else el = el.parentNode;
                 }
-                unsubscribe_ltapluah(this.getAttribute("postid"));
+                subscriptions.subscriptions.forEach(function(item, index) {
+                    if (item.id == id) subscriptions.subscriptions.splice(index, 1);
+                });
                 updateSidebarCounter_ltapluah();
+                saveSubscriptions_ltapluah();
             });
         });
     }
@@ -422,12 +396,6 @@
             document.getElementById("tasselPostSubscriberColorSelect").selectedIndex = 2
         });
 
-        content.appendChild(createSwitch_ltapluah("Enable loading indicator", settings.loadingIndicator ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings.loadingIndicator = this.checked;
-            saveSettings_ltapluah();
-        });
-
         //show the selected option in the menu, not the default
         let selector2 = document.getElementById("tasselPostSubscriberColorSelect");
         let color = settings.color;
@@ -435,17 +403,6 @@
         else for (let a = 0; a < selector2.children.length; a++) {
             if (color == selector2.children[a].value) selector2.children[a].selected = true;
         }
-    }
-
-    function createSwitch_ltapluah(title="", state="") {
-        let id = "tasselSwitch" + Math.random();
-        let toggle = document.createElement("div");
-        toggle.classList.add("tasselToggle");
-        toggle.innerHTML = `
-          <input id="${id}" type="checkbox" ${state}>
-          <label for="${id}">${title}</label>
-        `;
-        return toggle;
     }
 
     //save accent color selection
@@ -510,186 +467,107 @@
 
     //when viewing a post in the modal
     function initModal_ltapluah() {
-        let navigation = postModal.getElementsByClassName("post-nav-left")[0];
+        let modal = document.getElementById("post-view-modal");
+        if (!modal) return;
 
-        document.getElementById("tasselJsonManagerModalReady").addEventListener("click", function() {
-
-            //check if this post is subscribed
-            thisPost.id = postModal.getElementsByClassName("link_post")[0].href.substring(36)*1;
-            if (thisPost.id == 0) {
-                initModal_ltapluah();
-                return;
-            }
-            subscribed = subscriptions.subscriptions.some(function(item) {
-                return item.id === thisPost.id;
-            });
-
-            //get posts information in preparation for a new subscription
-            thisPost.comments = tasselJsonManager.modal.json.comments_count;
-            thisPost.commentsSeen = tasselJsonManager.modal.json.comments_count;
-            thisPost.author = tasselJsonManager.modal.json.username || "ERROR";
-            thisPost.title = getPostTitle_ltapluah(tasselJsonManager.modal.json);
-            thisPost.timestamp = new Date(tasselJsonManager.modal.json.created_at).getTime() || null;
-            thisPost.edited = tasselJsonManager.modal.json.last_edited_at || null;
-            thisPost.visited = openTime;
-
-            //switch from loading circle to subscribe button
-            document.getElementById("postSubscriberPostModal").style.display = "inline-block";
-            document.getElementById("postSubscriberPostModalLoading").style.display = "none";
-
-            if (subscribed) {
-                document.getElementById("postSubscriberPostModal").firstChild.classList.add("svg-pink-light");
-                document.getElementById("postSubscriberPostModal").firstChild.firstChild.lastChild.firstChild.style.fill = "rgb(88, 182, 221)";
-            } else {
-                document.getElementById("postSubscriberPostModal").firstChild.classList.remove("svg-pink-light");
-                document.getElementById("postSubscriberPostModal").firstChild.firstChild.lastChild.firstChild.style.fill = "none";
-            }
-
+        let navigation = modal.getElementsByClassName("post-nav-left")[0];
+        let subscribe = document.createElement("button");
+        subscribe.id = "tasselPostSubscriberModalSubscribe";
+        subscribe.classList.add("nav-tab");
+        let localIcon = icon.cloneNode(true);
+        localIcon.classList.add("svg-blue");
+        subscribe.appendChild(localIcon);
+        subscribe.firstChild.firstChild.style.width = "22px";
+        subscribe.addEventListener("click", function() {
+            toggleSubscription_ltapluah(this, tasselJsonManager.modal.json);
         });
+        navigation.appendChild(subscribe);
 
-        //switch from subscribe button to loading circle
-        if (document.getElementById("postSubscriberPostModal")) {
-            document.getElementById("postSubscriberPostModal").style.display = "none";
-            document.getElementById("postSubscriberPostModalLoading").style.display = "inline-block";
-            return;
-        }
-        //add button to post navigation
-        let subscriptionNav = document.createElement("span");
-        subscriptionNav.id = "postSubscriberPostModal";
-        subscriptionNav.style.display = "none";
-        subscriptionNav.title = subscribed ? "unsubscribe" : "subscribe";
-        subscriptionNav.classList.add("nav-tab");
-        subscriptionNav.appendChild(icon.cloneNode(true));
-        subscriptionNav.firstChild.firstChild.style.width = "22px";
-        subscriptionNav.addEventListener("click", toggleSubscription_ltapluah);
-        navigation.appendChild(subscriptionNav);
-        let subscriptionLoading = document.createElement("div");
-        subscriptionLoading.id = "postSubscriberPostModalLoading";
-        subscriptionLoading.classList.add("nav-tab");
-        subscriptionLoading.innerHTML = `<i class="fa fa-circle-notch fa-spin fa-3x fa-fw tasselIconColor" style="color:#58b6dd;"></i>`;
-        navigation.appendChild(subscriptionLoading);
+        let loading = document.createElement("div");
+        loading.id = "tasselPostSubscriberModalLoading";
+        loading.classList.add("nav-tab");
+        loading.innerHTML = `<i class="fa fa-circle-notch fa-spin fa-3x fa-fw tasselIconColor" style="color:#58b6dd;"></i>`;
+        navigation.appendChild(loading);
     }
 
     //add elements when viewing a post with its perma-link
     function initSinglePost_ltapluah() {
         if (document.URL.search("/posts/") !== 29) return;
         if (document.URL.search("/posts/new") === 29) return;
+        if (!tasselJsonManager.post.ready) return;
 
-        //check if this post is subscribed
-        let postID = document.URL.substring(36);
-        if (postID.indexOf("/") >= 0) postID = postID.substring(0, postID.indexOf("/"));
-        if (postID.indexOf("?") >= 0) postID = postID.substring(0, postID.indexOf("?"));
-        thisPost.id = postID*1;
-        let subscriptionData = subscriptions.subscriptions.find(function(item) {
-            return item.id === thisPost.id;
+        let subscribed = subscriptions.subscriptions.some(function(item) {
+            return item.id === tasselJsonManager.post.json.id;
         });
-        subscribed = subscriptionData ? true : false;
 
-        //add button to post navigation
-        let postNav = document.getElementsByClassName("post-nav")[0];
-        let subscriptionNav = document.createElement("span");
-        subscriptionNav.id = "postSubscriberToggle";
-        subscriptionNav.title = subscribed ? "unsubscribe" : "subscribe";
-        subscriptionNav.classList.add("nav-tab");
-        subscriptionNav.appendChild(icon.cloneNode(true));
-        subscriptionNav.firstChild.firstChild.style.width = "22px";
-        subscriptionNav.addEventListener("click", toggleSubscription_ltapluah);
-        postNav.appendChild(subscriptionNav);
+        let navigation = document.getElementsByClassName("post-nav-left")[0];
+        let subscribe = document.createElement("button");
+        subscribe.id = "tasselPostSubscriberModalSubscribe";
+        subscribe.classList.add("nav-tab");
+        if (subscribed) subscribe.classList.add("subscribed");
+        subscribe.appendChild(icon.cloneNode(true));
+        subscribe.firstChild.firstChild.style.width = "22px";
+        subscribe.addEventListener("click", function() {
+            toggleSubscription_ltapluah(this, tasselJsonManager.post.json);
+        });
+        navigation.appendChild(subscribe);
+
         if (subscribed) {
-            document.getElementById("postSubscriberToggle").firstChild.classList.add("svg-pink-light");
-            document.getElementById("postSubscriberToggle").firstChild.firstChild.lastChild.firstChild.style.fill = "rgb(88, 182, 221)";
-
-            document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
+            //source: https://stackoverflow.com/a/14746878
+            window.addEventListener("beforeunload", function(event) {
+                event.returnValue = '';
                 loadSubscriptions_ltapluah();
                 let subscriptionData = subscriptions.subscriptions.find(function(item) {
-                    return item.id === thisPost.id;
+                    return item.id === tasselJsonManager.post.json.id;
                 });
-                subscriptionData.comments = tasselJsonManager.post.json.comments_count;
-                subscriptionData.title = getPostTitle_ltapluah(tasselJsonManager.post.json);
-                subscriptionData.edited = tasselJsonManager.post.json.last_edited_at || null;
+                if (!subscriptionData) return;
+                subscriptionData.visited = openTime;
+                subscriptionData.commentsSeen = subscriptionData.comments;
                 saveSubscriptions_ltapluah();
-                thisPost = subscriptionData;
-
-                //source: https://stackoverflow.com/a/14746878
-                window.addEventListener("beforeunload", function(event) {
-                    event.returnValue = '';
-                    loadSubscriptions_ltapluah();
-                    let subscriptionData = subscriptions.subscriptions.find(function(item) {
-                        return item.id === thisPost.id;
-                    });
-                    subscriptionData.visited = openTime;
-                    subscriptionData.commentsSeen = subscriptionData.comments;
-                    saveSubscriptions_ltapluah();
-                });
-            });
-        } else {
-
-            //get posts information in preparation for a new subscription
-            thisPost.visited = new Date().getTime();
-            document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
-                thisPost.comments = tasselJsonManager.post.json.comments_count;
-                thisPost.commentsSeen = tasselJsonManager.post.json.comments_count;
-                thisPost.author = tasselJsonManager.post.json.username || "ERROR";
-                thisPost.title = getPostTitle_ltapluah(tasselJsonManager.post.json);
-                thisPost.timestamp = new Date(tasselJsonManager.post.json.created_at).getTime() || null;
-                thisPost.edited = tasselJsonManager.post.json.last_edited_at || null;
             });
         }
+        pushEvent_ltapluah({source:"Post Subscriber",text:"single post loaded"});
     }
 
     //(un-)subscribe to a post
-    function toggleSubscription_ltapluah() {
+    function toggleSubscription_ltapluah(caller, json) {
+        //check if this post is subscribed
+        let subscribed = subscriptions.subscriptions.some(function(item) {
+            return item.id === json.id;
+        });
         if (subscribed) {
-            unsubscribe_ltapluah(thisPost.id);
-            //change state of the button in the post navigation
-            if (document.getElementById("postSubscriberToggle")) {
-                document.getElementById("postSubscriberToggle").firstChild.classList.remove("svg-pink-light");
-                document.getElementById("postSubscriberToggle").firstChild.firstChild.lastChild.firstChild.style.fill = "none";
-                document.getElementById("postSubscriberToggle").title = "subscribe";
-            } else {
-                document.getElementById("postSubscriberPostModal").firstChild.classList.remove("svg-pink-light");
-                document.getElementById("postSubscriberPostModal").firstChild.firstChild.lastChild.firstChild.style.fill = "none";
-                document.getElementById("postSubscriberPostModal").title = "subscribe";
-            }
+            loadSubscriptions_ltapluah();
+            subscriptions.subscriptions.forEach(function(item, index) {
+                if (item.id == json.id) subscriptions.subscriptions.splice(index, 1);
+            });
+            saveSubscriptions_ltapluah();
+            caller.classList.remove("subscribed");
         } else {
             let newSubscription = {};
-            for (let key in thisPost) {
-                newSubscription[key] = thisPost[key];
-            }
+            newSubscription.author = json.username;
+            newSubscription.comments = json.comments_count;
+            newSubscription.commentsSeen = json.comments_count;
+            newSubscription.edited = json.last_edited_at || null;
+            newSubscription.id = json.id;
+            newSubscription.message = "";
+            newSubscription.timestamp = new Date(json.publish_at).getTime() || null;
+            newSubscription.title = getPostTitle_ltapluah(json);
+            newSubscription.visited = openTime;
             loadSubscriptions_ltapluah();
             subscriptions.subscriptions.push(newSubscription);
             saveSubscriptions_ltapluah();
-            //change state of the button in the post navigation
-            if (document.getElementById("postSubscriberToggle")) {
-                document.getElementById("postSubscriberToggle").firstChild.classList.add("svg-pink-light");
-                document.getElementById("postSubscriberToggle").firstChild.firstChild.lastChild.firstChild.style.fill = "rgb(88, 182, 221)";
-                document.getElementById("postSubscriberToggle").title = "unsubscribe";
-            } else {
-                document.getElementById("postSubscriberPostModal").firstChild.classList.add("svg-pink-light");
-                document.getElementById("postSubscriberPostModal").firstChild.firstChild.lastChild.firstChild.style.fill = "rgb(88, 182, 221)";
-                document.getElementById("postSubscriberPostModal").title = "unsubscribe";
-            }
+            caller.classList.add("subscribed");
         }
-        subscribed = !subscribed;
-    }
-
-    //remove a subscription
-    function unsubscribe_ltapluah(id) {
-        loadSubscriptions_ltapluah();
-        subscriptions.subscriptions.forEach(function(item, index) {
-            if (item.id == id) subscriptions.subscriptions.splice(index, 1);
-        });
-        saveSubscriptions_ltapluah();
     }
 
     //queue subscribed posts to check them for new comments
     function checkAll_ltapluah(force) {
-        let interval = settings.interval;
         let now = new Date().getTime();
-        if (now-subscriptions.lastCheck < interval && !force) { //when it's not time yet, only check stored data, don't fetch new data
+        if (now-subscriptions.lastCheck < settings.interval && !force) { //when it's not time yet, only check stored data, don't fetch new data
             updateSidebarCounter_ltapluah();
             return;
         }
+        pushEvent_ltapluah({source:"Post Subscriber",text:"checking for comments"});
 
         loadSubscriptions_ltapluah();
         subscriptions.lastCheck = now;
@@ -704,14 +582,6 @@
                 checkPost_ltapluah(item.id);
             }, 1000*index);
         });
-
-        //loading spinner
-        let setting = settings.loadingIndicator;
-        if (!setting) return;
-        Object.values(document.getElementsByClassName("postSubscriberSpinner")).forEach(function(data) {
-            let angle = data.style.transform.split("(")[1].split("d")[0]*1 + 360;
-            data.style.transform = `rotate(${angle}deg)`;
-        });
     }
 
     //get data from a post
@@ -720,35 +590,35 @@
         $.getJSON("https://www.pillowfort.social/posts/"+id+"/json", function(json) {
             let localCounter = 0;//counter for new comments from THIS subsription
             loadSubscriptions_ltapluah();
-            document.getElementById("postSubscriberNotificationBubble").style.display = "none";
             let modalArea = Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic"));
             modalArea = modalArea.find(function(item) {
                 return item.attributes.postid.value == id;
             });
-            subscriptions.subscriptions.forEach(function(item, index) {
-                if (item.id === id) {
-                    item.message = "";
-                    item.comments = json.comments_count;
-                    item.title = getPostTitle_ltapluah(json);
-                    localCounter = item.comments - item.commentsSeen;
-                    if (modalArea) {
-                        if (localCounter > 0) {
-                            modalArea.innerHTML = `<div><h5>${localCounter}</h5><p>new</p></div>`;
-                        } else {
-                            modalArea.innerHTML = "";
-                        }
-                    }
-                }
-                if (!item.commentsSeen) item.commentsSeen = 0;
-            });
-            updateSidebarCounter_ltapluah();
-            saveSubscriptions_ltapluah();
-        }).fail(function(value) {
-            loadSubscriptions_ltapluah();
-            let subscriptionData = subscriptions.subscriptions.find(function(item) {
+            let subscription = subscriptions.subscriptions.find(function(item) {
                 return item.id === id;
             });
-            subscriptionData.message = value.responseJSON.message;
+            if (subscription) {
+                if (!subscription.commentsSeen) subscription.commentsSeen = 0;
+                subscription.author = json.username;
+                subscription.timestamp = new Date(json.publish_at).getTime() || null;
+                subscription.edited = json.last_edited_at;
+                subscription.message = "";
+                subscription.comments = json.comments_count;
+                subscription.title = getPostTitle_ltapluah(json);
+                localCounter = subscription.comments - subscription.commentsSeen;
+                if (modalArea) {
+                    if (localCounter > 0) modalArea.innerHTML = `<div><h5>${localCounter}</h5><p>new</p></div>`;
+                    else modalArea.innerHTML = "";
+                }
+            }
+            saveSubscriptions_ltapluah();
+            updateSidebarCounter_ltapluah();
+        }).fail(function(value) {
+            loadSubscriptions_ltapluah();
+            let subscription = subscriptions.subscriptions.find(function(item) {
+                return item.id === id;
+            });
+            subscription.message = value.responseJSON.message;
             saveSubscriptions_ltapluah();
             let modalArea = Object.values(document.getElementsByClassName("tasselPostSubscriberModalEntryDataDynamic"));
             modalArea = modalArea.find(function(item) {
@@ -761,17 +631,17 @@
     //put the counter of total unread comments in the sidebar
     function updateSidebarCounter_ltapluah() {
         let counter = 0;//counter for new comments from ALL subscriptions
-        document.getElementById("postSubscriberNotificationBubble").style.display = "none";
+        document.getElementById("tasselPostSubscriberSidebarBubble").style.display = "none";
         subscriptions.subscriptions.forEach(function(item, index) {
             if (!item.commentsSeen) item.commentsSeen = 0;
             if (item.commentsSeen < item.comments) {
-                if (!hideNumbersSettings.subscription) document.getElementById("postSubscriberNotificationBubble").style.display = "block";
+                if (!(tasselSettings.hideNumbers && tasselSettings.hideNumbers.subscription)) document.getElementById("tasselPostSubscriberSidebarBubble").style.display = "block";
                 counter += item.comments - item.commentsSeen;
             }
         });
-        document.getElementById("postSubscriberNotificationCounter").innerHTML = counter;
-        if (counter > 0 && !hideNumbersSettings.subscription) document.getElementById("postSubscriberNotificationCounter").style.display = "block";
-        else if (hideNumbersSettings.subscriptionZero) document.getElementById("postSubscriberNotificationCounter").style.display = "none";
+        document.getElementById("tasselPostSubscriberSidebarCounter").innerHTML = counter;
+        if (counter > 0 && !(tasselSettings.hideNumbers && tasselSettings.hideNumbers.subscription)) document.getElementById("tasselPostSubscriberSidebarCounter").style.display = "block";
+        else if (tasselSettings.hideNumbers && tasselSettings.hideNumbers.subscriptionZero) document.getElementById("tasselPostSubscriberSidebarCounter").style.display = "none";
     }
 
     //return a post "title" based on title, text or post type
@@ -794,5 +664,22 @@
     /* Save list of subscriped posts to local storage */
     function saveSubscriptions_ltapluah() {
         localStorage.setItem("tasselPostSubscriber", JSON.stringify(subscriptions));
+    }
+
+    /* Create event log for debug more */
+    function pushEvent_ltapluah(data) {
+        if (!tasselSettings.tassel.debug) return;
+        let event = document.createElement("div");
+        event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+        event.id = "event" + Math.random();
+        document.getElementById("tasselEvents").appendChild(event);
+        window.setTimeout(function() {
+            event.classList.add("fade-out");
+            window.setTimeout(function() {
+                event.remove();
+            }, 5000);
+        }, 30000);
     }
 })();

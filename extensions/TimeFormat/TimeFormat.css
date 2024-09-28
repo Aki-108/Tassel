@@ -1,3 +1,11 @@
+.tasselTimeFormatActivity {
+        display: inline-block;
+}
+.post .post-nav .tag-text.tasselTimeFormatActivity {
+        float: unset;
+        padding: 13px 0px 14px 20px;
+}
+
 #tasselTimeFormatSettings {
         margin-bottom: 10px;
         display: grid;

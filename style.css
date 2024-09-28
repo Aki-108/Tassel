@@ -25,7 +25,6 @@ break {
 	padding: 7px 12px;
 	width: 100%;
 	height: 100%;
-	filter: var(--iconColor);
 }
 
 .tasselRemoveSidebarElement {
@@ -452,23 +451,30 @@ body.dark-theme #tasselJSONView {
 	color: #d9dbe0;
 }
 
-#tasselSettingsSidebarSection {
+#tasselSettingsSidebarSection,
+#tasselSettingsFooterSection {
+	margin-top: 10px;
 	border-left: 4px solid #e3e3e3;
 	padding-left: 10px;
 }
-body.dark-theme #tasselSettingsSidebarSection {
+body.dark-theme #tasselSettingsSidebarSection,
+body.dark-theme #tasselSettingsFooterSection {
 	border-color: #3e3e3e;
 }
-#tasselSettingsSidebarSection summary {
+#tasselSettingsSidebarSection summary,
+#tasselSettingsFooterSection summary {
 	margin-bottom: 5px;
 }
-#tasselSettingsSidebarSection summary::marker {
+#tasselSettingsSidebarSection summary::marker,
+#tasselSettingsFooterSection summary::marker {
 	font-size: 1.4em;
 }
-#tasselSettingsSidebarSection summary .tasselInfo {
+#tasselSettingsSidebarSection summary .tasselInfo,
+#tasselSettingsFooterSection summary .tasselInfo {
 	line-height: 1.1em;
 }
-#tasselSettingsSidebarSection h3 {
+#tasselSettingsSidebarSection h3,
+#tasselSettingsFooterSection h3 {
 	display: inline;
 }
 
@@ -504,7 +510,8 @@ body.dark-theme .tasselSaveButton {
 	background-color: #31734e;
 }
 
-.tasselToggle {
+.tasselToggle,
+.tasselNumeric {
 	margin-bottom: 10px;
 }
 
@@ -524,6 +531,18 @@ body.dark-theme .tasselToggle input {
 	cursor: pointer;
 	max-width: 90%;
 	line-height: 1em;
+}
+
+.tasselNumeric input {
+	display: inline-block;
+	margin: 1px 10px 5px 5px;
+	width: 3.2em;
+}
+
+.tasselNumeric label {
+	display: inline;
+	max-width: 90%;
+	cursor: pointer;
 }
 
 .tasselInfo {

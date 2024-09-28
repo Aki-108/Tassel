@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Added Accessibility
-// @version      0.2
+// @version      0.3
 // @description  Accessibility Tools
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -50,7 +50,7 @@
                     let content = Object.values(html.children).filter(function(item) {return item.classList.contains("new-post")})[0];
                     content = content.children[0].children[3].children[0];
                     content = content.children[1].value || content.children[2].value;
-                    editor.innerHTML = content;
+                    editor.innerHTML = content || "";
 
                     let imgs = Object.values(editor.getElementsByTagName("img"));
                     imgs.forEach(function(img) {
