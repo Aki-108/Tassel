@@ -23,7 +23,7 @@
     display: grid;
     grid-template-columns: 26px auto auto;
     align-items: center;
-    width: calc(100% - 8px);
+    width: calc(100% - 30px);
     border: none;
 }
 body.dark-theme #tasselPostSubscriberSidebarBig {
