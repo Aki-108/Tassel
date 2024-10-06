@@ -39,7 +39,7 @@ body.dark-theme #tasselPostSubscriberSidebarBig:hover {
     color: #CF698F;
 }
 #tasselPostSubscriberSidebarCounter {
-    display: block;
+    padding-right: 7px;
     text-align: right;
 }
 body.dark-theme #tasselPostSubscriberSidebarCounter {
