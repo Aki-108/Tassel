@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Collapsible Threads
-// @version      1.5
+// @version      1.6
 // @description  Collapse Comments and Threads
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -10,6 +10,8 @@
 
 (function() {
     'use strict';
+
+    let settings = JSON.parse(localStorage.getItem("tasselSettings2")).collapsibleThreads || {};
 
     const loadingIndicator = document.getElementById("comments_loading");
     const mutationConfig = {attributes: true, attributeFilter: ["style"]};
@@ -23,6 +25,11 @@
     document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", init_sicrjulu);
 
     function init_sicrjulu() {
+        addButtons_sicrjulu();
+        removeButtons_sicrjulu();
+    }
+
+    function addButtons_sicrjulu() {
         let headers = document.getElementsByClassName("header clearfix");
         for (let el of headers) {
             if (el.classList.contains("tasselCollapsibleThreadsProcessed")) continue;
@@ -152,5 +159,94 @@
                 commentBody.appendChild(buttonWidth);
             }
         }
+    }
+
+    function removeButtons_sicrjulu() {
+        let css = "";
+        if (settings.hideNativeCollapse || settings.hideScrollRoot) {
+            css += `
+              div:has(>.toggle-comments),
+              div:has(>.pointer-cursor[title="Scroll to root comment"]) {
+                float: unset !important;
+              }
+              div:has(>div>.toggle-comments),
+              div:has(>div>.pointer-cursor[title="Scroll to root comment"]){
+                min-height: max-content !important;
+              }`;
+        } else return;
+
+        if (settings.hideNativeCollapse) css += ".toggle-comments {display: none;}";
+        if (settings.hideScrollRoot) css += `.pointer-cursor[title="Scroll to root comment"] {display: none;}`;
+
+        //Apply new styling to page
+        //src: https://stackoverflow.com/q/3922139
+        let style = document.createElement("style");
+        style.setAttribute('type', 'text/css');
+        if (style.styleSheet) {//IE
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
+        document.head.appendChild(style);
+    }
+
+    //add elements to the Tassel menu
+    window.setTimeout(initTassel_sicrjulu, 1000);
+    function initTassel_sicrjulu() {
+        let tasselSidebar = document.getElementById("tasselModalSidebar");
+        if (tasselSidebar === null) return;
+        let button = document.createElement("button");
+        button.classList.add("tasselModalSidebarEntry");
+        button.id = "tasselModalSidebarCollapsibleThreads";
+        button.innerHTML = "Collapsible Threads";
+        tasselSidebar.appendChild(button);
+        document.getElementById("tasselModalSidebarCollapsibleThreads").addEventListener("click", tasselDisplaySettings_sicrjulu);
+    }
+
+    //create Tassel settings menu
+    function tasselDisplaySettings_sicrjulu() {
+        //deselect other menu items and select this one
+        let content = document.getElementById("tasselModalContent");
+        content.innerHTML = "";
+        let sidebarEntries = document.getElementsByClassName("tasselModalSidebarEntry");
+        Object.values(sidebarEntries).forEach(function(data, index) {
+            data.classList.remove("active");
+        });
+        document.getElementById("tasselModalSidebarCollapsibleThreads").classList.add("active");
+
+        //add a little note
+        let info0 = document.createElement("p");
+        info0.innerHTML = "Changes will become active after a page reload.";
+        content.appendChild(info0);
+        content.appendChild(document.createElement("hr"));
+
+        //add settings
+        content.appendChild(createSwitch_sicrjulu("Hide the native collapse button", settings.hideNativeCollapse ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.hideNativeCollapse = this.checked;
+            saveSettings_sicrjulu();
+        });
+        content.appendChild(createSwitch_sicrjulu("Hide the scroll-to-root button", settings.hideScrollRoot ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.hideScrollRoot = this.checked;
+            saveSettings_sicrjulu();
+        });
+    }
+
+    function saveSettings_sicrjulu() {
+        let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+        file.collapsibleThreads = settings;
+        localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    function createSwitch_sicrjulu(title="", state="") {
+        let id = "tasselSwitch" + Math.random();
+        let toggle = document.createElement("div");
+        toggle.classList.add("tasselToggle");
+        toggle.innerHTML = `
+          <input id="${id}" type="checkbox" ${state}>
+          <label for="${id}">${title}</label>
+        `;
+        return toggle;
     }
 })();
