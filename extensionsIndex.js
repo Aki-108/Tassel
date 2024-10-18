@@ -30,17 +30,17 @@ let extensionsIndex = [
             ]
         },
         {
-            "name": "Reblogged to Community",
+            "name": "Note Details",
             "id": 3,
-            "version": "2.9",
+            "version": "2.10",
             "created": 1653984960000,
-            "updated": 1708891499668,
+            "updated": 1729274308317,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/RebloggedToCommunity/RebloggedToCommunity.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c279a39630d64100276b3c5ff106fd8c8ffd9232/extensions/RebloggedToCommunity/NoteDetails.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/RebloggedToCommunity/RebloggedToCommunity.css",
             "post": "https://www.pillowfort.social/posts/3057985",
-            "features": ["Show where a post has been reblogged to.",
+            "features": ["Show tags of reblogs in the reblog notes of a post.",
                          "Show where a post has been liked from.",
                          "Makes notes actually dark in dark mode."
             ]
@@ -188,10 +188,10 @@ let extensionsIndex = [
                 "id": 13,
                 "version": "1.1",
                 "created": 1699174060526,
-                "updated": 1707555075119,
+                "updated": 1729274308316,
                 "author": "Aki108",
                 "description": "Hide any number.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/HideNumbers.js"
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c279a39630d64100276b3c5ff106fd8c8ffd9232/extensions/HideNumbers.js"
         },
         {
                 "name": "Keyboard Shortcuts",
