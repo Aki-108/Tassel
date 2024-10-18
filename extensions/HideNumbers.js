@@ -315,7 +315,7 @@
             settings.mutuals = this.checked;
             saveSettings_yxhjqepn();
         });
-        content.appendChild(createSwitch_yxhjqepn("Hide Donation Percent", settings.donation ? "checked" : ""));
+        content.appendChild(createSwitch_yxhjqepn("Hide Funding Percent", settings.donation ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.donation = this.checked;
             saveSettings_yxhjqepn();
