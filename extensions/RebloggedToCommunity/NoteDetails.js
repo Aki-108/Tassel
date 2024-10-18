@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Reblogged to Community
-// @version      2.9
+// @name         Note Details
+// @version      2.10
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -39,15 +39,9 @@
         if (document.URL.search("www.pillowfort.social/posts/new") !== -1) return;
 
         //JSON Manager events
-        document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", fillReblogData_tlfevnlu);
         document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", fillLikeData_tlfevnlu);
 
         //HTML click events
-        let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
-        reblogButton.addEventListener("click", function() {
-            if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) return;
-            fillReblogData_tlfevnlu();
-        });
         let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
         likeButton.addEventListener("click", function() {
             if (document.getElementsByClassName("rtcsourcedisplayinglikes").length > 0) return;
@@ -61,139 +55,6 @@
         Object.values(document.getElementById("likes").children).find(function(child) {
             return child.innerText === "There are no likes for this post."
         }).style.backgroundColor = "var(--tag_bg)";
-    }
-
-
-    /* Cache of communities with most members or active members. */
-    let comms = []
-    comms.push([509, "Active_Users"]);
-    comms.push([177, "AnimalCrossing"]);
-    comms.push([211, "Anime"]);
-    comms.push([223, "ArtistAlley"]);
-    comms.push([632, "BakersBakingStuff"]);
-    comms.push([3, "BetaUsers"]);
-    comms.push([557, "Bookworms"]);
-    comms.push([9293, "cat pics"]);
-    comms.push([84, "cats"]);
-    comms.push([131, "CriticalRole"]);
-    comms.push([11261, "Degoogle"]);
-    comms.push([352, "DnD"]);
-    comms.push([145, "Dogs"]);
-    comms.push([157, "dragon-age"]);
-    comms.push([39, "fallout"]);
-    comms.push([614, "FandomOlds"]);
-    comms.push([135, "Fanfiction"]);
-    comms.push([853, "femslash"]);
-    comms.push([11, "ffxiv"]);
-    comms.push([7578, "FindComments"]);
-    comms.push([226, "Food"]);
-    comms.push([76, "for folks who like art and OCs with out social media pressures"]);
-    comms.push([8846, "Furry Twitter - 18 and over"]);
-    comms.push([49, "Gaming"]);
-    comms.push([218, "Ghibli"]);
-    comms.push([321, "goth"]);
-    comms.push([287, "HarryPotterSeries"]);
-    comms.push([4693, "Horny Webcomics 🔞"]);
-    comms.push([80, "horror"]);
-    comms.push([11554, "IntroduceYourself"]);
-    comms.push([56, "KingdomHearts"]);
-    comms.push([166, "Legend-of-Zelda"]);
-    comms.push([132, "LewdDraws"]);
-    comms.push([112, "LGBT"]);
-    comms.push([136, "Marvel"]);
-    comms.push([293, "Memes"]);
-    comms.push([86, "Nintendo"]);
-    comms.push([113, "NSFW"]);
-    comms.push([3244, "NSFW-Furries"]);
-    comms.push([304, "OCs"]);
-    comms.push([351, "omgcheckplease"]);
-    comms.push([1256, "OriginalContent"]);
-    comms.push([51, "Overwatch"]);
-    comms.push([37, "PillowArtists"]);
-    comms.push([15, "Pokemon"]);
-    comms.push([455, "Queer"]);
-    comms.push([17, "~Queers on TV~"]);
-    comms.push([54, "Science"]);
-    comms.push([295, "Splatoon"]);
-    comms.push([82, "stardew-valley"]);
-    comms.push([161, "startrek"]);
-    comms.push([153, "StevenUniverse"]);
-    comms.push([147, "TAZ"]);
-    comms.push([964, "Teratophilia 🔞"]);
-    comms.push([4514, "Tumblr NSFW Art, BDSM, Kink and Sex-Work Refugees"]);
-    comms.push([202, "Webcomics"]);
-    comms.push([11183, "Wholesome Games"]);
-    comms.push([107, "Witchcraft"]);
-    comms.push([1419, "Writing"]);
-    comms.push([1062, "Writing-Prompts"]);
-    comms.push([92, "YuriOnIce"]);
-
-
-    /* Display reblog data. */
-    function fillReblogData_tlfevnlu() {
-        //stop everything that's already loading
-        for (let i = reblogTimeouts.length-1; i >= 0; i--) clearTimeout(reblogTimeouts.pop());
-        //if the old entries are still displaying, wait some time and try again
-        if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) {
-            reblogTimeouts.push(setTimeout(fillReblogData_tlfevnlu, 200));
-            return;
-        }
-
-        let notes = Object.values(document.getElementById("reblogs").getElementsByClassName("reblog-note"));
-        for (let index in notes) {
-            notes[index].classList.add("rtcsourcedisplayingreblogs");
-            let link = notes[index].getElementsByTagName("a")[1];
-            let postId = link.href.substring(link.href.search("/posts/")+7);
-            let commId = tasselJsonManager.reblogs.json[index].community_id;
-
-            //search cache for community
-            if (commId === null) {
-                if (settings.showReblogs) link.outerHTML += " to their fort";
-                addTags_tlfevnlu(notes[index], index);
-            }
-            let comm = comms.find(function(value) {
-                return value[0] === commId;
-            });
-            if (comm) {
-                if (settings.showReblogs) link.outerHTML += " to <a href='https://www.pillowfort.social/community/" + comm[1] + "'>" + comm[1] + "</a>";
-                addTags_tlfevnlu(notes[index], index, comm[1]);
-            }
-
-            //when the community is not in the cache, add a loading circle
-            if (commId !== null && !comm && settings.showReblogs) {
-                let dataLoading = document.createElement("a");
-                dataLoading.classList.add("reblog"+postId);
-                dataLoading.innerHTML = "<i class='fa fa-circle-notch fa-spin fa-3x fa-fw' style='color:var(--linkColor);font-size:15px;'></i>";
-                notes[index].appendChild(dataLoading);
-            }
-
-            //start fetching community data
-            if (commId === null || comm) continue;
-            if (document.getElementsByClassName("reblog"+postId).length > 1) continue;
-            reblogTimeouts.push(setTimeout(function(){findCommunity_tlfevnlu(postId, index);}, 500*reblogTimeouts.length));
-        }
-    }
-
-    /* Fetch community data. */
-    function findCommunity_tlfevnlu(postId, index) {
-        $.getJSON('https://www.pillowfort.social/posts/'+postId+'/json', function(data) {
-            //fill data for all entries with the same community
-            let notes = Object.values(document.getElementsByClassName("reblog"+postId));
-            for (let note of notes) {
-                addTags_tlfevnlu(note.parentNode, index, data.comm_name);
-                note.classList.remove("reblog"+postId);
-                if (data.comm_name === undefined) note.outerHTML = " to their fort";
-                else note.outerHTML = " to <a href='https://www.pillowfort.social/community/" + data.comm_name + "'>" + data.comm_name + "</a>";
-            }
-        }).fail(function(value) {
-            //show error message
-            let notes = Object.values(document.getElementsByClassName("reblog"+postId));
-            for (let note of notes) {
-                addTags_tlfevnlu(note.parentNode, index);
-                note.classList.remove("reblog"+postId);
-                note.outerHTML = " to <abbr title='" + value.statusText + "'>???</abbr>";
-            }
-        });
     }
 
     /* Show tags of the reblog */
@@ -304,13 +165,6 @@
         content.appendChild(document.createElement("hr"));
 
         //add settings
-        content.appendChild(createSwitch_tlfevnlu("Show where reblogs went to.", settings.showReblogs ? "checked" : ""));
-        content.lastChild.children[0].addEventListener("change", function() {
-            settings.showReblogs = this.checked;
-            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
-            file.rebloggedToCommunity = settings;
-            localStorage.setItem("tasselSettings2", JSON.stringify(file));
-        });
         content.appendChild(createSwitch_tlfevnlu("Show the tags of a reblog.", settings.showTags ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.showTags = this.checked;
