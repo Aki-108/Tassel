@@ -21,10 +21,13 @@
 
 #tasselPostSubscriberSidebarBig {
     display: grid;
-    grid-template-columns: 26px auto auto;
+    grid-template-columns: 39px auto auto;
     align-items: center;
-    width: calc(100% - 8px);
+    margin: 0;
+    width: 100%;
     border: none;
+    padding: 0 0 0 11px;
+    text-align: left;
 }
 body.dark-theme #tasselPostSubscriberSidebarBig {
     color: #6F96BC;
@@ -36,6 +39,7 @@ body.dark-theme #tasselPostSubscriberSidebarBig:hover {
     color: #CF698F;
 }
 #tasselPostSubscriberSidebarCounter {
+    padding-right: 7px;
     text-align: right;
 }
 body.dark-theme #tasselPostSubscriberSidebarCounter {
