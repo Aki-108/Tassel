@@ -39,9 +39,15 @@
         if (document.URL.search("www.pillowfort.social/posts/new") !== -1) return;
 
         //JSON Manager events
+        document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", fillReblogData_tlfevnlu);
         document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", fillLikeData_tlfevnlu);
 
         //HTML click events
+        let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
+        reblogButton.addEventListener("click", function() {
+            if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) return;
+            fillReblogData_tlfevnlu();
+        });
         let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
         likeButton.addEventListener("click", function() {
             if (document.getElementsByClassName("rtcsourcedisplayinglikes").length > 0) return;
@@ -55,6 +61,25 @@
         Object.values(document.getElementById("likes").children).find(function(child) {
             return child.innerText === "There are no likes for this post."
         }).style.backgroundColor = "var(--tag_bg)";
+    }
+
+    /* Display reblog data. */
+    function fillReblogData_tlfevnlu() {
+        let notes = Object.values(document.getElementById("reblogs").getElementsByClassName("reblog-note"));
+        for (let index in notes) {
+            notes[index].classList.add("rtcsourcedisplayingreblogs");
+            let link = notes[index].getElementsByTagName("a")[1];
+            let postId = link.href.substring(link.href.search("/posts/")+7);
+            let comm = tasselJsonManager.reblogs.json[index].community;
+
+            //search cache for community
+            if (comm === null) {
+                link.outerHTML += " to their fort";
+                addTags_tlfevnlu(notes[index], index);
+            } else {
+                addTags_tlfevnlu(notes[index], index, comm);
+            }
+        }
     }
 
     /* Show tags of the reblog */
