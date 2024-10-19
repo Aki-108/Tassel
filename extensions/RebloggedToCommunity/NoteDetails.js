@@ -89,7 +89,7 @@
         if (tags.length) {
             tags = tags.split(", ");
             let tagFrame = document.createElement("p");
-            tagFrame.classList.add("tasselRebloggedToCommunityTags");
+            tagFrame.classList.add("tasselNoteDetailsTags");
             for (let a = 0; a < tags.length; a++) {
                 let tagLink = document.createElement("a");
                 if (community) tagLink.href = `https://www.pillowfort.social/community/${community}/tagged/${tags[a]}`;
@@ -166,10 +166,10 @@
         if (tasselSidebar == null) return;
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
-        button.id = "tasselModalSidebarRebloggedToCommunity";
-        button.innerHTML = "Reblogged to Community";
+        button.id = "tasselModalSidebarNoteDetails";
+        button.innerHTML = "Note Details";
         tasselSidebar.appendChild(button);
-        document.getElementById("tasselModalSidebarRebloggedToCommunity").addEventListener("click", tasselDisplaySettings_tlfevnlu);
+        document.getElementById("tasselModalSidebarNoteDetails").addEventListener("click", tasselDisplaySettings_tlfevnlu);
     }
 
     //create Tassel settings menu
@@ -181,7 +181,7 @@
         Object.values(sidebarEntries).forEach(function(data, index) {
             data.classList.remove("active");
         });
-        document.getElementById("tasselModalSidebarRebloggedToCommunity").classList.add("active");
+        document.getElementById("tasselModalSidebarNoteDetails").classList.add("active");
 
         //add a little note
         let info0 = document.createElement("p");
