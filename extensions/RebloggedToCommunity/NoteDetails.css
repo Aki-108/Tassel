@@ -4,7 +4,7 @@ body.dark-theme .like-note {
   border-color: var(--postBorderColor);
 }
 
-.tasselRebloggedToCommunityTags {
+.tasselNoteDetailsTags {
     margin-top: .5em;
     margin-bottom: 0;
     padding: 5px 15px;
