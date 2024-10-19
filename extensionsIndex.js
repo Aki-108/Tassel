@@ -22,7 +22,7 @@ let extensionsIndex = [
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
             "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5748e0a1dadb7bca17734bcf7af20079581e103/extensions/PostSubscriber/PostSubscriber.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3e1f37c1ace0fb5e286043dc5221051f804c5935/extensions/PostSubscriber/PostSubscriber.css",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3079aedec6640c5211850fad7071b4963998c759/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -30,17 +30,17 @@ let extensionsIndex = [
             ]
         },
         {
-            "name": "Reblogged to Community",
+            "name": "Note Details",
             "id": 3,
-            "version": "2.9",
+            "version": "2.10",
             "created": 1653984960000,
-            "updated": 1708891499668,
+            "updated": 1729331721264,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/RebloggedToCommunity/RebloggedToCommunity.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/RebloggedToCommunity/RebloggedToCommunity.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee2fef864dda82bdf34015f413c8296f1b76f88/extensions/RebloggedToCommunity/NoteDetails.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee2fef864dda82bdf34015f413c8296f1b76f88/extensions/RebloggedToCommunity/NoteDetails.css",
             "post": "https://www.pillowfort.social/posts/3057985",
-            "features": ["Show where a post has been reblogged to.",
+            "features": ["Show tags of reblogs in the reblog notes of a post.",
                          "Show where a post has been liked from.",
                          "Makes notes actually dark in dark mode."
             ]
@@ -65,12 +65,12 @@ let extensionsIndex = [
         {
             "name": "Collapsible Threads",
             "id": 5,
-            "version": "1.5",
+            "version": "1.6",
             "created": 1674985800000,
-            "updated": 1712498779142,
+            "updated": 1729272896192,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/CollapsibleThreads/CollapsibleThreads.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0670159955e3f12e3a02cd87446e7cf0c0276add/extensions/CollapsibleThreads/CollapsibleThreads.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/CollapsibleThreads/CollapsibleThreads.css",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
@@ -188,10 +188,10 @@ let extensionsIndex = [
                 "id": 13,
                 "version": "1.1",
                 "created": 1699174060526,
-                "updated": 1707555075119,
+                "updated": 1729274308316,
                 "author": "Aki108",
                 "description": "Hide any number.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/HideNumbers.js"
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c279a39630d64100276b3c5ff106fd8c8ffd9232/extensions/HideNumbers.js"
         },
         {
                 "name": "Keyboard Shortcuts",
