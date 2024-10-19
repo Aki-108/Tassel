@@ -30,6 +30,22 @@ let toasts = [
     "text": "In the Tassel settings you can now change the order of the icons in the post footer.",
     "timestamp": 1727522695463,
     "new": false
+  },
+  {
+    "id": 30,
+    "extension": 3,
+    "title": "Renamed Reblogged To Community to Note Details",
+    "text": "As the original function of this extension is now a native Pillowfort feature, a name change was due.",
+    "timestamp": 1729331721264,
+    "new": false
+  },
+  {
+    "id": 31,
+    "extension": 5,
+    "title": "Collapsible Threads",
+    "text": "Options to remove Pillowforts new comment buttons have been added.",
+    "timestamp": 1729272896192,
+    "new": false
   }
 ];
 
