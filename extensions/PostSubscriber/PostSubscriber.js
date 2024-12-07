@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V3
-// @version      3.0
+// @version      3.1
 // @description  Get notified when there are new comments in a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -13,7 +13,7 @@
 
     let tasselSettings = JSON.parse(localStorage.getItem("tasselSettings2"));
     let settings = tasselSettings.postSubscriber;
-    if (!settings) settings = {"color":"#ff7fc5","interval":1200000};
+    if (!settings) settings = {color:"#ff7fc5",interval:1200000,order:0};
     let subscriptions = {"subscriptions":[]};
     let openTime = new Date().getTime();
     let newBrowser = typeof HTMLDialogElement === 'function';
@@ -150,11 +150,17 @@
         modal.innerHTML = `
                 <div class="nomargin">
                     <div id="tasselPostSubscriberModalHeader" class="nomargin">
-                        <div style='padding: 10px 15px 5px 20px;'>
-                            <button class='close' type='button' title='Close' onclick="document.getElementById('tasselPostSubscriberModal').close();">
+                        <div>
+                            <h4 class="modal-title">Subscriptions</h4>
+                            <select id="tasselPostSubscriberModalOrder">
+                                <option ${settings.order === 0 ? "selected" : ""} defaultSelected>newest subscription</option>
+                                <option ${settings.order === 1 ? "selected" : ""}>oldest subscription</option>
+                                <option ${settings.order === 2 ? "selected" : ""}>most new comments</option>
+                                <option ${settings.order === 3 ? "selected" : ""}>least new comments</option>
+                            </select>
+                            <button class="close" type="button" title="Close" onclick="document.getElementById('tasselPostSubscriberModal').close();">
                                 <span style='color:gray;'>x</span>
                             </button>
-                            <h4 class='modal-title'>Subscriptions</h4>
                         </div>
                     </div>
                     <div id="tasselPostSubscriberModalSubHeader">
@@ -179,8 +185,13 @@
                 e.clientX > bounds.right ||
                 e.clientY < bounds.top ||
                 e.clientY > bounds.bottom) {
-                modal.close();
+                if (e.clientX > 0 || e.clientY > 0) modal.close();
             }
+        });
+        document.getElementById("tasselPostSubscriberModalOrder").addEventListener("change", function() {
+            settings.order = document.getElementById("tasselPostSubscriberModalOrder").selectedIndex;
+            saveSettings_ltapluah();
+            listSubscriptions_ltapluah();
         });
         //button event listenrs
         document.getElementById("tasselPostSubscriberCheckAll").addEventListener("click", function() {
@@ -219,10 +230,16 @@
                     <div id="tasselPostSubscriberModal" style="margin: auto;">
                     <div id="tasselPostSubscriberModalHeader" class="nomargin">
                         <div style='padding: 10px 15px 5px 20px;'>
+                            <h4 class='modal-title'>Subscriptions</h4>
+                            <select id="tasselPostSubscriberModalOrder">
+                                <option ${settings.order === 0 ? "selected" : ""} defaultSelected>newest subscription</option>
+                                <option ${settings.order === 1 ? "selected" : ""}>oldest subscription</option>
+                                <option ${settings.order === 2 ? "selected" : ""}>most new comments</option>
+                                <option ${settings.order === 3 ? "selected" : ""}>least new comments</option>
+                            </select>
                             <button class='close' type='button' title='Close' onclick="document.getElementById('tasselPostSubscriberModal').parentNode.remove();document.body.style.overflow = 'auto';">
                                 <span style='color:gray'>x</span>
                             </button>
-                            <h4 class='modal-title'>Subscriptions</h4>
                         </div>
                     </div>
                     <div id="tasselPostSubscriberModalSubHeader">
@@ -237,6 +254,11 @@
                     </div>
                 `;
         document.body.appendChild(modal);
+        document.getElementById("tasselPostSubscriberModalOrder").addEventListener("change", function() {
+            settings.order = document.getElementById("tasselPostSubscriberModalOrder").selectedIndex;
+            saveSettings_ltapluah();
+            listSubscriptions_ltapluah();
+        });
         document.getElementById("tasselPostSubscriberCheckAll").addEventListener("click", function() {
             checkAll_ltapluah(true);
         });
@@ -252,6 +274,31 @@
             modal.innerHTML = `<p style="margin: 1em;">You don't have any subscriptions yet.</p>`;
             return;
         }
+
+        subscriptions.subscriptions.sort(function(a,b) {
+            if (settings.order === 0) {//newest subscription
+                if (a.subscribed > b.subscribed) return -1;
+                if (a.subscribed < b.subscribed) return 1;
+                return 0;
+            } else if (settings.order === 1) {//oldest subscription
+                if (a.subscribed < b.subscribed) return -1;
+                if (a.subscribed > b.subscribed) return 1;
+                return 0;
+            } else if (settings.order === 2) {//most new comments
+                if (a.comments - a.commentsSeen > b.comments - b.commentsSeen) return -1;
+                if (a.comments - a.commentsSeen < b.comments - b.commentsSeen) return 1;
+                if (a.subscribed > b.subscribed) return -1;
+                if (a.subscribed < b.subscribed) return 1;
+                return 0;
+            } else if (settings.order === 3) {//least new comments
+                if (a.comments - a.commentsSeen < b.comments - b.commentsSeen) return -1;
+                if (a.comments - a.commentsSeen > b.comments - b.commentsSeen) return 1;
+                if (a.subscribed > b.subscribed) return -1;
+                if (a.subscribed < b.subscribed) return 1;
+                return 0;
+            }
+            return 0;
+        });
 
         modal.innerHTML = "";
         subscriptions.subscriptions.forEach(function(item, index) {
@@ -553,6 +600,7 @@
             newSubscription.timestamp = new Date(json.publish_at).getTime() || null;
             newSubscription.title = getPostTitle_ltapluah(json);
             newSubscription.visited = openTime;
+            newSubscription.subscribed = new Date().getTime();
             loadSubscriptions_ltapluah();
             subscriptions.subscriptions.push(newSubscription);
             saveSubscriptions_ltapluah();
@@ -659,6 +707,9 @@
     function loadSubscriptions_ltapluah() {
         subscriptions = (JSON.parse(localStorage.getItem("tasselPostSubscriber")) || {});
         if (subscriptions.subscriptions === undefined) subscriptions.subscriptions = [];
+        for (let index in subscriptions.subscriptions) {
+            if (subscriptions.subscriptions[index].subscribed === undefined) subscriptions.subscriptions[index].subscribed = index;
+        }
     }
 
     /* Save list of subscriped posts to local storage */
