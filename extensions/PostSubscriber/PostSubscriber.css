@@ -94,6 +94,17 @@ body.dark-theme #tasselPostSubscriberModal::backdrop {
 body.dark-theme #tasselPostSubscriberModal div {
     background: #1b1d20;
 }
+    
+#tasselPostSubscriberModalHeader div {
+    display: grid;
+    grid-template-columns: auto auto 39px;
+    gap: 15px;
+    padding: 10px 15px 5px 20px;
+}
+    
+#tasselPostSubscriberModal .modal-title {
+    padding-top: 3px;
+}
 
 #tasselPostSubscriberModalSubHeader {
     border-top: 2px solid #e3e3e3;
