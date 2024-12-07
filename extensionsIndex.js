@@ -32,17 +32,18 @@ let extensionsIndex = [
         {
             "name": "Note Details",
             "id": 3,
-            "version": "2.10",
+            "version": "2.11",
             "created": 1653984960000,
-            "updated": 1729331721264,
+            "updated": 1733580345437,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee2fef864dda82bdf34015f413c8296f1b76f88/extensions/RebloggedToCommunity/NoteDetails.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee2fef864dda82bdf34015f413c8296f1b76f88/extensions/RebloggedToCommunity/NoteDetails.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1d16aef1747e7ca14f57ac31bca3cb3699a099b2/extensions/RebloggedToCommunity/NoteDetails.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1d16aef1747e7ca14f57ac31bca3cb3699a099b2/extensions/RebloggedToCommunity/NoteDetails.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show tags of reblogs in the reblog notes of a post.",
                          "Show where a post has been liked from.",
-                         "Makes notes actually dark in dark mode."
+                         "Makes notes actually dark in dark mode.",
+                         "Highlight new notifications."
             ]
         },
         {
