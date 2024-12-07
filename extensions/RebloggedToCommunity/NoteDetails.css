@@ -12,3 +12,10 @@ body.dark-theme .like-note {
     font-family: "Nunito";
     font-size: 12px;
 }
+
+.header:has(>.tasselNoteDetailsNew) {
+    font-weight: bold;
+}
+.tasselNoteDetailsNew .post-preview.main.post {
+    font-weight: initial;
+}
