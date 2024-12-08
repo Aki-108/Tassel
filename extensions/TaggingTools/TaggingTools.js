@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.1
+// @version      2.2
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -325,6 +325,8 @@
                 let edges = findEdges_dshcgkhy(tagInput.value.length);
                 tagInput.value = tagInput.value.substring(0, edges.start) + ` ${item}, `;
             });
+
+            cursorPos = tagInput.selectionStart = tagInput.value.length;
         });
 
         suggestionOutput.appendChild(button);

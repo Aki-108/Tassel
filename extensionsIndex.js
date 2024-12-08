@@ -16,13 +16,13 @@ let extensionsIndex = [
         {
             "name": "Post Subscriber",
             "id": 2,
-            "version": "3.0",
+            "version": "3.1",
             "created": 1661764440000,
-            "updated": 1727516314553,
+            "updated": 1733598272587,
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5748e0a1dadb7bca17734bcf7af20079581e103/extensions/PostSubscriber/PostSubscriber.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3079aedec6640c5211850fad7071b4963998c759/extensions/PostSubscriber/PostSubscriber.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01469e5fed95ad69c45b1cb9de330123e18172a9/extensions/PostSubscriber/PostSubscriber.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01469e5fed95ad69c45b1cb9de330123e18172a9/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -32,17 +32,18 @@ let extensionsIndex = [
         {
             "name": "Note Details",
             "id": 3,
-            "version": "2.10",
+            "version": "2.11",
             "created": 1653984960000,
-            "updated": 1729331721264,
+            "updated": 1733580345437,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee2fef864dda82bdf34015f413c8296f1b76f88/extensions/RebloggedToCommunity/NoteDetails.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee2fef864dda82bdf34015f413c8296f1b76f88/extensions/RebloggedToCommunity/NoteDetails.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1d16aef1747e7ca14f57ac31bca3cb3699a099b2/extensions/RebloggedToCommunity/NoteDetails.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1d16aef1747e7ca14f57ac31bca3cb3699a099b2/extensions/RebloggedToCommunity/NoteDetails.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show tags of reblogs in the reblog notes of a post.",
                          "Show where a post has been liked from.",
-                         "Makes notes actually dark in dark mode."
+                         "Makes notes actually dark in dark mode.",
+                         "Highlight new notifications."
             ]
         },
         {
@@ -88,12 +89,12 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.1",
+            "version": "2.2",
             "created": 1678386060000,
-            "updated": 1710016177867,
+            "updated": 1733651525341,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/TaggingTools/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a04c13b2606a1fa35585d2b33287040b27f39777/extensions/TaggingTools/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [

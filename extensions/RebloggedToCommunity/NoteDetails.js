@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Note Details
-// @version      2.10
+// @version      2.11
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -30,6 +30,7 @@
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
+    highlightNewNotes_tlfevnlu();
     waitForKeyElements("#tasselJsonManagerReblogReady", addEventListener_tlfevnlu);
     initTassel_tlfevnlu();
 
@@ -160,6 +161,49 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    function highlightNewNotes_tlfevnlu() {
+        if (!settings.newNotes) return;
+        if (document.URL !== "https://www.pillowfort.social/notifs_dash") return;
+        let lastVisit = JSON.parse(localStorage.getItem("tasselNoteDetails")) || {visited: 0};
+        let currentVisit = new Date().getTime();
+
+        let loadingObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
+                    let notes = Object.values(document.getElementsByClassName("comment-subheader"));
+                    for (let note of notes) {
+                        let timestamp = note.textContent.split("\n")[5];
+                        if (timestamp.search("at") < 0) timestamp = note.textContent.split("\n")[1];
+                        if (timestamp.search("at") < 0) timestamp = note.textContent.split("\n")[2];
+                        if (timestamp.search("at") < 0) timestamp = note.textContent.split("\n")[4];
+                        let date = new Date(timestamp.slice(timestamp.search(" at ")+4).slice(0,22));
+                        if (isNaN(date.getTime())) console.log(timestamp);
+                        if (date.getTime() >= lastVisit.visited) note.classList.add("tasselNoteDetailsNew");
+                    }
+                }
+            });
+        });
+        loadingObserver.observe(document.getElementById("all_loading_spinner"), {
+            attributes: true,
+            attributeFilter: ["style"]
+        });
+        loadingObserver.observe(document.getElementById("replies_loading_spinner"), {
+            attributes: true,
+            attributeFilter: ["style"]
+        });
+        loadingObserver.observe(document.getElementById("lr_loading_spinner"), {
+            attributes: true,
+            attributeFilter: ["style"]
+        });
+
+        window.addEventListener("beforeunload", function(event) {
+            lastVisit.visited = currentVisit;
+            localStorage.setItem("tasselNoteDetails", JSON.stringify(lastVisit));
+        });
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //add elements to the Tassel menu
     function initTassel_tlfevnlu() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
@@ -200,6 +244,13 @@
         content.appendChild(createSwitch_tlfevnlu("Show where likes came from.", settings.showLikes ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings.showLikes = this.checked;
+            let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+            file.rebloggedToCommunity = settings;
+            localStorage.setItem("tasselSettings2", JSON.stringify(file));
+        });
+        content.appendChild(createSwitch_tlfevnlu("Hightlight new notifications.", settings.newNotes ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.newNotes = this.checked;
             let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
             file.rebloggedToCommunity = settings;
             localStorage.setItem("tasselSettings2", JSON.stringify(file));
