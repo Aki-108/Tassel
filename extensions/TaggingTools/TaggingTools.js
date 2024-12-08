@@ -16,7 +16,7 @@
 
     //get page elements
     let tagInput = document.getElementById("tags") || document.getElementById("post_tag_list");
-    let submitButton = document.getElementById("submit-reblog");
+    let submitButton = document.getElementById("submit-reblog") || document.getElementById("publish-btn");
     let draftButton;
     if (submitButton) {;//reblog modal
     } else if (document.getElementsByClassName("submit-post-bkd")[1]) {//create post
@@ -27,7 +27,18 @@
     }
 
     //load database
-    let tags = (JSON.parse(localStorage.getItem("tasselTaggingTools")) || {tags: []}).tags;
+    let tags = (JSON.parse(localStorage.getItem("tasselTaggingTools")) || {tags: {}});
+    if (tags.constructor === Array) {
+        let newTags = {};
+        for (let index in tags) {
+            tags[index].id = parseInt(index) + 1;
+            newTags[tags[index].id] = tags[index];
+        }
+        newTags.nextIndex = Object.values(newTags).length + 1;
+        tags = newTags;
+        localStorage.setItem("tasselTaggingTools", JSON.stringify(tags));
+        console.log(tags);
+    }
 
     let cursorPos = -1;
     let newPostType = "text";
@@ -41,7 +52,6 @@
         initReblogPage_dshcgkhy();
         initReblogModal_dshcgkhy();
         addEventListenerSubmit_dshcgkhy(submitButton);
-        //addEventListenerSubmit_dshcgkhy(draftButton);
         addEventListenerInput_dshcgkhy();
         initTassel_dshcgkhy();
     }
@@ -63,7 +73,10 @@
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
             tasselJsonManager.modal.json.tags.forEach(function(tag) {
-                tags.push({tag:tag,count:1});
+                //tags.push({tag:tag,count:1});
+                //TODO
+                tags[tags.nextIndex] = {tag:tag,count:1,type:"original"};
+                tags.nextIndex++;
             });
         });
     }
@@ -94,7 +107,10 @@
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
             tasselJsonManager.post.json.tags.forEach(function(tag) {
-                tags.push({tag:tag,count:1});
+                //tags.push({tag:tag,count:1});
+                //TODO
+                tags[tags.nextIndex] = {tag:tag,count:1,type:"original"};
+                tags.nextIndex++;
             });
         });
         addCommunityRulesButton_dshcgkhy();
@@ -102,6 +118,7 @@
 
     /* Create a button in the modal header */
     function addCommunityRulesButton_dshcgkhy() {
+        //sortCommunities_dshcgkhy();
         if (document.getElementById("tasselTaggingToolsRulesButton")) return;
         let header = document.getElementsByClassName("header-create-post")[0];
         let button = document.createElement("button");
@@ -139,6 +156,27 @@
         });
     }
 
+    /* Sort the list of communities to reblog to */
+    function loadCommunityTags_dshcgkhy() {
+        $.get(`https://www.pillowfort.social/community/IntroduceYourself`, function(data) {
+            let doc = document.createElement("div");
+            doc.innerHTML = data.substring(data.indexOf("<!-- BEGIN COMMUNITY PINNED TAGS -->"), data.indexOf("<!-- END COMMUNITY PINNED TAGS -->"));;
+
+            if (doc.childNodes.length < 3) return;
+            let list = Object.values(doc.childNodes[2].childNodes)
+            .filter(function(item) {
+                return item.tagName === "A";
+            })
+            .map(function(item) {
+                return item.innerHTML;
+            });
+            list.forEach(function(tag) {
+                tags[tags.nextIndex] = {tag:tag,count:1,type:"community"};
+                tags.nextIndex++;
+            });
+        });
+    }
+
     /* Remove previous default tag and add new one */
     function togglePostType_dshcgkhy(type) {
         //find previous tag
@@ -170,12 +208,11 @@
         button.addEventListener("click", function() {
             //load database
             let file = JSON.parse(localStorage.getItem("tasselTaggingTools")) || {};
-            let fileTags = file.tags || [];
+            let fileTags = file.tags || {};
 
             let tags = tagInput.value.split(",");
+            tags = tags.map(removeSpaces_dshcgkhy);
             tags.forEach(function(tag) {
-                tag = removeSpaces_dshcgkhy(tag);
-
                 let index = -1;
                 let entry = fileTags.find(function(item, index_) {
                     if (item.tag === tag) {
@@ -234,7 +271,8 @@
                 tag: item.tag,
                 count: item.count,
                 rank: item.count * (item.tag.length / (searchIndex+1)),
-                index: searchIndex
+                index: searchIndex,
+                type: item.type || ""
             });
         });
 
@@ -265,6 +303,8 @@
             let button = document.createElement("button");
             button.setAttribute("value", item.tag);
             button.innerHTML = item.tag.substring(0, item.index) + "<u>" + item.tag.substring(item.index, item.index + typing.length) + "</u>" + item.tag.substring(item.index + typing.length);
+            if (item.type === "community") button.style.background = "orange";
+            else if (item.type === "original") button.style.background = "red";
             button.addEventListener("click", function(event) {
                 event.preventDefault();
                 insertTag_dshcgkhy(this);
@@ -326,7 +366,7 @@
                 tagInput.value = tagInput.value.substring(0, edges.start) + ` ${item}, `;
             });
 
-            cursorPos = tagInput.selectionStart = tagInput.value.length;
+            tagInput.selectionStart = tagInput.value.length;
         });
 
         suggestionOutput.appendChild(button);
