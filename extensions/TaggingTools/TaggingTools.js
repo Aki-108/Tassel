@@ -325,6 +325,8 @@
                 let edges = findEdges_dshcgkhy(tagInput.value.length);
                 tagInput.value = tagInput.value.substring(0, edges.start) + ` ${item}, `;
             });
+
+            tagInput.setSelectionRange(tagInput.value.length,tagInput.value.length);
         });
 
         suggestionOutput.appendChild(button);
