@@ -12,6 +12,7 @@
     'use strict';
 
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).taggingTools || {};
+    let debug = JSON.parse(localStorage.getItem("tasselSettings2")).tassel.debug || false;
     if (!settings.tagPreset) settings.tagPreset = {textPost: "", photoPost: "", videoPost: "", linkPost: "", selfReblog: "", otherReblog: ""};
 
     //get page elements
@@ -27,18 +28,7 @@
     }
 
     //load database
-    let tags = (JSON.parse(localStorage.getItem("tasselTaggingTools")) || {tags: {}});
-    if (tags.constructor === Array) {
-        let newTags = {};
-        for (let index in tags) {
-            tags[index].id = parseInt(index) + 1;
-            newTags[tags[index].id] = tags[index];
-        }
-        newTags.nextIndex = Object.values(newTags).length + 1;
-        tags = newTags;
-        localStorage.setItem("tasselTaggingTools", JSON.stringify(tags));
-        console.log(tags);
-    }
+    let tags = (JSON.parse(localStorage.getItem("tasselTaggingTools")) || {tags: []}).tags;
 
     let cursorPos = -1;
     let newPostType = "text";
@@ -73,10 +63,14 @@
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
             tasselJsonManager.modal.json.tags.forEach(function(tag) {
-                //tags.push({tag:tag,count:1});
-                //TODO
-                tags[tags.nextIndex] = {tag:tag,count:1,type:"original"};
-                tags.nextIndex++;
+                let existing = tags.find(function(item) {
+                    return item.tag.toLowerCase() === tag.toLowerCase();
+                });
+                if (existing !== undefined) {
+                    existing.type = "original";
+                } else {
+                    tags.push({tag:tag,count:1,type:"original"});
+                }
             });
         });
     }
@@ -107,10 +101,14 @@
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
             tasselJsonManager.post.json.tags.forEach(function(tag) {
-                //tags.push({tag:tag,count:1});
-                //TODO
-                tags[tags.nextIndex] = {tag:tag,count:1,type:"original"};
-                tags.nextIndex++;
+                let existing = tags.find(function(item) {
+                    return item.tag.toLowerCase() === tag.toLowerCase();
+                });
+                if (existing !== undefined) {
+                    existing.type = "original";
+                } else {
+                    tags.push({tag:tag,count:1,type:"original"});
+                }
             });
         });
         addCommunityRulesButton_dshcgkhy();
@@ -118,7 +116,8 @@
 
     /* Create a button in the modal header */
     function addCommunityRulesButton_dshcgkhy() {
-        //sortCommunities_dshcgkhy();
+        loadCommunityTags_dshcgkhy();
+
         if (document.getElementById("tasselTaggingToolsRulesButton")) return;
         let header = document.getElementsByClassName("header-create-post")[0];
         let button = document.createElement("button");
@@ -156,23 +155,34 @@
         });
     }
 
-    /* Sort the list of communities to reblog to */
+    /* Load the list of pinned tags */
     function loadCommunityTags_dshcgkhy() {
-        $.get(`https://www.pillowfort.social/community/IntroduceYourself`, function(data) {
-            let doc = document.createElement("div");
-            doc.innerHTML = data.substring(data.indexOf("<!-- BEGIN COMMUNITY PINNED TAGS -->"), data.indexOf("<!-- END COMMUNITY PINNED TAGS -->"));;
+        let select = document.getElementById("post_to") || document.getElementById("reblog-modal").getElementsByTagName("select")[0];
+        select.addEventListener("change", function() {
+            if (select.value === "current_user") return;
+            let community = select.selectedOptions[0].textContent;
+            $.get(`https://www.pillowfort.social/community/${community}`, function(data) {
+                let doc = document.createElement("div");
+                doc.innerHTML = data.substring(data.indexOf("<!-- BEGIN COMMUNITY PINNED TAGS -->"), data.indexOf("<!-- END COMMUNITY PINNED TAGS -->"));;
 
-            if (doc.childNodes.length < 3) return;
-            let list = Object.values(doc.childNodes[2].childNodes)
-            .filter(function(item) {
-                return item.tagName === "A";
-            })
-            .map(function(item) {
-                return item.innerHTML;
-            });
-            list.forEach(function(tag) {
-                tags[tags.nextIndex] = {tag:tag,count:1,type:"community"};
-                tags.nextIndex++;
+                if (doc.childNodes.length < 3) return;
+                let list = Object.values(doc.childNodes[2].childNodes)
+                .filter(function(item) {
+                    return item.tagName === "A";
+                })
+                .map(function(item) {
+                    return item.innerHTML;
+                });
+                list.forEach(function(tag) {
+                    let existing = tags.find(function(item) {
+                        return item.tag.toLowerCase() === tag.toLowerCase();
+                    });
+                    if (existing !== undefined) {
+                        existing.type = "community";
+                    } else {
+                        tags.push({tag:tag,count:1,type:"community"});
+                    }
+                });
             });
         });
     }
@@ -215,15 +225,20 @@
             tags.forEach(function(tag) {
                 let index = -1;
                 let entry = fileTags.find(function(item, index_) {
-                    if (item.tag === tag) {
+                    if (item.tag.toLowerCase() === tag.toLowerCase()) {
                         index = index_;
                         return true;
                     }
                 });
                 if (index > -1) {//update tag
                     fileTags[index].count++;
+                    if (fileTags[index].related === undefined) fileTags[index].related = [];
+                    fileTags[index].related.push(...tags);
+                    fileTags[index].related = [...new Set(fileTags[index].related)].filter(function(item) {
+                        return item.toLowerCase() !== fileTags[index].tag.toLowerCase() && item.length > 0;
+                    });
                 } else {//add new tag
-                    fileTags.push({tag: tag, count: 1});
+                    fileTags.push({tag: tag, count: 1, related: tags});
                 }
             });
             //remove empty tags
@@ -260,7 +275,7 @@
         //cut input down to one tag at the current cursor position
         cursorPos = tagInput.selectionStart;
         let edges = findEdges_dshcgkhy(cursorPos);
-        let typing = removeSpaces_dshcgkhy(tagInput.value.substring(edges.start, edges.end));
+        let typing = removeSpaces_dshcgkhy(tagInput.value.substring(edges.start, edges.end)).toLowerCase();
 
         //find fitting tags
         let matches = [];
@@ -289,6 +304,23 @@
             return !exists;
         });
 
+        //increase rank for related tags
+        used.forEach(function(inUse) {
+            let databaseEntry = tags.find(function(tag) {
+                return tag.tag.toLowerCase() === inUse.toLowerCase();
+            });
+            if (databaseEntry === undefined) return;
+            if (databaseEntry.related === undefined) return;
+            databaseEntry.related.forEach(function(related) {
+                let relative = matches.find(function(match) {
+                    return match.tag.toLowerCase() === related.toLowerCase();
+                });
+                if (relative === undefined) return;
+                relative.rank *= 2;
+                relative.type = "related";
+            });
+        });
+
         //sort by ranking, as previously calculated
         matches.sort(function(a, b) {
             return b.rank - a.rank;
@@ -303,8 +335,10 @@
             let button = document.createElement("button");
             button.setAttribute("value", item.tag);
             button.innerHTML = item.tag.substring(0, item.index) + "<u>" + item.tag.substring(item.index, item.index + typing.length) + "</u>" + item.tag.substring(item.index + typing.length);
+            if (debug) button.innerHTML += " <sub>" + item.rank.toFixed(1) + "</sub>";
             if (item.type === "community") button.style.background = "orange";
             else if (item.type === "original") button.style.background = "red";
+            else if (item.type === "related") button.style.background = "green";
             button.addEventListener("click", function(event) {
                 event.preventDefault();
                 insertTag_dshcgkhy(this);
