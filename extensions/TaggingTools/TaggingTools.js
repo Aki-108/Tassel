@@ -13,7 +13,6 @@
 
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).taggingTools || {};
     let debug = JSON.parse(localStorage.getItem("tasselSettings2")).tassel.debug || false;
-    debug = true;
     if (!settings.tagPreset) settings.tagPreset = {textPost: "", photoPost: "", videoPost: "", linkPost: "", selfReblog: "", otherReblog: ""};
 
     //get page elements
