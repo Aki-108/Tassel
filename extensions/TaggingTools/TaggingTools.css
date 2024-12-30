@@ -1,16 +1,153 @@
-#tasselTaggingToolsSuggestionBox {
-    height: 32px;
-    overflow: hidden;
+/*---------- bottom header in the reblog modal ---------*/
+#reblog-modal.bottomHeader .modal-content {
+    margin-top: 92px;
+}
+#reblog-modal.bottomHeader .center-div.new-post {
+    display: grid;
+}
+#reblog-modal.bottomHeader .center-div.new-post .header-top {
+    order: 1;
     margin-top: 5px;
+    margin-left: 96px;
+    width: auto !important;
+}
+#reblog-modal.bottomHeader .center-div.new-post .submit-post-bkd {
+    order: 2;
+}
+#reblog-modal.bottomHeader .post-container {
+    margin-left: 0;
+}
+#reblog-modal.bottomHeader .post.main {
+    margin-top: 0;
+}
+#reblog-modal.bottomHeader .side-info {
+    margin-top: 1px;
+}
+
+/*---------- bottom header in the post creator ----------*/
+.new-post.bottomHeader form:has(> .submit-post-bkd) {
+    display: grid;
+}
+.new-post.bottomHeader form .header-top {
+    order: 1;
+}
+.new-post.bottomHeader form .submit-post-bkd {
+    order: 2;
+}
+
+/*---------- post editor header formating for the community search input ----------*/
+.tasselTaggingToolsHeaderGrid {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: baseline;
+}
+
+#tasselTaggingToolsCommunitySuggest {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.5em;
+    height: 34px;
+}
+.tasselTaggingToolsHeaderGrid select {
+    margin-left: 0.5em;
+}
+.header-create-post:has(> #tasselTaggingToolsCommunitySuggest) select {
+    display: none;
+}
+
+#tasselTaggingToolsCommunitySearch {
+    margin: 0;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    background-color: #ffffff;
+    padding: 0.5em;
+    color: #232b40;
+    font-variant: none;
+}
+#tasselTaggingToolsCommunitySearch.bad {
+    background-color: #f96969;
+}
+body.dark-theme #tasselTaggingToolsCommunitySearch {
+    border-color: #3a3e47;
+    background-color: #1b1d20;
+    color: #d9dbe0;
+}
+body.dark-theme #tasselTaggingToolsCommunitySearch.bad {
+    background-color: #552828;
+    color: #ffffff;
+}
+
+#tasselTaggingToolsCommunitySearchList {
+    position: relative;
+    display: grid;
+    z-index: 999;
+    max-height: 500px;
+    overflow: auto;
+    background-color: #ffffff;
+    border: 1px solid #232b40;
+}
+
+#tasselTaggingToolsCommunitySearchList button {
+    border: none;
+    background-color: #ffffff;
+    padding: 0.5em;
+    color: #232b40;
+    font-variant: none;
+    text-align: left;
+}
+#tasselTaggingToolsCommunitySearchList button:hover {
+    border: none;
+    background-color: #ececec;
+}
+body.dark-theme #tasselTaggingToolsCommunitySearchList button {
+    background-color: #1b1d20;
+    color: #d9dbe0;
+}
+
+/*---------- community rules ----------*/
+#tasselTaggingToolsRulesButton {
+    margin-left: 0.5em;
+    height: 34px;
+    border: 1px solid #232b40;
+    border-radius:0.5em;
+    background-color: white;
+    padding: 0.5em 1em;
+    color: #232b40;
+}
+body.dark-theme #tasselTaggingToolsRulesButton {
+    border-color: #3a3e47;
+    background-color: #1b1d20;
+    color: #d9dbe0;
+}
+#tasselTaggingToolsRulesButton:disabled {
+    opacity: 0.5;
+}
+#tasselTaggingToolsRulesModal {
+    border: none;
+    background: none;
+}
+#tasselTaggingToolsRulesModal::backdrop {
+    opacity: 0.95;
+    background-color: var(--pageBg);
+}
+
+/*---------- formating for tag suggestions ----------*/
+#tasselTaggingToolsSuggestionBox {
+    margin-top: 5px;
+    height: 32px;
     line-height: 32px;
+    overflow: hidden;
+}
+#tasselTaggingToolsSuggestionBox.tasselTaggingToolsTaller {
+    height: 64px;
 }
 
 #tasselTaggingToolsSuggestionBox button {
+    margin: 4px;
     border: 1px solid transparent;
     border-radius: .5em;
-    padding: 2px 8px;
-    margin: 4px;
     background-color: #ececec;
+    padding: 2px 8px;
     color: #2b2b2b;
 }
 body.dark-theme #tasselTaggingToolsSuggestionBox button {
@@ -23,15 +160,52 @@ body.dark-theme #tasselTaggingToolsSuggestionBox button {
 body.dark-theme #tasselTaggingToolsSuggestionBox button:hover {
     background-color: #353840;
 }
+#tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconCommunity {
+    float: left;
+    height: 1em;
+    padding-right: 0.4em;
+    filter: grayscale(1) contrast(3) invert(1);
+}
+body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconCommunity {
+    filter: grayscale(1) contrast(3);
+}
+#tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconOriginal {
+    float: left;
+    height: 1em;
+    padding-right: 0.4em;
+    filter: grayscale(1) contrast(2) invert(1);
+}
+body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconOriginal {
+    filter: grayscale(1) contrast(2);
+}
+#tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconRelated {
+    float: left;
+    height: 1em;
+    padding-right: 0.4em;
+    filter: grayscale(1) contrast(0.7);
+}
+body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconRelated {
+    filter: grayscale(1) contrast(0.7) invert(1);
+}
 
 #tasselTaggingToolsSuggestionBox #tasselTaggingToolsCopyTags {
-    margin: 4px 0px 4px 4px;
     float: right;
+    margin: 4px 0px 4px 4px;
     width: 24px;
     height: 24px;
     text-align: center;
 }
 
+/*---------- settings modal ----------*/
+#tasselTaggingToolsSettings {
+    display: grid;
+    grid-template-columns: 7em auto;
+    gap: 4px 0.5em;
+    margin-bottom: 10px;
+}
+#tasselTaggingToolsSettings label {
+    margin-top: 9px;
+}
 #tasselTaggingToolsTagText,
 #tasselTaggingToolsTagPhoto,
 #tasselTaggingToolsTagVideo,
@@ -39,17 +213,16 @@ body.dark-theme #tasselTaggingToolsSuggestionBox button:hover {
 #tasselTaggingToolsTagSelfReblog,
 #tasselTaggingToolsTagOtherReblog {
     margin: 0;
-    padding: 0.5em 0.5em;
     border: 1px solid #232b40;
     border-radius: 0.5em;
     line-height: inherit;
     background-color: transparent;
+    padding: 0.5em 0.5em;
     color: #232b40;
     font-family: inherit;
     font-size: 1em;
     cursor: inherit;
 }
-
 body.dark-theme #tasselTaggingToolsTagText,
 body.dark-theme #tasselTaggingToolsTagPhoto,
 body.dark-theme #tasselTaggingToolsTagVideo,
@@ -59,18 +232,6 @@ body.dark-theme #tasselTaggingToolsTagOtherReblog {
     border-color: #d9dbe0;
     color: #d9dbe0;
 }
-
-#tasselTaggingToolsSettings {
-    margin-bottom: 10px;
-    display: grid;
-    grid-template-columns: 7em auto;
-    gap: 4px 0.5em;
-}
-
-#tasselTaggingToolsSettings label {
-    margin-top: 9px;
-}
-
 #tasselTaggingToolsSaveFrame {
     display: grid;
     justify-content: center;
@@ -92,9 +253,9 @@ body.dark-theme #tasselTaggingToolsTagOtherReblog {
     transition: opacity .2s;
 }
 #tasselTaggingToolsSaveTags:focus {
-    /*visibility: hidden;*/
     opacity: 0;
 }
+
 #tasselTaggingToolsRemoveCount {
     width: 4em;
     margin-left: 0.5em;
@@ -103,47 +264,20 @@ body.dark-theme #tasselTaggingToolsTagOtherReblog {
     margin-left: 0.5em;
     border: 1px solid #ff7be7;
     border-radius: 2px;
-    padding: 3px 0.5em;
     background-color: #232b40;
+    padding: 3px 0.5em;
     color: #fff;
+}
+body.dark-theme #tasselTaggingToolsRemoveButton {
+    border-color: #353840;
+    background-color: #23282E;
+    color: #d9dbe0;
 }
 #tasselTaggingToolsRemoveButton:hover {
     background-color: #ff7be7;
 }
-body.dark-theme #tasselTaggingToolsRemoveButton {
-    color: #d9dbe0;
-    background-color: #23282E;
-    border-color: #353840;
-}
 body.dark-theme #tasselTaggingToolsRemoveButton:hover {
     background-color: #33738d;
-}
-
-#tasselTaggingToolsRulesButton {
-    margin-left: 0.5em;
-    border: 1px solid #232b40;
-    border-radius:0.5em;
-    height: 34px;
-    background-color: white;
-    padding: 0.5em 1em;
-    color: #232b40;
-}
-#tasselTaggingToolsRulesButton:disabled {
-    opacity: 0.5;
-}
-body.dark-theme #tasselTaggingToolsRulesButton {
-    border-color: #3a3e47;
-    background-color: #1b1d20;
-    color: #d9dbe0;
-}
-
-#tasselTaggingToolsRulesModal {
-    border: none;
-    background: none;
-}
-#tasselTaggingToolsRulesModal::backdrop {
-    opacity: 0.95;
-    background-color: var(--pageBg);
 }
 
 @media(max-width:400px) {
