@@ -94,7 +94,7 @@ let extensionsIndex = [
             "updated": 1735555619740,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289d74fcadcbe6bd0a5c6270eac8c97e6ee5c869/extensions/TaggingTools/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@973e0025ca743f1fcb51283977c7050d777a9fbd/extensions/TaggingTools/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289d74fcadcbe6bd0a5c6270eac8c97e6ee5c869/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
