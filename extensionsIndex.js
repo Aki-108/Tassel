@@ -91,17 +91,18 @@ let extensionsIndex = [
             "id": 7,
             "version": "2.3",
             "created": 1678386060000,
-            "updated": 1733651525341,
+            "updated": 1735555619740,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@76e811ed4705cc526df9af60045c48b47f8039ac/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289d74fcadcbe6bd0a5c6270eac8c97e6ee5c869/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289d74fcadcbe6bd0a5c6270eac8c97e6ee5c869/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
                 "Adds a button for copying tags when reblogging.",
                 "Set default tags that automatically apply to posts you make/reblog.",
-                "View the rules of a community while reblogging to it."
+                "View the rules of a community while reblogging to it.",
+                "Uses a search field for the community to reblog to instead of a dropdown."
             ]
         },
         {
