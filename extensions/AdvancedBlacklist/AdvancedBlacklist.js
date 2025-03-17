@@ -74,9 +74,11 @@
         });
         permaLinks.forEach(function(item) {
             if (item.href.split("/")[4] === "") return;
+            let post = item;
+            for (let i = 0; i < 100 && !post.classList.contains("header"); i++) post = post.parentNode;
             posts.push({
                 id: item.href.split("/")[4]*1,
-                post: item.parentNode.parentNode.parentNode.parentNode.parentNode
+                post: post
             });
         });
         processPosts_skdasoyk(tasselJsonManager.feed.posts, posts);
@@ -94,6 +96,7 @@
             if (!settings.hideBlacklistPost) addBlockButton_skdasoyk(post);
             if (settings.showTags) addTags_skdasoyk(post, postElement);
             let blockResult = shouldBeBlocked_skdasoyk(post);
+            console.log("blockResult:",blockResult);
             if (!blockResult.block) continue;
             showReason_skdasoyk(post, blockResult);
         }
@@ -121,7 +124,9 @@
         button.children[0].addEventListener("click", function(event) {
             event.preventDefault();
 
-            this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.display = "none";
+            let post = this;
+            for (let i = 0; i < 100 && !post.classList.contains("post-container"); i++) post = post.parentNode;
+            post.style.display = "none";
 
             blacklist.push({
                 blacklist: [this.getAttribute("post-id")],
