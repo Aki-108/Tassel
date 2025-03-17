@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.8
+// @version      1.9
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -34,6 +34,7 @@
     }
 
     addSidebarButton_skdasoyk();
+
     /* Replace the Filters & Blacklist button in the sidebar with an Advanced Blacklist button */
     function addSidebarButton_skdasoyk() {
         let sidebarSmall = document.getElementsByClassName("sidebar-collapsed")[1];
@@ -68,8 +69,10 @@
     function loadFeed_skdasoyk() {
         locationType = "feed";
         let posts = [];
-        permaLinks = document.getElementsByClassName("link_post");
-        Object.values(permaLinks).forEach(function(item) {
+        permaLinks = Object.values(document.getElementsByClassName("link_post")).filter(function(item) {
+            return item.href.search("post/") && item.parentNode.parentNode.classList.contains("post-header-icons")
+        });
+        permaLinks.forEach(function(item) {
             if (item.href.split("/")[4] === "") return;
             posts.push({
                 id: item.href.split("/")[4]*1,
@@ -112,7 +115,7 @@
         let button = document.createElement("span");
         button.innerHTML = `
             <a href="" title="Blacklist this Post" class="nav-tab tab-leftmost" style="padding-top: 15px;" post-id="${(post.original_post_id || post.id)}">
-                <img class="report-img svg-purple" src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/block.svg">
+                <img class="report-img svg-purple" src="/assets/global/ic_block-ab3bc6c0524c05af88fbd21105408134932d0a7302bc16a820d5ba43cfd68bf8.svg">
             </a>
         `;
         button.children[0].addEventListener("click", function(event) {
@@ -221,30 +224,32 @@
 
             // get title and body content
             let body = [];
+            let bodyUnsplit = "";
             if (entry.apply.body) {
                 // remove symbols and formating
-                let _body = post.content + " " + (post.original_post ? post.original_post.title : post.title);
-                _body = _body.replaceAll(".", " ");
-                _body = _body.replaceAll("!", " ");
-                _body = _body.replaceAll("?", " ");
-                _body = _body.replaceAll(",", " ");
-                _body = _body.replaceAll(";", " ");
-                _body = _body.replaceAll("\"", " ");
-                _body = _body.replaceAll("/", " ");
-                _body = _body.replaceAll("[", " ");
-                _body = _body.replaceAll("]", " ");
-                _body = _body.replaceAll("(", " ");
-                _body = _body.replaceAll(")", " ");
-                _body = _body.replaceAll("'", " ");
-                _body = _body.replaceAll("-", " ");
-                _body = _body.replaceAll("<strong>", " ");
-                _body = _body.replaceAll("</strong>", " ");
-                _body = _body.replaceAll("<em>", " ");
-                _body = _body.replaceAll("</em>", " ");
-                _body = _body.replaceAll("<p>", " ");
-                _body = _body.replaceAll("</p>", " ");
-                _body = _body.replaceAll("<br>", " ");
-                body = _body.split(" ");
+                bodyUnsplit = post.content + " " + (post.original_post ? post.original_post.title : post.title);
+                bodyUnsplit = bodyUnsplit.replaceAll(".", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("!", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("?", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll(",", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll(";", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("\"", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("/", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("[", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("]", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("(", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll(")", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("'", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("-", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("<strong>", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("</strong>", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("<em>", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("</em>", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("<p>", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("</p>", " ");
+                bodyUnsplit = bodyUnsplit.replaceAll("<br>", " ");
+                bodyUnsplit = bodyUnsplit.toLowerCase();
+                body = bodyUnsplit.split(" ");
             }
 
             // whitelist /////////////////////////////////////////////////////////////////
@@ -256,11 +261,18 @@
                     return;
                 }
                 if (entry.apply.body) {
-                    if (body.some(function(item) {
-                        return item.toLowerCase() === whiteItem.toLowerCase();
-                    })) {
-                        whitelistCount++;
-                        return;
+                    if (whiteItem.search(" ") >= 0) {//multiword tag
+                        if (bodyUnsplit.search(whiteItem.toLowerCase()) >= 0) {
+                            whitelistCount++;
+                            return;
+                        }
+                    } else {
+                        if (body.some(function(item) {
+                            return item === whiteItem.toLowerCase();
+                        })) {
+                            whitelistCount++;
+                            return;
+                        }
                     }
                 }
                 if (entry.apply.tags) {
@@ -288,12 +300,20 @@
                         return;
                     }
                     if (entry.apply.body) {
-                        if (body.some(function(item) {
-                            return item.toLowerCase() === blackItem.toLowerCase();
-                        })) {
-                            blacklistCount--;
-                            block.blockFor.push(blackItem);
-                            return;
+                        if (blackItem.search(" ") >= 0) {//multiword tag
+                            if (bodyUnsplit.search(blackItem.toLowerCase()) >= 0) {
+                                blacklistCount--;
+                                block.blockFor.push(blackItem);
+                                return;
+                            }
+                        } else {
+                            if (body.some(function(item) {
+                                return item === blackItem.toLowerCase();
+                            })) {
+                                blacklistCount--;
+                                block.blockFor.push(blackItem);
+                                return;
+                            }
                         }
                     }
                     if (entry.apply.tags) {
@@ -725,7 +745,6 @@
         checkBody.id = "tasselAdvancedBlacklistInput-body-" + index;
         checkBody.setAttribute("aria-label", `search text body, row ${index+1}`);
         checkBody.type = "checkbox";
-        checkBody.checked = true;
         if (item) checkBody.checked = item.apply.body;
         blacklistView.appendChild(checkBody);
 
@@ -785,7 +804,7 @@
         document.getElementById("tasselAdvancedBlacklistInput-black-" + a).value = "";
         document.getElementById("tasselAdvancedBlacklistInput-white-" + a).value = "";
         document.getElementById("tasselAdvancedBlacklistInput-tags-" + a).checked = true;
-        document.getElementById("tasselAdvancedBlacklistInput-body-" + a).checked = true;
+        document.getElementById("tasselAdvancedBlacklistInput-body-" + a).checked = false;
         document.getElementById("tasselAdvancedBlacklistInput-id-" + a).checked = false;
         document.getElementById("tasselAdvancedBlacklistInput-hide-" + a).checked = false;
         document.getElementById("tasselAdvancedBlacklistInput-source-" + a).value = "";
