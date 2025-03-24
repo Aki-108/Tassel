@@ -96,7 +96,6 @@
             if (!settings.hideBlacklistPost) addBlockButton_skdasoyk(post);
             if (settings.showTags) addTags_skdasoyk(post, postElement);
             let blockResult = shouldBeBlocked_skdasoyk(post);
-            console.log("blockResult:",blockResult);
             if (!blockResult.block) continue;
             showReason_skdasoyk(post, blockResult);
         }
