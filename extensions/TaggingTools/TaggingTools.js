@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.3
+// @version      2.4
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -499,7 +499,7 @@
         button.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <title>copy tags</title>
-                <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#fff;stroke-width:1.5px;" d="
+                <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke-width:1.5px;" d="
                     M 12 5 L 12 19
                     M 8 14 L 12 19 L 16 14
                 ">
