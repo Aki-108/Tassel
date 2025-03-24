@@ -101,10 +101,3 @@ body.dark-theme #tasselReadThisShortLengthInput {
     color: #d9dbe0;
     font-variant: none;
 }
-
-#tasselTaggingToolsCopyTags svg path {
-    stroke: #2b2b2b;
-}
-body.dark-theme #tasselTaggingToolsCopyTags svg path {
-    stroke: #d9dbe0;
-}
