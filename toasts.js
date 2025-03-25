@@ -46,6 +46,14 @@ let toasts = [
     "text": "Options to remove Pillowforts new comment buttons have been added.",
     "timestamp": 1729272896192,
     "new": false
+  },
+  {
+    "id": 32,
+    "extension": 0,
+    "title": "New Setting",
+    "text": "The option to automaticly expand grouped notifications was added to the appearance settings.",
+    "timestamp": 1742930950095,
+    "new": false
   }
 ];
 
