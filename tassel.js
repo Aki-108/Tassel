@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.7.3
+// @version      1.7.4
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2d200cdbbc2ef489f3c9fddc28f5b03f101580c1/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1923e7a2bcb0423d2a750641acc740f52c427fac/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@060fdc19af289c348a5279a30ab95ca852357adc/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@39083dbeb583cf2be2aa10980a38ec9f42833520/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@870c41b2942f50e0051f9b1a6e2971d868e9e035/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/jsonManager.js";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e99bbd383e7eae061e184523127329bdfd444cfb/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -318,7 +318,8 @@
         if (settings2.stickyToolbar) css += ".gray-theme.fr-toolbar.fr-sticky-off,.gray-theme.fr-toolbar.fr-sticky-on{position:sticky;top:50px !important;z-index:5;}.fr-sticky-dummy{display:none !important;}";
         if (settings2.stickyCommentHeader) css += ".comments-container .header{position:sticky;top:50px;z-index:3;}";
         if (settings2.goldToBlue) css += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
-        if (settings2.noFrames) css += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none; background-color: #fff;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
+        if (settings2.noFrames) css += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none !important; background-color: #fff !important;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
+        if (settings2.expandNotes) css += "body.dark-theme #notifs-dashboard .notif-mini {background-color: #1b1d20;} #notifs-dashboard .repeat-notifs {max-height: 500px; transition: max-height 0.5s ease-in; overflow-y: auto;} #notifs-dashboard .repeat-notifs.expanded {max-height: 0px; overflow: hidden; transition: max-height 0.25s ease-out;}";
 
         //Post footer
         if (settings2.postFooter.swapLeftRight) css += ".post .post-nav .post-nav-left {float: right; padding-right: 20px;} .post .post-nav .post-nav-right {float: left; padding-right: 0;}";
@@ -825,6 +826,11 @@
         content.appendChild(createSwitch_xcajbuzn("Hide Avatar Frames", settings2.noFrames ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.noFrames = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Expand Notifications", settings2.expandNotes ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.expandNotes = this.checked;
             saveSettings_xcajbuzn();
         });
         let section1 = document.createElement("details");
