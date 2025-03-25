@@ -422,7 +422,8 @@ function loadSearch_quugasdg() {
         });
         tasselJsonManager.feed.type = 'search';
         tasselJsonManager.feed.pages++;
-        tasselJsonManager.feed.time = data.posts_by_tag.posts_by_tag[data.posts_by_tag.posts_by_tag.length-1].created_at;
+        let index = data.posts_by_tag.posts_by_tag.length-1;
+        tasselJsonManager.feed.time = data.posts_by_tag.posts_by_tag[index < 0 ? 0 : index].created_at;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts.push(...data.posts_by_tag.posts_by_tag);
         tasselJsonManager.feed.ready = true;
@@ -489,12 +490,18 @@ function initQueueFeed_quugasdg() {
 function loadQueueFeed_quugasdg() {
     tasselJsonManager.feed.ready = false;
     let page = 1;
-    /*let pageButton = Object.values(
-                    document.getElementsByTagName("li")
-                ).find(function(item) {
-                    return item.classList.contains("active")
-                });
-                if (pageButton) page = pageButton.textContent;*/
+    let pageButtons = Object.values(document.getElementsByTagName("li"));
+    if (pageButtons.length > 0) {
+        pageButtons = pageButtons.filter(function(item) {
+            return item.getAttribute("ng-repeat")
+        });
+        if (pageButtons.length > 0) {
+            pageButtons = pageButtons.find(function(item) {
+                return item.classList.contains("active")
+            });
+            if (pageButtons.length !== 0) page = pageButtons.textContent;
+        }
+    }
     $.getJSON(`https://www.pillowfort.social/queued_posts/json?p=${page}`, function(data) {
         tasselJsonManager.feed.ready = true;
         tasselJsonManager.feed.type = 'queue';
@@ -527,12 +534,18 @@ function initScheduleFeed_quugasdg() {
 function loadScheduleFeed_quugasdg() {
     tasselJsonManager.feed.ready = false;
     let page = 1;
-    /*let pageButton = Object.values(
-                    document.getElementsByTagName("li")
-                ).find(function(item) {
-                    return item.classList.contains("active")
-                });
-                if (pageButton) page = pageButton.textContent;*/
+    let pageButtons = Object.values(document.getElementsByTagName("li"));
+    if (pageButtons.length > 0) {
+        pageButtons = pageButtons.filter(function(item) {
+            return item.getAttribute("ng-repeat")
+        });
+        if (pageButtons.length > 0) {
+            pageButtons = pageButtons.find(function(item) {
+                return item.classList.contains("active")
+            });
+            if (pageButtons.length !== 0) page = pageButtons.textContent;
+        }
+    }
     $.getJSON(`https://www.pillowfort.social/scheduled_posts/json?p=${page}`, function(data) {
         tasselJsonManager.feed.ready = true;
         tasselJsonManager.feed.type = 'schedule';

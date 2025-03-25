@@ -49,12 +49,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.8",
+            "version": "1.9",
             "created": 1674907200000,
-            "updated": 1708119207819,
+            "updated": 1742846149176,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@679b5f4da926362707121cc55d16f5252b6c996b/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -89,13 +89,13 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.3",
+            "version": "2.4",
             "created": 1678386060000,
-            "updated": 1735555619740,
+            "updated": 1742846149176,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@973e0025ca743f1fcb51283977c7050d777a9fbd/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@289d74fcadcbe6bd0a5c6270eac8c97e6ee5c869/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@679b5f4da926362707121cc55d16f5252b6c996b/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5e3ba1df9ed5226e9ea3e53b64345267ea5da481/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
@@ -161,7 +161,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/ReadThis/ReadThis.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/ReadThis/ReadThis.css",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@679b5f4da926362707121cc55d16f5252b6c996b/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
                         "Opens a Read-More without opening the post.",

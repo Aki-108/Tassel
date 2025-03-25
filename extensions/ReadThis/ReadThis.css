@@ -5,7 +5,7 @@
 .tasselReadThisNewBlock {
     box-shadow: -10px 0px 0px 0px var(--postBgColor), -20px 0px 0px 0px var(--postHeaderFooter);
     line-height: 1.2em;
-    font-weight: normal;
+    font-weight: inherit;
 }
 li .tasselReadThisNewBlock {
     box-shadow: -51px 0px 0px 0px var(--postBgColor), -61px 0px 0px 0px var(--postHeaderFooter);

@@ -194,6 +194,15 @@ body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconR
     width: 24px;
     height: 24px;
     text-align: center;
+    display: grid;  
+    align-content: center;
+    justify-content: center;
+}
+#tasselTaggingToolsSuggestionBox #tasselTaggingToolsCopyTags svg path {
+    stroke: #2b2b2b;
+}
+body.dark-theme #tasselTaggingToolsSuggestionBox #tasselTaggingToolsCopyTags svg path {
+    stroke: #d9dbe0;
 }
 
 /*---------- settings modal ----------*/

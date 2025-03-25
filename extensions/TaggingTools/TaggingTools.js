@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.3
+// @version      2.4
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -334,7 +334,7 @@
         button.addEventListener("click", function() {
             //load database
             let file = JSON.parse(localStorage.getItem("tasselTaggingTools")) || {};
-            let fileTags = file.tags || {};
+            let fileTags = file.tags || [];
 
             let tags = tagInput.value.split(",");
             tags = tags.map(removeSpaces_dshcgkhy);
@@ -367,6 +367,9 @@
             //save database
             file.tags = fileTags;
             localStorage.setItem("tasselTaggingTools", JSON.stringify(file));
+            if (localStorage.getItem("tasselTaggingTools") === 'null') {
+                if (confirm("Tassel Tagging Tools detected a problem. Do you want to clear all stored tags to try and resolve this issue?")) localStorage.removeItem("tasselTaggingTools");
+            }
         });
     }
 
@@ -493,7 +496,16 @@
         let button = document.createElement("button");
         button.id = "tasselTaggingToolsCopyTags";
         button.title = "copy tags";
-        button.innerHTML = "&#x1F817;";
+        button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <title>copy tags</title>
+                <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke-width:1.5px;" d="
+                    M 12 5 L 12 19
+                    M 8 14 L 12 19 L 16 14
+                ">
+                </path>
+            </svg>
+        `;
 
         //copy tags
         button.addEventListener("click", function(event) {
