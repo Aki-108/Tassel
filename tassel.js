@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.7.4
+// @version      1.7.5
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@060fdc19af289c348a5279a30ab95ca852357adc/extensionsIndex.js";
-    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@39083dbeb583cf2be2aa10980a38ec9f42833520/toasts.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2ca5662912154a616db1208bb7bfa94a991606a5/extensionsIndex.js";
+    let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@870c41b2942f50e0051f9b1a6e2971d868e9e035/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e99bbd383e7eae061e184523127329bdfd444cfb/jsonManager.js";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c0d746e8d72e4d13fb29536f3155d648b9a99a6a/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -1103,6 +1103,7 @@
             <option value="tasselAdvancedBlacklist">Advanced Blacklist</option>
             <option value="tasselBlocklistAnnotations">Blocklist Annotations</option>
             <option value="tasselJsonManager">JSON Manager</option>
+            <option value="tasselModerationAid">Moderation Aid</option>
             <option value="tasselNoteDetails">Note Details</option>
             <option value="tasselPostSubscriber">Post Subscriber</option>
             <option value="tasselSidebarCounts">Sidebar Counts</option>
@@ -1183,20 +1184,33 @@
             downloadObject_xcajbuzn(JSON.stringify(formated), `tassel_export_${d.getDate()}-${d.getMonth()}-${d.getFullYear()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.json`);
         });
         grid3.appendChild(button5);
-        let dropArea3 = document.createElement("div");
-        dropArea3.classList.add("tasselButton");
-        dropArea3.style = "display:grid;align-items:center;";
-        dropArea3.innerHTML = "<p style='margin:0;text-align:center;'>drop to import</p>"
-        dropArea3.addEventListener("dragenter", function(e) {
+        let button6 = document.createElement("input");
+        button6.id = "tasselSettingsImport";
+        button6.classList.add("hidden");
+        button6.innerHTML = "import"
+        button6.setAttribute("type", "file");
+        button6.setAttribute("accept", ".json, .txt");
+        button6.addEventListener("change", function(e) {
+            let file = e.target.files[0];
+            if (!file) return;
+            readFile_xcajbuzn(file);
+        });
+        grid3.appendChild(button6);
+        let label6 = document.createElement("label");
+        label6.style = "text-align: center;align-content: center;cursor: pointer;";
+        label6.classList.add("tasselButton");
+        label6.innerHTML = "import";
+        label6.setAttribute("for", "tasselSettingsImport");
+        label6.addEventListener("dragenter", function(e) {
             this.classList.add("dragenter");
         });
-        dropArea3.addEventListener("dragleave", function() {
+        label6.addEventListener("dragleave", function() {
             this.classList.remove("dragenter");
         });
-        dropArea3.addEventListener("dragover", function(e) {
+        label6.addEventListener("dragover", function(e) {
             e.preventDefault();
         });
-        dropArea3.addEventListener("drop", function(e) {
+        label6.addEventListener("drop", function(e) {
             e.preventDefault();
             this.classList.remove("dragenter");
             //source: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop#process_the_drop
@@ -1212,7 +1226,7 @@
                 });
             }
         });
-        grid3.appendChild(dropArea3);
+        grid3.appendChild(label6);
         content.appendChild(grid3);
     }
 
