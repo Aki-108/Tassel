@@ -1,3 +1,13 @@
+// ==UserScript==
+// @name         JSON Manager
+// @version      0.17
+// @description  Easy way of managing different JSONs on Pillowfort
+// @author       Aki108
+// @match        https://www.pillowfort.social/*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=pillowfort.social
+// @grant        none
+// ==/UserScript==
+
 let tasselJsonManager = {
     modal: {
         ready: false,
@@ -285,7 +295,7 @@ function loadHomeFeed_quugasdg() {
         });
         tasselJsonManager.feed.type = 'home';
         tasselJsonManager.feed.pages++;
-        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts.push(...data.posts);
         tasselJsonManager.feed.ready = true;
@@ -329,7 +339,7 @@ function loadCommFeed_quugasdg() {
         });
         tasselJsonManager.feed.type = 'community'
         tasselJsonManager.feed.pages++;
-        tasselJsonManager.feed.time = data[data.length-1].created_at;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts.push(...data);
         tasselJsonManager.feed.ready = true;
@@ -380,7 +390,7 @@ function loadFortFeed_quugasdg() {
         });
         tasselJsonManager.feed.type = 'fort';
         tasselJsonManager.feed.pages = 1;
-        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         tasselJsonManager.feed.ready = true;
@@ -462,7 +472,7 @@ function loadDraftFeed_quugasdg() {
         tasselJsonManager.feed.ready = true;
         tasselJsonManager.feed.type = 'drafts';
         tasselJsonManager.feed.pages = 1;
-        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         trigger_quugasdg("tasselJsonManagerFeedReady");
@@ -506,7 +516,7 @@ function loadQueueFeed_quugasdg() {
         tasselJsonManager.feed.ready = true;
         tasselJsonManager.feed.type = 'queue';
         tasselJsonManager.feed.pages = 1;
-        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         trigger_quugasdg("tasselJsonManagerFeedReady");
@@ -550,7 +560,7 @@ function loadScheduleFeed_quugasdg() {
         tasselJsonManager.feed.ready = true;
         tasselJsonManager.feed.type = 'schedule';
         tasselJsonManager.feed.pages = 1;
-        tasselJsonManager.feed.time = data.posts[data.posts.length-1].created_at;
+        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         trigger_quugasdg("tasselJsonManagerFeedReady");
