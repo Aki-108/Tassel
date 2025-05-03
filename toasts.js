@@ -54,6 +54,14 @@ let toasts = [
     "text": "The option to automaticly expand grouped notifications was added to the appearance settings.",
     "timestamp": 1742930950095,
     "new": false
+  },
+  {
+    "id": 33,
+    "extension": 18,
+    "title": "WIP: Moderation Aid",
+    "text": "A new Work-In-Progress extension has been added.",
+    "timestamp": 1746302097883,
+    "new": true
   }
 ];
 
