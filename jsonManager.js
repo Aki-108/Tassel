@@ -339,7 +339,7 @@ function loadCommFeed_quugasdg() {
         });
         tasselJsonManager.feed.type = 'community'
         tasselJsonManager.feed.pages++;
-        tasselJsonManager.feed.time = data.posts[data.posts.length-1] ? data.posts[data.posts.length-1].created_at : 0;
+        tasselJsonManager.feed.time = data[data.length-1] ? data[data.length-1].created_at : 0;
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts.push(...data);
         tasselJsonManager.feed.ready = true;
