@@ -246,6 +246,21 @@ let extensionsIndex = [
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@13ff3294010f92518632a246c304c51c0b306c1d/extensions/AddedAccessibility/AddedAccessibility.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1a2c16a6b1ad53367e1b8c46e2dc00311d4f9b2d/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/5332841"
+        },
+        {
+                "name": "Moderation Aid",
+                "id": 18,
+                "version": "0.1",
+                "created": 1746302097883,
+                "updated": 1746302097883,
+                "author": "Aki108",
+                "description": "Keep up with flags and pending posts.",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a72690377d670fb4c8554ca092849817509826bb/extensions/ModerationAid.js",
+                "post": "https://www.pillowfort.social/posts/6208366",
+                "features": [
+                        "Shows the number of flagged posts in your communities.",
+                        "Shows the number of pending posts in your communities."
+                ]
         }
 ];
 
