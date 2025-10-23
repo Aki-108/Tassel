@@ -211,6 +211,19 @@ body.dark-theme .tasselLinkColor {
 	overflow: auto;
 }
 
+#tasselModalBackground {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	opacity: 0.95;
+	background-color: #2C405A;
+}
+body.dark-theme #tasselModalBackground {
+	background-color: #23282E;
+}
+
 #tasselModalDialog1 {
 	width: 800px;
 	max-width: 90%;
