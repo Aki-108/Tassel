@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.7.5
+// @version      1.7.6
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -16,7 +16,7 @@
 
     let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2ca5662912154a616db1208bb7bfa94a991606a5/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@870c41b2942f50e0051f9b1a6e2971d868e9e035/style.css";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5dece5f709f2251b1af9bcd3c0d6ad29fc6aa58/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c0d746e8d72e4d13fb29536f3155d648b9a99a6a/jsonManager.js";
 
     let icon = document.createElement("div");
@@ -288,7 +288,7 @@
               </div>
             </div>
           </div>
-          <div id='tasselModalBackground' class='modal-backdrop in'></div>`;
+          <div id='tasselModalBackground' class='in'></div>`;
         document.getElementsByTagName("body")[0].appendChild(modal);
         document.getElementById("tasselModalSidebarExtensions").addEventListener("click", displayExtensions_xcajbuzn);
         document.getElementById("tasselModalSidebarSettings").addEventListener("click", displaySettings_xcajbuzn);
