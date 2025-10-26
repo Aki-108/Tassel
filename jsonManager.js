@@ -123,7 +123,7 @@ function initModal_quugasdg() {
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "block") {
-                    loadReblogModal_quugasdg(postId);
+                    loadReblogModal_quugasdg(tasselJsonManager.modal.postId);
                 }
             });
         });
