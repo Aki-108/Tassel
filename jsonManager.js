@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         JSON Manager
-// @version      0.17
+// @version      0.18
 // @description  Easy way of managing different JSONs on Pillowfort
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -122,6 +122,8 @@ function initModal_quugasdg() {
                     loadReblogModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
+                } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "block") {
+                    loadReblogModal_quugasdg(postId);
                 }
             });
         });
