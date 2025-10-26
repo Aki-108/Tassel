@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.4
+// @version      2.5
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -148,7 +148,7 @@
         let frame = document.createElement("div");
         frame.id = "tasselTaggingToolsCommunitySuggest";
         let input = document.createElement("input");
-        input.style = "width: " + communitySelect.clientWidth + "px";
+        input.style = "min-width: " + communitySelect.clientWidth + "px";
         input.id = "tasselTaggingToolsCommunitySearch";
         input.placeholder = communitySelect.options[0].text;
         input.autocomplete = "off";
