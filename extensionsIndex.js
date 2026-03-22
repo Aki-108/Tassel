@@ -146,10 +146,10 @@ let extensionsIndex = [
                 "id": 10,
                 "version": "2.0",
                 "created": 1694995080000,
-                "updated": 1774169882520,
+                "updated": 1774170633849,
                 "author": "Aki108",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@94857c164e4975bc50f801ec13d8c5261a97d2e7/extensions/SidebarCounts.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0740db6c835668d9f0c73c99e46eb2f27f4c95fc/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
         },
         {
