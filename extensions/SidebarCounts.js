@@ -29,8 +29,8 @@
 
     function display_xarxirzq(type) {
         Object.values(document.getElementsByClassName("sidebar-bottom")[0].children).find(function(element) {
-            return element.href == `/${type}`;
-        }).getElementsByClassName("sidebar-bottom-num")[0].innerHTML = tasselJsonManager[type].real_count;
+            return element.getAttribute("href") == `/${type}`;
+        }).getElementsByClassName("sidebar-bottom-num")[0].textContent = tasselJsonManager[type].real_count;
     }
     
 })();
