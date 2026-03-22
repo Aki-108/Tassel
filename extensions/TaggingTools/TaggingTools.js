@@ -14,6 +14,8 @@
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).taggingTools || {};
     let debug = JSON.parse(localStorage.getItem("tasselSettings2")).tassel.debug || false;
     if (!settings.tagPreset) settings.tagPreset = {textPost: "", photoPost: "", videoPost: "", linkPost: "", selfReblog: "", otherReblog: ""};
+    let timeFormatActive = JSON.parse(localStorage.tasselSettings2).tassel.extensions.some(function(ext) {return ext.id == 16});
+    let timeFormat = (JSON.parse(localStorage.tasselSettings2).timeFormat || {reblogDate: "RRR ago"}).reblogDate;
 
     //get page elements
     let tagInput = document.getElementById("tags") || document.getElementById("post_tag_list");
@@ -139,84 +141,98 @@
 
         //replace community list with search
         //https://www.w3schools.com/howto/howto_js_autocomplete.asp
-        if (!settings.useCommunitySearch) return;
         let communitySelect = document.getElementsByName("post_to");
         if (communitySelect.length > 0) communitySelect = communitySelect[0];
         else return;
-        communitySelect.selectedIndex = 0;
-        communitySelect.dispatchEvent(new Event('input', {bubbles: true}));
-        let frame = document.createElement("div");
-        frame.id = "tasselTaggingToolsCommunitySuggest";
-        let input = document.createElement("input");
-        input.style = "min-width: " + communitySelect.clientWidth + "px";
-        input.id = "tasselTaggingToolsCommunitySearch";
-        input.placeholder = communitySelect.options[0].text;
-        input.autocomplete = "off";
-        input.value = "";
-        frame.appendChild(input);
-        communitySelect.before(frame);
+        if (settings.useCommunitySearch) {
+            communitySelect.selectedIndex = 0;
+            communitySelect.dispatchEvent(new Event('input', {bubbles: true}));
+            let frame = document.createElement("div");
+            frame.id = "tasselTaggingToolsCommunitySuggest";
+            let input = document.createElement("input");
+            input.style = "min-width: " + communitySelect.clientWidth + "px";
+            input.id = "tasselTaggingToolsCommunitySearch";
+            input.placeholder = communitySelect.options[0].text;
+            input.autocomplete = "off";
+            input.value = "";
+            frame.appendChild(input);
+            communitySelect.before(frame);
 
-        //create list
-        input.addEventListener("input", function() {
-            clearCommunityList()
-            let value = this.value;
-            if (!value) {
-                input.classList.remove("bad");
-                document.getElementById("publish-btn").removeAttribute("disabled");
-                document.getElementById("queue-btn").removeAttribute("disabled");
-                document.getElementById("schedule-btn").removeAttribute("disabled");
-                communitySelect.selectedIndex = 0;
-                communitySelect.dispatchEvent(new Event('input', {bubbles: true}));
-                return;
-            }
-            let list = document.createElement("div");
-            list.id = this.id + "List";
-            list.classList.add("tasselTaggingToolsListItem");
-            this.parentNode.appendChild(list);
+            //create list
+            input.addEventListener("input", function() {
+                clearCommunityList()
+                let value = this.value;
+                if (!value) {
+                    input.classList.remove("bad");
+                    document.getElementById("publish-btn").removeAttribute("disabled");
+                    document.getElementById("queue-btn").removeAttribute("disabled");
+                    document.getElementById("schedule-btn").removeAttribute("disabled");
+                    communitySelect.selectedIndex = 0;
+                    communitySelect.dispatchEvent(new Event('input', {bubbles: true}));
+                    return;
+                }
+                let list = document.createElement("div");
+                list.id = this.id + "List";
+                list.classList.add("tasselTaggingToolsListItem");
+                this.parentNode.appendChild(list);
 
-            tasselJsonManager.communities.communities.sort(function(a, b) {
-                let indexA = a.name.toUpperCase().search(value.toUpperCase());
-                let indexB = b.name.toUpperCase().search(value.toUpperCase());
-                if (indexA > indexB) return 1;
-                if (indexA < indexB) return -1;
-                return 0;
-            });
-
-            //find items
-            for (let community of tasselJsonManager.communities.communities) {
-                let matches = false;
-                if (community.name.toUpperCase().search(value.toUpperCase()) >= 0) matches = true;
-                if (!matches) continue;
-                let listItem = document.createElement("button");
-                listItem.innerHTML = community.name;
-                listItem.addEventListener("click", function() {
-                    input.value = this.innerHTML;
-
-                    //select community
-                    let options = Object.values(document.getElementsByName("post_to")[0].options);
-                    options = options.map(function(option) {
-                        return option.innerHTML;
-                    });
-                    for (let index in options) {
-                        if (options[index] === this.innerHTML) {
-                            communitySelect.selectedIndex = index;
-                            communitySelect.dispatchEvent(new Event('input', {bubbles: true}));
-                        }
-                    }
-
-                    clearCommunityList();
+                tasselJsonManager.communities.communities.sort(function(a, b) {
+                    let indexA = a.name.toUpperCase().search(value.toUpperCase());
+                    let indexB = b.name.toUpperCase().search(value.toUpperCase());
+                    if (indexA > indexB) return 1;
+                    if (indexA < indexB) return -1;
+                    return 0;
                 });
-                list.appendChild(listItem);
+
+                //find items
+                for (let community of tasselJsonManager.communities.communities) {
+                    let matches = false;
+                    if (community.name.toUpperCase().search(value.toUpperCase()) >= 0) matches = true;
+                    if (!matches) continue;
+                    let listItem = document.createElement("button");
+                    listItem.innerHTML = community.name;
+                    listItem.addEventListener("click", function() {
+                        input.value = this.innerHTML;
+
+                        //select community
+                        let options = Object.values(document.getElementsByName("post_to")[0].options);
+                        options = options.map(function(option) {
+                            return option.innerHTML;
+                        });
+                        for (let index in options) {
+                            if (options[index] === this.innerHTML) {
+                                communitySelect.selectedIndex = index;
+                                communitySelect.dispatchEvent(new Event('input', {bubbles: true}));
+                            }
+                        }
+
+                        clearCommunityList();
+                    });
+                    list.appendChild(listItem);
+                }
+            });
+            input.addEventListener("focus", function() {
+                this.dispatchEvent(new Event('input', {bubbles: true}));
+                this.select();
+            });
+            input.addEventListener("blur", function() {window.setTimeout(clearCommunityList, 100)});
+        }
+
+        communitySelect.addEventListener("input", function() {
+            let info = document.getElementById("tasselTaggingToolsReblogInfo");
+            if (!info) {
+                info = document.createElement("div");
+                info.id = "tasselTaggingToolsReblogInfo";
+                document.getElementById("reblog-modal").getElementsByClassName("header-top")[0].appendChild(info);
             }
-            /*if (list.children.length === 1) {
-                list.children[0].click();
-            }*/
+            let reblog = tasselJsonManager.reblogs.json.find(function(comm) {return comm.community == communitySelect.selectedOptions[0].textContent});
+            if (!reblog) info.style.display = "none";
+            else {
+                let time = formatDate_dshcgkhy(new Date(reblog.publish_at), timeFormatActive ? timeFormat : "RRR ago");
+                info.style.display = "block";
+                info.innerHTML = `Already reblogged to <b>${communitySelect.selectedOptions[0].textContent}</b> at ${time}`;
+            }
         });
-        input.addEventListener("focus", function() {
-            this.dispatchEvent(new Event('input', {bubbles: true}));
-            this.select();
-        });
-        input.addEventListener("blur", function() {window.setTimeout(clearCommunityList, 100)});
     }
 
     function clearCommunityList() {
@@ -812,5 +828,97 @@
           <label for="${id}">${title}</label>
         `;
         return toggle;
+    }
+
+    /* Format date to the desired form */
+    function formatDate_dshcgkhy(time, format) {
+        let data = {
+            mask: format,
+            output: format
+        }
+        let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        let hours = time.getHours();
+        if (data.mask.indexOf("HH") >= 0) data = replaceKey_dshcgkhy(data, "HH", (hours < 10 ? "0" : "") + hours);
+        if (data.mask.indexOf("H") >= 0) data = replaceKey_dshcgkhy(data, "H", hours);
+        let ap = hours < 12 ? "AM" : "PM";
+        hours += hours > 12 ? -12 : 0;
+        hours = hours <= 0 ? 12 : hours;
+        if (data.mask.indexOf("hh") >= 0) data = replaceKey_dshcgkhy(data, "hh", (hours < 10 ? "0" : "") + hours);
+        if (data.mask.indexOf("h") >= 0) data = replaceKey_dshcgkhy(data, "h", hours);
+
+        let minutes = time.getMinutes();
+        if (data.mask.indexOf("mm") >= 0) data = replaceKey_dshcgkhy(data, "mm", (minutes < 10 ? "0" : "") + minutes);
+        if (data.mask.indexOf("m") >= 0) data = replaceKey_dshcgkhy(data, "m", minutes);
+
+        let seconds = time.getSeconds();
+        if (data.mask.indexOf("SS") >= 0) data = replaceKey_dshcgkhy(data, "SS", (seconds < 10 ? "0" : "") + seconds);
+        if (data.mask.indexOf("S") >= 0) data = replaceKey_dshcgkhy(data, "S", seconds);
+
+        if (data.mask.indexOf("RRR") >= 0) data = replaceKey_dshcgkhy(data, "RRR", getRelativeTime_dshcgkhy(time, false));
+        if (data.mask.indexOf("RR") >= 0) data = replaceKey_dshcgkhy(data, "RR", getRelativeTime_dshcgkhy(time, true));
+
+        if (data.mask.indexOf("ap") >= 0) data = replaceKey_dshcgkhy(data, "ap", ap);
+
+        if (data.mask.indexOf("DDDD") >= 0) data = replaceKey_dshcgkhy(data, "DDDD", weekdays[time.getDay()]);
+        if (data.mask.indexOf("DDD") >= 0) data = replaceKey_dshcgkhy(data, "DDD", weekdays[time.getDay()].substring(0, 3));
+        let day = time.getDate();
+        if (data.mask.indexOf("DD") >= 0) data = replaceKey_dshcgkhy(data, "DD", (day < 10 ? "0" : "") + day);
+        if (data.mask.indexOf("D") >= 0) data = replaceKey_dshcgkhy(data, "D", day);
+
+        if (data.mask.indexOf("MMMM") >= 0) data = replaceKey_dshcgkhy(data, "MMMM", months[time.getMonth()]);
+        if (data.mask.indexOf("MMM") >= 0) data = replaceKey_dshcgkhy(data, "MMM", months[time.getMonth()].substring(0, 3));
+        let month = time.getMonth() + 1;
+        if (data.mask.indexOf("MM") >= 0) data = replaceKey_dshcgkhy(data, "MM", (month < 10 ? "0" : "") + month);
+        if (data.mask.indexOf("M") >= 0) data = replaceKey_dshcgkhy(data, "M", month);
+
+        let year = time.getFullYear();
+        if (data.mask.indexOf("YYYY") >= 0) data = replaceKey_dshcgkhy(data, "YYYY", year);
+        if (data.mask.indexOf("YY") >= 0) data = replaceKey_dshcgkhy(data, "YY", String(year).substring(2));
+
+        return data.output;
+    }
+
+    /* Replace sections of text */
+    //input: object of data mask and data to be changed
+    //key: what to remove from the text
+    //value: what to put in the text
+    function replaceKey_dshcgkhy(data, key, value) {
+        let valueMask = "_______________________________________".substring(0, String(value).length);
+        while (data.mask.indexOf(key) >= 0) {
+            data.output = data.output.substring(0, data.mask.indexOf(key)) + value + data.output.substring(data.mask.indexOf(key) + key.length);
+            data.mask = data.mask.substring(0, data.mask.indexOf(key)) + valueMask + data.mask.substring(data.mask.indexOf(key) + key.length);
+        }
+        return data;
+    }
+
+    /* Create relative timestamp */
+    function getRelativeTime_dshcgkhy(date, short) {
+        let units = [
+            ["s", "second", "seconds"],
+            ["min", "minute", "minutes"],
+            ["h", "hour", "hours"],
+            ["d", "day", "days"],
+            ["m", "month", "months"],
+            ["y", "year", "years"]
+        ];
+        let times = [
+            1000,//1 second
+            60_000,//1 minute
+            3_600_000,//1 hour
+            86_400_000,//1 day
+            2_630_880_000,//30.45 days - 1 month
+            63_113_904_000//730.485 days - 2 years
+        ];
+        let delta = new Date().getTime() - date.getTime();
+        let rounded = Math.floor(delta / 31_556_952_000); //initialize for "years"
+        for (let i = 0; i <= 5; i++) {
+            if (delta < times[i+1]) {
+                rounded = Math.floor(delta / times[i]);
+                return rounded + " " + units[i][short ? 0 : rounded === 1 ? 1 : 2];
+            }
+        }
+        return rounded + " " + units[5][short ? 0 : rounded === 1 ? 1 : 2]; //use "years" if nothing else fits
     }
 })();
