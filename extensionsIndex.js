@@ -149,7 +149,7 @@ let extensionsIndex = [
                 "updated": 1774170633849,
                 "author": "Aki108",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0740db6c835668d9f0c73c99e46eb2f27f4c95fc/extensions/SidebarCounts.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d21d68f9a99b07f942f21bd8fd8a1f70f30b8978/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
         },
         {
