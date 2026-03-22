@@ -103,6 +103,14 @@ body.dark-theme #tasselTaggingToolsCommunitySearchList button {
     background-color: #1b1d20;
     color: #d9dbe0;
 }
+#tasselTaggingToolsReblogInfo {
+    display: none;
+    margin-top: 1.5em;
+    font-variant: normal;
+}
+#reblog-modal .header-top {
+    height: max-content;
+}
 
 /*---------- community rules ----------*/
 #tasselTaggingToolsRulesButton {
