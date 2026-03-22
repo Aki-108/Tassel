@@ -14,20 +14,23 @@
     init_xarxirzq();
     function init_xarxirzq() {
         if (document.getElementById("tasselJsonManagerFollowersReady")) document.getElementById("tasselJsonManagerFollowersReady").addEventListener("click", function() {
-            Object.values(document.getElementsByClassName("sidebar-bottom")[0].children).find(function(element) {
-                return element.href="/followers";
-            }).getElementsByClassName("sidebar-bottom-num")[0].innerHTML = tasselJsonManager.followers.real_count;
+            display_xarxirzq("followers");
         });
         if (document.getElementById("tasselJsonManagerFollowingReady")) document.getElementById("tasselJsonManagerFollowingReady").addEventListener("click", function() {
-            Object.values(document.getElementsByClassName("sidebar-bottom")[0].children).find(function(element) {
-                return element.href="/following";
-            }).getElementsByClassName("sidebar-bottom-num")[0].innerHTML = tasselJsonManager.following.real_count;
+            display_xarxirzq("following");
         });
         if (document.getElementById("tasselJsonManagerMutualsReady")) document.getElementById("tasselJsonManagerMutualsReady").addEventListener("click", function() {
-            Object.values(document.getElementsByClassName("sidebar-bottom")[0].children).find(function(element) {
-                return element.href="/mutuals";
-            }).getElementsByClassName("sidebar-bottom-num")[0].innerHTML = tasselJsonManager.mutuals.real_count;
+            display_xarxirzq("mutuals");
         });
+        display_xarxirzq("followers");
+        display_xarxirzq("following");
+        display_xarxirzq("mutuals");
+    }
+
+    function display_xarxirzq(type) {
+        Object.values(document.getElementsByClassName("sidebar-bottom")[0].children).find(function(element) {
+            return element.href=`/${type}`;
+        }).getElementsByClassName("sidebar-bottom-num")[0].innerHTML = tasselJsonManager[type].real_count;
     }
     
 })();
