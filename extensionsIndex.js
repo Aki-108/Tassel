@@ -89,13 +89,13 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.4",
+            "version": "2.5",
             "created": 1678386060000,
-            "updated": 1742846149176,
+            "updated": 1774182451145,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@679b5f4da926362707121cc55d16f5252b6c996b/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5e3ba1df9ed5226e9ea3e53b64345267ea5da481/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a782e70265f12b6dfa035f291a92da02a16722c/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a782e70265f12b6dfa035f291a92da02a16722c/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
@@ -144,12 +144,12 @@ let extensionsIndex = [
         {
                 "name": "Sidebar Counts",
                 "id": 10,
-                "version": "1.0",
+                "version": "2.0",
                 "created": 1694995080000,
-                "updated": 1701106140000,
-                "author": "optimists-inbound",
+                "updated": 1774170633849,
+                "author": "Aki108",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@024ebf877d3ecd111534feed1780084eddfad3a3/extensions/SidebarCounts.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b75ee32e426b11a3e2fc2ce5ee380794d1129188/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
         },
         {
