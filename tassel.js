@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.7.6
+// @version      1.7.7
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2ca5662912154a616db1208bb7bfa94a991606a5/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@70c71dff188740aff3ce39d6a54cc6bacec5c8c0/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5dece5f709f2251b1af9bcd3c0d6ad29fc6aa58/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c0d746e8d72e4d13fb29536f3155d648b9a99a6a/jsonManager.js";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@05d88cd8a204f224fccba6d3a35305a53548f6c3/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -100,6 +100,9 @@
         let eventFeed = document.createElement("div");
         eventFeed.id = "tasselEvents";
         document.getElementsByTagName("body")[0].appendChild(eventFeed);
+
+        //delete at next update
+        localStorage.removeItem("tasselSidebarCounts");
     }
 
     function initJsonManager_xcajbuzn() {
@@ -1106,7 +1109,6 @@
             <option value="tasselModerationAid">Moderation Aid</option>
             <option value="tasselNoteDetails">Note Details</option>
             <option value="tasselPostSubscriber">Post Subscriber</option>
-            <option value="tasselSidebarCounts">Sidebar Counts</option>
             <option value="tasselTaggingTools">Tagging Tools</option>
             <option value="tasselUserMuting">User Muting</option>
         `;
