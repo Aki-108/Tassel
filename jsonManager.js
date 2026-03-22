@@ -165,6 +165,7 @@ function loadReblogModal_quugasdg(postId) {
             trigger_quugasdg("tasselJsonManagerModalReady");
         });
     }
+    getReblogData_quugasdg(postId);
 }
 
 initSinglePost_quugasdg();
@@ -225,10 +226,14 @@ function getReblogData_quugasdg(postId) {
     tasselJsonManager.reblogs.postId = postId;
     let page = 1;
     let reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
-    if (reblogPageButtons.getElementsByClassName("active").length > 0) page = reblogPageButtons.getElementsByClassName("active")[0].textContent;
+    if (reblogPageButtons) {
+        if (reblogPageButtons.getElementsByClassName("active").length > 0) page = reblogPageButtons.getElementsByClassName("active")[0].textContent;
+        let pages = Object.values(reblogPageButtons.getElementsByTagName("li"));
+        tasselJsonManager.reblogs.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
+    } else {
+        tasselJsonManager.reblogs.maxPage = null;
+    }
     tasselJsonManager.reblogs.page = page;
-    let pages = Object.values(reblogPageButtons.getElementsByTagName("li"));
-    tasselJsonManager.reblogs.maxPage = pages.length > 2 ? pages[pages.length-2].textContent : 1;
     $.getJSON(`https://www.pillowfort.social/posts/${postId}/reblogs?p=${page}`, function(data) {
         tasselJsonManager.reblogs.json = data.reblog_batch;
         tasselJsonManager.reblogs.json.forEach(function(reblog) {
