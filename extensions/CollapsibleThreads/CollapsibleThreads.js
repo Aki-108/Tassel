@@ -191,7 +191,7 @@
     }
 
     //add elements to the Tassel menu
-    window.setTimeout(initTassel_sicrjulu, 1000);
+    initTassel_sicrjulu();
     function initTassel_sicrjulu() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar === null) return;
