@@ -89,13 +89,13 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.5",
+            "version": "2.6",
             "created": 1678386060000,
-            "updated": 1774182451145,
+            "updated": 1774526245465,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a782e70265f12b6dfa035f291a92da02a16722c/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a782e70265f12b6dfa035f291a92da02a16722c/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7a86104200603378bd05153e55eb48a6e80ec002/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7a86104200603378bd05153e55eb48a6e80ec002/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
