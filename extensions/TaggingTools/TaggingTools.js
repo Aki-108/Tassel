@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.5
+// @version      2.6
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -19,6 +19,7 @@
 
     //get page elements
     let tagInput = document.getElementById("tags") || document.getElementById("post_tag_list");
+    let tagInputEdit = document.getElementById("post_tag_list");
     let submitButton = document.getElementById("submit-reblog") || document.getElementById("publish-btn");
     let draftButton;
     if (submitButton) {;//reblog modal
@@ -43,6 +44,7 @@
         initNewPostPage_dshcgkhy();
         initReblogPage_dshcgkhy();
         initReblogModal_dshcgkhy();
+        initEditTagsModal_dshcgkhy();
         addEventListenerSubmit_dshcgkhy(submitButton);
         addEventListenerInput_dshcgkhy();
         initTassel_dshcgkhy();
@@ -116,6 +118,56 @@
             });
         });
         initPostEditorHeader_dshcgkhy();
+    }
+
+    /* Add eventlistener for editing tags of a community post */
+    function initEditTagsModal_dshcgkhy() {
+        if (tagInputEdit) tagInputEdit.setAttribute("community", "true");
+        let modal = document.getElementById("edit-tags-modal");
+        if (!modal) return;
+
+        let modalObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutationRecord) {
+                if (document.getElementById("edit-tags-modal").classList.contains("in")) {
+                    let box = document.getElementById("tasselTaggingToolsSuggestionBoxEdit");
+                    if (!box) {
+                        box = document.createElement("div");
+                        box.id = "tasselTaggingToolsSuggestionBoxEdit";
+                        box.classList.add("tasselTaggingToolsSuggestionList");
+                        if (settings.secondRow) box.classList.add("tasselTaggingToolsTaller");
+                        tagInputEdit.before(box);
+                    }
+                    if (tagInputEdit.value[tagInputEdit.value.length-1] != ",") tagInputEdit.value += ",";
+
+                    //add community tags
+                    let url = document.URL;
+                    let communityName = url.substring(url.search("/community/")+11);
+                    communityName = communityName.split("/")[0];
+                    let community = tasselJsonManager.communities.communities.find(function(item) {
+                        return item.name === communityName;
+                    });
+                    if (community && community.pinned_tags) {
+                        community.pinned_tags.split(",").forEach(function(tag) {
+                            let existing = tags.find(function(item) {
+                                return item.tag.toLowerCase() === tag.toLowerCase();
+                            });
+                            if (existing !== undefined) {
+                                existing.type = "community";
+                                existing.count += 999;
+                            } else {
+                                tags.push({tag:tag,count:999,type:"community"});
+                            }
+                        });
+                    }
+
+                    suggest_dshcgkhy(tagInputEdit, box);
+                }
+            });
+        });
+        modalObserver.observe(modal, {
+            attributes: true,
+            attributeFilter: ["style"]
+        });
     }
 
     /* Apply formating to the post editor header */
@@ -391,27 +443,50 @@
 
     /* Add the events to the tag input field to suggest new tags when typing */
     function addEventListenerInput_dshcgkhy() {
-        if (!tagInput) return;
-        tagInput.addEventListener("click", suggest_dshcgkhy);
-        tagInput.addEventListener("keyup", suggest_dshcgkhy);
+        if (tagInput) {
+            tagInput.addEventListener("click", function() {
+                suggest_dshcgkhy(tagInput, document.getElementById("tasselTaggingToolsSuggestionBox"));
+            });
+            tagInput.addEventListener("keyup", function() {
+                suggest_dshcgkhy(tagInput, document.getElementById("tasselTaggingToolsSuggestionBox"));
+            });
+        }
+        if (tagInputEdit) {
+            tagInputEdit.addEventListener("click", function() {
+                suggest_dshcgkhy(tagInputEdit, document.getElementById("tasselTaggingToolsSuggestionBoxEdit"));
+            });
+            tagInputEdit.addEventListener("keyup", function() {
+                suggest_dshcgkhy(tagInputEdit, document.getElementById("tasselTaggingToolsSuggestionBoxEdit"));
+            });
+        }
     }
 
     /* Create the page element that holds tag suggestions */
     function creatSuggestionBox_dshcgkhy() {
-        if (!tagInput) return;
-        let box = document.createElement("div");
-        box.id = "tasselTaggingToolsSuggestionBox";
-        if (settings.secondRow) box.classList.add("tasselTaggingToolsTaller");
-        tagInput.before(box);
-        suggest_dshcgkhy();
+        if (tagInput) {
+            let box = document.createElement("div");
+            box.id = "tasselTaggingToolsSuggestionBox";
+            box.classList.add("tasselTaggingToolsSuggestionList");
+            if (settings.secondRow) box.classList.add("tasselTaggingToolsTaller");
+            tagInput.before(box);
+            suggest_dshcgkhy(tagInput, box);
+        }
+        if (tagInputEdit) {
+            let box = document.createElement("div");
+            box.id = "tasselTaggingToolsSuggestionBoxEdit";
+            box.classList.add("tasselTaggingToolsSuggestionList");
+            if (settings.secondRow) box.classList.add("tasselTaggingToolsTaller");
+            tagInputEdit.before(box);
+            suggest_dshcgkhy(tagInputEdit, box);
+        }
     }
 
     /* Suggest new tags based on the current input */
-    function suggest_dshcgkhy() {
+    function suggest_dshcgkhy(inputBox, outputBox) {
         //cut input down to one tag at the current cursor position
-        cursorPos = tagInput.selectionStart;
-        let edges = findEdges_dshcgkhy(cursorPos);
-        let typing = removeSpaces_dshcgkhy(tagInput.value.substring(edges.start, edges.end)).toLowerCase();
+        cursorPos = inputBox.selectionStart;
+        let edges = findEdges_dshcgkhy(inputBox, cursorPos);
+        let typing = removeSpaces_dshcgkhy(inputBox.value.substring(edges.start, edges.end)).toLowerCase();
 
         //find fitting tags
         let matches = [];
@@ -428,7 +503,7 @@
         });
 
         //remove tags that are already in use
-        let used = tagInput.value.split(",");
+        let used = inputBox.value.split(",");
         used = used.map(function(item) {
             return removeSpaces_dshcgkhy(item);
         });
@@ -463,8 +538,7 @@
         });
 
         //display suggestions
-        let suggestionOutput = document.getElementById("tasselTaggingToolsSuggestionBox");
-        suggestionOutput.innerHTML = "";
+        outputBox.innerHTML = "";
         addCopyButton_dshcgkhy();
         for (let a = 0; a < 20 && a < matches.length; a++) {
             let item = matches[a];
@@ -484,26 +558,26 @@
             }
             button.addEventListener("click", function(event) {
                 event.preventDefault();
-                insertTag_dshcgkhy(this);
+                insertTag_dshcgkhy(this, inputBox, outputBox);
             });
-            suggestionOutput.appendChild(button);
+            outputBox.appendChild(button);
         }
     }
 
     /* Adds a suggested tag into the input field at the cursor position */
-    function insertTag_dshcgkhy(el) {
+    function insertTag_dshcgkhy(tag, inputBox, outputBox) {
         //insert tag
-        let edges = findEdges_dshcgkhy(cursorPos);
-        tagInput.value = tagInput.value.substring(0, edges.start) + " " + el.getAttribute("value") + tagInput.value.substring(edges.end);
+        let edges = findEdges_dshcgkhy(inputBox, cursorPos);
+        inputBox.value = inputBox.value.substring(0, edges.start) + " " + tag.getAttribute("value") + inputBox.value.substring(edges.end);
         //add a comma if necessary
-        let input = removeSpaces_dshcgkhy(tagInput.value);
+        let input = removeSpaces_dshcgkhy(inputBox.value);
         input = input[input.length-1];
-        if (input !== undefined && input !== ",") tagInput.value += ", ";
+        if (input !== undefined && input !== ",") inputBox.value += ", ";
         //return to normal
-        tagInput.focus();
-        let newPos = edges.start + el.getAttribute("value").length + 2;
-        tagInput.setSelectionRange(newPos, newPos);
-        suggest_dshcgkhy();
+        inputBox.focus();
+        let newPos = edges.start + tag.getAttribute("value").length + 2;
+        inputBox.setSelectionRange(newPos, newPos);
+        suggest_dshcgkhy(inputBox, outputBox);
     }
 
     /* Display a button to copy the tags of the original post into the input field */
@@ -548,7 +622,7 @@
                 let input = removeSpaces_dshcgkhy(tagInput.value);
                 input = input[input.length-1];
                 if (input !== undefined && input !== ",") tagInput.value += ", ";
-                let edges = findEdges_dshcgkhy(tagInput.value.length);
+                let edges = findEdges_dshcgkhy(tagInput, tagInput.value.length);
                 tagInput.value = tagInput.value.substring(0, edges.start) + ` ${item}, `;
             });
 
@@ -574,10 +648,10 @@
     }
 
     /* Return the start and end cursor positions of a tag in the input field */
-    function findEdges_dshcgkhy(pos) {
+    function findEdges_dshcgkhy(inputBox, pos) {
         let start, end;
-        for (start = pos; start > 0; start--) if (tagInput.value[start - 1] === ",") break;
-        for (end = pos; end <= tagInput.value.length; end++) if (tagInput.value[end] === ",") break;
+        for (start = pos; start > 0; start--) if (inputBox.value[start - 1] === ",") break;
+        for (end = pos; end <= inputBox.value.length; end++) if (inputBox.value[end] === ",") break;
         return {start: start, end: end};
     }
 
