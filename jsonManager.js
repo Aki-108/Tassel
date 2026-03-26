@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         JSON Manager
-// @version      0.18
+// @version      0.19
 // @description  Easy way of managing different JSONs on Pillowfort
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -148,6 +148,7 @@ function loadCommentModal_quugasdg(postId) {
         trigger_quugasdg("tasselJsonManagerModalReady");
     });
     getCommentData_quugasdg(postId);
+    initComments_quugasdg();
 }
 
 function loadReblogModal_quugasdg(postId) {
@@ -192,6 +193,7 @@ function initSinglePost_quugasdg() {
     let commentPageButtons = document.getElementsByTagName("dir-pagination-controls")[0];
     commentPageButtons.addEventListener("click", function () {getCommentData_quugasdg(postId)});
     getCommentData_quugasdg(postId);
+    initComments_quugasdg();
 
     let reblogPageButtons = document.getElementsByTagName("dir-pagination-controls")[1];
     reblogPageButtons.addEventListener("click", function () {getReblogData_quugasdg(postId)});
@@ -200,6 +202,23 @@ function initSinglePost_quugasdg() {
     let likePageButtons = document.getElementsByTagName("dir-pagination-controls")[2];
     likePageButtons.addEventListener("click", function () {getLikeData_quugasdg(postId)});
     getLikeData_quugasdg(postId);
+}
+
+function initComments_quugasdg() {
+    const loadingIndicator = document.getElementById("comments_loading");
+    const mutationConfig = {attributes: true, attributeFilter: ["style"]};
+    const mutationCallback = (mutationList) => {
+        if (loadingIndicator.style.display == "none") {
+            let loadMores = Object.values(document.getElementsByClassName("show-more-replies-btn"));
+            for (let el of loadMores) {
+                el.addEventListener("click", function() {
+                    trigger_quugasdg("tasselJsonManagerCommentReady");
+                });
+            }
+        }
+    };
+    const mutationObserver = new MutationObserver(mutationCallback);
+    if (loadingIndicator != null) mutationObserver.observe(loadingIndicator, mutationConfig);
 }
 
 function getCommentData_quugasdg(postId) {
