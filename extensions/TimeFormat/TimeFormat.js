@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.7
+// @version      1.8
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -124,7 +124,7 @@
         if (settings.commentDate.length === 0) return;
         for (let comment of tasselJsonManager.comments.comments) {
             let commentElement = document.getElementById(comment.id);
-            if (commentElement === undefined) continue;
+            if (commentElement === null) continue;
             if (commentElement.classList.contains("tasselTimeFormatProcessed")) continue;
             commentElement.classList.add("tasselTimeFormatProcessed");
             let text = commentElement.getElementsByClassName("comment-subheader")[0];

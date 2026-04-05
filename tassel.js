@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.7.7
+// @version      1.8.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@70c71dff188740aff3ce39d6a54cc6bacec5c8c0/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@06c131af5aada55e800f488ff729b6f7e507838b/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5dece5f709f2251b1af9bcd3c0d6ad29fc6aa58/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@05d88cd8a204f224fccba6d3a35305a53548f6c3/jsonManager.js";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1bf28bff4356ad6503fcd146403b38c117051e97/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -189,7 +189,8 @@
         document.body.appendChild(communitiesReady);
         communitiesReady.addEventListener("click", function() {console.log("community data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of communities ready"});});
 
-        loadScript_xcajbuzn(jsonManager);
+        loadScript_xcajbuzn(jsonManager)
+            .then(() => loadCachedExtensions_xcajbuzn());
     }
 
     /* Add buttons to sidebar */
@@ -302,15 +303,31 @@
 
     /* Load extensions from external file */
     function loadExtensions_xcajbuzn() {
-        settings2.extensions.forEach(function(value) {
+        for (let listEntry of settings2.extensions) {
             let extension = extensionsIndex.find(function(data) {
-                return data.id == value.id;
+                return data.id == listEntry.id;
             });
             if (!extension) return;
-            if (extension.css) loadStyle_xcajbuzn(extension.css);
-            if (extension.src) loadScript_xcajbuzn(extension.src);
-        });
+            if (extension.css && extension.css != listEntry.css) {
+                listEntry.css = extension.css;
+                saveSettings_xcajbuzn();
+            }
+            if (extension.src && extension.src != listEntry.src) {
+                listEntry.src = extension.src;
+                saveSettings_xcajbuzn();
+            }
+        }
         evaluateURLParameter_xcajbuzn();
+    }
+    function loadCachedExtensions_xcajbuzn() {
+        for (let listEntry of settings2.extensions) {
+            if (listEntry.css) {
+                loadStyle_xcajbuzn(listEntry.css);
+            }
+            if (listEntry.src) {
+                loadScript_xcajbuzn(listEntry.src);
+            }
+        }
     }
 
     /* Load selected appearance changes */
@@ -1287,7 +1304,10 @@
             }
         });
         if (index === -1) {//activate
-            settings2.extensions.push({"id": id*1, "since": Date.now()});
+            let extension = extensionsIndex.find(function(data) {
+                return data.id == id;
+            });
+            settings2.extensions.push({"id": id*1, "since": Date.now(), "css": extension.css, "src": extension.src});
         } else {//deactivate
             settings2.extensions.splice(index, 1);
         }

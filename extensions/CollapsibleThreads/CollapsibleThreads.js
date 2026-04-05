@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Collapsible Threads
-// @version      1.6
+// @version      1.7
 // @description  Collapse Comments and Threads
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -153,10 +153,16 @@
                 if (!undo) comment.classList.add("widened", `widened${level}`);
             });
             //add button to every child comment
-            if (el.parentNode.parentNode.classList.contains("child-comment")) {
-                let commentBody = el.parentNode.getElementsByClassName("body")[0];
-                commentBody.classList.add("tasselCollapsibleThreadsChild");
-                commentBody.appendChild(buttonWidth);
+            let parent = el.parentNode;
+            for (let i = 0; i < 100; i++) {
+                if (parent.classList.contains("thread")) break;
+                if (parent.classList.contains("child-comment")) {
+                    let commentBody = el.parentNode.getElementsByClassName("body")[0];
+                    commentBody.classList.add("tasselCollapsibleThreadsChild");
+                    commentBody.appendChild(buttonWidth);
+                    break;
+                }
+                parent = parent.parentNode;
             }
         }
     }
@@ -191,7 +197,7 @@
     }
 
     //add elements to the Tassel menu
-    window.setTimeout(initTassel_sicrjulu, 1000);
+    initTassel_sicrjulu();
     function initTassel_sicrjulu() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
         if (tasselSidebar === null) return;

@@ -140,17 +140,20 @@ body.dark-theme #tasselTaggingToolsRulesButton {
 }
 
 /*---------- formating for tag suggestions ----------*/
-#tasselTaggingToolsSuggestionBox {
+.tasselTaggingToolsSuggestionList {
     margin-top: 5px;
     height: 32px;
     line-height: 32px;
     overflow: hidden;
 }
-#tasselTaggingToolsSuggestionBox.tasselTaggingToolsTaller {
+.tasselTaggingToolsTaller {
     height: 64px;
 }
+#tasselTaggingToolsSuggestionBoxEdit {
+    height: 128px;
+}
 
-#tasselTaggingToolsSuggestionBox button {
+.tasselTaggingToolsSuggestionList button {
     margin: 4px;
     border: 1px solid transparent;
     border-radius: .5em;
@@ -158,45 +161,45 @@ body.dark-theme #tasselTaggingToolsRulesButton {
     padding: 2px 8px;
     color: #2b2b2b;
 }
-body.dark-theme #tasselTaggingToolsSuggestionBox button {
+body.dark-theme .tasselTaggingToolsSuggestionList button {
     background-color: #010102;
     color: #d9dbe0;
 }
-#tasselTaggingToolsSuggestionBox button:hover {
+.tasselTaggingToolsSuggestionList button:hover {
     background-color: #e8e8e8;
 }
-body.dark-theme #tasselTaggingToolsSuggestionBox button:hover {
+body.dark-theme .tasselTaggingToolsSuggestionList button:hover {
     background-color: #353840;
 }
-#tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconCommunity {
+.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconCommunity {
     float: left;
     height: 1em;
     padding-right: 0.4em;
     filter: grayscale(1) contrast(3) invert(1);
 }
-body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconCommunity {
+body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconCommunity {
     filter: grayscale(1) contrast(3);
 }
-#tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconOriginal {
+.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconOriginal {
     float: left;
     height: 1em;
     padding-right: 0.4em;
     filter: grayscale(1) contrast(2) invert(1);
 }
-body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconOriginal {
+body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconOriginal {
     filter: grayscale(1) contrast(2);
 }
-#tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconRelated {
+.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconRelated {
     float: left;
     height: 1em;
     padding-right: 0.4em;
     filter: grayscale(1) contrast(0.7);
 }
-body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconRelated {
+body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconRelated {
     filter: grayscale(1) contrast(0.7) invert(1);
 }
 
-#tasselTaggingToolsSuggestionBox #tasselTaggingToolsCopyTags {
+.tasselTaggingToolsSuggestionList #tasselTaggingToolsCopyTags {
     float: right;
     margin: 4px 0px 4px 4px;
     width: 24px;
@@ -206,10 +209,10 @@ body.dark-theme #tasselTaggingToolsSuggestionBox button .tasselTaggingToolsIconR
     align-content: center;
     justify-content: center;
 }
-#tasselTaggingToolsSuggestionBox #tasselTaggingToolsCopyTags svg path {
+.tasselTaggingToolsSuggestionList #tasselTaggingToolsCopyTags svg path {
     stroke: #2b2b2b;
 }
-body.dark-theme #tasselTaggingToolsSuggestionBox #tasselTaggingToolsCopyTags svg path {
+body.dark-theme .tasselTaggingToolsSuggestionList #tasselTaggingToolsCopyTags svg path {
     stroke: #d9dbe0;
 }
 
