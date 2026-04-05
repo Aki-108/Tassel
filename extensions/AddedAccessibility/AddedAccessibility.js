@@ -184,12 +184,13 @@ body {
     filter: none !important;
 }
 /*post body*/
-.post.main .post-content .tags a.tag-item {
+.post.main .tags a.tag-item {
     color: #20728D;
 }
 /*post footer*/
 .tasselPermalinked.svg-blue,
 .post-nav-left .svg-blue,
+.post-nav-right .svg-blue,
 .post.main .post-nav-left img[src$=".svg"] {
     filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
 }
