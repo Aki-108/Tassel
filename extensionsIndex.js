@@ -7,7 +7,7 @@ let extensionsIndex = [
             "updated": 1708119207819,
             "author": "Aki108",
             "description": "View images in full screen",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/Lightbox.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@26e153956451c58a68ec31ad81d36ee23b1a22ff/extensions/Lightbox.js",
             "post": "https://www.pillowfort.social/posts/2841345",
             "features": ["View images in full screen.",
                          "Adds a dedicated button for embedded links."
@@ -21,8 +21,8 @@ let extensionsIndex = [
             "updated": 1733598272587,
             "author": "Aki108",
             "description": "Get notified when there are new comments on a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/PostSubscriber/PostSubscriber.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/PostSubscriber/PostSubscriber.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d814d09f831d7e3615b3f2fa336f5a29772cfbb7/extensions/PostSubscriber/PostSubscriber.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01469e5fed95ad69c45b1cb9de330123e18172a9/extensions/PostSubscriber/PostSubscriber.css",
             "post": "https://www.pillowfort.social/posts/2878877",
             "features": ["Subscribe to posts.",
                          "Get notifications for new comments in the sidebar.",
@@ -37,8 +37,8 @@ let extensionsIndex = [
             "updated": 1733580345437,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/RebloggedToCommunity/NoteDetails.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/RebloggedToCommunity/NoteDetails.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1d16aef1747e7ca14f57ac31bca3cb3699a099b2/extensions/RebloggedToCommunity/NoteDetails.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9a3df95a56485a1a7af57a78d4d4a8eacb28380c/extensions/RebloggedToCommunity/NoteDetails.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show tags of reblogs in the reblog notes of a post.",
                          "Show where a post has been liked from.",
@@ -54,8 +54,8 @@ let extensionsIndex = [
             "updated": 1742846149176,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@679b5f4da926362707121cc55d16f5252b6c996b/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
                 "Block posts by tag, content, username or community.",
@@ -71,8 +71,8 @@ let extensionsIndex = [
             "updated": 1774438546568,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/CollapsibleThreads/CollapsibleThreads.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/CollapsibleThreads/CollapsibleThreads.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@302b9f2bf7f45a9776eebe9bbf740cbe046056b7/extensions/CollapsibleThreads/CollapsibleThreads.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ceadc9675a31c0782d084e991db3f8876587f46b/extensions/CollapsibleThreads/CollapsibleThreads.css",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
         {
@@ -83,7 +83,7 @@ let extensionsIndex = [
             "updated": 1675538640000,
             "author": "Aki108",
             "description": "Remember the reason you blocked someone.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/BlocklistAnnotations.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@af310a1a71f7e691b507b0019a1877f70fb2007c/extensions/BlocklistAnnotations.js",
             "post": "https://www.pillowfort.social/posts/3167192"
         },
         {
@@ -94,8 +94,8 @@ let extensionsIndex = [
             "updated": 1774526245465,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/TaggingTools/TaggingTools.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/TaggingTools/TaggingTools.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@52e35592a06cfb1366c48cad236ab200bb3be4a9/extensions/TaggingTools/TaggingTools.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7a86104200603378bd05153e55eb48a6e80ec002/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
                 "Suggests tags based on your previous posts.",
@@ -113,8 +113,8 @@ let extensionsIndex = [
             "updated": 1698421111531,
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/ImageCensor/ImageCensor.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/ImageCensor/ImageCensor.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@35aa264521a85a9d18b14def9e6b2a2475f69e12/extensions/ImageCensor/ImageCensor.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5381c8033b663799c648d26f1803daf38ab8ddfa/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3658180",
             "features": [
                     "Blur NSFW images in posts.",
@@ -132,8 +132,8 @@ let extensionsIndex = [
             "updated": 1710016016850,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/PostCharts/PostCharts.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/PostCharts/PostCharts.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01713109b14174f138240dea8f28425f2666d341/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8bf9da04b0da5d2d2c21f532b61a8abb83f323b0/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
@@ -149,7 +149,7 @@ let extensionsIndex = [
                 "updated": 1774170633849,
                 "author": "Aki108",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/SidebarCounts.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b75ee32e426b11a3e2fc2ce5ee380794d1129188/extensions/SidebarCounts.js",
                 "post": "https://www.pillowfort.social/posts/3739972"
         },
         {
@@ -160,8 +160,8 @@ let extensionsIndex = [
                 "updated": 1710055821763,
                 "author": "Aki108",
                 "description": "Open Read-More's anywhere.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/ReadThis/ReadThis.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/ReadThis/ReadThis.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7731455e6ad391d8b380b2616036f6f49f47811d/extensions/ReadThis/ReadThis.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@df1892d4f05444a06e780bb166165611d636d6de/extensions/ReadThis/ReadThis.css",
                 "post": "https://www.pillowfort.social/posts/3787080",
                 "features": [
                         "Opens a Read-More without opening the post.",
@@ -176,8 +176,8 @@ let extensionsIndex = [
                 "updated": 1727098281772,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/FortArchive/FortArchive.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/FortArchive/FortArchive.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf71ff236831db8fb1b441ca7a2cc21acf11303a/extensions/FortArchive/FortArchive.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7f64a859ac233305b7090ee4a879ee909c364abc/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470",
                 "features": [
                         "See small previous of posts.",
@@ -193,7 +193,7 @@ let extensionsIndex = [
                 "updated": 1729274308316,
                 "author": "Aki108",
                 "description": "Hide any number.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/HideNumbers.js"
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@43415c5c29efb2cb80a61c531499ba8ddbe6659d/extensions/HideNumbers.js"
         },
         {
                 "name": "Keyboard Shortcuts",
@@ -203,8 +203,8 @@ let extensionsIndex = [
                 "updated": 1703241062270,
                 "author": "Aki108",
                 "description": "Navigate Pillowfort with you keyboard.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/KeyboardShortcuts/KeyboardShortcuts.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/KeyboardShortcuts/KeyboardShortcuts.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@774b8c0ee696c73f60581a1f1f70775de1cc367e/extensions/KeyboardShortcuts/KeyboardShortcuts.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f53219db6b18491c39a11fb63561e491474614a4/extensions/KeyboardShortcuts/KeyboardShortcuts.css",
                 "post": "https://www.pillowfort.social/posts/4123393"
         },
         {
@@ -215,8 +215,8 @@ let extensionsIndex = [
                 "updated": 1727266512029,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/UserMuting/UserMuting.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/UserMuting/UserMuting.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0a3e5eb875a7cc66bb3f6cd764eed9fae553029f/extensions/UserMuting/UserMuting.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a926271075120baad706cd2abced49e522263686/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
                         "Remove posts/reblogs of someone.",
@@ -231,8 +231,8 @@ let extensionsIndex = [
                 "updated": 1775310846131,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/TimeFormat/TimeFormat.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/TimeFormat/TimeFormat.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d7021d07f29e408d68018a905ebf69e74dd61747/extensions/TimeFormat/TimeFormat.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf052368800aa2f57045d9f2f74b0916f51f09bf/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
         {
@@ -243,8 +243,8 @@ let extensionsIndex = [
                 "updated": 1775296086076,
                 "author": "Aki108",
                 "description": "Better alt texts and clear fort themes.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/AddedAccessibility/AddedAccessibility.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/AddedAccessibility/AddedAccessibility.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@fee79b0dd0cfcb0e822a51c2ef3d20beb308219e/extensions/AddedAccessibility/AddedAccessibility.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1a2c16a6b1ad53367e1b8c46e2dc00311d4f9b2d/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/5332841",
                 "features": [
                         "Display alt text below a picture.",
@@ -260,7 +260,7 @@ let extensionsIndex = [
                 "updated": 1746302097883,
                 "author": "Aki108",
                 "description": "Keep up with flags and pending posts.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a7dd4bf2059e6985af658f5f5e77ba094e039e06/extensions/ModerationAid.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a72690377d670fb4c8554ca092849817509826bb/extensions/ModerationAid.js",
                 "post": "https://www.pillowfort.social/posts/6208366",
                 "features": [
                         "Shows the number of flagged posts in your communities.",
