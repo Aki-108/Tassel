@@ -190,7 +190,8 @@ body {
 /*post footer*/
 .tasselPermalinked.svg-blue,
 .post-nav-left .svg-blue,
-.post-nav-right .svg-blue,
+.post.main .post-nav-right .svg-blue,
+.post.main .post-nav-right .edit-img,
 .post.main .post-nav-left img[src$=".svg"] {
     filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
 }
