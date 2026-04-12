@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Added Accessibility
-// @version      1.0
+// @version      1.1
 // @description  Accessibility Tools
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -121,112 +121,15 @@
             button.title = "remove style";
             button.style = "border: none;background: none;width: 22px;height: 22px;margin: 0;padding: 0;";
             button.innerHTML = `<img alt="remove style" style="filter: none !important;background: white;background: radial-gradient(circle,rgb(255, 255, 255) 0%, rgba(0, 0, 0, 0) 50%);border-radius: 100%;" src="/assets/global/watch-8a83b714a3c8fd66d5a9948c2f655ca085ec6dc8f97370ebaf9b0c5b55e3a88b.svg">`;
-            button.addEventListener("click", revertStyle_pdmmlnvi);
+            button.addEventListener("click", function() {
+                if (document.body.classList.contains("tasselAddedAccessibilityUnstyle")) {
+                    document.body.classList.remove("tasselAddedAccessibilityUnstyle");
+                } else {
+                    document.body.classList.add("tasselAddedAccessibilityUnstyle");
+                }
+            });
             area.appendChild(button);
         }
-    }
-
-    function revertStyle_pdmmlnvi() {
-        let style = document.createElement("style")
-        style.innerHTML = `
-body {
-    --pageBg: #2C405A !important;
-    --postBorderColor: #2C405A !important;
-    --postBgColor: #fff !important;
-    --postFontColor: #2b2b2b !important;
-    --postHeaderFooter: #232b40 !important;
-    --postHeaderFont: #fff !important;
-    --linkColor: #58b6dd !important;
-    --iconColor: "brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%)" !important;
-    --sidebarBgColor: #181D2B !important;
-    --sidebarFontColor: #fff !important;
-    --sidebarHeaderFooter: #232b40 !important;
-    --tag_bg: #ececec !important;
-    --blockquote_bg: #eee !important;
-}
-body {
-    background-color: #2C405A !important;
-}
-/*sidebar*/
-.user-sidebar .username {
-    color: #fff;
-}
-.user-sidebar img[src$=".svg"] {
-    filter: none !important;
-}
-#user-sidebar-expanded .follow-btn .svg-blue {
-    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
-}
-#user-sidebar-expanded .svg-purple,
-#sidebar-collapsed .svg-purple {
-    filter: brightness(0) saturate(100%) invert(65%) sepia(53%) saturate(603%) hue-rotate(210deg) brightness(99%) contrast(86%) !important;
-}
-.user-sidebar .sidebar-bottom-left a {
-    color: white !important;
-}
-.sidebar-bottom-num-show a div {
-    color: var(--linkColor) !important;
-}
-.user-sidebar .style-button {
-    color: #F377B3 !important;
-}
-/*post header*/
-.post.main .header .post-right .timestamp2 {
-    color: #fff !important;
-}
-.post.main .header .svg-pink-light {
-    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%) !important;
-}
-.post.main .header .svg-blue {
-    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
-}
-.post.main .header .link_post img {
-    filter: none !important;
-}
-/*post body*/
-.post.main .tags a.tag-item {
-    color: #20728D;
-}
-/*post footer*/
-.tasselPermalinked.svg-blue,
-.post-nav-left .svg-blue,
-.post.main .post-nav-right .svg-blue,
-.post.main .post-nav-right .edit-img,
-.post.main .post-nav-left img[src$=".svg"] {
-    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
-}
-.post.main .post-nav-left img.svg-pink-light {
-    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%) !important;
-}
-.post.main .post-nav .svg-purple {
-    filter: brightness(0) saturate(100%) invert(65%) sepia(53%) saturate(603%) hue-rotate(210deg) brightness(99%) contrast(86%) !important;
-}
-.post.main .post-nav .tag-text {
-    color: white;
-}
-#userBlogPosts .subscribed {
-    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%) !important;
-}
-/*page nav*/
-.pagination li a {
-    background: #fff !important;
-    color: #777777 !important;
-}
-.pagination li a:hover {
-    background-color: #18729c !important;
-    border-color: #18729c !important;
-    color: #fff !important;
-}
-.pagination li.active a {
-    background-color: #e3e3e3 !important;
-    color: #337ab7 !important;
-}
-.pagination > li > a,
-.pagination > li > span {
-    color: #337ab7 !important;
-}
-        `;
-        document.head.appendChild(style);
     }
 
     function addAltText(img) {
