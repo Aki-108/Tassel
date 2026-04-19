@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.8.1
+// @version      1.8.2
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,9 +14,9 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5c6a708948799ba162455482bc29537a30ba58ac/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ac9b1ad615f4b72a9a1cde27e4d90c508c9936c0/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5dece5f709f2251b1af9bcd3c0d6ad29fc6aa58/style.css";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ac9b1ad615f4b72a9a1cde27e4d90c508c9936c0/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1bf28bff4356ad6503fcd146403b38c117051e97/jsonManager.js";
 
     let icon = document.createElement("div");
@@ -340,6 +340,7 @@
         if (settings2.goldToBlue) css += ".svg-gold{filter:brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);}";
         if (settings2.noFrames) css += ".post-container .avatar-frame {display: none;} .post-container .avatar img.with-frame {border: none !important; background-color: #fff !important;} body.dark-theme .post-container .avatar img {background-color: #d9dbe0 !important;}";
         if (settings2.expandNotes) css += "body.dark-theme #notifs-dashboard .notif-mini {background-color: #1b1d20;} #notifs-dashboard .repeat-notifs {max-height: 500px; transition: max-height 0.5s ease-in; overflow-y: auto;} #notifs-dashboard .repeat-notifs.expanded {max-height: 0px; overflow: hidden; transition: max-height 0.25s ease-out;}";
+        if (settings2.textAlignLeft) css += ".post .content {text-align: left;}";
 
         //Post footer
         if (settings2.postFooter.swapLeftRight) css += ".post .post-nav .post-nav-left {float: right; padding-right: 20px;} .post .post-nav .post-nav-right {float: left; padding-right: 0;}";
@@ -846,6 +847,11 @@
         content.appendChild(createSwitch_xcajbuzn("Hide Avatar Frames", settings2.noFrames ? "checked" : ""));
         content.lastChild.children[0].addEventListener("change", function() {
             settings2.noFrames = this.checked;
+            saveSettings_xcajbuzn();
+        });
+        content.appendChild(createSwitch_xcajbuzn("Align Text Left in the Post Body", settings2.textAlignLeft ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings2.textAlignLeft = this.checked;
             saveSettings_xcajbuzn();
         });
         content.appendChild(createSwitch_xcajbuzn("Expand Notifications", settings2.expandNotes ? "checked" : ""));

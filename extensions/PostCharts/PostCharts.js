@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Charts
-// @version      1.4
+// @version      1.5
 // @description  Shows statistics of a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -11,8 +11,9 @@
 (function() {
     'use strict';
 
+    let settings = JSON.parse(localStorage.getItem("tasselSettings2")).postCharts || {fundingChartLength: 7, fundingProgressFormat: 2};
     let likesData = [], reblogsData = [], commentsData = [], timeGraphData = [], weekGraphData = [[new Date(),0,0,0]], hourGraphData = [[new Date(),0,0,0]], sourceData = [], sourceDataEdited = [], sourceGraphData = [[0,0]], sourceGraphTitles = [];
-    let GraphObjects = [];
+    let GraphObjects = [];//4: funding sidebar, 5: funding page
     let barWidth = 610;
 
     const loadScript_gkgyjoep = src => {
@@ -37,14 +38,22 @@
             document.head.append(style)
         })
     }
-    
-    if (document.URL.split("/")[3] !== "posts") return;
+
     loadScript_gkgyjoep("https://unpkg.com/dygraphs@2.2.1/dist/dygraph.min.js")
         .then(() => init_gkgyjoep());
     loadStyle_gkgyjoep("https://unpkg.com/dygraphs@2.2.1/dist/dygraph.min.css");
 
     /* Initialize */
     function init_gkgyjoep() {
+        initTassel_gkgyjoep();
+
+        //funding progress
+        initFundingSidebar_gkgyjoep();
+        initFundingPage_gkgyjoep();
+        loadFundingData();
+
+        //post charts
+        if (document.URL.split("/")[3] !== "posts") return;
         let tabs = document.getElementsByClassName("nav-tabs");
         if (!tabs.length) return;
 
@@ -54,6 +63,170 @@
         chartTab.innerHTML = `<a href="" role="tab" data-toggle="tab" aria-controls="Charts">Charts</a>`
         chartTab.addEventListener("click", showControlls_gkgyjoep);
         tabs[0].appendChild(chartTab);
+    }
+
+    function loadFundingData() {
+        let now = new Date();
+        async function getText(file) {
+            let x = await fetch(file);
+            let fileContent = await x.text();
+            let formatedData = [];
+            fileContent = fileContent.split("\n").map(function(row) {return row.split(",");});
+            let firstDay = new Date(`${now.getFullYear()} ${now.getMonth()+1} 01`).getTime();
+            let lastDay = new Date(`${now.getFullYear()} ${now.getMonth()+2} 00`).getTime()+86399999;
+            let monthLength = lastDay - firstDay;
+            for (let i = 1; i < fileContent.length-1; i++) {
+                let time = new Date(fileContent[i][0].substring(0,19));
+                formatedData.push([time, parseInt(fileContent[i][1])/monthLength*(time.getTime()-firstDay), parseInt(fileContent[i][2])]);
+            }
+
+            //sidebar
+            let shortenedData = [...formatedData];
+            let tenAgo = now.getTime() - 7*86400000; //x days in ms
+            for (let i = 0; i < 99999; i++) {
+                if (shortenedData[0][0].getTime() < tenAgo) shortenedData.shift();
+                else break;
+            }
+            if (GraphObjects[4]) GraphObjects[4].updateOptions({'file':shortenedData});
+
+            if (settings.fundingProgressFormat == 1) {
+                document.getElementsByClassName("donate-link")[0].getElementsByClassName("sidebar-bottom-num")[0].innerHTML = "$"+Math.round(formatedData[formatedData.length-1][1]);
+            } else if (settings.fundingProgressFormat == 2) {
+                let delta = formatedData[formatedData.length-1][2] - formatedData[formatedData.length-1][1];
+                delta = Math.round(delta);
+                delta = (delta < 0 ? "" : "+") + delta + "$";
+                document.getElementsByClassName("donate-link")[0].getElementsByClassName("sidebar-bottom-num")[0].innerHTML = delta;
+            }
+
+            //funding page
+            let fullData = [...formatedData];
+            fullData.push([new Date(lastDay), parseInt(fileContent[fileContent.length-2][1]), null]);
+            if (GraphObjects[5]) GraphObjects[5].updateOptions({'file':fullData});
+        }
+        getText(`https://raw.githubusercontent.com/anacedragon/pf-funding-data/refs/heads/main/funds-${now.getFullYear()}-${now.getMonth()+1 < 10 ? "0" : ""}${now.getMonth()+1}.csv`);
+    }
+
+    /* Create the chart in the sidebar */
+    function initFundingSidebar_gkgyjoep() {
+        let formatedData = [[new Date(),0,0]];
+        let graphArea = document.createElement("div");
+        if (settings.disableFundingProgressChart) graphArea.classList.add("hidden");
+        graphArea.id = "fundingSidebarGraph";
+        document.getElementsByClassName("donate-link")[0].getElementsByClassName("sidebar-bottom-num")[0].after(graphArea);
+        let gLineColor = document.body.classList.contains("dark-theme") ? "#bdbdbd00" : "#58b6dd00",
+            gColors = document.body.classList.contains("dark-theme") ? ["#CF698F", "#bdbdbd"] : ["#F377B3", "#58b6dd"];
+
+        GraphObjects[4] = new Dygraph(
+            document.getElementById("fundingSidebarGraph"),
+            formatedData,
+            {
+                //Sized
+                width: 50,
+                height: 21,
+                highlightCircleSize: 0,
+                strokeWidth: 1,
+                axisLineWidth: 1,
+                axisLabelWidth: -5,
+
+                //Labeling
+                legend: 'never',
+                axisLabelFontSize: 0,
+                xLabelHeight: 0,
+                yLabelHeight: 0,
+
+                //Other
+                interactionModel: {},
+                rollPeriod: 0,
+                stepPlot: true,
+                fillGraph: false,
+                includeZero: false,
+                colors: gColors,
+                connectSeparatedPoints: false,
+                drawGrid: false,
+                axisLineColor: gLineColor,
+                axes: {
+                    x: {
+                        pixelsPerLabel: 100,
+                        axisLabelWidth: 100,
+                    }
+                }
+            }
+        );
+    }
+
+    /* Create the chart on the donation page */
+    function initFundingPage_gkgyjoep() {
+        if (new URL(document.URL).pathname != "/donations") return;
+        let formatedData = [[new Date(),0,0]];
+        let graphArea = document.createElement("div");
+        graphArea.id = "fundingPageGraph";
+        document.getElementById("creditCardForm").getElementsByClassName("info-text")[0].after(graphArea);
+        let graphLabels = document.createElement("div");
+        graphLabels.id = "fundingGraphLabels";
+        graphArea.after(graphLabels);
+        let info = document.createElement("p");
+        info.classList.add("info-text", "padding10");
+        info.innerHTML = `The historic funding data is provided by <i>anacedragon</i>. More charts can be found on their <a href="https://interstellarj.neocities.org/pillowfort/">neocities site</a>.`;
+        graphLabels.after(info);
+
+        let gLabels = ["Time", "Ideal", "Funding"],
+            gLineColor = document.body.classList.contains("dark-theme") ? "#d9dbe0" : "#2b2b2b",
+            gColors = document.body.classList.contains("dark-theme") ? ["#CF698F", "#bdbdbd"] : ["#DE237E", "#337ab7"];
+
+        GraphObjects[5] = new Dygraph(
+            document.getElementById("fundingPageGraph"),
+            formatedData,
+            {
+                //Sized
+                width: document.getElementById("creditCardForm").getElementsByClassName("progress")[0].clientWidth,
+                height: document.getElementById("creditCardForm").getElementsByClassName("progress")[0].clientWidth / 2,
+                highlightCircleSize: 10,
+                strokeWidth: 2,
+
+                //Labeling
+                labels: gLabels,
+                legend: 'always',
+                labelsDiv: fundingGraphLabels,
+
+                //Other
+                rollPeriod: 0,
+                stepPlot: false,
+                fillGraph: true,
+                includeZero: true,
+                colors: gColors,
+                connectSeparatedPoints: true,
+                gridLineColor: gLineColor,
+                axisLineColor: gLineColor,
+                panEdgeFraction: 0.00001,
+                axes: {
+                    x: {
+                        valueFormatter: function(ms) {
+                            let d = new Date(ms),
+                                yyyy = d.getFullYear(),
+                                dd = d.getDate(),
+                                hh = d.getHours(),
+                                mm = d.getMinutes();
+                            let months = ["Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            //01 Jan 2000 01:00
+                            return (dd < 10 ? '0' : '') + dd + ' ' + months[d.getMonth()] + ' ' + yyyy + ' ' + (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
+                        }
+                    },
+                    y: {
+                        axisLabelFormatter: function(val) {
+                            return "$" + val;
+                        },
+                        valueFormatter: function(val) {
+                            return "$" + Math.round(val);
+                        }
+                    }
+                },
+                series: {
+                    'Funding': {
+                        stepPlot: true
+                    }
+                }
+            }
+        );
     }
 
     /* Generate the page that holds the charts */
@@ -673,7 +846,7 @@
             if (item[0] === 0) {//for the cases older than Pillowfort is keeping track of this data
                 item[0] = `<abbr title="This data is older than Pillowfort's records.">???</abbr>`;
                 item[2] = null;
-                if (index+1 == sourceDataEdited.length) updateSourceGraph();
+                if (index+1 == sourceDataEdited.length) updateSourceGraph_gkgyjoep();
             } else {
                 window.setTimeout(function() {
                     $.getJSON('https://www.pillowfort.social/posts/'+item[0]+'/json', function(data) {
@@ -688,10 +861,10 @@
                             item[0] = data.username;
                             item[2] = null;
                         }
-                        if (index+1 == sourceDataEdited.length) updateSourceGraph();
+                        if (index+1 == sourceDataEdited.length) updateSourceGraph_gkgyjoep();
                     }).fail(function(value) {
                         item[0] = value.statusText;
-                        if (index+1 == sourceDataEdited.length) updateSourceGraph();
+                        if (index+1 == sourceDataEdited.length) updateSourceGraph_gkgyjoep();
                     });
                 }, index*1000);
             }
@@ -703,7 +876,7 @@
     }
 
     /* Display data in graph */
-    function updateSourceGraph() {
+    function updateSourceGraph_gkgyjoep() {
         //sort by name
         sourceDataEdited = sourceDataEdited.sort(function(a, b) {
             return b[0].localeCompare(a[0]);
@@ -739,5 +912,113 @@
         });
         GraphObjects[3].updateOptions({'file':sourceGraphData, 'visibility': [true],'dateWindow':[-0.5, sourceGraphData.length-0.5]});
         document.getElementById("tasselNoteChartsProgress2").style.display = "none";
+    }
+
+    /* Add elements to the Tassel menu */
+    function initTassel_gkgyjoep() {
+        let tasselSidebar = document.getElementById("tasselModalSidebar");
+        if (tasselSidebar == null) return;
+        let button = document.createElement("button");
+        button.classList.add("tasselModalSidebarEntry");
+        button.id = "tasselModalSidebarPostCharts";
+        button.style.order = "1603";
+        button.innerHTML = "Post Charts";
+        tasselSidebar.appendChild(button);
+        document.getElementById("tasselModalSidebarPostCharts").addEventListener("click", displaySettings_gkgyjoep);
+    }
+
+    /* Create Tassel settings menu */
+    function displaySettings_gkgyjoep() {
+        //deselect other menu items and select this one
+        let content = document.getElementById("tasselModalContent");
+        content.innerHTML = "";
+        let sidebarEntries = document.getElementsByClassName("tasselModalSidebarEntry");
+        Object.values(sidebarEntries).forEach(function(data, index) {
+            data.classList.remove("active");
+        });
+        document.getElementById("tasselModalSidebarPostCharts").classList.add("active");
+
+        //add a little note
+        let info0 = document.createElement("p");
+        info0.innerHTML = "Changes will become active after a page reload.";
+        content.appendChild(info0);
+        content.appendChild(document.createElement("hr"));
+
+        //add settings
+        content.appendChild(createSwitch_gkgyjoep('Disable funding progress chart', settings.disableFundingProgressChart ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.disableFundingProgressChart = this.checked;
+            saveSettings_gkgyjoep();
+        });
+
+        let label1 = document.createElement("label");
+        label1.setAttribute("for", "tasselPostChartsFundingLength");
+        label1.innerHTML = `Chart the last
+            <input id="tasselPostChartsFundingLength" type="number" min="1" max="31" step="1" value="${settings.fundingChartLength}"></input>
+            days of funding.
+            ${createInfoButton_gkgyjoep("A short range makes jumps in funding more obvious.")}
+        `;
+        content.appendChild(label1);
+        let input1 = document.getElementById("tasselPostChartsFundingLength");
+        input1.addEventListener("change", function() {
+            settings.fundingChartLength = this.value;
+            saveSettings_gkgyjoep();
+        });
+
+        //selection of funding progress
+        let info2 = document.createElement("label");
+		info2.style.fontWeight = "normal";
+        info2.innerHTML = "Display funding progress as ";
+        let select2 = document.createElement("select");
+        select2.id = "tasselPostChartsFundingDropdown";
+        select2.innerHTML = `
+          <option value="0">percentag</option>
+          <option value="1">dollar</option>
+          <option value="2">difference</option>
+        `;
+        info2.appendChild(select2);
+        content.appendChild(info2);
+        content.appendChild(document.createElement("br"));
+        //save settings when changed
+        document.getElementById("tasselPostChartsFundingDropdown").addEventListener("change", function() {
+            settings.fundingProgressFormat = document.getElementById("tasselPostChartsFundingDropdown").value*1;
+            saveSettings_gkgyjoep();
+        });
+        //show the selected option in the menu, not the default
+        let selector2 = document.getElementById("tasselPostChartsFundingDropdown");
+        let selection = settings.fundingProgressFormat;
+        for (let a = 0; a < selector2.children.length; a++) {
+            if (selection == selector2.children[a].value) selector2.children[a].selected = true;
+        }
+    }
+
+    function saveSettings_gkgyjoep() {
+        let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+        file.postCharts = settings;
+        localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    function createInfoButton_gkgyjoep(content) {
+        let html = document.createElement("div");
+        let button = document.createElement("button");
+        button.classList.add("tasselInfoButton");
+        button.innerHTML = "i";
+        html.appendChild(button);
+        let info = document.createElement("div");
+        info.classList.add("tasselInfoBox");
+        info.innerHTML = `<p>${content}</p>`;
+        html.appendChild(info);
+        return html.innerHTML;
+    }
+
+    function createSwitch_gkgyjoep(title="", state="") {
+        let id = "tasselSwitch" + Math.random();
+        let toggle = document.createElement("div");
+        toggle.classList.add("tasselToggle");
+        toggle.innerHTML = `
+          <input id="${id}" type="checkbox" ${state}>
+          <label for="${id}">${title}</label>
+        `;
+        return toggle;
     }
 })();

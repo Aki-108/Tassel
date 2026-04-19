@@ -1,3 +1,36 @@
+/*general*/
+.dygraph-axis-label {
+    color: #2b2b2b !important;
+}
+body.dark-theme .dygraph-axis-label {
+    color: #d9dbe0 !important;
+}
+
+body.dark-theme hr {
+    border-color: rgba(255,255,255,0.1);
+}
+
+body:not(.dark-theme) #creditCardForm .info-text {
+    color: #757575 !important;
+}
+
+/*Tassel*/
+#tasselPostChartsFundingLength {
+    width: 4em;
+    margin: 0.5em;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    padding: 0.5em 0.5em;
+    background-color: white;
+}
+body.dark-theme #tasselPostChartsFundingLength {
+    border: 1px solid #3a3e47;
+    background-color: #1B1D20;
+    color: #d9dbe0;
+    font-variant: none;
+}
+
+/*post charts*/
 #tasselChartPaneBox {
     background-color: #fff;
     width: 650px;
@@ -71,13 +104,36 @@ body.dark-theme #tasselNoteChartsProgressBar2 {
     text-overflow: ellipsis;
 }
 
-.dygraph-axis-label {
-    color: #2b2b2b;
+/*funding charts*/
+a.donate-link .sidebar-bottom-num {
+    height: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
-body.dark-theme .dygraph-axis-label {
-    color: #d9dbe0;
+a.donate-link:has(#fundingSidebarGraph.hidden) .sidebar-bottom-num {
+    opacity: 1;
+}
+.donate-link:hover .sidebar-bottom-num {
+    opacity: 1;
 }
 
-body.dark-theme hr {
-    border-color: rgba(255,255,255,0.1);
+#fundingSidebarGraph {
+    margin-top: -11px;
+    padding-top: 8px;
+    float: right;
+    width: 50px;
+    height: 21px;
+}
+#fundingSidebarGraph.hidden {
+    display: none;
+}
+.donate-link:hover #fundingSidebarGraph {
+    opacity: 0;
+}
+
+#fundingPageGraph {
+    margin: 1em auto;
+}
+#fundingGraphLabels {
+    text-align: center;
 }

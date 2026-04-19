@@ -3,3 +3,139 @@
     height: min-content;
     padding: 0.5em;
 }
+
+/*Unstyle*/
+body.tasselAddedAccessibilityUnstyle {
+    --pageBg: #2C405A !important;
+    --postBorderColor: #2C405A !important;
+    --postBgColor: #fff !important;
+    --postFontColor: #2b2b2b !important;
+    --postHeaderFooter: #232b40 !important;
+    --postHeaderFont: #fff !important;
+    --linkColor: #58b6dd !important;
+    --iconColor: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
+    --sidebarBgColor: #181D2B !important;
+    --sidebarFontColor: #fff !important;
+    --sidebarHeaderFooter: #232b40 !important;
+    --tag_bg: #ececec !important;
+    --blockquote_bg: #eee !important;
+    background-color: var(--pageBg) !important;
+}
+body.dark-theme.tasselAddedAccessibilityUnstyle {
+    --pageBg: #23282E !important;
+    --postBgColor: #1B1D20 !important;
+    --postBorderColor: #23282E !important;
+    --postFontColor: #d9dbe0 !important;
+    --postHeaderFooter: #010102 !important;
+    --postHeaderFont: #d9dbe0 !important;
+    --linkColor: #6F96BC !important;
+    --iconColor: brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%) !important;
+    --sidebarBgColor: #010102 !important;
+    --sidebarFontColor: #d9dbe0 !important;
+    --sidebarHeaderFooter: #1B1B20 !important;
+    --tag_bg: #010102 !important;
+    --blockquote_bg: #010102 !important;
+    color: #d9dbe0 !important;
+}
+/*sidebar*/
+body.tasselAddedAccessibilityUnstyle .user-sidebar .username {
+    color: #fff;
+}
+body.tasselAddedAccessibilityUnstyle .user-sidebar img[src$=".svg"] {
+    filter: none !important;
+}
+body.tasselAddedAccessibilityUnstyle #user-sidebar-expanded .follow-btn .svg-blue {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
+}
+body.tasselAddedAccessibilityUnstyle #user-sidebar-expanded .svg-purple,
+body.tasselAddedAccessibilityUnstyle #sidebar-collapsed .svg-purple {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(53%) saturate(603%) hue-rotate(210deg) brightness(99%) contrast(86%) !important;
+}
+body.tasselAddedAccessibilityUnstyle .user-sidebar .sidebar-bottom-left a {
+    color: white !important;
+}
+body.tasselAddedAccessibilityUnstyle .sidebar-bottom-num-show a div {
+    color: var(--linkColor) !important;
+}
+body.tasselAddedAccessibilityUnstyle .user-sidebar .style-button {
+    color: #F377B3 !important;
+}
+/*post header*/
+body.tasselAddedAccessibilityUnstyle .post.main .header .post-right .timestamp2 {
+    color: #fff !important;
+}
+body.tasselAddedAccessibilityUnstyle .post.main .header .svg-pink-light {
+    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%) !important;
+}
+body.tasselAddedAccessibilityUnstyle .post.main .header .svg-blue {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
+}
+body.tasselAddedAccessibilityUnstyle .post.main .header .link_post img {
+    filter: none !important;
+}
+/*post body*/
+body.tasselAddedAccessibilityUnstyle .post.main .tags a.tag-item {
+    color: #20728D;
+}
+body.dark-theme.tasselAddedAccessibilityUnstyle .post.main .tags a.tag-item {
+    color: var(--linkColor);
+}
+/*post footer*/
+body.tasselAddedAccessibilityUnstyle .tasselPermalinked.svg-blue,
+body.tasselAddedAccessibilityUnstyle .post-nav-left .svg-blue,
+body.tasselAddedAccessibilityUnstyle .post.main .post-nav-right .svg-blue,
+body.tasselAddedAccessibilityUnstyle .post.main .post-nav-right .edit-img,
+body.tasselAddedAccessibilityUnstyle .post.main .post-nav-left img[src$=".svg"] {
+    /*filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;*/
+    filter: var(--iconColor) !important;
+}
+body.dark-theme.tasselAddedAccessibilityUnstyle .tasselPermalinked.svg-blue,
+body.dark-theme.tasselAddedAccessibilityUnstyle .post-nav-left .svg-blue,
+body.dark-theme.tasselAddedAccessibilityUnstyle .post.main .post-nav-right .svg-blue,
+body.dark-theme.tasselAddedAccessibilityUnstyle .post.main .post-nav-right .edit-img,
+body.dark-theme.tasselAddedAccessibilityUnstyle .post.main .post-nav-left img[src$=".svg"] {
+    filter: var(--iconColor) !important;
+}
+body.tasselAddedAccessibilityUnstyle .post.main .post-nav-left img.svg-pink-light {
+    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%) !important;
+}
+body.tasselAddedAccessibilityUnstyle .post.main .post-nav .svg-purple {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(53%) saturate(603%) hue-rotate(210deg) brightness(99%) contrast(86%) !important;
+}
+body.tasselAddedAccessibilityUnstyle .post.main .post-nav .tag-text {
+    color: white;
+}
+body.tasselAddedAccessibilityUnstyle #userBlogPosts .subscribed {
+    filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%) !important;
+}
+/*page nav*/
+body.tasselAddedAccessibilityUnstyle .pagination li a {
+    background: #fff !important;
+    color: #777777 !important;
+}
+body.dark-theme.tasselAddedAccessibilityUnstyle .pagination li a {
+    background: #010102 !important;
+    color: #d9dbe0 !important;
+}
+body.tasselAddedAccessibilityUnstyle .pagination li a:hover {
+    background-color: #18729c !important;
+    border-color: #18729c !important;
+    color: #fff !important;
+}
+body.dark-theme.tasselAddedAccessibilityUnstyle .pagination li a:hover {
+    background-color: #3a3e47 !important;
+    border-color: #3a3e47 !important;
+    color: #d9dbe0 !important;
+}
+body.tasselAddedAccessibilityUnstyle .pagination li.active a {
+    background-color: #e3e3e3 !important;
+    color: #337ab7 !important;
+}
+body.dark-theme.tasselAddedAccessibilityUnstyle .pagination li.active a {
+    background-color: #353840 !important;
+    color: #d9dbe0 !important;
+}
+body.tasselAddedAccessibilityUnstyle .pagination > li > a,
+body.tasselAddedAccessibilityUnstyle .pagination > li > span {
+    color: #337ab7 !important;
+}
