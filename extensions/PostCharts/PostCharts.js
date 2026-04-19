@@ -74,6 +74,14 @@
             fileContent = fileContent.split("\n").map(function(row) {return row.split(",");});
             let firstDay = new Date(`${now.getFullYear()} ${now.getMonth()+1} 01`).getTime();
             let lastDay = new Date(`${now.getFullYear()} ${now.getMonth()+2} 00`).getTime()+86399999;
+            if (isNaN(lastDay)) {
+                let nextDay = firstDay;
+                for (let day = 20; day < 40; day++) {
+                    nextDay = new Date(`${now.getFullYear()} ${now.getMonth()+1} ${day+1}`).getTime()+86399999;
+                    if (isNaN(nextDay)) break;
+                    lastDay = new Date(`${now.getFullYear()} ${now.getMonth()+1} ${day}`).getTime()+86399999;;
+                }
+            }
             let monthLength = lastDay - firstDay;
             for (let i = 1; i < fileContent.length-1; i++) {
                 let time = new Date(fileContent[i][0].substring(0,19));
