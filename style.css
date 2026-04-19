@@ -624,6 +624,50 @@ body.dark-theme .tasselTooltipBubble {
 	color: #d9dbe0;
 }
 
+.tasselInfoButton {
+    width: 1.2em;
+    height: 1.2em;
+    margin: -0.2em 0.5em;
+    display: inline-block;
+    border-radius: 100%;
+    background: #888;
+    font-family: serif;
+    font-weight: bold;
+    text-align: center;
+    color: #FFF;
+    cursor: help !important;
+    border: none;
+}
+body.dark-theme .tasselInfoButton {
+    background: #777;
+    color: #1B1D20;
+}
+
+.tasselInfoBox {
+    height: 0;
+    overflow: hidden;
+}
+.tasselInfoBox p {
+    padding: 0.5em;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    background: white;
+    max-width: 70%;
+    -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+body.dark-theme .tasselInfoBox p {
+    border-color: #D9DBE0;
+    -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.8);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.8);
+    background-color: #1B1D20;
+    color: #d9dbe0;
+}
+label:has(.tasselInfoButton:hover) .tasselInfoBox p,
+label:has(.tasselInfoButton:focus) .tasselInfoBox p {
+    position: absolute;
+}
+
 /*//////////////// Mobile //////////////////////////*/
 @media(max-width:800px) {
     #tasselModalHeader {
