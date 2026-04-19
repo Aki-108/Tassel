@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.6
+// @version      1.7
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -114,7 +114,7 @@
             let commentElement = comments.find(function(item) {
                 return (item.id === comment.id);
             });
-            if (commentElement === undefined) continue;
+            if (commentElement === undefined || commentElement === null) continue;
             for (let a = 0; a < 100 && !commentElement.comment.classList.contains("main", "comment"); a++) {
                 commentElement.comment = commentElement.comment.parentNode;
             }
@@ -141,6 +141,8 @@
                     ${content.innerHTML}
                 </details>
             `;
+
+            if (user.commentsHide) commentElement.comment.parentNode.classList.add("hidden");
         }
     }
 
@@ -152,6 +154,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarUserMuting";
+        button.style.order = "2113";
         button.innerHTML = "User Muting";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarUserMuting").addEventListener("click", displaySettings_gatzfpvu);
@@ -184,6 +187,14 @@
             <div class="heading"><div>reblogged by</div></div>
             <div class="heading"><div>only NSFW</div></div>
             <div class="heading"><div>comments</div></div>
+            <div class="heading"><div>hide comments</div></div>
+            <label>${createInfoButton_gatzfpvu("Enter the exact username of the account you want to mute.")}</label>
+            <label>${createInfoButton_gatzfpvu("Check this box if you want to remove posts made by that account and not reblogged.")}</label>
+            <label>${createInfoButton_gatzfpvu("Check this box if you want to remove reblogged versions of posts by that account.")}</label>
+            <label>${createInfoButton_gatzfpvu("Check this box if you want to remove posts by anyone, that this account reblogged.")}</label>
+            <label>${createInfoButton_gatzfpvu("Check this box if you want to remove posts that this account maked as not-safe-for-work.")}</label>
+            <label>${createInfoButton_gatzfpvu("Check this box if you want to collapse comments made by this account. This has to be check for the hide option to work.")}</label>
+            <label>${createInfoButton_gatzfpvu("Check this box if you want to remove comments made by this account, and any replies to that comment. This needs the 'comments' box checked to work.")}</label>
         `;
         for (let muted of mutelist) {
             table1.innerHTML += `
@@ -193,6 +204,7 @@
                 <input type="checkbox" key="rebloggedBy" ${muted.rebloggedBy ? "checked" : ""}></input>
                 <input type="checkbox" key="nsfw" ${muted.nsfw ? "checked" : ""}></input>
                 <input type="checkbox" key="comments" ${muted.comments ? "checked" : ""}></input>
+                <input type="checkbox" key="commentsHide" ${muted.commentsHide ? "checked" : ""}></input>
             `;
         }
         content.appendChild(table1);
@@ -235,16 +247,50 @@
             comments.setAttribute("key", "comments");
             comments.addEventListener("click", toggleSetting_gatzfpvu);
             table1.appendChild(comments);
+            let commentsHide = document.createElement("input");
+            commentsHide.type = "checkbox";
+            commentsHide.setAttribute("key", "commentsHide");
+            commentsHide.addEventListener("click", toggleSetting_gatzfpvu);
+            table1.appendChild(commentsHide);
         });
         button1.click();
         content.appendChild(button1);
+
+        let commentsHideIn = Object.values(document.getElementsByTagName("input"));
+        commentsHideIn = commentsHideIn.filter(function(el) {
+            return el.getAttribute("key") == "commentsHide";
+        });
+        for (let index in commentsHideIn) {
+            commentsHideIn[index].addEventListener("click", function() {
+                if (!this.checked) return;
+                let commentsIn = Object.values(document.getElementsByTagName("input"));
+                commentsIn = commentsIn.filter(function(el) {
+                    return el.getAttribute("key") == "comments";
+                });
+                commentsIn[index].checked = true;
+            });
+        }
+        let commentsIn = Object.values(document.getElementsByTagName("input"));
+        commentsIn = commentsIn.filter(function(el) {
+            return el.getAttribute("key") == "comments";
+        });
+        for (let index in commentsIn) {
+            commentsIn[index].addEventListener("click", function() {
+                if (this.checked) return;
+                let commentsHideIn = Object.values(document.getElementsByTagName("input"));
+                commentsHideIn = commentsHideIn.filter(function(el) {
+                    return el.getAttribute("key") == "commentsHide";
+                });
+                commentsHideIn[index].checked = false;
+            });
+        }
     }
 
     /* Summarize settings and save them */
     function toggleSetting_gatzfpvu() {
         let inputs = Object.values(document.getElementById("tasselUserMutingSettingsTable").getElementsByTagName("input"));
         mutelist = [];
-        for (let a = 0; a < inputs.length; a += 6) {
+        for (let a = 0; a < inputs.length; a += 7) {
             if (inputs[a].value === "") continue;
             mutelist.push({
                 username: inputs[a].value,
@@ -252,10 +298,24 @@
                 rebloggedFrom: inputs[a+2].checked,
                 rebloggedBy: inputs[a+3].checked,
                 nsfw: inputs[a+4].checked,
-                comments: inputs[a+5].checked
+                comments: inputs[a+5].checked,
+                commentsHide: inputs[a+6].checked
             });
         }
         localStorage.setItem("tasselUserMuting", JSON.stringify(mutelist));
+    }
+
+    function createInfoButton_gatzfpvu(content) {
+        let html = document.createElement("div");
+        let button = document.createElement("button");
+        button.classList.add("tasselInfoButton");
+        button.innerHTML = "i";
+        html.appendChild(button);
+        let info = document.createElement("div");
+        info.classList.add("tasselInfoBox");
+        info.innerHTML = `<p>${content}</p>`;
+        html.appendChild(info);
+        return html.innerHTML;
     }
 
     /* Create event log for debug more */
