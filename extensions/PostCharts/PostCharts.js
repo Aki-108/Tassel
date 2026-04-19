@@ -87,7 +87,7 @@
                 if (shortenedData[0][0].getTime() < tenAgo) shortenedData.shift();
                 else break;
             }
-            GraphObjects[4].updateOptions({'file':shortenedData});
+            if (GraphObjects[4]) GraphObjects[4].updateOptions({'file':shortenedData});
 
             if (settings.fundingProgressFormat == 1) {
                 document.getElementsByClassName("donate-link")[0].getElementsByClassName("sidebar-bottom-num")[0].innerHTML = "$"+Math.round(formatedData[formatedData.length-1][1]);
@@ -101,7 +101,7 @@
             //funding page
             let fullData = [...formatedData];
             fullData.push([new Date(lastDay), parseInt(fileContent[fileContent.length-2][1]), null]);
-            GraphObjects[5].updateOptions({'file':fullData});
+            if (GraphObjects[5]) GraphObjects[5].updateOptions({'file':fullData});
         }
         getText(`https://raw.githubusercontent.com/anacedragon/pf-funding-data/refs/heads/main/funds-${now.getFullYear()}-${now.getMonth()+1 < 10 ? "0" : ""}${now.getMonth()+1}.csv`);
     }
@@ -166,7 +166,7 @@
         graphArea.after(graphLabels);
         let info = document.createElement("p");
         info.classList.add("info-text", "padding10");
-        info.innerHTML = `The historic funding data is provided by <i>anacedragon</i>. More charts can be found on their <a href="https://interstellarj.neocities.org/pillowfort/ideal">neocities site</a>.`;
+        info.innerHTML = `The historic funding data is provided by <i>anacedragon</i>. More charts can be found on their <a href="https://interstellarj.neocities.org/pillowfort/">neocities site</a>.`;
         graphLabels.after(info);
 
         let gLabels = ["Time", "Ideal", "Funding"],
