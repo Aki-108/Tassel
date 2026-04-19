@@ -317,6 +317,15 @@ body.dark-theme #tasselPostSubscriberColor {
     }
 }
 
+@media(max-width:450px) {
+    #tasselPostSubscriberModalHeader div {
+        grid-template-columns: 0px auto 39px;
+    }
+    #tasselPostSubscriberModalHeader div h4 {
+        visibility: hidden;
+    }
+}
+
 @media(max-width:400px) {
     .tasselPostSubscriberModalEntryData h5 {
         white-space: normal;
