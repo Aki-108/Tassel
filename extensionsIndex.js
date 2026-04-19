@@ -240,10 +240,10 @@ let extensionsIndex = [
                 "id": 17,
                 "version": "1.1",
                 "created": 1726413656706,
-                "updated": 1775999165266,
+                "updated": 1776589375133,
                 "author": "Aki108",
                 "description": "Better alt texts and clear fort themes.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ec9860a4014072a89156fe811cd59d05781a4a83/extensions/AddedAccessibility/AddedAccessibility.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f803858443870af3d89fc895249966d13f28b834/extensions/AddedAccessibility/AddedAccessibility.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ec9860a4014072a89156fe811cd59d05781a4a83/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/7498680",
                 "features": [
