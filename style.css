@@ -657,15 +657,18 @@ body.dark-theme .tasselInfoButton {
     box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
 body.dark-theme .tasselInfoBox p {
+    position: absolute;
     border-color: #D9DBE0;
     -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.8);
     box-shadow: 0 3px 10px rgba(0,0,0,0.8);
     background-color: #1B1D20;
     color: #d9dbe0;
+	visibility: hidden;
+	z-index: 9;
 }
 label:has(.tasselInfoButton:hover) .tasselInfoBox p,
 label:has(.tasselInfoButton:focus) .tasselInfoBox p {
-    position: absolute;
+	visibility: visible;
 }
 
 /*//////////////// Mobile //////////////////////////*/
