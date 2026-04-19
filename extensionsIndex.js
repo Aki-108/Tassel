@@ -215,7 +215,7 @@ let extensionsIndex = [
                 "updated": 1776617129443,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e0d131988fd0c875e8a013696d99af3ef8fe1c95/extensions/UserMuting/UserMuting.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@64ea5ed8f33a1c25ebcb3cc07c850dd48b669548/extensions/UserMuting/UserMuting.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e0d131988fd0c875e8a013696d99af3ef8fe1c95/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
