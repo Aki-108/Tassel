@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Added Accessibility
-// @version      1.1
+// @version      1.2
 // @description  Accessibility Tools
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -10,6 +10,7 @@
 
 (function() {
     'use strict';
+    let settings = JSON.parse(localStorage.getItem("tasselSettings2")).addedAccessibility || {};
     let editorObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             mutationRecord.addedNodes.forEach(function(node) {
@@ -37,8 +38,17 @@
         });
     });
 
-    initEditor_pdmmlnvi();
+    init_pdmmlnvi();
+    function init_pdmmlnvi() {
+        initEditor_pdmmlnvi();
+        initFeeds_pdmmlnvi();
+        initFortStyle_pdmmlnvi();
+        initTassel_pdmmlnvi();
+    }
+
+    /* Add alt-text input in the post editor */
     function initEditor_pdmmlnvi() {
+        if (settings.disableAltText) return;
         let editor = document.getElementsByClassName("main","create-post-main");
         if (editor.length > 0) {
             editor = editor[0].getElementsByClassName("fr-element","fr-view");
@@ -79,12 +89,17 @@
                 });
             }
         }
+    }
+
+    /* Add event listeners to JSON Manager feed handelers */
+    function initFeeds_pdmmlnvi() {
+        if (settings.disableAltText) return;
 
         document.getElementById("tasselJsonManagerPostReady").addEventListener("click", function() {
             let post = document.getElementsByClassName("post main");
             if (post.length === 0) return;
             Object.values(post[0].getElementsByTagName("img")).forEach(function(img) {
-                addAltText(img);
+                addAltText_pdmmlnvi(img);
             });
         });
 
@@ -92,7 +107,7 @@
             let comments = document.getElementById("comments");
             if (!comments) return;
             Object.values(comments.getElementsByTagName("img")).forEach(function(img) {
-                addAltText(img);
+                addAltText_pdmmlnvi(img);
             });
         });
 
@@ -100,7 +115,7 @@
             let feed = document.getElementById("homeFeedCtrlId") || document.getElementById("userBlogPosts") || document.getElementById("communityPostsFeed") || document.getElementById("searchFeedCtrl") || document.getElementById("drafts-page") || document.getElementById("queuedPostsCtrlId");
             if (!feed) return;
             Object.values(feed.getElementsByTagName("img")).forEach(function(img) {
-                addAltText(img);
+                addAltText_pdmmlnvi(img);
             });
         });
 
@@ -108,12 +123,22 @@
             let modal = document.getElementById("single-post-container") || document.getElementById("reblog-modal");
             if (!modal) return;
             Object.values(modal.getElementsByTagName("img")).forEach(function(img) {
-                addAltText(img);
+                addAltText_pdmmlnvi(img);
             });
         });
     }
 
-    initFortStyle_pdmmlnvi();
+    /* Create alt-text display element */
+    function addAltText_pdmmlnvi(img) {
+        if (img.alt.length === 0 || img.classList.contains("svg-purple-dark") || img.classList.contains("tasselAddedAccessiblityProcessed")) return;
+        img.classList.add("tasselAddedAccessiblityProcessed");
+        let altText = document.createElement("p");
+        altText.style = "background: var(--tag_bg); padding: 0.5em;";
+        altText.innerHTML = "Alt: " + img.alt;
+        img.after(altText);
+    }
+
+    /* Add button to fort sidebar */
     function initFortStyle_pdmmlnvi() {
         let areas = Object.values(document.getElementsByClassName("util-buttons"));
         for (let area of areas) {
@@ -132,12 +157,58 @@
         }
     }
 
-    function addAltText(img) {
-        if (img.alt.length === 0 || img.classList.contains("svg-purple-dark") || img.classList.contains("tasselAddedAccessiblityProcessed")) return;
-        img.classList.add("tasselAddedAccessiblityProcessed");
-        let altText = document.createElement("p");
-        altText.style = "background: var(--tag_bg); padding: 0.5em;";
-        altText.innerHTML = "Alt: " + img.alt;
-        img.after(altText);
+    /* Add elements to the Tassel menu */
+    function initTassel_pdmmlnvi() {
+        let tasselSidebar = document.getElementById("tasselModalSidebar");
+        if (tasselSidebar == null) return;
+        let button = document.createElement("button");
+        button.classList.add("tasselModalSidebarEntry");
+        button.id = "tasselModalSidebarAddedAccessibility";
+        button.style.order = "0101";
+        button.innerHTML = "Added Accessibility";
+        tasselSidebar.appendChild(button);
+        document.getElementById("tasselModalSidebarAddedAccessibility").addEventListener("click", displaySettings_pdmmlnvi);
+    }
+
+    /* Create Tassel settings menu */
+    function displaySettings_pdmmlnvi() {
+        //deselect other menu items and select this one
+        let content = document.getElementById("tasselModalContent");
+        content.innerHTML = "";
+        let sidebarEntries = document.getElementsByClassName("tasselModalSidebarEntry");
+        Object.values(sidebarEntries).forEach(function(data, index) {
+            data.classList.remove("active");
+        });
+        document.getElementById("tasselModalSidebarAddedAccessibility").classList.add("active");
+
+        //add a little note
+        let info0 = document.createElement("p");
+        info0.innerHTML = "Changes will become active after a page reload.";
+        content.appendChild(info0);
+        content.appendChild(document.createElement("hr"));
+
+        //add settings
+        content.appendChild(createSwitch_pdmmlnvi("Disable alt-text improvements", settings.disableAltText ? "checked" : ""));
+        content.lastChild.children[0].addEventListener("change", function() {
+            settings.disableAltText = this.checked;
+            saveSettings_pdmmlnvi();
+        });
+    }
+
+    function saveSettings_pdmmlnvi() {
+        let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
+        file.addedAccessibility = settings;
+        localStorage.setItem("tasselSettings2", JSON.stringify(file));
+    }
+
+    function createSwitch_pdmmlnvi(title="", state="") {
+        let id = "tasselSwitch" + Math.random();
+        let toggle = document.createElement("div");
+        toggle.classList.add("tasselToggle");
+        toggle.innerHTML = `
+          <input id="${id}" type="checkbox" ${state}>
+          <label for="${id}">${title}</label>
+        `;
+        return toggle;
     }
 })();
