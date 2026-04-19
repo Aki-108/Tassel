@@ -127,13 +127,13 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.4",
+            "version": "1.5",
             "created": 1693639280661,
-            "updated": 1710016016850,
+            "updated": 1776610658939,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01713109b14174f138240dea8f28425f2666d341/extensions/PostCharts/PostCharts.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8bf9da04b0da5d2d2c21f532b61a8abb83f323b0/extensions/PostCharts/PostCharts.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a94a1e13d16443fbc54c79e9effad14be762b2e7/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a94a1e13d16443fbc54c79e9effad14be762b2e7/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
