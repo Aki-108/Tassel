@@ -262,12 +262,22 @@ body.dark-theme #tasselModalHeader {
 }
 
 #tasselModalSidebar {
+    display: flex;
+    flex-direction: column;
 	border-right: 1px #e3e3e3 solid;
 	overflow-y: auto;
 }
-
 body.dark-theme #tasselModalSidebar {
 	border-color: #3e3e3e;
+}
+#tasselModalSidebarExtensions {
+    order: -3;
+}
+#tasselModalSidebarSettings {
+    order: -2;
+}
+#tasselModalSidebarAbout {
+    order: -1;
 }
 
 #tasselModalContent {
