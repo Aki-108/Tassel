@@ -674,12 +674,12 @@ label:has(.tasselInfoButton:focus) .tasselInfoBox p {
 /*//////////////// Mobile //////////////////////////*/
 @media(max-width:800px) {
     #tasselModalHeader {
-	-webkit-box-shadow: none;
-	box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
     }
 
     #tasselModalGrid {
-	height: calc(100% - 46px);
+		height: calc(100% - 46px);
         grid-template-columns: 100%;
         grid-template-rows: 40px auto;
         overflow: hidden;
@@ -694,6 +694,7 @@ label:has(.tasselInfoButton:focus) .tasselInfoBox p {
         box-shadow: 0 0 5px 0 black;
         border-bottom: 1px #e3e3e3 solid;
         border-right: none;
+		flex-direction: row;
     }
 
     .tasselModalSidebarEntry {

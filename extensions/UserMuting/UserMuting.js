@@ -268,6 +268,7 @@
                     return el.getAttribute("key") == "comments";
                 });
                 commentsIn[index].checked = true;
+                toggleSetting_gatzfpvu();
             });
         }
         let commentsIn = Object.values(document.getElementsByTagName("input"));
@@ -282,6 +283,7 @@
                     return el.getAttribute("key") == "commentsHide";
                 });
                 commentsHideIn[index].checked = false;
+                toggleSetting_gatzfpvu();
             });
         }
     }
