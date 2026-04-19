@@ -132,7 +132,7 @@ let extensionsIndex = [
             "updated": 1776610658939,
             "author": "Aki108",
             "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@16e1112862d95dab3decc76cc810f272a76970fa/extensions/PostCharts/PostCharts.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a0682ff54485ee6cc5d72370bf103cf158a9f019/extensions/PostCharts/PostCharts.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a94a1e13d16443fbc54c79e9effad14be762b2e7/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
