@@ -674,7 +674,8 @@ body.dark-theme .tasselInfoButton {
     border-radius: 0.5em;
     background: white;
 	width: max-content;
-    max-width: 80%;
+	max-width: 80%;
+    max-width: min(80%, 400px);
     -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 	visibility: hidden;
