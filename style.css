@@ -280,6 +280,22 @@ body.dark-theme #tasselModalSidebar {
     order: -1;
 }
 
+#tasselModalTopbar {
+    display: none;
+    -webkit-box-shadow: 0 0 5px 0 black;
+    box-shadow: 0 0 5px 0 black;
+    border: none;
+    border-bottom: 1px #e3e3e3 solid;
+    border-radius: 0;
+    font-weight: bold;
+}
+#tasselModalTopbar option {
+    font-weight: normal;
+}
+body.dark-theme #tasselModalTopbar {
+    border-color: #3e3e3e;
+}
+
 #tasselModalContent {
 	overflow: hidden scroll;
 	padding: 10px;
@@ -691,22 +707,11 @@ label:has(.tasselInfoButton:focus) .tasselInfoBox p {
     }
 
     #tasselModalSidebar {
-        width: max-content;  width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
-        -webkit-box-shadow: 0 0 5px 0 black;
-        box-shadow: 0 0 5px 0 black;
-        border-bottom: 1px #e3e3e3 solid;
-        border-right: none;
-		flex-direction: row;
+        display: none;
     }
-
-    .tasselModalSidebarEntry {
-        display: inline-block;
-        max-width: max-content;  
-        border-right: .5px #e3e3e3 solid;
-        border-bottom: none;
+	
+    #tasselModalTopbar {
+        display: block;
     }
 }
 
