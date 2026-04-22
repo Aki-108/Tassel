@@ -652,8 +652,7 @@ body.dark-theme .tasselInfoButton {
 	z-index: 9;
 }
 .tasselInfoBox p {
-    position: absolute;
-	margin: auto;
+	margin: auto !important;
     padding: 0.5em;
     border: 1px solid #232b40;
     border-radius: 0.5em;
