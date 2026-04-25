@@ -37,7 +37,7 @@ let extensionsIndex = [
             "updated": 1777148770836,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01550a4bfa247e373444fee1c6be67a34699cba1/extensions/RebloggedToCommunity/NoteDetails.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0e88983607290ac30e58248c39c04c312ae68ae2/extensions/RebloggedToCommunity/NoteDetails.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9d2ecc54a75e7ebe9dab565538cf98e4325fa061/extensions/RebloggedToCommunity/NoteDetails.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show tags of reblogs in the reblog notes of a post.",
