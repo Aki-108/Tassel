@@ -29,6 +29,7 @@
         file.rebloggedToCommunity = settings;
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
+    let lastVisit = JSON.parse(localStorage.getItem("tasselNoteDetails")) || {visited: 0};
 
     initNewNotes_tlfevnlu();
     waitForKeyElements("#tasselJsonManagerReblogReady", addEventListener_tlfevnlu);
@@ -168,7 +169,6 @@
     function initNewNotes_tlfevnlu() {
         if (!settings.newNotes) return;
         if (document.URL !== "https://www.pillowfort.social/notifs_dash") return;
-        let lastVisit = JSON.parse(localStorage.getItem("tasselNoteDetails")) || {visited: 0};
         let currentVisit = new Date().getTime();
 
         let loadingObserver = new MutationObserver(function(mutations) {
