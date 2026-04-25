@@ -14,26 +14,15 @@
     let editorObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutationRecord) {
             mutationRecord.addedNodes.forEach(function(node) {
-                if (node.tagName === "IMG" && node.id.length === 0) {
-                    let id = "tasselAddedAccessiblityImage" + Math.random();
-                    let altInput = document.createElement("textarea");
-                    altInput.classList.add("tasselAddedAccessiblityEditorInput");
-                    altInput.setAttribute("image", id);
-                    altInput.placeholder = "Alternative Text";
-                    altInput.addEventListener("keyup", function() {
-                        document.getElementById(this.getAttribute("image")).alt = this.value;
-                    });
-                    node.after(altInput);
-                    node.id = id;
-                } else {
-                    let altInputs = Object.values(document.getElementsByClassName("tasselAddedAccessiblityEditorInput"));
-                    altInputs.forEach(function(input) {
-                        input.value = document.getElementById(input.getAttribute("image")).alt;
-                        input.addEventListener("keyup", function() {
-                            document.getElementById(this.getAttribute("image")).alt = this.value;
-                        });
-                    });
+                if (node.tagName === "IMG" && !node.id) {
+                    altTextEditor_pdmmlnvi(node);
+                    return;
                 }
+                let altInputs = Object.values(document.getElementsByClassName("tasselAddedAccessiblityEditorInput"));
+                altInputs.forEach(function(input) {
+                    input.value = document.getElementById(input.getAttribute("image")).alt;
+                    altTextEditorEvent_pdmmlnvi(input);
+                });
             });
         });
     });
@@ -50,45 +39,56 @@
     function initEditor_pdmmlnvi() {
         if (settings.disableAltText) return;
         let editor = document.getElementsByClassName("main","create-post-main");
-        if (editor.length > 0) {
-            editor = editor[0].getElementsByClassName("fr-element","fr-view");
-            if (editor.length > 0) {
-                editor = editor[0];
-                $.get(document.URL, function(data) {
-                    let html = document.createElement("body");
-                    html.innerHTML = data.substring(data.search("<body"), data.search("</body>")+7);
-                    let content = Object.values(html.children).filter(function(item) {return item.classList.contains("new-post")})[0];
-                    content = content.children[0].children[3].children[0];
-                    content = content.children[1].value || content.children[2].value;
-                    editor.innerHTML = content || "";
+        if (editor.length == 0) return;
+        editor = editor[0].getElementsByClassName("fr-element","fr-view");
+        if (editor.length == 0) return;
+        editor = editor[0];
+        $.get(document.URL, function(data) {
+            let html = document.createElement("body");
+            html.innerHTML = data.substring(data.search("<body"), data.search("</body>")+7);
+            let content = Object.values(html.children).filter(function(item) {return item.classList.contains("new-post")})[0];
+            content = content.children[0].children[3].children[0];
+            content = content.children[1].value || content.children[2].value;
+            if (content) editor.innerHTML = content;
 
-                    let imgs = Object.values(editor.getElementsByTagName("img"));
-                    imgs.forEach(function(img) {
-                        let id = "tasselAddedAccessiblityImage" + Math.random();
-                        let altInput = document.createElement("textarea");
-                        altInput.classList.add("tasselAddedAccessiblityEditorInput");
-                        altInput.setAttribute("image", id);
-                        altInput.placeholder = "Alternative Text";
-                        altInput.value = img.alt;
-                        altInput.addEventListener("keyup", function(event) {
-                            if (event.keyCode == 13) {
-                                event.preventDefault();
-                            }
-                            document.getElementById(this.getAttribute("image")).alt = this.value;
-                        });
-                        img.after(altInput);
-                        img.id = id;
-                    });
-                })
-                .fail(function() {
-                    console.log("failed");
-                });
-                editorObserver.observe(editor, {
-                    childList: true,
-                    subtree: true
-                });
+            let imgs = Object.values(editor.getElementsByTagName("img"));
+            imgs.forEach(altTextEditor_pdmmlnvi);
+        })
+        .fail(function() {
+            console.error("Failed to load post data.");
+        });
+        editorObserver.observe(editor, {
+            childList: true,
+            subtree: true
+        });
+
+        //bug fix for clearing alt text when editing a post
+        $(editor).focus();
+        let e = $.Event('keypress');
+        e.which = 16;
+        $(editor).trigger(e);
+    }
+
+    /* Add an input box into the post editor */
+    function altTextEditor_pdmmlnvi(img) {
+        if (img.id) return;
+        let id = "tasselAddedAccessiblityImage" + Math.random();
+        let altInput = document.createElement("textarea");
+        altInput.classList.add("tasselAddedAccessiblityEditorInput");
+        altInput.setAttribute("image", id);
+        altInput.placeholder = "Alternative Text";
+        altInput.value = img.alt;
+        altTextEditorEvent_pdmmlnvi(altInput);
+        img.after(altInput);
+        img.id = id;
+    }
+    function altTextEditorEvent_pdmmlnvi(el) {
+        el.addEventListener("keyup", function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
             }
-        }
+            document.getElementById(this.getAttribute("image")).alt = this.value;
+        });
     }
 
     /* Add event listeners to JSON Manager feed handelers */
