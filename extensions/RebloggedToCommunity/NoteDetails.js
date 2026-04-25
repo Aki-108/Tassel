@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Note Details
-// @version      2.11
+// @version      2.12
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -38,17 +38,21 @@
     function addEventListener_tlfevnlu() {
         if (document.URL.search("www.pillowfort.social/posts/") === -1) return;
         if (document.URL.search("www.pillowfort.social/posts/new") !== -1) return;
+        if (document.URL.search("/edit") !== -1) return;
 
         //JSON Manager events
         document.getElementById("tasselJsonManagerReblogReady").addEventListener("click", fillReblogData_tlfevnlu);
         document.getElementById("tasselJsonManagerLikeReady").addEventListener("click", fillLikeData_tlfevnlu);
 
         //HTML click events
-        let reblogButton = document.getElementsByClassName("nav-tabs")[0].children[1];
-        reblogButton.addEventListener("click", function() {
-            if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) return;
-            fillReblogData_tlfevnlu();
-        });
+        let reblogButton = document.getElementsByClassName("nav-tabs");
+        if (reblogButton.length > 0) {
+            reblogButton = reblogButton[0].children[1];
+            reblogButton.addEventListener("click", function() {
+                if (document.getElementsByClassName("rtcsourcedisplayingreblogs").length > 0) return;
+                fillReblogData_tlfevnlu();
+            });
+        }
         let likeButton = document.getElementsByClassName("nav-tabs")[0].children[2];
         likeButton.addEventListener("click", function() {
             if (document.getElementsByClassName("rtcsourcedisplayinglikes").length > 0) return;
@@ -172,13 +176,24 @@
                 if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     let notes = Object.values(document.getElementsByClassName("comment-subheader"));
                     for (let note of notes) {
-                        let timestamp = note.textContent.split("\n")[5];
-                        if (timestamp.search("at") < 0) timestamp = note.textContent.split("\n")[1];
-                        if (timestamp.search("at") < 0) timestamp = note.textContent.split("\n")[2];
-                        if (timestamp.search("at") < 0) timestamp = note.textContent.split("\n")[4];
-                        let date = new Date(timestamp.slice(timestamp.search(" at ")+4).slice(0,22));
-                        if (isNaN(date.getTime())) console.log(timestamp);
-                        if (date.getTime() >= lastVisit.visited) note.classList.add("tasselNoteDetailsNew");
+                        let el = Object.values(note.childNodes);
+                        if (el.length === 0) continue;
+                        el = el.find(function(el) {
+                            return el.nodeName === "#text" && el.data.trim().search("at ") === 0
+                        });
+                        if (!el) {
+                            el = Object.values(note.children[0].getElementsByTagName("span")[0].childNodes);
+                            if (el.length === 0) continue;
+                            el = el.find(function(el) {
+                                return el.nodeName === "#text" && el.data.trim().search("at ") === 0
+                            });
+                        }
+                        if (!el) continue;
+                        let timestamp = el.data.trim();
+                        timestamp = timestamp.slice(timestamp.search("at")+3);
+                        if (timestamp[timestamp.length-1] === ":") timestamp = timestamp.slice(0, timestamp.length-1);
+                        let date = new Date(timestamp).getTime();
+                        if (date >= lastVisit.visited) note.classList.add("tasselNoteDetailsNew");
                     }
                 }
             });
@@ -211,6 +226,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarNoteDetails";
+        button.style.order = "1404";
         button.innerHTML = "Note Details";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarNoteDetails").addEventListener("click", tasselDisplaySettings_tlfevnlu);
