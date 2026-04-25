@@ -30,7 +30,7 @@
         localStorage.setItem("tasselSettings2", JSON.stringify(file));
     }
 
-    highlightNewNotes_tlfevnlu();
+    initNewNotes_tlfevnlu();
     waitForKeyElements("#tasselJsonManagerReblogReady", addEventListener_tlfevnlu);
     initTassel_tlfevnlu();
 
@@ -165,7 +165,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function highlightNewNotes_tlfevnlu() {
+    function initNewNotes_tlfevnlu() {
         if (!settings.newNotes) return;
         if (document.URL !== "https://www.pillowfort.social/notifs_dash") return;
         let lastVisit = JSON.parse(localStorage.getItem("tasselNoteDetails")) || {visited: 0};
@@ -174,27 +174,7 @@
         let loadingObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
-                    let notes = Object.values(document.getElementsByClassName("comment-subheader"));
-                    for (let note of notes) {
-                        let el = Object.values(note.childNodes);
-                        if (el.length === 0) continue;
-                        el = el.find(function(el) {
-                            return el.nodeName === "#text" && el.data.trim().search("at ") === 0
-                        });
-                        if (!el) {
-                            el = Object.values(note.children[0].getElementsByTagName("span")[0].childNodes);
-                            if (el.length === 0) continue;
-                            el = el.find(function(el) {
-                                return el.nodeName === "#text" && el.data.trim().search("at ") === 0
-                            });
-                        }
-                        if (!el) continue;
-                        let timestamp = el.data.trim();
-                        timestamp = timestamp.slice(timestamp.search("at")+3);
-                        if (timestamp[timestamp.length-1] === ":") timestamp = timestamp.slice(0, timestamp.length-1);
-                        let date = new Date(timestamp).getTime();
-                        if (date >= lastVisit.visited) note.classList.add("tasselNoteDetailsNew");
-                    }
+                    highlightNewNotes_tlfevnlu();
                 }
             });
         });
@@ -210,11 +190,35 @@
             attributes: true,
             attributeFilter: ["style"]
         });
+        highlightNewNotes_tlfevnlu();
 
         window.addEventListener("beforeunload", function(event) {
             lastVisit.visited = currentVisit;
             localStorage.setItem("tasselNoteDetails", JSON.stringify(lastVisit));
         });
+    }
+    function highlightNewNotes_tlfevnlu() {
+        let notes = Object.values(document.getElementsByClassName("comment-subheader"));
+        for (let note of notes) {
+            let el = Object.values(note.childNodes);
+            if (el.length === 0) continue;
+            el = el.find(function(el) {
+                return el.nodeName === "#text" && el.data.trim().search("at ") === 0
+            });
+            if (!el) {
+                el = Object.values(note.children[0].getElementsByTagName("span")[0].childNodes);
+                if (el.length === 0) continue;
+                el = el.find(function(el) {
+                    return el.nodeName === "#text" && el.data.trim().search("at ") === 0
+                });
+            }
+            if (!el) continue;
+            let timestamp = el.data.trim();
+            timestamp = timestamp.slice(timestamp.search("at")+3);
+            if (timestamp[timestamp.length-1] === ":") timestamp = timestamp.slice(0, timestamp.length-1);
+            let date = new Date(timestamp).getTime();
+            if (date >= lastVisit.visited) note.classList.add("tasselNoteDetailsNew");
+        }
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
