@@ -551,16 +551,18 @@
         });
 
         let navigation = document.getElementsByClassName("post-nav-left")[0];
-        let subscribe = document.createElement("button");
-        subscribe.id = "tasselPostSubscriberModalSubscribe";
-        subscribe.classList.add("nav-tab");
-        if (subscribed) subscribe.classList.add("subscribed");
-        subscribe.appendChild(icon.cloneNode(true));
-        subscribe.firstChild.firstChild.style.width = "22px";
-        subscribe.addEventListener("click", function() {
-            toggleSubscription_ltapluah(this, tasselJsonManager.post.json);
-        });
-        navigation.appendChild(subscribe);
+        if (navigation) {
+            let subscribe = document.createElement("button");
+            subscribe.id = "tasselPostSubscriberModalSubscribe";
+            subscribe.classList.add("nav-tab");
+            if (subscribed) subscribe.classList.add("subscribed");
+            subscribe.appendChild(icon.cloneNode(true));
+            subscribe.firstChild.firstChild.style.width = "22px";
+            subscribe.addEventListener("click", function() {
+                toggleSubscription_ltapluah(this, tasselJsonManager.post.json);
+            });
+            navigation.appendChild(subscribe);
+        }
 
         if (subscribed) {
             //source: https://stackoverflow.com/a/14746878
