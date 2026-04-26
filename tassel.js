@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.8.4
+// @version      1.9.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,9 +14,9 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c6a65d9c88de7d7526a883fb2cfffe3dc9053a6b/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bf8e60306a668ea23744bb9763ed6c32bd621ab4/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@224bf36292bfc56dfdf121ece01fcfdf0dd5b029/style.css";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f2fddfeac69acaeb853e031ec97781bd03e746af/style.css";
     let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1bf28bff4356ad6503fcd146403b38c117051e97/jsonManager.js";
 
     let icon = document.createElement("div");
@@ -113,6 +113,7 @@
         modalReady.addEventListener("click", function() {console.log("modal data ready")});
         if (settings2.bottomPermalink) modalReady.addEventListener("click", function() {
             let modal = document.getElementById("post-view-modal") || document.getElementById("reblog-modal");
+            if (!modal) return;
             let nav = modal.getElementsByClassName("post-nav-left");
             Object.values(nav).forEach(function(item, index) {
                 if (!tasselJsonManager.modal.ready) return;
@@ -283,6 +284,9 @@
                 <h1 class='modal-title'>Tassel</h4>
               </header>
               <div id='tasselModalGrid'>
+                <select id="tasselModalTopbar">
+                  <option>Extensions</option>
+                </select>
                 <nav id='tasselModalSidebar' aria-label='Tassel Navigation'>
                   <button class='tasselModalSidebarEntry' id='tasselModalSidebarExtensions'>Extensions</button>
                   <button class='tasselModalSidebarEntry' id='tasselModalSidebarSettings'>Settings</button>
@@ -299,6 +303,19 @@
         document.getElementById("tasselModalSidebarAbout").addEventListener("click", displayAbout_xcajbuzn);
         document.getElementById("tasselModalBackground").addEventListener("click", closeModal_xcajbuzn);
         document.getElementById("tasselModalClose").addEventListener("click", closeModal_xcajbuzn);
+        let select = document.getElementById("tasselModalTopbar");
+        select.addEventListener("focus", function() {
+            let options = Object.values(document.getElementById("tasselModalSidebar").children);
+            let select = document.getElementById("tasselModalTopbar");
+            if (select.children.length == options.length) return;
+            select.innerHTML = "";
+            options.forEach(function(option) {
+                select.innerHTML += `<option value="${option.id}">${option.textContent}</option>`;
+            });
+        });
+        select.addEventListener("change", function() {
+            document.getElementById(this.value).click();
+        });
     }
 
     /* Load extensions from external file */
@@ -1357,20 +1374,29 @@
             settings2.postSettings.viewable = this.selectedIndex;
             saveSettings_xcajbuzn();
         });
-        document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input").rebloggable.parentNode.addEventListener("click", function() {
-            settings2.postSettings.rebloggable = !this.firstChild.checked;
-            saveSettings_xcajbuzn();
-        });
-        document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input").commentable.parentNode.addEventListener("click", function() {
-            settings2.postSettings.commentable = !this.firstChild.checked;
-            saveSettings_xcajbuzn();
-        });
-        document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input").nsfw.parentNode.addEventListener("click", function() {
-            settings2.postSettings.nsfw = !this.firstChild.checked;
-            saveSettings_xcajbuzn();
+        Object.values(document.getElementsByClassName("privacy-post")[0].getElementsByTagName("input")).forEach(function(item) {
+            if (item.id === "post_rebloggable" || item.name === "rebloggable") {
+                item.parentNode.addEventListener("click", function() {
+                    settings2.postSettings.rebloggable = !this.firstChild.checked;
+                    saveSettings_xcajbuzn();
+                });
+            }
+            if (item.id === "post_commentable" || item.name === "commentable") {
+                item.parentNode.addEventListener("click", function() {
+                    settings2.postSettings.commentable = !this.firstChild.checked;
+                    saveSettings_xcajbuzn();
+                });
+            }
+            if (item.id === "post_nsfw" || item.name === "nsfw") {
+                item.parentNode.addEventListener("click", function() {
+                    settings2.postSettings.nsfw = !this.firstChild.checked;
+                    saveSettings_xcajbuzn();
+                });
+            }
         });
 
         //set settings
+        if (document.URL.search("/edit") > 0) return;
         document.getElementById("privacy").selectedIndex = (settings2.postSettings.viewable < document.getElementById("privacy").length ? settings2.postSettings.viewable : 0) || 0;
         if (settings2.postSettings.rebloggable === false) document.getElementsByClassName("toggle")[2].click();
         if (settings2.postSettings.commentable === false) document.getElementsByClassName("toggle")[3].click();
