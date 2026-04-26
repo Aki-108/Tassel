@@ -25,7 +25,7 @@
     let draftButton;
     if (submitButton) {;//reblog modal
     } else if (document.getElementsByClassName("submit-post-bkd")[1]) {//create post
-        submitButton = document.getElementById("publish-btn");
+        submitButton = document.getElementById("publish-btn") || document.getElementById("save-btn");
         draftButton = document.getElementById("draft-btn");
     } else if (document.getElementsByClassName("main reblog-tags-container")[0]) {//reblog page
         submitButton = document.getElementsByClassName("main reblog-tags-container")[0].children[1].children[0];
@@ -46,7 +46,7 @@
         initReblogPage_dshcgkhy();
         initReblogModal_dshcgkhy();
         initEditTagsModal_dshcgkhy();
-        addEventListenerSubmit_dshcgkhy(submitButton);
+        addEventListenerSubmit_dshcgkhy(submitButton, tagInput);
         addEventListenerInput_dshcgkhy();
         initTassel_dshcgkhy();
     }
@@ -162,6 +162,8 @@
                     }
 
                     suggest_dshcgkhy(tagInputEdit, box);
+
+                    addEventListenerSubmit_dshcgkhy(document.getElementById("edit_post_tags_field").getElementsByClassName("update-post-tags")[0], tagInputEdit);
                 }
             });
         });
@@ -398,18 +400,29 @@
     }
 
     /* Add the event for updating the database */
-    function addEventListenerSubmit_dshcgkhy(button) {
+    function addEventListenerSubmit_dshcgkhy(button, tagInput) {
         if (!button) return;
+        button.setAttribute("inital-tags", tagInput.value.trim());
+        if (button.classList.contains("tasselTaggingToolsProcessed")) return;
+        button.classList.add("tasselTaggingToolsProcessed");
         button.addEventListener("click", function() {
             //load database
             let file = JSON.parse(localStorage.getItem("tasselTaggingTools")) || {};
             let fileTags = file.tags || [];
 
-            let tags = tagInput.value.split(",");
-            tags = tags.map(function(tag) {
+            let currentTags = tagInput.value.split(",").map(function(tag) {
                 return tag.trim();
             });
-            tags.forEach(function(tag) {
+            //filter out tags that already were listed
+            let originalTags = this.getAttribute("inital-tags").split(",").map(function(tag) {
+                return tag.trim().toLowerCase();
+            });
+            let newTags = currentTags.filter(function(tag) {
+                return !originalTags.find(function(og) {
+                    return tag.toLowerCase() == og;
+                });
+            });
+            newTags.forEach(function(tag) {
                 let index = -1;
                 let entry = fileTags.find(function(item, index_) {
                     if (item.tag.toLowerCase() === tag.toLowerCase()) {
@@ -420,12 +433,17 @@
                 if (index > -1) {//update tag
                     fileTags[index].count++;
                     if (fileTags[index].related === undefined) fileTags[index].related = [];
-                    fileTags[index].related.push(...tags);
-                    fileTags[index].related = [...new Set(fileTags[index].related)].filter(function(item) {
-                        return item.toLowerCase() !== fileTags[index].tag.toLowerCase() && item.length > 0;
+                    currentTags.forEach(function(relatedTag) {
+                        if (relatedTag.length === 0) return;
+                        let foundAt = fileTags[index].related.findIndex(function(item) {
+                            return item.toLowerCase() == relatedTag;
+                        });
+                        if (foundAt >= 0) fileTags[index].related = [...fileTags[index].related.slice(0,foundAt), ...fileTags[index].related.slice(foundAt+1)];
+                        if (relatedTag.toLowerCase() !== fileTags[index].tag.toLowerCase()) fileTags[index].related.unshift(relatedTag);
                     });
+                    fileTags[index].related = fileTags[index].related.slice(0,50);
                 } else {//add new tag
-                    fileTags.push({tag: tag, count: 1, related: tags});
+                    fileTags.push({tag: tag, count: 1, related: currentTags});
                 }
             });
             //remove empty tags
