@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.6
+// @version      2.7
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -20,6 +20,7 @@
     //get page elements
     let tagInput = document.getElementById("tags") || document.getElementById("post_tag_list");
     let tagInputEdit = document.getElementById("post_tag_list");
+    if (tagInput == tagInputEdit) tagInputEdit = null;
     let submitButton = document.getElementById("submit-reblog") || document.getElementById("publish-btn");
     let draftButton;
     if (submitButton) {;//reblog modal
@@ -405,7 +406,9 @@
             let fileTags = file.tags || [];
 
             let tags = tagInput.value.split(",");
-            tags = tags.map(removeSpaces_dshcgkhy);
+            tags = tags.map(function(tag) {
+                return tag.trim();
+            });
             tags.forEach(function(tag) {
                 let index = -1;
                 let entry = fileTags.find(function(item, index_) {
@@ -469,6 +472,12 @@
             box.classList.add("tasselTaggingToolsSuggestionList");
             if (settings.secondRow) box.classList.add("tasselTaggingToolsTaller");
             tagInput.before(box);
+
+            let tags = tagInput.value.trim();
+            if (tags.length > 0 && tags[tags.length-1] != ",") {
+                tagInput.value += ",";
+            }
+
             suggest_dshcgkhy(tagInput, box);
         }
         if (tagInputEdit) {
@@ -477,6 +486,12 @@
             box.classList.add("tasselTaggingToolsSuggestionList");
             if (settings.secondRow) box.classList.add("tasselTaggingToolsTaller");
             tagInputEdit.before(box);
+
+            let tags = tagInputEdit.value.trim();
+            if (tags.length > 0 && tags[tags.length-1] != ",") {
+                tagInputEdit.value += ",";
+            }
+
             suggest_dshcgkhy(tagInputEdit, box);
         }
     }
@@ -486,7 +501,7 @@
         //cut input down to one tag at the current cursor position
         cursorPos = inputBox.selectionStart;
         let edges = findEdges_dshcgkhy(inputBox, cursorPos);
-        let typing = removeSpaces_dshcgkhy(inputBox.value.substring(edges.start, edges.end)).toLowerCase();
+        let typing = inputBox.value.substring(edges.start, edges.end).toLowerCase().trim();
 
         //find fitting tags
         let matches = [];
@@ -505,7 +520,7 @@
         //remove tags that are already in use
         let used = inputBox.value.split(",");
         used = used.map(function(item) {
-            return removeSpaces_dshcgkhy(item);
+            return item.trim();
         });
         matches = matches.filter(function(item) {
             let exists = false;
@@ -570,7 +585,7 @@
         let edges = findEdges_dshcgkhy(inputBox, cursorPos);
         inputBox.value = inputBox.value.substring(0, edges.start) + " " + tag.getAttribute("value") + inputBox.value.substring(edges.end);
         //add a comma if necessary
-        let input = removeSpaces_dshcgkhy(inputBox.value);
+        let input = inputBox.value.trim();
         input = input[input.length-1];
         if (input !== undefined && input !== ",") inputBox.value += ", ";
         //return to normal
@@ -607,7 +622,7 @@
             //filter out tags that are already in the input field to prevent duplicates
             let used = tagInput.value.split(",");
             used = used.map(function(item) {
-                return removeSpaces_dshcgkhy(item);
+                return item.trim();
             });
             tags = tags.filter(function(tag) {
                 let exists = false;
@@ -619,7 +634,7 @@
 
             //add tags to the input field
             tags.forEach(function(item) {
-                let input = removeSpaces_dshcgkhy(tagInput.value);
+                let input = tagInput.value.trim();
                 input = input[input.length-1];
                 if (input !== undefined && input !== ",") tagInput.value += ", ";
                 let edges = findEdges_dshcgkhy(tagInput, tagInput.value.length);
@@ -655,17 +670,6 @@
         return {start: start, end: end};
     }
 
-    /* Removes spaces at the start and end of a string */
-    function removeSpaces_dshcgkhy(string) {
-        let first = "";
-        for (let a = string.length - 1; a >= 0; a--)
-            if (first != "" || string[a] != " ") first += string[a];
-        let second = "";
-        for (let a = first.length - 1; a >= 0; a--)
-            if (second != "" || first[a] != " ") second += first[a];
-        return second;
-    }
-
     /* Add elements to the Tassel menu */
     function initTassel_dshcgkhy() {
         let tasselSidebar = document.getElementById("tasselModalSidebar");
@@ -673,6 +677,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarTaggingTools";
+        button.style.order = "2020";
         button.innerHTML = "Tagging Tools";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarTaggingTools").addEventListener("click", displaySettings_dshcgkhy);
@@ -867,12 +872,12 @@
     /* Save settings to local storage */
     function saveTags_dshcgkhy() {
         if (!settings.tagPreset) settings.tagPreset = {};
-        settings.tagPreset.textPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagText").value);
-        settings.tagPreset.photoPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagPhoto").value);
-        settings.tagPreset.videoPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagVideo").value);
-        settings.tagPreset.linkPost = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagLink").value);
-        settings.tagPreset.selfReblog = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagSelfReblog").value);
-        settings.tagPreset.otherReblog = removeSpaces_dshcgkhy(document.getElementById("tasselTaggingToolsTagOtherReblog").value);
+        settings.tagPreset.textPost = document.getElementById("tasselTaggingToolsTagText").value.trim();
+        settings.tagPreset.photoPost = document.getElementById("tasselTaggingToolsTagPhoto").value.trim();
+        settings.tagPreset.videoPost = document.getElementById("tasselTaggingToolsTagVideo").value.trim();
+        settings.tagPreset.linkPost = document.getElementById("tasselTaggingToolsTagLink").value.trim();
+        settings.tagPreset.selfReblog = document.getElementById("tasselTaggingToolsTagSelfReblog").value.trim();
+        settings.tagPreset.otherReblog = document.getElementById("tasselTaggingToolsTagOtherReblog").value.trim();
 
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.taggingTools = settings;
