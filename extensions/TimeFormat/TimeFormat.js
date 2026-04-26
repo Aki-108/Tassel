@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.8
+// @version      1.9
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -79,7 +79,7 @@
             let postElement = posts.find(function(item) {
                 return (item.id === (post.original_post_id || post.id));
             });
-            if (postElement === undefined) continue;
+            if (!postElement) continue;
             if (postElement.post.classList.contains("tasselTimeFormatProcessed")) continue;
             postElement.post.classList.add("tasselTimeFormatProcessed");
 
@@ -265,6 +265,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarTimeFormat";
+        button.style.order = "2006";
         button.innerHTML = "Time Format";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarTimeFormat").addEventListener("click", displaySettings_draxcpxe);
