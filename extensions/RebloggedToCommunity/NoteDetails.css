@@ -19,3 +19,6 @@ body.dark-theme .like-note {
 .tasselNoteDetailsNew .post-preview.main.post {
     font-weight: initial;
 }
+div.ng-scope:has(.tasselNoteDetailsNew) + div.ng-scope:not(:has(.tasselNoteDetailsNew)) {
+    box-shadow: 0 -4px var(--pageBg), 0px -5px white;
+}

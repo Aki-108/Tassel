@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.8
+// @version      1.9
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -79,7 +79,7 @@
             let postElement = posts.find(function(item) {
                 return (item.id === (post.original_post_id || post.id));
             });
-            if (postElement === undefined) continue;
+            if (!postElement) continue;
             if (postElement.post.classList.contains("tasselTimeFormatProcessed")) continue;
             postElement.post.classList.add("tasselTimeFormatProcessed");
 
@@ -265,6 +265,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarTimeFormat";
+        button.style.order = "2006";
         button.innerHTML = "Time Format";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarTimeFormat").addEventListener("click", displaySettings_draxcpxe);
@@ -300,28 +301,28 @@
         frame1.id = "tasselTimeFormatSettings";
         content.appendChild(frame1);
 
-        createInput_draxcpxe("Reblog Date"+createTooltip_draxcpxe("This is the timestamp that Pillowfort shows in the post header by default.").outerHTML, settings.reblogDate, frame1);
+        createInput_draxcpxe("Reblog Date"+createInfoButton_draxcpxe("This is the timestamp that Pillowfort shows in the post header by default."), settings.reblogDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.reblogDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
-        createInput_draxcpxe("Reblog Date Tooltip"+createTooltip_draxcpxe("This is the timestamp that shows up when hovering over the timestamp in the post header.").outerHTML, settings.reblogTooltip, frame1);
+        createInput_draxcpxe("Reblog Date Tooltip"+createInfoButton_draxcpxe("This is the timestamp that shows up when hovering over the timestamp in the post header."), settings.reblogTooltip, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.reblogTooltip = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
-        createInput_draxcpxe("Post Date"+createTooltip_draxcpxe("This is not originally shown. It will also show up in the post header.").outerHTML, settings.postDate, frame1);
+        createInput_draxcpxe("Post Date"+createInfoButton_draxcpxe("This is not originally shown. It will also show up in the post header."), settings.postDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.postDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
-        createInput_draxcpxe("Activity Date"+createTooltip_draxcpxe("This will show the time of the last activity on a post in its footer.").outerHTML, settings.activityDate, frame1);
+        createInput_draxcpxe("Activity Date"+createInfoButton_draxcpxe("This will show the time of the last activity on a post in its footer."), settings.activityDate, frame1);
         frame1.lastChild.addEventListener("keyup", function() {
             settings.activityDate = this.value;
             saveSettings_draxcpxe();
@@ -403,17 +404,17 @@
     }
 
     /* Create an icon with hover popup */
-    function createTooltip_draxcpxe(content) {
-        let icon = document.createElement("div");
-        icon.classList.add("tasselInfo");
-        icon.innerHTML = `
-            <div class='tasselTooltip'>
-                <div class='tasselTooltipBubble'>
-                    ${content}
-                </div>
-            </div>
-        `;
-        return icon;
+    function createInfoButton_draxcpxe(content) {
+        let html = document.createElement("div");
+        let button = document.createElement("button");
+        button.classList.add("tasselInfoButton");
+        button.innerHTML = "i";
+        html.appendChild(button);
+        let info = document.createElement("div");
+        info.classList.add("tasselInfoBox");
+        info.innerHTML = `<p>${content}</p>`;
+        html.appendChild(info);
+        return html.innerHTML;
     }
 
     /* Create a label and a text input */

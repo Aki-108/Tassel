@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.9
+// @version      1.10
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -16,7 +16,7 @@
 	let settings = JSON.parse(localStorage.getItem("tasselSettings2")).advancedBlacklist || {
 		showTags: true,
 		showReason: true,
-        	hideBlacklistPost: false
+		hideBlacklistPost: false
 	};
     let permaLinks; //array of perma-link elements
     let locationType = "home" //type of webpage
@@ -90,7 +90,7 @@
             let postElement = posts.find(function(item) {
                 return (item.id === (post.original_post_id || post.id));
             });
-            if (postElement === undefined) return;
+            if (!postElement) continue;
             if (postElement.post.classList.contains("tasselAdvancedBlacklistProcessed")) continue;
             postElement.post.classList.add("tasselAdvancedBlacklistProcessed");
             if (!settings.hideBlacklistPost) addBlockButton_skdasoyk(post);
@@ -620,14 +620,14 @@
             let blackInput = document.getElementById(`tasselAdvancedBlacklistInput-black-${index}`).value;
             blackInput = blackInput.split(",");
             blackInput.forEach(function(item) {
-                item = removeSpaces_skdasoyk(item);
+                item = item.trim();
                 if (item !== "") row.blacklist.push(item);
             });
 
             let whiteInput = document.getElementById(`tasselAdvancedBlacklistInput-white-${index}`).value;
             whiteInput = whiteInput.split(",");
             whiteInput.forEach(function(item) {
-                item = removeSpaces_skdasoyk(item);
+                item = item.trim();
                 if (item !== "") row.whitelist.push(item);
             });
 
@@ -636,7 +636,7 @@
             row.apply.id = document.getElementById(`tasselAdvancedBlacklistInput-id-${index}`).checked;
             row.hide = document.getElementById(`tasselAdvancedBlacklistInput-hide-${index}`).checked;
 
-            row.source = removeSpaces_skdasoyk(document.getElementById(`tasselAdvancedBlacklistInput-source-${index}`).value);
+            row.source = document.getElementById(`tasselAdvancedBlacklistInput-source-${index}`).value.trim();
 
             if (row.blacklist.length > 0
                 || row.whitelist.length > 0
@@ -648,17 +648,6 @@
         let file = JSON.parse(localStorage.getItem("tasselAdvancedBlacklist") || "{}");
         file.blacklist = blacklist;
         localStorage.setItem("tasselAdvancedBlacklist", JSON.stringify(file));
-    }
-
-    /* Remove spaces at the start and end of a string */
-    function removeSpaces_skdasoyk(string) {
-        let first = "";
-        for (let a = string.length - 1; a >= 0; a--)
-            if (first != "" || string[a] != " ") first += string[a];
-        let second = "";
-        for (let a = first.length - 1; a >= 0; a--)
-            if (second != "" || first[a] != " ") second += first[a];
-        return second;
     }
 
     /* Create an HTML element of a checkbox with lable */

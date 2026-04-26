@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Subscriber V3
-// @version      3.1
+// @version      3.2
 // @description  Get notified when there are new comments in a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -41,8 +41,10 @@
             let subscribed = subscriptions.subscriptions.some(function(item) {
                 return item.id == tasselJsonManager.modal.postId;
             });
-            if (subscribed) document.getElementById("tasselPostSubscriberModalSubscribe").classList.add("subscribed");
-            else document.getElementById("tasselPostSubscriberModalSubscribe").classList.remove("subscribed");
+            let subscribeButton = document.getElementById("tasselPostSubscriberModalSubscribe");
+            if (!subscribeButton) return;
+            if (subscribed) subscribeButton.classList.add("subscribed");
+            else subscribeButton.classList.remove("subscribed");
         });
         document.getElementById("tasselJsonManagerPostReady").addEventListener("click", initSinglePost_ltapluah);
         document.getElementById("tasselJsonManagerCommentReady").addEventListener("click", highlightComments_ltapluah);
@@ -84,6 +86,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarPostSubscriber";
+        button.style.order = "1619";
         button.innerHTML = "Post Subscriber";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarPostSubscriber").addEventListener("click", tasselDisplaySettings_ltapluah);
@@ -548,16 +551,18 @@
         });
 
         let navigation = document.getElementsByClassName("post-nav-left")[0];
-        let subscribe = document.createElement("button");
-        subscribe.id = "tasselPostSubscriberModalSubscribe";
-        subscribe.classList.add("nav-tab");
-        if (subscribed) subscribe.classList.add("subscribed");
-        subscribe.appendChild(icon.cloneNode(true));
-        subscribe.firstChild.firstChild.style.width = "22px";
-        subscribe.addEventListener("click", function() {
-            toggleSubscription_ltapluah(this, tasselJsonManager.post.json);
-        });
-        navigation.appendChild(subscribe);
+        if (navigation) {
+            let subscribe = document.createElement("button");
+            subscribe.id = "tasselPostSubscriberModalSubscribe";
+            subscribe.classList.add("nav-tab");
+            if (subscribed) subscribe.classList.add("subscribed");
+            subscribe.appendChild(icon.cloneNode(true));
+            subscribe.firstChild.firstChild.style.width = "22px";
+            subscribe.addEventListener("click", function() {
+                toggleSubscription_ltapluah(this, tasselJsonManager.post.json);
+            });
+            navigation.appendChild(subscribe);
+        }
 
         if (subscribed) {
             //source: https://stackoverflow.com/a/14746878

@@ -54,11 +54,11 @@
             postElement.post.classList.add("tasselUserMutingProcessed");
 
             //get usernames of the post
-            let user = mutelist.find(function(user) {
-                return user.username === post.username;
+            let user = mutelist.find(function(item) {
+                return item.username === post.username;
             });
-            let originalUser = mutelist.find(function(user) {
-                return user.username === post.original_username;
+            let originalUser = mutelist.find(function(item) {
+                return item.username === post.original_username;
             });
             if (user === undefined && originalUser === undefined) continue;
 
@@ -210,8 +210,10 @@
         content.appendChild(table1);
         let inputs = Object.values(document.getElementById("tasselUserMutingSettingsTable").getElementsByTagName("input"));
         for (let input of inputs) {
-            if (input.getAttribute("key") === "username") input.addEventListener("keyup", toggleSetting_gatzfpvu);
-            else input.addEventListener("click", toggleSetting_gatzfpvu);
+            if (input.getAttribute("key") === "username") {
+                input.addEventListener("keyup", toggleSetting_gatzfpvu);
+                input.addEventListener("blur", alertDuplicate_gatzfpvu);
+            } else input.addEventListener("click", toggleSetting_gatzfpvu);
         }
 
         let button1 = document.createElement("button");
@@ -221,6 +223,7 @@
             let username = document.createElement("input");
             username.setAttribute("key", "username");
             username.addEventListener("keyup", toggleSetting_gatzfpvu);
+            username.addEventListener("blur", alertDuplicate_gatzfpvu);
             table1.appendChild(username);
             let originalPost = document.createElement("input");
             originalPost.type = "checkbox";
@@ -286,6 +289,16 @@
                 toggleSetting_gatzfpvu();
             });
         }
+    }
+    function alertDuplicate_gatzfpvu() {
+        let value = this.value.trim();
+        let mutelist = JSON.parse(localStorage.getItem("tasselUserMuting")) || [];
+        let results = mutelist.filter(function(item) {
+            return item.username == value;
+        });
+        if (results.length < 2) return;
+        this.value = "";
+        alert("This user is already in the mutelist.");
     }
 
     /* Summarize settings and save them */
