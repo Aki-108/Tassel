@@ -210,12 +210,12 @@ let extensionsIndex = [
         {
                 "name": "User Muting",
                 "id": 15,
-                "version": "1.7",
+                "version": "1.8",
                 "created": 1703613662842,
-                "updated": 1776617129443,
+                "updated": 1777217225571,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@64ea5ed8f33a1c25ebcb3cc07c850dd48b669548/extensions/UserMuting/UserMuting.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@858a34ed374970850d56879397fb9cd845f00826/extensions/UserMuting/UserMuting.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e0d131988fd0c875e8a013696d99af3ef8fe1c95/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
