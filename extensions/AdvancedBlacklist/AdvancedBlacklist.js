@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.10
+// @version      1.11
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -20,7 +20,6 @@
 	};
     let permaLinks; //array of perma-link elements
     let locationType = "home" //type of webpage
-
     if (document.getElementById("tasselJsonManagerFeedReady")) document.getElementById("tasselJsonManagerFeedReady").addEventListener("click", loadFeed_skdasoyk);
     if (document.getElementById("tasselJsonManagerPostReady")) document.getElementById("tasselJsonManagerPostReady").addEventListener("click", loadSinglePost_skdasoyk);
 
@@ -32,7 +31,6 @@
 		if (!list) return;
 		blacklist = list.blacklist;
     }
-
     addSidebarButton_skdasoyk();
 
     /* Replace the Filters & Blacklist button in the sidebar with an Advanced Blacklist button */
@@ -97,6 +95,13 @@
             if (settings.showTags) addTags_skdasoyk(post, postElement);
             let blockResult = shouldBeBlocked_skdasoyk(post);
             if (!blockResult.block) continue;
+
+            //save additional information in JSON Manager for other extentions
+            if (!post.tassel) post.tassel = {};
+            if (blockResult.hide) post.tassel.hidden = true;
+            else post.tassel.collapsed = true;
+            post.tassel.advancedBlacklist = blockResult.blockFor;
+
             showReason_skdasoyk(post, blockResult);
         }
     }
