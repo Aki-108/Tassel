@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Image Censor
-// @version      1.2
+// @version      1.3
 // @description  Censor (NSFW) images and icons.
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -59,7 +59,13 @@
                 if (post.nsfw && settings.blurNSFW || settings.blurAny) blurImage_kyhjxbvr(postEl);
 
                 //collapse posts
-                if (post.nsfw && settings.collapseNSFW) collapsePost_kyhjxbvr(postEl);
+                if (post.nsfw && settings.collapseNSFW) {
+                    collapsePost_kyhjxbvr(postEl);
+                    //save additional information in JSON Manager for other extentions
+                    if (!post.tassel) post.tassel = {};
+                    post.tassel.collapsed = true;
+                    post.tassel.imageCensor = "NSFW";
+                }
 
                 //censor icons
                 let username = post.original_username || post.username;
@@ -209,6 +215,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarImageCensor";
+        button.style.order = "0903";
         button.innerHTML = "Image Censor";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarImageCensor").addEventListener("click", displaySettings_kyhjxbvr);
