@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Charts
-// @version      1.5
+// @version      1.6
 // @description  Shows statistics of a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -13,7 +13,7 @@
 
     let settings = JSON.parse(localStorage.getItem("tasselSettings2")).postCharts || {fundingChartLength: 7, fundingProgressFormat: 2};
     let likesData = [], reblogsData = [], commentsData = [], timeGraphData = [], weekGraphData = [[new Date(),0,0,0]], hourGraphData = [[new Date(),0,0,0]], sourceData = [], sourceDataEdited = [], sourceGraphData = [[0,0]], sourceGraphTitles = [];
-    let GraphObjects = [];//4: funding sidebar, 5: funding page
+    let GraphObjects = {};
     let barWidth = 610;
 
     const loadScript_gkgyjoep = src => {
@@ -95,7 +95,7 @@
                 if (shortenedData[0][0].getTime() < tenAgo) shortenedData.shift();
                 else break;
             }
-            if (GraphObjects[4]) GraphObjects[4].updateOptions({'file':shortenedData});
+            if (GraphObjects.fundingSidebar) GraphObjects.fundingSidebar.updateOptions({'file':shortenedData});
 
             if (settings.fundingProgressFormat == 1) {
                 document.getElementsByClassName("donate-link")[0].getElementsByClassName("sidebar-bottom-num")[0].innerHTML = "$"+Math.round(formatedData[formatedData.length-1][1]);
@@ -109,7 +109,7 @@
             //funding page
             let fullData = [...formatedData];
             fullData.push([new Date(lastDay), parseInt(fileContent[fileContent.length-2][1]), null]);
-            if (GraphObjects[5]) GraphObjects[5].updateOptions({'file':fullData});
+            if (GraphObjects.fundingPage) GraphObjects.fundingPage.updateOptions({'file':fullData});
         }
         getText(`https://raw.githubusercontent.com/anacedragon/pf-funding-data/refs/heads/main/funds-${now.getFullYear()}-${now.getMonth()+1 < 10 ? "0" : ""}${now.getMonth()+1}.csv`);
     }
@@ -124,7 +124,7 @@
         let gLineColor = document.body.classList.contains("dark-theme") ? "#bdbdbd00" : "#58b6dd00",
             gColors = document.body.classList.contains("dark-theme") ? ["#CF698F", "#bdbdbd"] : ["#F377B3", "#58b6dd"];
 
-        GraphObjects[4] = new Dygraph(
+        GraphObjects.fundingSidebar = new Dygraph(
             document.getElementById("fundingSidebarGraph"),
             formatedData,
             {
@@ -181,7 +181,7 @@
             gLineColor = document.body.classList.contains("dark-theme") ? "#d9dbe0" : "#2b2b2b",
             gColors = document.body.classList.contains("dark-theme") ? ["#CF698F", "#bdbdbd"] : ["#DE237E", "#337ab7"];
 
-        GraphObjects[5] = new Dygraph(
+        GraphObjects.fundingPage = new Dygraph(
             document.getElementById("fundingPageGraph"),
             formatedData,
             {
@@ -322,7 +322,7 @@
             gColors = ["#36C","#3C6","#C36"],
             gLineColor = document.body.classList.contains("dark-theme") ? "#d9dbe0" : "#2b2b2b";
 
-        GraphObjects[0] = new Dygraph(
+        GraphObjects.postNotesDate = new Dygraph(
             document.getElementById("timeGraph"),
             timeGraphData,
             {
@@ -367,7 +367,7 @@
             }
         );
 
-        GraphObjects[1] = new Dygraph(
+        GraphObjects.postNotesWeek = new Dygraph(
             document.getElementById("weekGraph"),
             weekGraphData,
             {
@@ -431,7 +431,7 @@
             }
         );
 
-        GraphObjects[2] = new Dygraph(
+        GraphObjects.postNotesHours = new Dygraph(
             document.getElementById("hourGraph"),
             hourGraphData,
             {
@@ -494,7 +494,7 @@
             item.innerHTML = (index < 10 ? "0" : "") + index + ":00";
         });
 
-        GraphObjects[3] = new Dygraph(
+        GraphObjects.postNotesSource = new Dygraph(
             document.getElementById("sourceGraph"),
             sourceGraphData,
             {
@@ -524,7 +524,7 @@
                 stackedGraph: false,
                 plotter: barChartPlotter_gkgyjoep,
                 dateWindow: [-0.5, 4.5],
-                interactionModel: {},
+                /*interactionModel: {},*/
                 gridLineColor: gLineColor,
                 axisLineColor: gLineColor,
 
@@ -560,6 +560,9 @@
                         return item[0] === tasselJsonManager.post.json.username
                     });
                     highlight_period(created_at-0.5, created_at+0.5);
+                },
+                zoomCallback: function(minDate, maxDate, yRange) {
+                    if (GraphObjects.postNotesSource) GraphObjects.postNotesSource.updateOptions({dateWindow: [-0.5, 4.5]});
                 }
             }
         );
@@ -668,11 +671,11 @@
                 }
 
                 //update graph objects with new data and make the data set visible
-                GraphObjects[0].updateOptions({'file':timeGraphData});
+                GraphObjects.postNotesDate.updateOptions({'file':timeGraphData});
                 gatherWeekdays_gkgyjoep();
-                GraphObjects[1].updateOptions({'file':weekGraphData});
+                GraphObjects.postNotesWeek.updateOptions({'file':weekGraphData});
                 gatherHours_gkgyjoep();
-                GraphObjects[2].updateOptions({'file':hourGraphData});
+                GraphObjects.postNotesHours.updateOptions({'file':hourGraphData});
                 toggleSet_gkgyjoep(type);
             }
         });
@@ -681,11 +684,11 @@
     /* Toggle visiblity within the charts */
     //index 0: comments; 1: reblogs; 2: likes
     function toggleSet_gkgyjoep(index) {
-        let vis = GraphObjects[0].visibility();
+        let vis = GraphObjects.postNotesDate.visibility();
         vis[index] = !vis[index];
-        GraphObjects[0].updateOptions({'visibility':vis});
-        GraphObjects[1].updateOptions({'visibility':vis});
-        GraphObjects[2].updateOptions({'visibility':vis});
+        GraphObjects.postNotesDate.updateOptions({'visibility':vis});
+        GraphObjects.postNotesWeek.updateOptions({'visibility':vis});
+        GraphObjects.postNotesHours.updateOptions({'visibility':vis});
     }
 
     /* Undo the nesting of comment threads */
@@ -850,6 +853,7 @@
                 writeIndex++;
             }
         });
+
         sourceDataEdited.forEach(function(item, index) {
             if (item[0] === 0) {//for the cases older than Pillowfort is keeping track of this data
                 item[0] = `<abbr title="This data is older than Pillowfort's records.">???</abbr>`;
@@ -895,12 +899,17 @@
             if (sourceDataEdited[index][2] === sourceDataEdited[index + 1][2] && sourceDataEdited[index][2] != null) {
                 sourceDataEdited[index + 1][1] += sourceDataEdited[index][1];
                 sourceDataEdited[index][1] = 0;
+                sourceDataEdited[index][3] = "repeat";
             //for users
             } else if (sourceDataEdited[index][2] === null && sourceDataEdited[index + 1][2] === null && sourceDataEdited[index][0] === sourceDataEdited[index + 1][0]) {
                 sourceDataEdited[index + 1][1] += sourceDataEdited[index][1];
                 sourceDataEdited[index][1] = 0;
+                sourceDataEdited[index][3] = "repeat";
             }
         }
+        sourceDataEdited = sourceDataEdited.filter(function(item) {
+            return item[3] != "repeat";
+        });
         //sort by amount of likes
         sourceDataEdited = sourceDataEdited.sort(function(a, b) {
             return b[1] - a[1];
@@ -909,7 +918,7 @@
         let maxLimit = 0;
         sourceGraphData = [];
         sourceDataEdited.forEach(function(item, index) {
-            if (index < 5) {
+            if (index < 50) {
                 maxLimit = item[1];
                 sourceGraphData.push([sourceGraphData.length, item[1]]);
                 sourceGraphTitles.push([item[0], item[2] === null ? "user" : "community"]);
@@ -918,8 +927,478 @@
                 sourceGraphTitles.push([item[0], item[2] === null ? "user" : "community"]);
             }
         });
-        GraphObjects[3].updateOptions({'file':sourceGraphData, 'visibility': [true],'dateWindow':[-0.5, sourceGraphData.length-0.5]});
+        GraphObjects.postNotesSource.updateOptions({'file':sourceGraphData, 'visibility': [true],'dateWindow':[-0.5, 4.5]});
         document.getElementById("tasselNoteChartsProgress2").style.display = "none";
+    }
+
+    /* Generate charts of loaded posts */
+    function analysePosts_gkgyjoep() {
+        this.classList.add("hidden", "tasselModalExpanded");
+        let gColors = document.body.classList.contains("dark-theme") ? ["#6F96BC"] : ["#2C405A"],
+            gLineColor = document.body.classList.contains("dark-theme") ? "#d9dbe0" : "#2b2b2b";
+        let chartWidth = Math.min(document.body.clientWidth - 200, 800);
+        if (document.body.clientWidth <= 800) chartWidth = document.body.clientWidth - 100;
+        let content = document.getElementById("tasselModalContent");
+        let visiblePosts = tasselJsonManager.feed.posts.filter(function(post) {
+            return !post.tassel || !post.tassel.hidden;// && !post.tassel.collapsed;
+        });
+
+        block_authors: {
+            let authors = [];
+            visiblePosts.forEach(function(post) {
+                let author = post.original_username || post.username;
+                let authorId = post.original_post_user_id || post.user_id;
+                let authorIcon = post.avatar_url;
+                let result = authors.find(function(entry) {
+                    return entry.id === authorId;
+                });
+                if (result) result.count++;
+                else authors.push({id: authorId, username: author, avatar: authorIcon, count: 1});
+            });
+            authors = authors.sort(function(a, b) {
+                return b.count - a.count;
+            });
+            let authorLabels = [];
+            authors = authors.map(function(author, index) {
+                authorLabels[index] = [author.username, author.avatar];
+                return [index, author.count];
+            });
+
+            let chart = document.createElement("div");
+            chart.classList.add("tasselModalChart");
+            content.appendChild(chart);
+            let label = document.createElement("div");
+            label.classList.add("tasselModalChartLabel");
+            content.appendChild(label);
+
+            let gLabels = ["author", "count"];
+            GraphObjects.analysisTags = new Dygraph(
+                chart,
+                authors,
+                {
+                    //Sized
+                    width: chartWidth,
+                    height: chartWidth/3*2,
+                    highlightCircleSize: 10,
+                    strokeWidth: 2,
+                    axisLineWidth: 2,
+                    axisLabelWidth: 70,
+
+                    //Labeling
+                    labels: gLabels,
+                    legend: 'always',
+                    title: `Authors (${authors.length})`,
+                    labelsDiv: label,
+
+                    //Other
+                    rollPeriod: 0,
+                    stepPlot: true,
+                    fillGraph: true,
+                    includeZero: true,
+                    colors: gColors,
+                    connectSeparatedPoints: true,
+                    stackedGraph: true,
+                    plotter: barChartPlotter_gkgyjoep,
+                    dateWindow: [-0.5, 5.5],
+                    gridLineColor: gLineColor,
+                    axisLineColor: gLineColor,
+                    axes: {
+                        x: {
+                            axisLabelFormatter: function(x, gran, opts) {
+                                if (!authorLabels[x]) return "";
+                                return authorLabels[x][0];
+                            },
+                            valueFormatter: function(x) {
+                                if (!authorLabels[x]) return "";
+                                let label = `<img src="${authorLabels[x][1]}" style="width: 20px; height: 20px; margin-right: 5px;">${authorLabels[x][0]}`;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        block_rebloggers: {
+            let rebloggers = [];
+            visiblePosts.forEach(function(post) {
+                if (!post.reblogged_from_post_id) return;
+                let result = rebloggers.find(function(entry) {
+                    return entry.username === post.username;
+                });
+                if (result) result.count++;
+                else rebloggers.push({username: post.username, count: 1});
+
+                if (post.reblog_copy_info) post.reblog_copy_info.forEach(function(info) {
+                    let result = rebloggers.find(function(entry) {
+                        return entry.username === info.reblogged_by;
+                    });
+                    if (result) result.count++;
+                    else rebloggers.push({username: info.username, count: 1});
+                });
+            });
+            rebloggers = rebloggers.sort(function(a, b) {
+                return b.count - a.count;
+            });
+            let rebloggerLabels = [];
+            rebloggers = rebloggers.map(function(reblogger, index) {
+                rebloggerLabels[index] = reblogger.username;
+                return [index, reblogger.count];
+            });
+
+            let chart = document.createElement("div");
+            chart.classList.add("tasselModalChart");
+            content.appendChild(chart);
+            let label = document.createElement("div");
+            label.classList.add("tasselModalChartLabel");
+            content.appendChild(label);
+
+            let gLabels = ["reblogger", "count"];
+            GraphObjects.analysisTags = new Dygraph(
+                chart,
+                rebloggers,
+                {
+                    //Sized
+                    width: chartWidth,
+                    height: chartWidth/3*2,
+                    highlightCircleSize: 10,
+                    strokeWidth: 2,
+                    axisLineWidth: 2,
+                    axisLabelWidth: 70,
+
+                    //Labeling
+                    labels: gLabels,
+                    legend: 'always',
+                    title: `Rebloggers (${rebloggers.length})`,
+                    labelsDiv: label,
+
+                    //Other
+                    rollPeriod: 0,
+                    stepPlot: true,
+                    fillGraph: true,
+                    includeZero: true,
+                    colors: gColors,
+                    connectSeparatedPoints: true,
+                    stackedGraph: true,
+                    plotter: barChartPlotter_gkgyjoep,
+                    dateWindow: [-0.5, 5.5],
+                    gridLineColor: gLineColor,
+                    axisLineColor: gLineColor,
+                    axes: {
+                        x: {
+                            axisLabelFormatter: function(x, gran, opts) {
+                                return rebloggerLabels[x];
+                            },
+                            valueFormatter: function(x) {
+                                return rebloggerLabels[x];
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        block_community: {
+            let communities = [];
+            visiblePosts.forEach(function(post) {
+                if (!post.community_id) return;
+                let result = communities.find(function(entry) {
+                    return entry.community === post.comm_name;
+                });
+                if (result) result.count++;
+                else communities.push({community: post.comm_name, count: 1});
+
+                if (post.reblog_copy_info) post.reblog_copy_info.forEach(function(info) {
+                    let result = communities.find(function(entry) {
+                        return entry.community === info.community;
+                    });
+                    if (result) result.count++;
+                    else communities.push({community: info.community, count: 1});
+                });
+            });
+            communities = communities.sort(function(a, b) {
+                return b.count - a.count;
+            });
+            let communityLabels = [];
+            communities = communities.map(function(community, index) {
+                communityLabels[index] = community.community;
+                return [index, community.count];
+            });
+
+            let chart = document.createElement("div");
+            chart.classList.add("tasselModalChart");
+            content.appendChild(chart);
+            let label = document.createElement("div");
+            label.classList.add("tasselModalChartLabel");
+            content.appendChild(label);
+
+            let gLabels = ["community", "count"];
+            GraphObjects.analysisTags = new Dygraph(
+                chart,
+                communities,
+                {
+                    //Sized
+                    width: chartWidth,
+                    height: chartWidth/3*2,
+                    highlightCircleSize: 10,
+                    strokeWidth: 2,
+                    axisLineWidth: 2,
+                    axisLabelWidth: 70,
+
+                    //Labeling
+                    labels: gLabels,
+                    legend: 'always',
+                    title: `Communities (${communities.length})`,
+                    labelsDiv: label,
+
+                    //Other
+                    rollPeriod: 0,
+                    stepPlot: true,
+                    fillGraph: true,
+                    includeZero: true,
+                    colors: gColors,
+                    connectSeparatedPoints: true,
+                    stackedGraph: true,
+                    plotter: barChartPlotter_gkgyjoep,
+                    dateWindow: [-0.5, 5.5],
+                    gridLineColor: gLineColor,
+                    axisLineColor: gLineColor,
+                    axes: {
+                        x: {
+                            axisLabelFormatter: function(x, gran, opts) {
+                                return communityLabels[x];
+                            },
+                            valueFormatter: function(x) {
+                                return communityLabels[x];
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        /*block_tags: {
+            let tags = [];
+            visiblePosts.forEach(function(post) {
+                post.tags.forEach(function(tag) {
+                    let result = tags.find(function(entry) {
+                        return entry.tag === tag;
+                    });
+                    if (result) result.count++;
+                    else tags.push({tag: tag, count: 1});
+                });
+            });
+            tags = tags.sort(function(a, b) {
+                return b.count - a.count;
+            });
+            let tagLabels = [];
+            tags = tags.map(function(tag, index) {
+                tagLabels[index] = tag.tag;
+                return [index, tag.count];
+            });
+
+            let chart = document.createElement("div");
+            chart.classList.add("tasselModalChart");
+            content.appendChild(chart);
+            let label = document.createElement("div");
+            label.classList.add("tasselModalChartLabel");
+            content.appendChild(label);
+
+            let gLabels = ["tag", "count"];
+            GraphObjects.analysisTags = new Dygraph(
+                chart,
+                tags,
+                {
+                    //Sized
+                    width: chartWidth,
+                    height: chartWidth/3*2,
+                    highlightCircleSize: 10,
+                    strokeWidth: 2,
+                    axisLineWidth: 2,
+                    axisLabelWidth: 70,
+
+                    //Labeling
+                    labels: gLabels,
+                    legend: 'always',
+                    title: 'Tags',
+                    labelsDiv: label,
+
+                    //Other
+                    rollPeriod: 0,
+                    stepPlot: true,
+                    fillGraph: true,
+                    includeZero: true,
+                    colors: gColors,
+                    connectSeparatedPoints: true,
+                    stackedGraph: true,
+                    plotter: barChartPlotter_gkgyjoep,
+                    dateWindow: [-0.5, 5.5],
+                    gridLineColor: gLineColor,
+                    axisLineColor: gLineColor,
+                    axes: {
+                        x: {
+                            axisLabelFormatter: function(x, gran, opts) {
+                                return tagLabels[x];
+                            },
+                            valueFormatter: function(x) {
+                                return tagLabels[x];
+                            }
+                        }
+                    }
+                }
+            );
+        }*/
+
+        block_types: {
+            let postTypes = [{type: "text", count: 0},{type: "picture", count: 0},{type: "video", count: 0},{type: "embed", count: 0}];
+            visiblePosts.forEach(function(post) {
+                let result = postTypes.find(function(entry) {
+                    return entry.type === post.post_type;
+                });
+                if (result) result.count++;
+                else postTypes.push({type: post.post_type, count: 1});
+            });
+            postTypes = postTypes.map(function(entry, index) {
+                return [index, entry.count];
+            });
+
+            let chart = document.createElement("div");
+            chart.classList.add("tasselModalChart");
+            content.appendChild(chart);
+            let label = document.createElement("div");
+            label.classList.add("tasselModalChartLabel");
+            content.appendChild(label);
+
+            let gLabels = ["type", "count"];
+            GraphObjects.analysisVisibility = new Dygraph(
+                chart,
+                postTypes,
+                {
+                    //Sized
+                    width: chartWidth,
+                    height: chartWidth/3*2,
+                    highlightCircleSize: 10,
+                    strokeWidth: 2,
+                    axisLineWidth: 2,
+                    axisLabelWidth: 70,
+
+                    //Labeling
+                    labels: gLabels,
+                    legend: 'always',
+                    title: 'Post Types',
+                    labelsDiv: label,
+
+                    //Other
+                    rollPeriod: 0,
+                    stepPlot: true,
+                    fillGraph: true,
+                    includeZero: true,
+                    colors: gColors,
+                    connectSeparatedPoints: true,
+                    stackedGraph: true,
+                    plotter: barChartPlotter_gkgyjoep,
+                    dateWindow: [-0.5, 3.5],
+                    interactionModel: {},
+                    gridLineColor: gLineColor,
+                    axisLineColor: gLineColor,
+                    axes: {
+                        x: {
+                            axisLabelFormatter: function(x, gran, opts) {
+                                if (x == 0) return "text";
+                                if (x == 1) return "picture";
+                                if (x == 2) return "video";
+                                if (x == 3) return "embed";
+                                return "";
+                            },
+                            valueFormatter: function(x) {
+                                if (x == 0) return "text";
+                                if (x == 1) return "picture";
+                                if (x == 2) return "video";
+                                if (x == 3) return "embed";
+                                return "";
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        block_visibility: {
+            let visibilities = [{type: "visible", count: 0},{type: "collapsed", count: 0},{type: "hidden", count: 0}];
+            tasselJsonManager.feed.posts.forEach(function(post) {
+                let visibility = "visible";
+                if (post.tassel) {
+                    if (post.tassel.hidden) visibility = "hidden";
+                    else if (post.tassel.collapsed) visibility = "collapsed";
+                }
+                let result = visibilities.find(function(entry) {
+                    return entry.type === visibility;
+                });
+                if (result) result.count++;
+                else visibilities.push({type: visibility, count: 1});
+            });
+            visibilities = visibilities.map(function(entry, index) {
+                return [index, entry.count];
+            });
+
+            let chart = document.createElement("div");
+            chart.classList.add("tasselModalChart");
+            content.appendChild(chart);
+            let label = document.createElement("div");
+            label.classList.add("tasselModalChartLabel");
+            content.appendChild(label);
+
+            let gLabels = ["visibility", "count"];
+            GraphObjects.analysisVisibility = new Dygraph(
+                chart,
+                visibilities,
+                {
+                    //Sized
+                    width: chartWidth,
+                    height: chartWidth/3*2,
+                    highlightCircleSize: 10,
+                    strokeWidth: 2,
+                    axisLineWidth: 2,
+                    axisLabelWidth: 70,
+
+                    //Labeling
+                    labels: gLabels,
+                    legend: 'always',
+                    title: 'Post Visibility',
+                    labelsDiv: label,
+
+                    //Other
+                    rollPeriod: 0,
+                    stepPlot: true,
+                    fillGraph: true,
+                    includeZero: true,
+                    colors: gColors,
+                    connectSeparatedPoints: true,
+                    stackedGraph: true,
+                    plotter: barChartPlotter_gkgyjoep,
+                    dateWindow: [-0.5, 2.5],
+                    interactionModel: {},
+                    gridLineColor: gLineColor,
+                    axisLineColor: gLineColor,
+                    axes: {
+                        x: {
+                            axisLabelFormatter: function(x, gran, opts) {
+                                if (x == 0) return "visible";
+                                if (x == 1) return "collapsed";
+                                if (x == 2) return "hidden";
+                                return "";
+                            },
+                            valueFormatter: function(x) {
+                                if (x == 0) return "visible";
+                                if (x == 1) return "collapsed";
+                                if (x == 2) return "hidden";
+                                return "";
+                            }
+                        }
+                    }
+                }
+            );
+        }
     }
 
     /* Add elements to the Tassel menu */
@@ -998,6 +1477,17 @@
         for (let a = 0; a < selector2.children.length; a++) {
             if (selection == selector2.children[a].value) selector2.children[a].selected = true;
         }
+        content.appendChild(document.createElement("hr"));
+
+        //charts for loaded posts
+        let info3 = document.createElement("p");
+        info3.innerHTML = "Here you can analyse the posts that are on the current Pillowfort page.";
+        content.appendChild(info3);
+        let button3 = document.createElement("button");
+        button3.innerHTML = `Analyse ${tasselJsonManager.feed.posts.length} posts`;
+        button3.classList.add("tasselButton");
+        button3.addEventListener("click", analysePosts_gkgyjoep);
+        content.appendChild(button3);
     }
 
     function saveSettings_gkgyjoep() {
