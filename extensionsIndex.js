@@ -127,18 +127,20 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.5",
+            "version": "1.6",
             "created": 1693639280661,
-            "updated": 1776610658939,
+            "updated": 1777828518598,
             "author": "Aki108",
-            "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a0682ff54485ee6cc5d72370bf103cf158a9f019/extensions/PostCharts/PostCharts.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a94a1e13d16443fbc54c79e9effad14be762b2e7/extensions/PostCharts/PostCharts.css",
+            "description": "Shows statistics of posts and feeds.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
                     "Shows a chart of notes on a post grouped by weekday or hour.",
-                    "Shows a chart of likes on a post by the source they came from."
+                    "Shows a chart of likes on a post by the source they came from.",
+                    "Shows a chart for the funding progress of the month.",
+                    "Shows charts for the composition of your feed."
             ]
         },
         {
