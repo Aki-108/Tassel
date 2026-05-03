@@ -30,6 +30,15 @@ body.dark-theme #tasselPostChartsFundingLength {
     font-variant: none;
 }
 
+.tasselModalChart {
+    margin: auto;
+}
+.tasselModalChartLabel {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 /*post charts*/
 #tasselChartPaneBox {
     background-color: #fff;
