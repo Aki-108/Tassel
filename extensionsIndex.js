@@ -49,12 +49,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.10",
+            "version": "1.11",
             "created": 1674907200000,
-            "updated": 1777192035268,
+            "updated": 1777828518597,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ab20bbdf5dc22c9147f3daed02005a244a20edd6/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -108,12 +108,12 @@ let extensionsIndex = [
         {
             "name": "Image Censor",
             "id": 8,
-            "version": "1.2",
+            "version": "1.3",
             "created": 1693040438225,
-            "updated": 1698421111531,
+            "updated": 1777828518597,
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@35aa264521a85a9d18b14def9e6b2a2475f69e12/extensions/ImageCensor/ImageCensor.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/ImageCensor/ImageCensor.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5381c8033b663799c648d26f1803daf38ab8ddfa/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3658180",
             "features": [
@@ -212,12 +212,12 @@ let extensionsIndex = [
         {
                 "name": "User Muting",
                 "id": 15,
-                "version": "1.8",
+                "version": "1.9",
                 "created": 1703613662842,
-                "updated": 1777217225571,
+                "updated": 1777828518597,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@858a34ed374970850d56879397fb9cd845f00826/extensions/UserMuting/UserMuting.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/UserMuting/UserMuting.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e0d131988fd0c875e8a013696d99af3ef8fe1c95/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
