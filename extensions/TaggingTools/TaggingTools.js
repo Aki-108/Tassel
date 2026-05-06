@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.7
+// @version      2.8
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -63,9 +63,13 @@
             togglePostType_dshcgkhy(newPostType);
             if (tagInput.value.length > 0 && tagInput.value.charAt(tagInput.value.length - 1)) tagInput.value += ", ";
             if (tasselJsonManager.modal.json.mine) {
-                tagInput.value += settings.tagPreset.selfReblog;
+                settings.tagPreset.selfReblog.split(",").forEach(function(tag) {
+                    addTag_dshcgkhy(tagInput, tag);
+                });
             } else {
-                tagInput.value += settings.tagPreset.otherReblog;
+                settings.tagPreset.otherReblog.split(",").forEach(function(tag) {
+                    addTag_dshcgkhy(tagInput, tag);
+                });
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
             tasselJsonManager.modal.json.tags.forEach(function(tag) {
@@ -102,9 +106,13 @@
             togglePostType_dshcgkhy(newPostType);
             if (tagInput.value.length > 0 && tagInput.value.charAt(tagInput.value.length - 1)) tagInput.value += ", ";
             if (tasselJsonManager.post.json.mine) {
-                tagInput.value += settings.tagPreset.selfReblog;
+                settings.tagPreset.selfReblog.split(",").forEach(function(tag) {
+                    addTag_dshcgkhy(tagInput, tag);
+                });
             } else {
-                tagInput.value += settings.tagPreset.otherReblog;
+                settings.tagPreset.otherReblog.split(",").forEach(function(tag) {
+                    addTag_dshcgkhy(tagInput, tag);
+                });
             }
             if (settings.autoCopy) document.getElementById("tasselTaggingToolsCopyTags").click();
             tasselJsonManager.post.json.tags.forEach(function(tag) {
@@ -377,26 +385,55 @@
     /* Remove previous default tag and add new one */
     function togglePostType_dshcgkhy(type) {
         //find previous tag
-        let oldTag = "";
+        let oldTags = "";
         switch (newPostType) {
-            case "text": oldTag = settings.tagPreset.textPost; break;
-            case "photo": oldTag = settings.tagPreset.photoPost; break;
-            case "video": oldTag = settings.tagPreset.videoPost; break;
-            case "link": oldTag = settings.tagPreset.linkPost; break;
+            case "text": oldTags = settings.tagPreset.textPost; break;
+            case "photo": oldTags = settings.tagPreset.photoPost; break;
+            case "video": oldTags = settings.tagPreset.videoPost; break;
+            case "link": oldTags = settings.tagPreset.linkPost; break;
         }
-        if (oldTag !== "") tagInput.value = tagInput.value.substring(oldTag.length);
-        else tagInput.value = "," + tagInput.value;
+        if (oldTags !== "") {
+            oldTags = oldTags.split(",").map(function(tag) {return tag.trim()});
+            oldTags.forEach(function(tag) {
+                removeTag_dshcgkhy(tagInput, tag);
+            });
+        }
         //place new tag
-        let newTag = "";
+        let newTags = "";
         switch (type) {
-            case "text": newTag = settings.tagPreset.textPost; break;
-            case "photo": newTag = settings.tagPreset.photoPost; break;
-            case "video": newTag = settings.tagPreset.videoPost; break;
-            case "link": newTag = settings.tagPreset.linkPost; break;
+            case "text": newTags = settings.tagPreset.textPost; break;
+            case "photo": newTags = settings.tagPreset.photoPost; break;
+            case "video": newTags = settings.tagPreset.videoPost; break;
+            case "link": newTags = settings.tagPreset.linkPost; break;
         }
-        if (newTag !== "") tagInput.value = newTag + tagInput.value;
-        else tagInput.value = tagInput.value.substring(tagInput.value.search(",")+1);
+        if (newTags !== "") {
+            newTags = newTags.split(",").map(function(tag) {return tag.trim()});
+            newTags.forEach(function(tag) {
+                addTag_dshcgkhy(tagInput, tag);
+            });
+        }
         newPostType = type;
+    }
+
+    /* Check if a tag is already in the input box */
+    function addTag_dshcgkhy(tagInput, tag) {
+        let enteredTags = tagInput.value.split(",").map(function(tag) {return tag.trim()});
+        let result = enteredTags.some(function(entered) {
+            return entered.trim().toLowerCase() === tag.trim().toLowerCase();
+        });
+        if (result) return;
+        if (tagInput.value.length > 0 && tagInput.value.trim()[tagInput.value.trim().length-1] !== ",") tagInput.value += ", ";
+        tagInput.value += tag.trim() + ", ";
+    }
+
+    function removeTag_dshcgkhy(tagInput, tag) {
+        let enteredTags = tagInput.value.split(",").map(function(tag) {return tag.trim()});
+        let result = enteredTags.findIndex(function(entered) {
+            return entered.trim().toLowerCase() === tag.trim().toLowerCase();
+        });
+        if (result < 0) return;
+        enteredTags.splice(result, 1);
+        tagInput.value = enteredTags.join(", ");
     }
 
     /* Add the event for updating the database */
@@ -412,6 +449,8 @@
 
             let currentTags = tagInput.value.split(",").map(function(tag) {
                 return tag.trim();
+            }).filter(function(tag) {
+                return tag.length > 0;
             });
             //filter out tags that already were listed
             let originalTags = this.getAttribute("inital-tags").split(",").map(function(tag) {
@@ -890,12 +929,12 @@
     /* Save settings to local storage */
     function saveTags_dshcgkhy() {
         if (!settings.tagPreset) settings.tagPreset = {};
-        settings.tagPreset.textPost = document.getElementById("tasselTaggingToolsTagText").value.trim();
-        settings.tagPreset.photoPost = document.getElementById("tasselTaggingToolsTagPhoto").value.trim();
-        settings.tagPreset.videoPost = document.getElementById("tasselTaggingToolsTagVideo").value.trim();
-        settings.tagPreset.linkPost = document.getElementById("tasselTaggingToolsTagLink").value.trim();
-        settings.tagPreset.selfReblog = document.getElementById("tasselTaggingToolsTagSelfReblog").value.trim();
-        settings.tagPreset.otherReblog = document.getElementById("tasselTaggingToolsTagOtherReblog").value.trim();
+        settings.tagPreset.textPost = document.getElementById("tasselTaggingToolsTagText").value.split(",").map(function(tag) {return tag.trim()}).filter(function(tag) {return tag.length > 0}).join(", ");
+        settings.tagPreset.photoPost = document.getElementById("tasselTaggingToolsTagPhoto").value.split(",").map(function(tag) {return tag.trim()}).filter(function(tag) {return tag.length > 0}).join(", ");
+        settings.tagPreset.videoPost = document.getElementById("tasselTaggingToolsTagVideo").value.split(",").map(function(tag) {return tag.trim()}).filter(function(tag) {return tag.length > 0}).join(", ");
+        settings.tagPreset.linkPost = document.getElementById("tasselTaggingToolsTagLink").value.split(",").map(function(tag) {return tag.trim()}).filter(function(tag) {return tag.length > 0}).join(", ");
+        settings.tagPreset.selfReblog = document.getElementById("tasselTaggingToolsTagSelfReblog").value.split(",").map(function(tag) {return tag.trim()}).filter(function(tag) {return tag.length > 0}).join(", ");
+        settings.tagPreset.otherReblog = document.getElementById("tasselTaggingToolsTagOtherReblog").value.split(",").map(function(tag) {return tag.trim()}).filter(function(tag) {return tag.length > 0}).join(", ");
 
         let file = JSON.parse(localStorage.getItem("tasselSettings2") || "{}");
         file.taggingTools = settings;

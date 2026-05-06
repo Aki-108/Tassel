@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Note Details
-// @version      2.12
+// @version      2.13
 // @description  Shows where a post has been liked/reblogged to.
 // @author       Aki108
 // @match        http*://www.pillowfort.social/*
@@ -206,7 +206,8 @@
                 return el.nodeName === "#text" && el.data.trim().search("at ") === 0
             });
             if (!el) {
-                el = Object.values(note.children[0].getElementsByTagName("span")[0].childNodes);
+                if (note.children[0].children[0].tagName === "SPAN") el = Object.values(note.children[0].getElementsByTagName("span")[0].childNodes);
+                else el = Object.values(note.children[0].childNodes);
                 if (el.length === 0) continue;
                 el = el.find(function(el) {
                     return el.nodeName === "#text" && el.data.trim().search("at ") === 0

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         User Muting
-// @version      1.7
+// @version      1.9
 // @description  Remove people partially.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -80,6 +80,11 @@
             && user.rebloggedBy; //only count if reblogs by that user should be removed
             if (!originalPost && !rebloggedFrom && !rebloggedBy) continue;
             if (((originalUser !== undefined && originalUser.nsfw) || (user !== undefined && user.nsfw)) && !(post.nsfw || (post.original_post !== undefined && post.original_post.nsfw))) continue;
+
+            //save additional information in JSON Manager for other extentions
+            if (!post.tassel) post.tassel = {};
+            post.tassel.hidden = true;
+            post.tassel.userMuting = {originalPost: originalPost, rebloggedFrom: rebloggedFrom, rebloggedBy: rebloggedBy};
 
             postElement.post.style.display = "none";
         }

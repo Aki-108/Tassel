@@ -210,6 +210,9 @@ body.dark-theme .tasselLinkColor {
 	display: none;
 	overflow: auto;
 }
+#tasselModal:has(.tasselModalExpanded) {
+    overflow: hidden;
+}
 
 #tasselModalBackground {
 	position: fixed;
@@ -230,12 +233,25 @@ body.dark-theme #tasselModalBackground {
 	max-height: 70%;
 	margin-top: 100px;
 	z-index: 10;
+    transition: width 2s ease, height 2s ease, margin-top 2s ease;
+}
+#tasselModalDialog1:has(.tasselModalExpanded) {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 50px);
+    margin-top: 50px;
 }
 
 #tasselModalDialog2 {
 	overflow: hidden;
 	margin-top: 0;
 	height: 70vh;
+    transition: height 2s ease;
+}
+#tasselModalDialog2:has(.tasselModalExpanded) {
+    height: 100%;
+    border-radius: 0;
 }
 
 #tasselModalHeader {
@@ -259,6 +275,9 @@ body.dark-theme #tasselModalHeader {
 	display: grid;
 	grid-template-columns: 200px auto;
 	grid-template-rows: calc(70vh - 48px);
+}
+#tasselModalGrid:has(.tasselModalExpanded) {
+    grid-template-rows: calc(100vh - 50px - 46px);
 }
 
 #tasselModalSidebar {
@@ -705,6 +724,9 @@ label:has(.tasselInfoButton:focus) .tasselInfoBox p {
         grid-template-columns: 100%;
         grid-template-rows: 40px auto;
         overflow: hidden;
+    }
+	#tasselModalGrid:has(.tasselModalExpanded) {
+        grid-template-rows: 40px calc(100vh - 50px - 46px - 40px);
     }
 
     #tasselModalSidebar {

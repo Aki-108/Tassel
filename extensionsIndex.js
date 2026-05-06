@@ -32,12 +32,12 @@ let extensionsIndex = [
         {
             "name": "Note Details",
             "id": 3,
-            "version": "2.12",
+            "version": "2.13",
             "created": 1653984960000,
-            "updated": 1777148770836,
+            "updated": 1777910887243,
             "author": "Aki108",
             "description": "Shows where a post has been liked/reblogged to.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0e88983607290ac30e58248c39c04c312ae68ae2/extensions/RebloggedToCommunity/NoteDetails.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@746d4bed0cef38d74b22b4253deea78cd9d1e141/extensions/RebloggedToCommunity/NoteDetails.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@9d2ecc54a75e7ebe9dab565538cf98e4325fa061/extensions/RebloggedToCommunity/NoteDetails.css",
             "post": "https://www.pillowfort.social/posts/3057985",
             "features": ["Show tags of reblogs in the reblog notes of a post.",
@@ -49,12 +49,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.10",
+            "version": "1.11",
             "created": 1674907200000,
-            "updated": 1777192035268,
+            "updated": 1777828518597,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ab20bbdf5dc22c9147f3daed02005a244a20edd6/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -89,12 +89,12 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.7",
+            "version": "2.8",
             "created": 1678386060000,
-            "updated": 1777201577050,
+            "updated": 1778080968660,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@164cfae9c7210d3774bc885f06d96efd372e92e5/extensions/TaggingTools/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3d7fe9dbed7fcf91209b1ca0ea650502778cc32b/extensions/TaggingTools/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7a86104200603378bd05153e55eb48a6e80ec002/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
@@ -108,12 +108,12 @@ let extensionsIndex = [
         {
             "name": "Image Censor",
             "id": 8,
-            "version": "1.2",
+            "version": "1.3",
             "created": 1693040438225,
-            "updated": 1698421111531,
+            "updated": 1777828518597,
             "author": "Aki108",
             "description": "Censor (NSFW) images and icons.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@35aa264521a85a9d18b14def9e6b2a2475f69e12/extensions/ImageCensor/ImageCensor.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/ImageCensor/ImageCensor.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5381c8033b663799c648d26f1803daf38ab8ddfa/extensions/ImageCensor/ImageCensor.css",
             "post": "https://www.pillowfort.social/posts/3658180",
             "features": [
@@ -127,18 +127,20 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.5",
+            "version": "1.6",
             "created": 1693639280661,
-            "updated": 1776610658939,
+            "updated": 1777828518598,
             "author": "Aki108",
-            "description": "Shows statistics of a post.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a0682ff54485ee6cc5d72370bf103cf158a9f019/extensions/PostCharts/PostCharts.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a94a1e13d16443fbc54c79e9effad14be762b2e7/extensions/PostCharts/PostCharts.css",
+            "description": "Shows statistics of posts and feeds.",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/extensions/PostCharts/PostCharts.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
                     "Shows a chart of notes on a post grouped by weekday or hour.",
-                    "Shows a chart of likes on a post by the source they came from."
+                    "Shows a chart of likes on a post by the source they came from.",
+                    "Shows a chart for the funding progress of the month.",
+                    "Shows charts for the composition of your feed."
             ]
         },
         {
@@ -210,12 +212,12 @@ let extensionsIndex = [
         {
                 "name": "User Muting",
                 "id": 15,
-                "version": "1.8",
+                "version": "1.9",
                 "created": 1703613662842,
-                "updated": 1777217225571,
+                "updated": 1777828518597,
                 "author": "Aki108",
                 "description": "Remove people partially.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@858a34ed374970850d56879397fb9cd845f00826/extensions/UserMuting/UserMuting.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/UserMuting/UserMuting.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e0d131988fd0c875e8a013696d99af3ef8fe1c95/extensions/UserMuting/UserMuting.css",
                 "post": "https://www.pillowfort.social/posts/4139698",
                 "features": [
@@ -226,12 +228,12 @@ let extensionsIndex = [
         {
                 "name": "Time Format",
                 "id": 16,
-                "version": "1.9",
+                "version": "1.10",
                 "created": 1708117680669,
-                "updated": 1777202438701,
+                "updated": 1778079966058,
                 "author": "Aki108",
                 "description": "Format timestamps any way you want.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8b841b0d1fe95241d2d3c1b8aa9295469c701f30/extensions/TimeFormat/TimeFormat.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@30a68792ef6aee7fc3afeaf83d713a8dfbb82679/extensions/TimeFormat/TimeFormat.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf052368800aa2f57045d9f2f74b0916f51f09bf/extensions/TimeFormat/TimeFormat.css",
                 "post": "https://www.pillowfort.social/posts/4348164"
         },
