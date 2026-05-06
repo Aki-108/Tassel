@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Time Format
-// @version      1.9
+// @version      1.10
 // @description  Format timestamps any way you want.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -170,6 +170,7 @@
 
     /* Format date to the desired form */
     function formatDate_draxcpxe(time, format) {
+        if (format === undefined) return "";
         let data = {
             mask: format,
             output: format
@@ -302,49 +303,49 @@
         content.appendChild(frame1);
 
         createInput_draxcpxe("Reblog Date"+createInfoButton_draxcpxe("This is the timestamp that Pillowfort shows in the post header by default."), settings.reblogDate, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.reblogDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Reblog Date Tooltip"+createInfoButton_draxcpxe("This is the timestamp that shows up when hovering over the timestamp in the post header."), settings.reblogTooltip, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.reblogTooltip = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Post Date"+createInfoButton_draxcpxe("This is not originally shown. It will also show up in the post header."), settings.postDate, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.postDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Activity Date"+createInfoButton_draxcpxe("This will show the time of the last activity on a post in its footer."), settings.activityDate, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.activityDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Comment Date", settings.commentDate, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.commentDate = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Reblog Note", settings.reblogNote, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.reblogNote = this.value;
             saveSettings_draxcpxe();
         });
         frame1.lastChild.addEventListener("focus", showPreview_draxcpxe);
         frame1.lastChild.addEventListener("blur", hidePreview_draxcpxe);
         createInput_draxcpxe("Like Note", settings.likeNote, frame1);
-        frame1.lastChild.addEventListener("keyup", function() {
+        frame1.lastChild.addEventListener("blur", function() {
             settings.likeNote = this.value;
             saveSettings_draxcpxe();
         });
