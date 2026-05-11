@@ -209,6 +209,7 @@ body.dark-theme .tasselLinkColor {
 #tasselModal {
 	display: none;
 	overflow: auto;
+    --header-height: 50px;
 }
 #tasselModal:has(.tasselModalExpanded) {
     overflow: hidden;
@@ -255,8 +256,7 @@ body.dark-theme #tasselModalBackground {
 }
 
 #tasselModalHeader {
-	padding: 10px 15px 0 40px;
-	border-bottom: 2px solid #e3e3e3;
+	padding: 10px 15px 4px 15px;
 	-webkit-box-shadow: 0 0 5px 0 black;
 	box-shadow: 0 0 5px 0 black;
 	z-index: 10;
@@ -274,10 +274,10 @@ body.dark-theme #tasselModalHeader {
 #tasselModalGrid {
 	display: grid;
 	grid-template-columns: 200px auto;
-	grid-template-rows: calc(70vh - 48px);
+    grid-template-rows: calc(70vh - var(--header-height));
 }
 #tasselModalGrid:has(.tasselModalExpanded) {
-    grid-template-rows: calc(100vh - 50px - 46px);
+    grid-template-rows: calc(100vh - 50px - var(--header-height));
 }
 
 #tasselModalSidebar {
@@ -304,8 +304,10 @@ body.dark-theme #tasselModalSidebar {
     -webkit-box-shadow: 0 0 5px 0 black;
     box-shadow: 0 0 5px 0 black;
     border: none;
-    border-bottom: 1px #e3e3e3 solid;
+    border-top: 2px solid #e3e3e3;
+    border-bottom: 1px solid #e3e3e3;
     border-radius: 0;
+    padding-left: 15px;
     font-weight: bold;
 }
 #tasselModalTopbar option {
@@ -378,18 +380,17 @@ body.dark-theme .tasselModalSidebarEntry {
 
 #tasselModalContentExtensionsHeader {
 	display: grid;
-	grid-template-columns: auto 210px;
+	grid-template-columns: auto 185px;
+    gap: 10px;
 }
 
 #tasselModalContentExtensionsHeader p {
+    grid-area: 1 / 1 / span 1 / span 2;
 	margin: 0;
 }
 
 #tasselModalContentExtensionsHeader label {
 	font-weight: normal;
-	padding-left: 10px;
-	margin-left: 10px;
-	border-left: .5px lightgrey solid;
 }
 
 #tasselModalContentExtensionsHeader select {
@@ -397,9 +398,51 @@ body.dark-theme .tasselModalSidebarEntry {
 	height: 2.5em;
 }
 
+#tasselModalContentExtensionsSearch {
+    display: grid;
+    grid-template-columns: 50px auto 0;
+    border-right: 1px solid #e3e3e3;
+    line-height: 2.5em !important;
+    padding-right: 10px;
+}
+body.dark-theme #tasselModalContentExtensionsSearch {
+    border-color: #3a3e47;
+}
+
+#tasselModalContentExtensionsSearch input {
+    height: 2.5em;
+    margin-left: 5px;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    color: #232b40;
+}
+body.dark-theme #tasselModalContentExtensionsSearch input {
+    border-color: #3a3e47;
+    color: #d9dbe0;
+}
+#tasselModalContentExtensionsSearch div {
+    display: flex;
+    justify-content: right;
+    width: 0;
+}
+#tasselModalContentExtensionsSearch div button {
+    border: none;
+    background: none;
+    padding: 0 10px 1px 10px;
+    font-size: 0.8em;
+}
+
 #tasselModalContentExtensionsList {  
 	display: grid;
 	grid-template-columns: 50% 50%;
+}
+#tasselModalContentExtensionsList mark {
+    background-color: #ffd600;
+    padding: 0;
+}
+body.dark-theme #tasselModalContentExtensionsList mark {
+    background-color: #fcf8e3;
 }
 
 .tasselExtension {
@@ -720,13 +763,14 @@ label:has(.tasselInfoButton:focus) .tasselInfoBox p {
     }
 
     #tasselModalGrid {
-		height: calc(100% - 46px);
+        --top-nav-height: 40px;
+        height: calc(100% - 50px);
         grid-template-columns: 100%;
-        grid-template-rows: 40px auto;
+        grid-template-rows: var(--top-nav-height) auto;
         overflow: hidden;
     }
 	#tasselModalGrid:has(.tasselModalExpanded) {
-        grid-template-rows: 40px calc(100vh - 50px - 46px - 40px);
+    grid-template-rows: var(--top-nav-height) calc(100vh - 50px - var(--top-nav-height) - var(--header-height));
     }
 
     #tasselModalSidebar {
@@ -754,20 +798,24 @@ label:has(.tasselInfoButton:focus) .tasselInfoBox p {
     #tasselModalGrid {
         height: calc(100% - 46px);
     }
-
-    #tasselModalContentExtensionsHeader {
-        grid-template-columns: auto 0;
-    }
-    
-    #tasselModalContentExtensionsHeader label {
-        display: none;
-    }
 }
 
 @media(max-width:550px) {
     .tasselExtension {
         grid-template-columns: auto;
         grid-template-rows: auto 25px;
+    }
+	
+    #tasselModalContentExtensionsHeader {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto;
+    }
+    #tasselModalContentExtensionsHeader p {
+        grid-area: unset;
+    }
+    #tasselModalContentExtensionsSearch {
+        border-right: none;
+        padding-right: 0;
     }
     
     .tasselExtensionSidebar {
