@@ -49,12 +49,12 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.11",
+            "version": "1.12",
             "created": 1674907200000,
-            "updated": 1777828518597,
+            "updated": 1778602602695,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e5a8267c2d923d07cbb9991449459811093a6e4c/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2cb1e654a3a4e34b2da3f09035456f633ac01d4d/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
@@ -240,12 +240,12 @@ let extensionsIndex = [
         {
                 "name": "Added Accessibility",
                 "id": 17,
-                "version": "1.2",
+                "version": "1.3",
                 "created": 1726413656706,
-                "updated": 1777141309365,
+                "updated": 1778604068947,
                 "author": "Aki108",
                 "description": "Better alt texts and clear fort themes.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2fc4d2d1eb2ed5997027c953903648da03cc0cf2/extensions/AddedAccessibility/AddedAccessibility.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@eb179ba5594b0ccd8b843816ccc52c82d249adfa/extensions/AddedAccessibility/AddedAccessibility.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ec9860a4014072a89156fe811cd59d05781a4a83/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/7498680",
                 "features": [
