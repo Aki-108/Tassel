@@ -89,12 +89,12 @@ let extensionsIndex = [
         {
             "name": "Tagging Tools",
             "id": 7,
-            "version": "2.8",
+            "version": "2.9",
             "created": 1678386060000,
-            "updated": 1778080968660,
+            "updated": 1778613299635,
             "author": "Aki108",
             "description": "Makes consistent tagging easier.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3d7fe9dbed7fcf91209b1ca0ea650502778cc32b/extensions/TaggingTools/TaggingTools.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01f28ff6635f1d23c1c33fb7c6836b02c260a002/extensions/TaggingTools/TaggingTools.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7a86104200603378bd05153e55eb48a6e80ec002/extensions/TaggingTools/TaggingTools.css",
             "post": "https://www.pillowfort.social/posts/3228885",
             "features": [
