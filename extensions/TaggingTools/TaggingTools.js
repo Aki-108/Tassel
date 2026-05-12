@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tagging Tools
-// @version      2.8
+// @version      2.9
 // @description  Adds tag suggetions and easy copying of tags.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -22,14 +22,15 @@
     let tagInputEdit = document.getElementById("post_tag_list");
     if (tagInput == tagInputEdit) tagInputEdit = null;
     let submitButton = document.getElementById("submit-reblog") || document.getElementById("publish-btn");
-    let draftButton;
     if (submitButton) {;//reblog modal
     } else if (document.getElementsByClassName("submit-post-bkd")[1]) {//create post
         submitButton = document.getElementById("publish-btn") || document.getElementById("save-btn");
-        draftButton = document.getElementById("draft-btn");
     } else if (document.getElementsByClassName("main reblog-tags-container")[0]) {//reblog page
         submitButton = document.getElementsByClassName("main reblog-tags-container")[0].children[1].children[0];
     }
+    let draftButton = document.getElementById("draft-btn");
+    let queueButton = document.getElementById("queue-btn");
+    let scheduleButton = document.getElementById("schedule-btn");
 
     //load database
     let tags = (JSON.parse(localStorage.getItem("tasselTaggingTools")) || {tags: []}).tags;
@@ -47,6 +48,9 @@
         initReblogModal_dshcgkhy();
         initEditTagsModal_dshcgkhy();
         addEventListenerSubmit_dshcgkhy(submitButton, tagInput);
+        addEventListenerSubmit_dshcgkhy(draftButton, tagInput);
+        addEventListenerSubmit_dshcgkhy(queueButton, tagInput);
+        addEventListenerSubmit_dshcgkhy(scheduleButton, tagInput);
         addEventListenerInput_dshcgkhy();
         initTassel_dshcgkhy();
     }
@@ -488,6 +492,13 @@
             //remove empty tags
             fileTags = fileTags.filter(function(item) {
                 return item.tag.length > 0;
+            });
+            fileTags = fileTags.map(function(item) {
+                if (!item.related) return item;
+                item.related = item.related.filter(function(related) {
+                    return related.length > 0 && related.toLowerCase() !== item.tag.toLowerCase();
+                });
+                return item;
             });
             fileTags.sort(function(a, b) {
                 return b.count - a.count
