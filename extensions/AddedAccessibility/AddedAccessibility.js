@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Added Accessibility
-// @version      1.2
+// @version      1.3
 // @description  Accessibility Tools
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -145,7 +145,21 @@
             let button = document.createElement("button");
             button.title = "remove style";
             button.style = "border: none;background: none;width: 22px;height: 22px;margin: 0;padding: 0;";
-            button.innerHTML = `<img alt="remove style" style="filter: none !important;background: white;background: radial-gradient(circle,rgb(255, 255, 255) 0%, rgba(0, 0, 0, 0) 50%);border-radius: 100%;" src="/assets/global/watch-8a83b714a3c8fd66d5a9948c2f655ca085ec6dc8f97370ebaf9b0c5b55e3a88b.svg">`;
+            button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;filter: none !important;background: white;background: radial-gradient(circle,rgb(255, 255, 255) 0%, rgba(0, 0, 0, 0) 50%);border-radius: 100%;" alt="remove style">
+                    <g>
+		                <path d="M508.745,246.041c-4.574-6.257-113.557-153.206-252.748-153.206S7.818,239.784,3.249,246.035
+                                 c-4.332,5.936-4.332,13.987,0,19.923c4.569,6.257,113.557,153.206,252.748,153.206s248.174-146.95,252.748-153.201
+                                 C513.083,260.028,513.083,251.971,508.745,246.041z M255.997,385.406c-102.529,0-191.33-97.533-217.617-129.418
+                                 c26.253-31.913,114.868-129.395,217.617-129.395c102.524,0,191.319,97.516,217.617,129.418
+                                 C447.361,287.923,358.746,385.406,255.997,385.406z"/>
+	                </g>
+	                <g>
+		                <path d="M255.997,154.725c-55.842,0-101.275,45.433-101.275,101.275s45.433,101.275,101.275,101.275
+                                 s101.275-45.433,101.275-101.275S311.839,154.725,255.997,154.725z M255.997,323.516c-37.23,0-67.516-30.287-67.516-67.516
+                                 s30.287-67.516,67.516-67.516s67.516,30.287,67.516,67.516S293.227,323.516,255.997,323.516z"/>
+	                </g>
+                </svg>`;
             button.addEventListener("click", function() {
                 if (document.body.classList.contains("tasselAddedAccessibilityUnstyle")) {
                     document.body.classList.remove("tasselAddedAccessibilityUnstyle");
