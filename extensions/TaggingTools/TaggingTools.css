@@ -302,6 +302,7 @@ body.dark-theme #tasselTaggingToolsRemoveButton:hover {
 /* before the table */
 #tasselTaggingToolsTagListControlls {
     display: flex;
+    flex-wrap: wrap;
 }
 #tasselTaggingToolsTagListControlls .tasselButton {
     padding: 0.5em 1em;
@@ -311,8 +312,12 @@ body.dark-theme #tasselTaggingToolsRemoveButton:hover {
 #tasselTaggingToolsTagListControlls .tasselButton.disabled {
     filter: saturate(0);
 }
-#tasselTaggingToolsManageSearch {
-    flex-grow: 1;
+label#tasselTaggingToolsManageSearch {
+    flex: 1 1 14em;
+    display: flex;
+    width: 0;
+    align-items: baseline;
+    margin: 0 0 10px 0;
 }
 #tasselTaggingToolsManageSearch input {
     margin: 0 0 0 0.5em;
@@ -321,6 +326,7 @@ body.dark-theme #tasselTaggingToolsRemoveButton:hover {
     background-color: transparent;
     padding: 0.5em;
     color: #232b40;
+    flex: 1;
     
     body.dark-theme & {
         border-color: #d9dbe0;
