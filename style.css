@@ -215,6 +215,31 @@ body.dark-theme .tasselLinkColor {
     overflow: hidden;
 }
 
+#tasselModalClose,
+#tasselModalExpand {
+    float: right;
+    margin-top: 6px;
+    border: none;
+    background: none;
+    filter: contrast(10%);
+}
+#tasselModalClose:hover,
+#tasselModalExpand:hover {
+    filter: contrast(50%);
+}
+#tasselModalExpand {
+    margin-right: 15px;
+}
+#tasselModalShrinkIcon {
+    display: none;
+}
+#tasselModalExpand.tasselModalExpanded #tasselModalExpandIcon {
+    display: none;
+}
+#tasselModalExpand.tasselModalExpanded #tasselModalShrinkIcon {
+    display: block;
+}
+
 #tasselModalBackground {
 	position: fixed;
 	top: 0;
