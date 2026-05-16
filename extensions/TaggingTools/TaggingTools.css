@@ -142,6 +142,7 @@ body.dark-theme #tasselTaggingToolsRulesButton {
 /*---------- formating for tag suggestions ----------*/
 .tasselTaggingToolsSuggestionList {
     margin-top: 5px;
+    max-width: 680px;
     height: 32px;
     line-height: 32px;
     overflow: hidden;
@@ -154,6 +155,10 @@ body.dark-theme #tasselTaggingToolsRulesButton {
 }
 
 .tasselTaggingToolsSuggestionList button {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 40%;
     margin: 4px;
     border: 1px solid transparent;
     border-radius: .5em;
@@ -165,36 +170,24 @@ body.dark-theme .tasselTaggingToolsSuggestionList button {
     background-color: #010102;
     color: #d9dbe0;
 }
+.tasselTaggingToolsSuggestionList button:focus,
 .tasselTaggingToolsSuggestionList button:hover {
     background-color: #e8e8e8;
 }
+body.dark-theme .tasselTaggingToolsSuggestionList button:focus,
 body.dark-theme .tasselTaggingToolsSuggestionList button:hover {
     background-color: #353840;
 }
-.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconCommunity {
-    float: left;
-    height: 1em;
-    padding-right: 0.4em;
-    filter: grayscale(1) contrast(3) invert(1);
-}
-body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconCommunity {
-    filter: grayscale(1) contrast(3);
-}
-.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconOriginal {
-    float: left;
-    height: 1em;
-    padding-right: 0.4em;
-    filter: grayscale(1) contrast(2) invert(1);
-}
-body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconOriginal {
-    filter: grayscale(1) contrast(2);
-}
+.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconCommunity,
+.tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconOriginal,
 .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconRelated {
     float: left;
     height: 1em;
     padding-right: 0.4em;
     filter: grayscale(1) contrast(0.7);
 }
+body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconCommunity,
+body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconOriginal,
 body.dark-theme .tasselTaggingToolsSuggestionList button .tasselTaggingToolsIconRelated {
     filter: grayscale(1) contrast(0.7) invert(1);
 }
@@ -222,6 +215,11 @@ body.dark-theme .tasselTaggingToolsSuggestionList #tasselTaggingToolsCopyTags sv
     grid-template-columns: 7em auto;
     gap: 4px 0.5em;
     margin-bottom: 10px;
+}
+@media(max-width:400px) {
+    #tasselTaggingToolsSettings {
+        grid-template-columns: auto;
+    }
 }
 #tasselTaggingToolsSettings label {
     margin-top: 9px;
@@ -300,8 +298,164 @@ body.dark-theme #tasselTaggingToolsRemoveButton:hover {
     background-color: #33738d;
 }
 
-@media(max-width:400px) {
-    #tasselTaggingToolsSettings {
-        grid-template-columns: auto;
+/*---------- tag editing table ----------*/
+/* before the table */
+#tasselTaggingToolsTagListControlls {
+    display: flex;
+    flex-wrap: wrap;
+}
+#tasselTaggingToolsTagListControlls .tasselButton {
+    padding: 0.5em 1em;
+    margin-bottom: 10px;
+    min-width: max-content;
+}
+#tasselTaggingToolsTagListControlls .tasselButton.disabled {
+    filter: saturate(0);
+}
+label#tasselTaggingToolsManageSearch {
+    flex: 1 1 14em;
+    display: flex;
+    width: 0;
+    align-items: baseline;
+    margin: 0 0 10px 0;
+}
+#tasselTaggingToolsManageSearch input {
+    margin: 0 0 0 0.5em;
+    border: 1px solid #232b40;
+    border-radius: 0.5em;
+    background-color: transparent;
+    min-width: 6em;
+    padding: 0.5em;
+    color: #232b40;
+    flex: 1;
+    
+    body.dark-theme & {
+        border-color: #d9dbe0;
+        color: #d9dbe0;
     }
+}
+/* table cell */
+#tasselTaggingToolsTagList details {
+    border: 1px solid #e3e3e3;
+    padding: 0.7em 1em;
+
+    body.dark-theme & {
+        border-color: #3e3e3e;
+    }
+    
+    &:has(summary .deleted) {
+        background: #ff7575;
+        
+        body.dark-theme & {
+            background: #502929;
+        }
+    }
+}
+/* table cell head */
+#tasselTaggingToolsTagList details summary {
+    display: flex;
+    gap: 10px;
+    line-height: 1em;
+}
+#tasselTaggingToolsTagList details:has(.deleted) summary,
+#tasselTaggingToolsTagList details:not(:has(div)) summary {
+    cursor: default;
+}
+/* table cell marker */
+#tasselTaggingToolsTagList details summary::before {
+    content: "▶";
+    transition: transform 0.1s linear;
+}
+#tasselTaggingToolsTagList details:not(:has(div)) summary::before {
+    color: #ffffff;
+}
+body.dark-theme #tasselTaggingToolsTagList details:not(:has(div)) summary::before {
+    color: #1B1D20;
+}
+#tasselTaggingToolsTagList details[open] summary::before {
+    transform: rotate(90deg) translateY(2px);
+}
+#tasselTaggingToolsTagList details summary:has(.deleted)::before {
+    color: #ff7575;
+}
+body.dark-theme #tasselTaggingToolsTagList details summary:has(.deleted)::before {
+    color: #502929;
+}
+/* table cell title */
+#tasselTaggingToolsTagList details summary .index {
+    min-width: 2em;
+    text-align: right;
+}
+#tasselTaggingToolsTagList details summary b {
+    max-width: calc(100% - 160px);
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    flex-grow: 1;
+}
+/* table cell controlls */
+#tasselTaggingToolsTagList details button {
+    float: right;
+    border: none;
+    background: none;
+    
+    body.dark-theme & {
+        filter: invert(1);
+    }
+}
+#tasselTaggingToolsTagList details summary button {
+    margin-top: -3px;
+}
+#tasselTaggingToolsTagList details summary:has(input.tag) button.editTag,
+#tasselTaggingToolsTagList details:has(summary .deleted) button {
+    visibility: hidden;
+}
+/* table cell editing */
+#tasselTaggingToolsTagList details summary input {
+    margin-top: -2px;
+    height: 21px;
+    padding: 0 0.3em;
+}
+#tasselTaggingToolsTagList details summary input.tag {
+    flex-grow: 1;
+}
+#tasselTaggingToolsTagList details summary input.count {
+    width: 4em;
+    text-align: right;
+}
+/* table cell content */
+#tasselTaggingToolsTagList details:has(summary .deleted) hr,
+#tasselTaggingToolsTagList details:has(summary .deleted) p,
+#tasselTaggingToolsTagList details:has(summary .deleted) div {
+    display: none;
+}
+#tasselTaggingToolsTagList details hr {
+    margin-top: 0.7em;
+}
+#tasselTaggingToolsTagList details div {
+    margin-left: 0.5em;
+    padding-left: 0.5em;
+    line-height: 1.5em;
+    
+    &:hover {
+        outline: 5px solid #e3e3e3;
+        background: #e3e3e3;
+    }
+    body.dark-theme &:hover {
+        outline-color: #3e3e3e;
+        background: #3e3e3e;
+    }
+    
+    &:has(.deleted) {
+        background: #ff7575;
+    }
+    body.dark-theme &:has(.deleted) {
+        background: #502929;
+    }
+}
+#tasselTaggingToolsTagList details div button {
+    visibility: hidden;
+}
+#tasselTaggingToolsTagList details div:hover:not(:has(.deleted)) button {
+    visibility: visible;
 }

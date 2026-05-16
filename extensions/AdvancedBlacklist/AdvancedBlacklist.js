@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Advanced Blacklist
-// @version      1.11
+// @version      1.12
 // @description  A new and improved blacklist feature for Pillowfort.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -122,7 +122,9 @@
         let button = document.createElement("span");
         button.innerHTML = `
             <a href="" title="Blacklist this Post" class="nav-tab tab-leftmost" style="padding-top: 15px;" post-id="${(post.original_post_id || post.id)}">
-                <img class="report-img svg-purple" src="/assets/global/ic_block-ab3bc6c0524c05af88fbd21105408134932d0a7302bc16a820d5ba43cfd68bf8.svg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="svg-purple" width="19.195" height="19.2" viewBox="0 0 19.195 19.2">
+                    <path id="ic_block" d="M2.807 16.388A9.6 9.6 0 1 1 9.6 19.2a9.612 9.612 0 0 1-6.793-2.812zM1.195 9.6A8.4 8.4 0 0 0 15 16.026L3.168 4.19A8.334 8.334 0 0 0 1.195 9.6zm14.828 5.409A8.4 8.4 0 0 0 4.186 3.173z" style="mix-blend-mode:screen;isolation:isolate" fill="#58b6dd"/>
+                </svg>
             </a>
         `;
         button.children[0].addEventListener("click", function(event) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         JSON Manager
-// @version      0.19
+// @version      0.20
 // @description  Easy way of managing different JSONs on Pillowfort
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -93,6 +93,7 @@ function initModal_quugasdg() {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "href" && document.getElementById("post-view-modal").classList.contains("in")) {
                     let postId = mutationRecord.target.href;
+                    if (isNaN(postId)) return;
                     postId = postId.substring(postId.search("/posts/")+7);
                     loadCommentModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
@@ -118,6 +119,7 @@ function initModal_quugasdg() {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "href" && document.getElementById("reblog-modal").classList.contains("in")) {
                     let postId = mutationRecord.target.href;
+                    if (isNaN(postId)) return;
                     postId = postId.substring(postId.search("/posts/")+7);
                     loadReblogModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {

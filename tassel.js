@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.9.1
+// @version      1.10.0
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,10 +14,10 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2fa1f93aab614d03f5594ffc34d846d0864c8ea1/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e2b367146d71500d1edf6c59e51cfea3447c37a5/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1bf28bff4356ad6503fcd146403b38c117051e97/jsonManager.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ad14993b51e95900df9de6bc8ccfd198bb4fee49/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@655308423ebd0c0be0a60688c7d10aeba7ceb918/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -100,9 +100,6 @@
         let eventFeed = document.createElement("div");
         eventFeed.id = "tasselEvents";
         document.getElementsByTagName("body")[0].appendChild(eventFeed);
-
-        //delete at next update
-        localStorage.removeItem("tasselSidebarCounts");
     }
 
     function initJsonManager_xcajbuzn() {
@@ -190,8 +187,7 @@
         document.body.appendChild(communitiesReady);
         communitiesReady.addEventListener("click", function() {console.log("community data ready");pushEvent_xcajbuzn({source:"JSON Manager",text:"list of communities ready"});});
 
-        loadScript_xcajbuzn(jsonManager)
-            .then(() => loadCachedExtensions_xcajbuzn());
+        loadScript_xcajbuzn(jsonManager);
     }
 
     /* Add buttons to sidebar */
@@ -278,13 +274,39 @@
           <div id='tasselModalDialog1' class='modal-dialog'>
             <div id='tasselModalDialog2' class='modal-content'>
               <header id='tasselModalHeader'>
-                <button id='tasselModalClose' class='close' type='button' title='Close'>
-                <span style='color:var(--postFontColor);'>x</span>
+                <button id='tasselModalClose' type='button' title='Close'>
+                  <svg xmlns='http://www.w3.org/2000/svg' class='tasselIconColor' width='20' height='20' viewBox='0 0 20 20'>
+                    <title>expand</title>
+                    <path xmlns='http://www.w3.org/2000/svg' style='fill:none;stroke:#000000;stroke-width:3px' d='
+                      M 1 1 L 19 19
+                      M 1 19 L 19 1
+                    '/>
+                  </svg>
+                </button>
+                <button id='tasselModalExpand' type='button' title='expand'>
+                  <svg id='tasselModalExpandIcon' xmlns='http://www.w3.org/2000/svg' class='tasselIconColor' width='20' height='20' viewBox='0 0 20 20'>
+                    <title>expand</title>
+                    <path xmlns='http://www.w3.org/2000/svg' style='fill:none;stroke:#000000;stroke-width:3px' d='
+                      M 12 1    L 19 1    L 19 8
+                      M 19 1    L 12 8
+                      M 1 12    L 1 19    L 8 19
+                      M 1 19    L 8 12
+                    '/>
+                  </svg>
+                  <svg id='tasselModalShrinkIcon' xmlns='http://www.w3.org/2000/svg' class='tasselIconColor' width='20' height='20' viewBox='0 0 20 20'>
+                    <title>shrink</title>
+                    <path xmlns='http://www.w3.org/2000/svg' style='fill:none;stroke:#000000;stroke-width:3px' d='
+                      M 12 1    L 12 8     L 19 8
+                      M 19 1    L 12 8
+                      M 1 12    L 8 12     L 8 19
+                      M 1 19    L 8 12
+                    '/>
+                  </svg>
                 </button>
                 <h1 class='modal-title'>Tassel</h4>
               </header>
               <div id='tasselModalGrid'>
-                <select id="tasselModalTopbar">
+                <select id='tasselModalTopbar'>
                   <option>Extensions</option>
                 </select>
                 <nav id='tasselModalSidebar' aria-label='Tassel Navigation'>
@@ -303,6 +325,10 @@
         document.getElementById("tasselModalSidebarAbout").addEventListener("click", displayAbout_xcajbuzn);
         document.getElementById("tasselModalBackground").addEventListener("click", closeModal_xcajbuzn);
         document.getElementById("tasselModalClose").addEventListener("click", closeModal_xcajbuzn);
+        document.getElementById("tasselModalExpand").addEventListener("click", function() {
+            if (this.classList.contains("tasselModalExpanded")) this.classList.remove("tasselModalExpanded");
+            else this.classList.add("tasselModalExpanded");
+        });
         let select = document.getElementById("tasselModalTopbar");
         select.addEventListener("focus", function() {
             let options = Object.values(document.getElementById("tasselModalSidebar").children);
@@ -325,26 +351,22 @@
                 return data.id == listEntry.id;
             });
             if (!extension) return;
-            if (extension.css && extension.css != listEntry.css) {
-                listEntry.css = extension.css;
-                saveSettings_xcajbuzn();
-            }
-            if (extension.src && extension.src != listEntry.src) {
-                listEntry.src = extension.src;
-                saveSettings_xcajbuzn();
-            }
+            if (extension.css) loadStyle_xcajbuzn(extension.css);
+            if (extension.src) loadScript_xcajbuzn(extension.src);
         }
         evaluateURLParameter_xcajbuzn();
+        loadCachedExtensions_xcajbuzn();
     }
     function loadCachedExtensions_xcajbuzn() {
         for (let listEntry of settings2.extensions) {
             if (listEntry.css) {
-                loadStyle_xcajbuzn(listEntry.css);
+                delete listEntry.css;
             }
             if (listEntry.src) {
-                loadScript_xcajbuzn(listEntry.src);
+                delete listEntry.src;
             }
         }
+        saveSettings_xcajbuzn();
     }
 
     /* Load selected appearance changes */
@@ -585,6 +607,7 @@
             data.classList.remove("active");
         });
         document.getElementById("tasselModalSidebarExtensions").classList.add("active");
+        document.getElementById("tasselModalTopbar").selectedIndex = 0;
 
         //create content
         let header = document.createElement("div");
@@ -593,12 +616,30 @@
             note.innerHTML = "Select the extensions you want to use. Changes might need a page reload to become active.";
             header.appendChild(note);
 
+            let search = document.createElement("label");
+            search.id = "tasselModalContentExtensionsSearch";
+            search.innerHTML = "Search ";
+            search.appendChild(document.createElement("input"));
+            search.children[0].addEventListener("keyup", listExtensions_xcajbuzn);
+            let close = document.createElement("div");
+            close.classList.add("close");
+            close.appendChild(document.createElement("button"));
+            close.children[0].innerHTML = "x";
+            close.children[0].addEventListener("click", function() {
+                let input = document.getElementById("tasselModalContentExtensionsSearch").children[0];
+                input.value = "";
+                input.focus();
+                listExtensions_xcajbuzn()
+            });
+            search.appendChild(close);
+            header.appendChild(search);
+
             let sortLabel = document.createElement("label");
             sortLabel.innerHTML = "Sort by ";
                 let sorter = document.createElement("select");
                 sorter.addEventListener("change", function() {
                     sortOrder = this.value;
-                    displayExtensions_xcajbuzn();
+                    listExtensions_xcajbuzn();
                 });
                 sorter.innerHTML = `
                     <option value="a">A > Z</option>
@@ -615,59 +656,75 @@
             header.appendChild(sortLabel);
         content.appendChild(header);
 
-        //sort before displaying
-        extensionsIndex.sort(function(one, two) {
-            switch (sortOrder) {
-                case "a": return one.name > two.name ? 1 : -1;
-                case "z": return one.name < two.name ? 1 : -1;
-                case "new": return one.updated < two.updated ? 1 : -1;
-                case "old": return one.updated > two.updated ? 1 : -1;
-                case "1.0": {
-                    let one_ = one.version.split(".");
-                    let two_ = two.version.split(".");
-                    if (one_[0]*1 === two_[0]*1)
-                        if (one_[1]*1 === two_[1]*1) return two_[2] - one_[2];
-                        else return two_[1] - one_[1];
-                    else return two_[0] - one_[0];
-                }
-                case "0.1": {
-                    let one_ = one.version.split(".");
-                    let two_ = two.version.split(".");
-                    if (one_[0]*1 === two_[0]*1)
-                        if (one_[1]*1 === two_[1]*1) return one_[2] - two_[2];
-                        else return one_[1] - two_[1];
-                    else return one_[0] - two_[0];
-                }
-                default: return one.updated < two.updated ? 1 : -1;
-            }
-        });
         let extensionsList = document.createElement("div");
         extensionsList.id = "tasselModalContentExtensionsList"
 
-        //create extension entries in modal
-        extensionsIndex.forEach(function(data, index) {
-            let frame = document.createElement("section");
-            frame.id = "extension"+data.id;
-            frame.classList.add("tasselExtension");
+        function listExtensions_xcajbuzn() {
+            //filter by search
+            let term = search.children[0].value.trim().toLowerCase();
+            let filteredList = extensionsIndex.filter(function(item) {
+                if (item.name.toLowerCase().search(term) >= 0) return true;
+                if (item.description.toLowerCase().search(term) >= 0) return true;
+                if (item.features) return item.features.some(function(feature) {
+                    return feature.toLowerCase().search(term) >= 0;
+                });
+                return false;
+            });
+
+            //sort before displaying
+            filteredList.sort(function(one, two) {
+                switch (sortOrder) {
+                    case "a": return one.name > two.name ? 1 : -1;
+                    case "z": return one.name < two.name ? 1 : -1;
+                    case "new": return one.updated < two.updated ? 1 : -1;
+                    case "old": return one.updated > two.updated ? 1 : -1;
+                    case "1.0": {
+                        let one_ = one.version.split(".");
+                        let two_ = two.version.split(".");
+                        if (one_[0]*1 === two_[0]*1)
+                            if (one_[1]*1 === two_[1]*1) return two_[2] - one_[2];
+                            else return two_[1] - one_[1];
+                        else return two_[0] - one_[0];
+                    }
+                    case "0.1": {
+                        let one_ = one.version.split(".");
+                        let two_ = two.version.split(".");
+                        if (one_[0]*1 === two_[0]*1)
+                            if (one_[1]*1 === two_[1]*1) return one_[2] - two_[2];
+                            else return one_[1] - two_[1];
+                        else return one_[0] - two_[0];
+                    }
+                    default: return one.updated < two.updated ? 1 : -1;
+                }
+            });
+
+            //create extension entries in modal
+            extensionsList.innerHTML = "";
+            filteredList.forEach(function(data, index) {
+                let frame = document.createElement("section");
+                frame.id = "extension"+data.id;
+                frame.classList.add("tasselExtension");
                 let checkboxID = "checkbox"+data.name;
                 let info = document.createElement("div");
 
-                    let title = document.createElement("label");
-                    title.innerHTML = data.name;
-                    title.setAttribute("for", checkboxID);
+                let title = document.createElement("label");
+                title.innerHTML = data.name;
+                mark(title);
+                title.setAttribute("for", checkboxID);
                 info.appendChild(title);
 
-                    let description = document.createElement("p");
-                    description.innerHTML = data.description;
-                    description.style.margin = "0";
+                let description = document.createElement("p");
+                description.innerHTML = data.description;
+                mark(description);
+                description.style.margin = "0";
                 info.appendChild(description);
 
                 if (data.features != null && data.features.length > 0) {
                     let details = document.createElement("details");
                     details.style.margin = "10px 0 0 10px";
-                        let summary = document.createElement("summary");
-                        summary.innerHTML = "Features...";
-                        summary.style.marginBottom = ".5em";
+                    let summary = document.createElement("summary");
+                    summary.innerHTML = "Features...";
+                    summary.style.marginBottom = ".5em";
                     details.appendChild(summary);
                     let list = document.createElement("ul");
                     list.style.paddingLeft = "14px";
@@ -675,66 +732,76 @@
                     data.features.forEach(function(feature) {
                         let text = document.createElement("li");
                         text.innerHTML = feature;
+                        mark(text);
                         list.appendChild(text);
                     });
                     details.appendChild(list);
                     info.appendChild(details);
                 }
-            frame.appendChild(info);
+                frame.appendChild(info);
 
-            let sidebar = document.createElement("div");
-            sidebar.classList.add("tasselExtensionSidebar");
-            let checkbox = document.createElement("input");
-              checkbox.id = checkboxID;
-              checkbox.title = "activate";
-              checkbox.type = "checkbox";
-              checkbox.setAttribute("extension", data.id);
-              checkbox.addEventListener("click", function() {
-                  let id = this.getAttribute("extension");
-                  toggleExtension_xcajbuzn(id);
-                  if (this.checked) {
-                      let extension = extensionsIndex.find(function(data) {
-                          return data.id == id;
-                      });
-                      if (!extension) return;
-                      if (extension.css) loadStyle_xcajbuzn(extension.css);
-                      if (extension.src) loadScript_xcajbuzn(extension.src);
-                  }
-              });
-            let entry = settings2.extensions.find(function(value) {
-                return value.id == data.id;
+                let sidebar = document.createElement("div");
+                sidebar.classList.add("tasselExtensionSidebar");
+                let checkbox = document.createElement("input");
+                checkbox.id = checkboxID;
+                checkbox.title = "activate";
+                checkbox.type = "checkbox";
+                checkbox.setAttribute("extension", data.id);
+                checkbox.addEventListener("click", function() {
+                    let id = this.getAttribute("extension");
+                    toggleExtension_xcajbuzn(id);
+                    if (this.checked) {
+                        let extension = extensionsIndex.find(function(data) {
+                            return data.id == id;
+                        });
+                        if (!extension) return;
+                        if (extension.css) loadStyle_xcajbuzn(extension.css);
+                        if (extension.src) loadScript_xcajbuzn(extension.src);
+                    }
+                });
+                let entry = settings2.extensions.find(function(value) {
+                    return value.id == data.id;
+                });
+                if (entry != null) {
+                    checkbox.checked = true;
+                }
+                sidebar.appendChild(checkbox);
+                let link = document.createElement("a");
+                link.classList.add("link_post");
+                link.target = "_blank";
+                link.title = "link to post";
+                link.href = data.post;
+                link.innerHTML = `<img alt="link to post" style="width:100%;" src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg">`;
+                if (data.post) sidebar.appendChild(link);
+                let version = document.createElement("span");
+                version.classList.add("tasselExtensionVersion");
+                version.innerHTML = data.version;
+                version.title = `version ${data.version}, published ${new Date(data.created).toLocaleDateString()}, updated ${new Date(data.updated).toLocaleDateString()}`;
+                sidebar.appendChild(version);
+                let author = document.createElement("span");
+                author.classList.add("tasselExtensionAuthor");
+                author.innerHTML = "3rd";
+                author.title = "This is a third-party extension. The author is " + data.author;
+                if (data.author !== "Aki108") sidebar.appendChild(author);
+                let wip = document.createElement("span");
+                wip.classList.add("tasselExtensionWIP");
+                wip.innerHTML = "WIP";
+                wip.title = "This extension is currently in development and might not work as intended. It might be removed in the future. Use at your own risk.";
+                if (data.version.split(".")[0] < 1) sidebar.appendChild(wip);
+                frame.appendChild(sidebar);
+
+                if (settings2.showWIP || data.version >= 1) extensionsList.appendChild(frame);//only display extension if it's a full version or WIPs are wanted
             });
-            if (entry != null) {
-                checkbox.checked = true;
-            }
-            sidebar.appendChild(checkbox);
-            let link = document.createElement("a");
-              link.classList.add("link_post");
-              link.target = "_blank";
-              link.title = "link to post";
-              link.href = data.post;
-              link.innerHTML = `<img alt="link to post" style="width:100%;" src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg">`;
-            if (data.post) sidebar.appendChild(link);
-            let version = document.createElement("span");
-              version.classList.add("tasselExtensionVersion");
-              version.innerHTML = data.version;
-              version.title = `version ${data.version}, published ${new Date(data.created).toLocaleDateString()}, updated ${new Date(data.updated).toLocaleDateString()}`;
-            sidebar.appendChild(version);
-            let author = document.createElement("span");
-              author.classList.add("tasselExtensionAuthor");
-              author.innerHTML = "3rd";
-              author.title = "This is a third-party extension. The author is " + data.author;
-            if (data.author !== "Aki108") sidebar.appendChild(author);
-            let wip = document.createElement("span");
-              wip.classList.add("tasselExtensionWIP");
-              wip.innerHTML = "WIP";
-              wip.title = "This extension is currently in development and might not work as intended. It might be removed in the future. Use at your own risk.";
-            if (data.version.split(".")[0] < 1) sidebar.appendChild(wip);
-            frame.appendChild(sidebar);
 
-            if (settings2.showWIP || data.version >= 1) extensionsList.appendChild(frame);//only display extension if it's a full version or WIPs are wanted
-        });
+            function mark(string) {
+                if (term.length === 0) return;
+                if (string.innerHTML.toLowerCase().search(term) < 0) return
+                let pos = string.innerHTML.toLowerCase().search(term);
+                string.innerHTML = string.innerHTML.slice(0,pos) + "<mark>" + string.innerHTML.slice(pos,pos+term.length) + "</mark>" + string.innerHTML.slice(pos+term.length);
+            }
+        }
         content.appendChild(extensionsList);
+        listExtensions_xcajbuzn();
 
         content.appendChild(document.createElement("hr"));
         let info2 = document.createElement("div");
@@ -777,6 +844,7 @@
             data.classList.remove("active");
         });
         document.getElementById("tasselModalSidebarAbout").classList.add("active");
+        document.getElementById("tasselModalTopbar").selectedIndex = 2;
 
         content.innerHTML = `
           <div style="justify-content:center;display:grid;text-align:center;">
@@ -801,6 +869,7 @@
             data.classList.remove("active");
         });
         document.getElementById("tasselModalSidebarSettings").classList.add("active");
+        document.getElementById("tasselModalTopbar").selectedIndex = 1;
 
         //header
         let info0 = document.createElement("p");
