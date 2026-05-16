@@ -209,7 +209,7 @@ body.dark-theme .tasselLinkColor {
 #tasselModal {
 	display: none;
 	overflow: auto;
-    --header-height: 50px;
+    --header-height: 48px;
 }
 #tasselModal:has(.tasselModalExpanded) {
     overflow: hidden;
@@ -301,8 +301,8 @@ body.dark-theme #tasselModalHeader {
 	grid-template-columns: 200px auto;
     grid-template-rows: calc(70vh - var(--header-height));
 }
-#tasselModalGrid:has(.tasselModalExpanded) {
-    grid-template-rows: calc(100vh - 50px - var(--header-height));
+#tasselModalDialog2:has(.tasselModalExpanded) #tasselModalGrid {
+    grid-template-rows: calc(100vh - 52px - var(--header-height));
 }
 
 #tasselModalSidebar {
