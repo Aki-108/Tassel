@@ -1,10 +1,14 @@
+.tasselAddedAccessibilityAltText {
+    background: var(--tag_bg);
+    padding: 0.5em;
+}
+
 .tasselAddedAccessiblityEditorInput {
     width: 100% !important;
     height: min-content;
     padding: 0.5em;
 }
 
-/*Unstyle*/
 body.tasselAddedAccessibilityUnstyle {
     --pageBg: #2C405A !important;
     --postBorderColor: #2C405A !important;
