@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Added Accessibility
-// @version      1.3
+// @version      1.4
 // @description  Accessibility Tools
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -133,7 +133,7 @@
         if (img.alt.length === 0 || img.classList.contains("svg-purple-dark") || img.classList.contains("tasselAddedAccessiblityProcessed")) return;
         img.classList.add("tasselAddedAccessiblityProcessed");
         let altText = document.createElement("p");
-        altText.style = "background: var(--tag_bg); padding: 0.5em;";
+        altText.classList.add("tasselAddedAccessibilityAltText");
         altText.innerHTML = "Alt: " + img.alt;
         img.after(altText);
     }
@@ -144,7 +144,6 @@
         for (let area of areas) {
             let button = document.createElement("button");
             button.title = "remove style";
-            button.style = "border: none;background: none;width: 22px;height: 22px;margin: 0;padding: 0;";
             button.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;filter: none !important;background: white;background: radial-gradient(circle,rgb(255, 255, 255) 0%, rgba(0, 0, 0, 0) 50%);border-radius: 100%;" alt="remove style">
                     <g>
@@ -216,12 +215,11 @@
     }
 
     function createSwitch_pdmmlnvi(title="", state="") {
-        let id = "tasselSwitch" + Math.random();
-        let toggle = document.createElement("div");
-        toggle.classList.add("tasselToggle");
+        let toggle = document.createElement("label");
+        toggle.classList.add("tasselCheckbox");
         toggle.innerHTML = `
-          <input id="${id}" type="checkbox" ${state}>
-          <label for="${id}">${title}</label>
+          <input type="checkbox" ${state}>
+          ${title}
         `;
         return toggle;
     }
