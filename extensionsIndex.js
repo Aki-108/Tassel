@@ -66,13 +66,13 @@ let extensionsIndex = [
         {
             "name": "Collapsible Threads",
             "id": 5,
-            "version": "1.7",
+            "version": "1.8",
             "created": 1674985800000,
-            "updated": 1774438546568,
+            "updated": 1781461299995,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@302b9f2bf7f45a9776eebe9bbf740cbe046056b7/extensions/CollapsibleThreads/CollapsibleThreads.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ceadc9675a31c0782d084e991db3f8876587f46b/extensions/CollapsibleThreads/CollapsibleThreads.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bb7ab0b523c7779df072ecdd9928c3d7403b33f4/extensions/CollapsibleThreads/CollapsibleThreads.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bb7ab0b523c7779df072ecdd9928c3d7403b33f4/extensions/CollapsibleThreads/CollapsibleThreads.css",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
         {
