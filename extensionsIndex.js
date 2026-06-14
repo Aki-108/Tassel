@@ -245,8 +245,8 @@ let extensionsIndex = [
                 "updated": 1781215200000,
                 "author": "Aki108",
                 "description": "Better alt texts and clear fort themes.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@593dc42d79f00e5ab88728bbf33d0839a63e69c5/extensions/AddedAccessibility/AddedAccessibility.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@593dc42d79f00e5ab88728bbf33d0839a63e69c5/extensions/AddedAccessibility/AddedAccessibility.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7ee8ab19022c22c6b25f288d8b18ea70beffaba1/extensions/AddedAccessibility/AddedAccessibility.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7ee8ab19022c22c6b25f288d8b18ea70beffaba1/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/7498680",
                 "features": [
                         "Display alt text below a picture.",
