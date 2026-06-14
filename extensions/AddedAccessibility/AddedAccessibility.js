@@ -144,6 +144,7 @@
         for (let area of areas) {
             let button = document.createElement("button");
             button.title = "remove style";
+            button.classList.add("tasselAddedAccessibilityEye");
             button.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;filter: none !important;background: white;background: radial-gradient(circle,rgb(255, 255, 255) 0%, rgba(0, 0, 0, 0) 50%);border-radius: 100%;" alt="remove style">
                     <g>
