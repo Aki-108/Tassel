@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         JSON Manager
-// @version      0.20
+// @version      0.21
 // @description  Easy way of managing different JSONs on Pillowfort
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -83,6 +83,8 @@ let loadingInterval = {
     searchFeed: null,
 }
 
+let settings2 = (JSON.parse(localStorage.getItem("tasselSettings2")) || {});
+
 initModal_quugasdg();
 function initModal_quugasdg() {
     let postModal = document.getElementById("post-view-modal");
@@ -119,8 +121,8 @@ function initModal_quugasdg() {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "href" && document.getElementById("reblog-modal").classList.contains("in")) {
                     let postId = mutationRecord.target.href;
-                    if (isNaN(postId)) return;
                     postId = postId.substring(postId.search("/posts/")+7);
+                    if (isNaN(postId)) return;
                     loadReblogModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
@@ -148,6 +150,8 @@ function loadCommentModal_quugasdg(postId) {
         assignUsers_quugasdg(tasselJsonManager.modal.json);
         tasselJsonManager.modal.ready = true;
         trigger_quugasdg("tasselJsonManagerModalReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load post data"});
     });
     getCommentData_quugasdg(postId);
     initComments_quugasdg();
@@ -166,6 +170,8 @@ function loadReblogModal_quugasdg(postId) {
             assignUsers_quugasdg(tasselJsonManager.modal.json);
             tasselJsonManager.modal.ready = true;
             trigger_quugasdg("tasselJsonManagerModalReady");
+        }).fail(function() {
+            pushEvent_quugasdg({source:"JSON Manager",text:"failed to load post data"});
         });
     }
     getReblogData_quugasdg(postId);
@@ -188,6 +194,8 @@ function initSinglePost_quugasdg() {
         tasselJsonManager.modal.type = "reblog";
         assignUsers_quugasdg(tasselJsonManager.modal.json);
         trigger_quugasdg("tasselJsonManagerModalReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load post data"});
     });
 
     if (document.getElementsByTagName("dir-pagination-controls").length < 1) return;
@@ -239,6 +247,8 @@ function getCommentData_quugasdg(postId) {
         });
         tasselJsonManager.comments.ready = true;
         trigger_quugasdg("tasselJsonManagerCommentReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load comments"});
     });
 }
 
@@ -262,6 +272,8 @@ function getReblogData_quugasdg(postId) {
         });
         tasselJsonManager.reblogs.ready = true;
         trigger_quugasdg("tasselJsonManagerReblogReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load reblogs"});
     });
 }
 
@@ -281,6 +293,8 @@ function getLikeData_quugasdg(postId) {
         });
         tasselJsonManager.likes.ready = true;
         trigger_quugasdg("tasselJsonManagerLikeReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load likes"});
     });
 }
 
@@ -328,6 +342,8 @@ function loadHomeFeed_quugasdg() {
         tasselJsonManager.feed.posts.push(...data.posts);
         tasselJsonManager.feed.ready = true;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -372,6 +388,8 @@ function loadCommFeed_quugasdg() {
         tasselJsonManager.feed.posts.push(...data);
         tasselJsonManager.feed.ready = true;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -423,6 +441,8 @@ function loadFortFeed_quugasdg() {
         tasselJsonManager.feed.posts = data.posts;
         tasselJsonManager.feed.ready = true;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -466,6 +486,8 @@ function loadSearch_quugasdg() {
         tasselJsonManager.feed.posts.push(...data.posts_by_tag.posts_by_tag);
         tasselJsonManager.feed.ready = true;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -504,6 +526,8 @@ function loadDraftFeed_quugasdg() {
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -548,6 +572,8 @@ function loadQueueFeed_quugasdg() {
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -592,6 +618,8 @@ function loadScheduleFeed_quugasdg() {
         tasselJsonManager.feed.utc = new Date(tasselJsonManager.feed.time).toUTCString();
         tasselJsonManager.feed.posts = data.posts;
         trigger_quugasdg("tasselJsonManagerFeedReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load feed data"});
     });
 }
 
@@ -671,6 +699,8 @@ function initCommunities_quugasdg() {
         tasselJsonManager.communities.communities = data;
         tasselJsonManager.communities.ready = true;
         trigger_quugasdg("tasselJsonManagerCommunitiesReady");
+    }).fail(function() {
+        pushEvent_quugasdg({source:"JSON Manager",text:"failed to load community list"});
     });
 }
 
@@ -686,4 +716,21 @@ function unpackComments_quugasdg(comment) {
         list.push(...unpackComments_quugasdg(item.children))
     });
     return list;
+}
+
+/* Create event log for debug more */
+function pushEvent_quugasdg(data) {
+    if (!settings2.debug) return;
+    let event = document.createElement("div");
+    event.innerHTML = `
+          <p><b>${data.source}:</b> ${data.text}</p>
+        `;
+    event.id = "event" + Math.random();
+    document.getElementById("tasselEvents").appendChild(event);
+    window.setTimeout(function() {
+        event.classList.add("fade-out");
+        window.setTimeout(function() {
+            event.remove();
+        }, 5000);
+    }, 30000);
 }
