@@ -95,8 +95,8 @@ function initModal_quugasdg() {
             mutations.forEach(function(mutationRecord) {
                 if (mutationRecord.attributeName === "href" && document.getElementById("post-view-modal").classList.contains("in")) {
                     let postId = mutationRecord.target.href;
-                    if (isNaN(postId)) return;
                     postId = postId.substring(postId.search("/posts/")+7);
+                    if (isNaN(postId)) return;
                     loadCommentModal_quugasdg(postId);
                 } else if (mutationRecord.attributeName === "style" && mutationRecord.target.style.display === "none") {
                     tasselJsonManager.modal.ready = false;
