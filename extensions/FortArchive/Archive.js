@@ -15,60 +15,94 @@ init();
 
 function init() {
     if (window.self !== window.top) return;
-    let queryString = new URLSearchParams(window.location.search.substring(1));
-    for (let pair of queryString.entries()) {
-        if (pair[0] === "p") page = pair[1] * 1;
-        if (pair[0] === "post") post = pair[1] * 1;
-    }
-    let html = `
-    <dir-pagination-controls>
-      <ul class="pagination">
-        <li class=${page == 1 ? "disabled" : ""}>
-          <a href="?p=${Math.max(page-1,minPage)}">‹</a>
-        </li>
-  `;
-    for (let i = Math.max(minPage, page - 4); i <= Math.min(maxPage, page + 4); i++) {
-        html += `
-      <li class=${page == i ? "active" : ""}>
-        <a href="?p=${i}">${i}</a>
-      </li>
-    `;
-    }
-    html += `
-        <li>
-          <a href="?p=${Math.min(page+1,maxPage)}">›</a>
-        </li>
-      </ul>
-	  <div id="pageJump">
-	      <input id="pageJumpPage" placeholder="1">
-		  <button id="pageJumpGo">&#8631;</button>
-	  </div>
-    </dir-pagination-controls>
-  `;
-    let footer = document.getElementsByTagName("footer")[0].innerHTML = html;
-    document.getElementById("pageJumpGo").addEventListener("click", function() {
-        let input = document.getElementById("pageJumpPage").value;
-        if (input >= minPage && input <= maxPage) window.location.href = `?p=${input}`;
-    });
 
     pages.forEach(function(pageData, index) {
         totalPosts += pageData.posts.length;
     });
     document.getElementsByClassName("sidebar-footer")[0].children[0].innerHTML = totalPosts;
-    let main = document.getElementsByTagName("main")[0];
-    main.innerHTML = "";
-    displayFeed();
+    document.getElementsByTagName("main")[0].innerHTML = "";
+    document.getElementsByTagName("footer")[0].innerHTML = "";
+    
+    let queryString = new URLSearchParams(window.location.search.substring(1));
+    for (let pair of queryString.entries()) {
+        if (pair[0] === "p") page = pair[1] * 1;
+        if (pair[0] === "post") post = pair[1] * 1;
+    }
+    if (post) displayComments(post);
+    else if (page) displayFeed();
+    //TODO display post
+    //TODO display tags
 }
 
 function displayFeed() {
     if (!pages[page]) return;
+    
+    let html = `
+      <dir-pagination-controls>
+        <ul class="pagination">
+          <li class=${page == 1 ? "disabled" : ""}>
+            <a href="?p=${Math.max(page-1,minPage)}">‹</a>
+          </li>
+    `;
+      for (let i = Math.max(minPage, page - 4); i <= Math.min(maxPage, page + 4); i++) {
+          html += `
+        <li class=${page == i ? "active" : ""}>
+          <a href="?p=${i}">${i}</a>
+        </li>
+      `;
+      }
+      html += `
+          <li>
+            <a href="?p=${Math.min(page+1,maxPage)}">›</a>
+          </li>
+        </ul>
+      <div id="pageJump">
+          <input id="pageJumpPage" placeholder="1">
+        <button id="pageJumpGo">&#8631;</button>
+      </div>
+      </dir-pagination-controls>
+    `;
+    let footer = document.getElementsByTagName("footer")[0].innerHTML = html;
+    document.getElementById("pageJumpGo").addEventListener("click", function() {
+        let input = document.getElementById("pageJumpPage").value;
+        if (input >= minPage && input <= maxPage) window.location.href = `?p=${input}`;
+    });
+    
     let main = document.getElementsByTagName("main")[0];
     pages[page].posts.forEach(function(post) {
         main.appendChild(displayPost(post));
     });
 }
 
-function displayPost(post) {
+function displayComments(postId) {
+  let postData = undefined;
+  pages.forEach(function(page) {
+    if (postData) return;
+    let find = page.posts.find(function(post) {
+      return post.id == postId;
+    });
+    if (find) postData = find;
+  });
+  
+  let main = document.getElementsByTagName("main")[0];
+  main.appendChild(displayPost(postData, true));
+  
+  let comments = document.createElement("div");
+  comments.id = "tabs-and-content";
+  comments.innerHTML = `
+    <div id="post-comments-section" class="tab-content margin-auto">
+      <div id="comments" class="tab-pane active">
+        <div class="comments-container">
+        </div>
+      </div>
+    </div>
+  `;
+  main.appendChild(comments);
+  
+  
+}
+
+function displayPost(post, fully) {
     let body = document.createElement("div");
     body.classList.add("post-container");
 
@@ -76,8 +110,8 @@ function displayPost(post) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-				<img loading="lazy" src="${formatImageSource(post.avatar_url)}">
-			</div>
+        <img loading="lazy" src="${post.original_post_id ? post.avatar_url : formatImageSource(post.avatar_url)}">
+      </div>
     `;
     body.appendChild(avatar);
 
@@ -107,12 +141,12 @@ function displayPost(post) {
 						</div>
 					</div>
 				</div>
-        ${post.original_post ? `<div class="citation"><span>Reblogged from <a href="">${post.original_username}</a>:</span></div>` : ``}
+        ${post.original_post_id ? `<div class="citation"><span>Reblogged from <a href="">${post.original_username}</a>:</span></div>` : ``}
 			</div>
     `;
     body.appendChild(header);
     
-    //TODO post body
+    header.appendChild(postBody(post, fully));
     
     let tags = document.createElement("div");
     tags.classList.add("tags-container");
@@ -130,68 +164,161 @@ function displayPost(post) {
       if (index < post.tags.length - 1) span.innerHTML += `<span>, </span>`;
       tags.children[0].appendChild(span);
     });
-    /*body.innerHTML += `
-		<div class="tags-container">
-			<div class="tags">
-				<span class="tag-title">
-					TAGS
-				</span>
-				<span>
-					<a class="tag-item" href="${tag_link}">
-						${tag}
-					</a>
-					<span>, </span>
-				</span>
-			</div>
-		</div>
-	</div>
-	<div class="post-nav">
-        <div class="post-nav-left>
-			<a class="nav-tab pointer-cursor">
-				<img src="${comment_icon}">
-				<div class="tag-text">
-					${comment_count}
-				</div>
-			</a>
-			<span>
-				<a class="nav-tab pointer-cursor">
-					<img src="${reblog_icon}">
-					<div class="tag-text">
-						${reblog_count}
-					</div>
-				</a>
-			</span>
-			<span>
-				<span>
-					<a class="nav-tab like-button">
-						<img class="svg-blue" style="width:22px" src="${unliked_icon}">
-						<div class="tag-text">
-							${like_count}
-						</div>
-					</a>
-				</span>
-			</span>
-		</div>
-	</div>
-	`;*/
+
+    let nav = document.createElement("div");
+    nav.classList.add("post-nav");
+    nav.innerHTML = `
+      <div class="post-nav-left">
+        <a class="nav-tab pointer-cursor" href="?post=${post.id}">
+          <img src="${formatImageSource("comment.svg")}">
+          <div class="tag-text">
+            ${post.comments_count}
+          </div>
+        </a>
+        <span>
+          <div class="nav-tab pointer-cursor">
+            <img src="${formatImageSource("reblog.svg")}">
+            <div class="tag-text">
+              ${post.reblogs_count}
+            </div>
+          </div>
+        </span>
+        <span>
+          <span>
+            <div class="nav-tab like-button">
+              <img class="svg-blue" style="width:22px" src="${formatImageSource("like.svg")}">
+              <div class="tag-text">
+                ${post.likes_count}
+              </div>
+            </div>
+          </span>
+        </span>
+      </div>
+    `;
+    if (!post.original_post_id) header.appendChild(nav);
     return body;
 }
 
-function textpostBody() {
-    let body = `
-		<div class="post-content">
-			<div>
-				<div class="title font-nunito-bold">
-					${title}
-				</div>
-			</div>
-			<div class="content">
-				<div>
-					${post_body}
-				</div>
-			</div>
-		</div>
+function postBody(post, fully) {
+  let body = document.createElement("div");
+  body.classList.add("post-content");
+  
+  let title = document.createElement("div");
+  title.innerHTML = `
+    <div class="title font-nunito-bold">${post.title}</div>
+  `;
+  if (post.title != null && post.title != "") body.appendChild(title);
+  
+  if (post.post_type === "picture") body.appendChild(postBodyPicture(post, fully));
+  if (post.post_type === "text") body.appendChild(postBodyText(post, fully));
+  if (post.post_type === "video") body.appendChild(postBodyVideo(post, fully));
+  if (post.post_type === "embed") body.appendChild(postBodyEmbed(post, fully));
+  
+  return body;
+}
+
+function postBodyPicture(post, fully) {
+  let body = document.createElement("div");
+  let media = document.createElement("div");
+  media.classList.add("media");
+  body.appendChild(media);
+  post.media.forEach(function(picture, index) {
+    let width = "full";
+    if (post.media[index + 1] && post.media[index + 1].row === 1 || picture.col === 2) width = "half";
+    let container = document.createElement("div");
+    container.classList.add("pic-container", width, "d-flex", "justify-content-center", "inline-block");
+    if (picture.col === 2) container.classList.add("second-col");
+    if (picture.row === post.pic_row_last) container.classList.add("pic-row-last");
+    container.innerHTML = `
+      <img class="${width}" src="${formatImageSource(picture.url)}">
+    `;
+    media.appendChild(container);
+  });
+  body.appendChild(postBodyText(post, fully));
+  return body;
+}
+
+function postBodyText(post, fully) {
+  let body = document.createElement("div");
+  if (!post.content) return body;
+  body.classList.add("content");
+
+  let content = post.content;
+  content = formatReadMores(content, post.id, fully);
+  content = formatTextImage(content);
+  body.innerHTML = `
+    <div>
+      ${content}
+    </div>
 	`;
+  if (!post.last_edited_at) return body;
+  
+  let edited = document.createElement("div");
+  edited.classList.add("last-edited-note");
+  edited.innerHTML = `<span>Last edited ${post.last_edited_at}.</span>`;
+  body.appendChild(edited);
+  return body;
+}
+
+function postBodyVideo(post, fully) {
+  let body = document.createElement("div");
+  if (!post.media || !post.media[0]) return body;
+  let url = `https://www.youtube.com/embed/${post.media[0].url}`;
+  body.innerHTML = `
+    <div class="media">
+      <div class="flex-video">
+        <iframe width="640" height="360" frameborder="0" allowfullscreen src="${url}"></iframe>
+      </div>
+    </div>
+  `;
+  body.appendChild(postBodyText(post, fully));
+  return body;
+}
+
+function postBodyEmbed(post, fully) {
+  let body = document.createElement("div");
+  if (!post.media || !post.media[0]) return body;
+  body.innerHTML = `
+    <div class="media margin-auto">
+      <div>${post.media[0].embed_code}</div>
+    </div>
+  `;
+  body.appendChild(postBodyText(post, fully));
+  return body;
+}
+
+function formatReadMores(input, postId, fully) {
+  let output = "";
+  while (input.search(`\\[READ-MORE]`) >= 0) {
+    output += input.substring(0, input.search(`\\[READ-MORE]`));
+    if (fully) {
+      input = input.substring(input.search(`\\[READ-MORE]`)+11);
+      output += input.substring(0, input.search(`\\[/READ-MORE]`));
+    } else {
+      output += `<span>(<a href="?post=${postId}">Read More...</a>)</span>`;
+      input = input.substring(input.search(`\\[READ-MORE]`)+11);
+    }
+    input = input.substring(input.search(`\\[/READ-MORE]`)+12);
+  }
+  output += input;
+  return output;
+}
+
+function formatTextImage(input) {
+  let output = "";
+  while (input.search(`<img`) >= 0) {
+    output += input.substring(0, input.search(`<img`)+4);
+    input = input.substring(input.search(`<img`)+4);
+
+    output += input.substring(0, input.search(`src="`)+5);
+    input = input.substring(input.search(`src="`)+5);
+
+    let url = input.substring(0, input.search(`"`));
+    output += formatImageSource(url);
+    input = input.substring(url.length);
+  }
+  output += input;
+  return output;
 }
 
 function formatImageSource(name) {
