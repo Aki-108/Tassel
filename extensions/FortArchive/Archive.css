@@ -58,6 +58,10 @@ nav {
   & .sidebar-footer {
     padding: 20px;
     background-color: var(--sidebarHeaderFooter);
+    
+    & span {
+      float: right;
+    }
   }
 }
 .post-container {
@@ -121,16 +125,35 @@ nav {
     }
   }
   & .link_post {
-    magin: 0 10px 0 3px;
-
-    & img {
-      display: inline-block;
-      height: 18px;
+    margin: 0 10px 0 3px;
+  }
+  & img {
+    display: inline-block;
+    height: 18px;
+    filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);
+  }
+  & .tags {
+    font-family: "Nunito", sans-serif;
+    background-color: var(--tag_bg);
+    padding: 5px 15px;
+    font-size: 12px;
+    
+    & .tag-title {
+      color: var(--postFontColor);
+    }
+    & .tag-item {
+      text-decoration: none;
     }
   }
   & .post-nav {
     background-color: var(--postHeaderFooter);
     min-height: 50px;
+  }
+  & .svg-blue {
+    filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);
+  }
+  & .priv-svg {
+    height: 18px;
   }
 }
 dir-pagination-controls {
@@ -197,7 +220,12 @@ ul.pagination {
     cursor: pointer;
   }
 }
+img {
+  vertical-align: middle;
+}
 .svg-blue {
-  filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%)
-    hue-rotate(166deg) brightness(87%) contrast(98%);
+  filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);
+}
+.svg-pink-light {
+  filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%);
 }
