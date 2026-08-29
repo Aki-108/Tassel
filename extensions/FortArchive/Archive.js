@@ -9,7 +9,6 @@ let minPage = pages.findIndex(function(item) {
 let maxPage = pages.findLastIndex(function(item) {
     return item
 });
-let linkIcon = "";
 let imageSuffix = "_" + document.getElementsByTagName("img")[0].src.split("_")[2].split(".")[0];
 
 init();
@@ -72,32 +71,65 @@ function displayFeed() {
 function displayPost(post) {
     let body = document.createElement("div");
     body.classList.add("post-container");
-    body.innerHTML = `
-		<div class="side-info">
-			<div class="avatar">
+
+    let avatar = document.createElement("div");
+    avatar.classList.add("side-info");
+    avatar.innerHTML = `
+      <div class="avatar">
 				<img loading="lazy" src="${formatImageSource(post.avatar_url)}">
 			</div>
-		</div>
-		<div class="post main">
-			<div class="header">
+    `;
+    body.appendChild(avatar);
+
+    let header = document.createElement("div");
+    header.classList.add("post", "main");
+    header.innerHTML = `
+      <div class="header">
 				<div class="post-perma-link">
 					<div class="post-right">
 						<div class="timestamp2">
 							${formatDate(post.publish_at)}
 						</div>
 						<div class="post-header-icons">
+              ${post.privacy === "users" ? `<span class="priv-icon" title="This post is only visible to logged in users"><img class="priv-svg svg-pink-light" src="${formatImageSource("user-badge.svg")}"></span>` : ``}
+              ${post.mine === false && post.community_id === null && post.user_concealed ? `<span class="priv-icon" title="This post is only visible to certain users"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
+              ${post.community_id === null && post.mine === true && post.user_concealed ? `<span class="priv-icon" title="This post is only visible to users you are following because you are in Concealed Mode."><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
+              ${post.mine === true && post.privacy === 'followers' ? `<span class="priv-icon" title="This post is only visible to your followers"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
+              ${post.mine === true && post.privacy === 'mutuals' ? `<span class="priv-icon" title="This post is only visible to your mutual followers"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
+              ${post.privacy === "members-only" ? `<span class="priv-icon" title="This post is only visible to members of this community"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
+              ${post.mine === true && post.privacy === 'private' ? `<span class="priv-icon" title="This post is only visible to you"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
+              ${post.nsfw === true ? `<span class="priv-icon" title="This post has been marked as NSFW"><img class="nsfw-svg svg-pink-light" src="${formatImageSource("nsfw.svg")}"></span>` : ``}
 							<span>
 								<a target="_blank" title="link to post" class="link_post svg-blue" href="https://www.pillowfort.social/posts/${post.id}">
-									<img src="${linkIcon}">
+									<img src="${formatImageSource("link.svg")}">
 								</a>
 							</span>
 						</div>
 					</div>
 				</div>
+        ${post.original_post ? `<div class="citation"><span>Reblogged from <a href="">${post.original_username}</a>:</span></div>` : ``}
 			</div>
-		</div>
-	`;
+    `;
+    body.appendChild(header);
+    
     //TODO post body
+    
+    let tags = document.createElement("div");
+    tags.classList.add("tags-container");
+    tags.innerHTML = `
+      <div class="tags">
+				<span class="tag-title">
+					TAGS
+				</span>
+			</div>
+    `;
+    header.appendChild(tags);
+    post.tags.forEach(function(tag, index) {
+      let span = document.createElement("span");
+      span.innerHTML = `<a class="tag-item" href="?tag=${tag}">${tag}</a>`;
+      if (index < post.tags.length - 1) span.innerHTML += `<span>, </span>`;
+      tags.children[0].appendChild(span);
+    });
     /*body.innerHTML += `
 		<div class="tags-container">
 			<div class="tags">
