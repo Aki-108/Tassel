@@ -2,6 +2,7 @@ let page = pages.findIndex(function(item) {
     return item
 });
 let post = null;
+let commentPage = 1;
 let totalPosts = 0;
 let minPage = pages.findIndex(function(item) {
     return item
@@ -9,12 +10,14 @@ let minPage = pages.findIndex(function(item) {
 let maxPage = pages.findLastIndex(function(item) {
     return item
 });
-let imageSuffix = "_" + document.getElementsByTagName("img")[0].src.split("_")[2].split(".")[0];
+let imageSuffix = "";
 
 init();
 
 function init() {
     if (window.self !== window.top) return;
+    imageSuffix = document.getElementsByTagName("img")[0].src;
+    imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
 
     pages.forEach(function(pageData, index) {
         totalPosts += pageData.posts.length;
@@ -27,6 +30,7 @@ function init() {
     for (let pair of queryString.entries()) {
         if (pair[0] === "p") page = pair[1] * 1;
         if (pair[0] === "post") post = pair[1] * 1;
+        if (pair[0] === "page") commentPage = pair[1] * 1;
     }
     if (post) displayComments(post);
     else if (page) displayFeed();
@@ -87,9 +91,9 @@ function displayComments(postId) {
   let main = document.getElementsByTagName("main")[0];
   main.appendChild(displayPost(postData, true));
   
-  let comments = document.createElement("div");
-  comments.id = "tabs-and-content";
-  comments.innerHTML = `
+  let commentSection = document.createElement("div");
+  commentSection.id = "tabs-and-content";
+  commentSection.innerHTML = `
     <div id="post-comments-section" class="tab-content margin-auto">
       <div id="comments" class="tab-pane active">
         <div class="comments-container">
@@ -97,9 +101,60 @@ function displayComments(postId) {
       </div>
     </div>
   `;
-  main.appendChild(comments);
-  
-  
+  main.appendChild(commentSection);
+  //TODO display comments
+  let commentsContainer = document.getElementById("comments").children[0];
+  comments[postId][commentPage].comments.forEach(function(comment) {
+    console.log(comment);
+    let commentDiv = document.createElement("div");
+    commentDiv.classList.add("thread");
+    commentDiv.innerHTML = `
+      <div>
+        <div id="${comment.id}" class="main comment">
+          <div class="header">
+            <div class="avatar-container">
+              <img class="avatar" src="${comment.avatar_url}">
+            </div>
+            <div class="comment-subheader">
+              <span>
+                <a class="comment-title" href="https://www.pillowfort.social/${comment.username}">${comment.username}</a>
+              </span>
+              commented
+              <span>${formatDate(comment.created_at)}</span>
+            </div>
+            <div class="comment-buttons">
+              <a class="comment-imgs" title="Link" href="https://www.pillowfort.social/posts/${comment.post_id}?page=${comment.page_number}&comment=${comment.id}">
+                <img class="svg-blue-dark" src="${formatImageSource("link.svg")}" style="height: 17px;">
+              </a>
+              <div class="nav-tab comment-like-button">
+                <span>
+                  <img class="svg-pink-dark" src="${formatImageSource(comment.liked ? "liked.svg" : "like.svg")}" style="height: 19px;">
+                </span>
+                <span style="font-size: 14px;">${comment.likes_count}</span>
+              </div>
+            </div>
+          </div>
+          <div id="body-comment-${comment.id}" class="body">
+            <div class="display-comment">
+              <span>${formatTextImage(comment.body)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="nested-comments">
+        </div>
+      </div>
+    `;
+    if (comment.parent_id === null) {
+      commentsContainer.appendChild(commentDiv);
+    } else {
+      let parent = document.getElementById(comment.parent_id);
+      parent = parent.parentNode;
+      parent = parent.getElementsByClassName("nested-comments")[0];
+      commentDiv.classList.remove("thread");
+      commentDiv.classList.add("child-comment");
+      parent.appendChild(commentDiv);
+    }
+  });
 }
 
 function displayPost(post, fully) {
@@ -110,7 +165,7 @@ function displayPost(post, fully) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-        <img loading="lazy" src="${post.original_post_id ? post.avatar_url : formatImageSource(post.avatar_url)}">
+        <img loading="lazy" src="${post.original_username !== username ? post.avatar_url : formatImageSource(post.avatar_url)}">
       </div>
     `;
     body.appendChild(avatar);
