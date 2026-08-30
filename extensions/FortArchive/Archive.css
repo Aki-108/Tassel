@@ -58,6 +58,7 @@ nav {
   & .sidebar-footer {
     padding: 20px;
     background-color: var(--sidebarHeaderFooter);
+    color: var(--sidebarFontColor);
     
     & span {
       float: right;
@@ -244,6 +245,65 @@ nav {
   margin: 0 20px 20px 0;
   width: 650px;
 }
+.thread {
+  margin-bottom: 10px;
+}
+.comment {
+  word-wrap: break-word;
+  
+  & .header {
+    background-color: var(--postHeaderFooter);
+    font-size: .9em;
+    font-family: "Nunito", sans-serif;
+    
+    & .avatar-container {
+      margin-right: 5px;
+      display: inline-block;
+      
+      & .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 3px;
+        padding: 3px;
+        box-sizing: initial;
+        display: inline;
+      }
+    }
+    & .comment-subheader {
+      padding: 5px 0px 3px 0px;
+      display: inline;
+    }
+    & .comment-buttons {
+      margin: 8px 5px;
+      float: right;
+      clear: left;
+      
+      & > * {
+        margin: 0 4px;
+        vertical-align: center;
+      }
+      & a {
+        border: 0px;
+        background-color: transparent;
+        font-size: 17px;
+        vertical-align: middle;
+        text-decoration: none;
+      }
+      & .comment-like-button {
+        display: inline-block;
+      }
+    }
+  }
+  & .body {
+    padding: 10px 10px 10px 20px;
+    line-height: 1.25em;
+    font-family: "Nunito", sans-serif;
+  }
+}
+.child-comment {
+  margin-left: 19px;
+  margin-top: 2px;
+}
 dir-pagination-controls {
   display: flex;
   flex-flow: row nowrap;
@@ -358,4 +418,16 @@ ol, ul, dl {
 }
 .margin-auto {
   margin: auto;
+}
+blockquote {
+  border: none !important;
+  background-color: var(--blockquote_bg);
+  font-size: 1em;
+  margin: 0 0 1em;
+  padding: 10px 20px;
+}
+blockquote p:last-child,
+blockquote ul:last-child,
+blockquote ol:last-child {
+  margin-bottom: 0;
 }
