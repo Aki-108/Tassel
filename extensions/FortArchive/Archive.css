@@ -47,9 +47,19 @@ nav {
     text-align: center;
     margin-top: 10px;
 
+    & .show-badge {
+      display: inline-block;
+      margin: 3px;
+      max-width: 35px;
+      max-height: 35px;
+    }
     & .larger {
       max-width: 40px;
       max-height: 40px;
+    }
+    & .smaller {
+      max-width: 30px;
+      max-height: 30px;
     }
   }
   & .sidebar-expanded {
@@ -62,6 +72,10 @@ nav {
     
     & span {
       float: right;
+    }
+    & a {
+      color: var(--sidebarFontColor);
+      text-decoration: none;
     }
   }
 }
@@ -298,11 +312,20 @@ nav {
     padding: 10px 10px 10px 20px;
     line-height: 1.25em;
     font-family: "Nunito", sans-serif;
+    
+    & img {
+      max-width: 100%;
+    }
   }
 }
 .child-comment {
   margin-left: 19px;
   margin-top: 2px;
+}
+.comment-edited-stamp {
+  text-align: right;
+  font-style: italic;
+  font-size: 12px;
 }
 dir-pagination-controls {
   display: flex;
@@ -406,6 +429,9 @@ ol, ul, dl {
   margin-top: 0;
   margin-bottom: 1em;
   line-height: 1.2;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-bottom: 0;
 }
 .justify-content-center {
   justify-content: center;
