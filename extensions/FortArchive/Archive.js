@@ -22,7 +22,7 @@ function init() {
     pages.forEach(function(pageData, index) {
         totalPosts += pageData.posts.length;
     });
-    document.getElementsByClassName("sidebar-footer")[0].children[0].innerHTML = totalPosts;
+    document.getElementsByClassName("sidebar-footer")[0].children[0].children[0].innerHTML = totalPosts;
     document.getElementsByTagName("main")[0].innerHTML = "";
     document.getElementsByTagName("footer")[0].innerHTML = "";
     
@@ -48,16 +48,39 @@ function displayFeed() {
             <a href="?p=${Math.max(page-1,minPage)}">‹</a>
           </li>
     `;
-      for (let i = Math.max(minPage, page - 4); i <= Math.min(maxPage, page + 4); i++) {
-          html += `
+    if (page - 2 > minPage) {
+      html += `
+        <li>
+          <a href="?p=${minPage}">${minPage}</a>
+        </li>
+        <li class="disabled">
+          <span>...</span>
+        </li>
+      `;
+    }
+    for (let i = Math.max(minPage, page - 4); i <= Math.min(maxPage, page + 4); i++) {
+      html += `
         <li class=${page == i ? "active" : ""}>
           <a href="?p=${i}">${i}</a>
         </li>
       `;
-      }
+    }
+    if (page + 2 < maxPage) {
       html += `
+        <li class="disabled">
+          <span>...</span>
+        </li>
+        <li>
+          <a href="?p=${maxPage}">${maxPage}</a>
+        </li>
+      `;
+    }
+    html += `
           <li>
             <a href="?p=${Math.min(page+1,maxPage)}">›</a>
+          </li>
+          <li>
+            <a href="?p=${maxPage}">››</a>
           </li>
         </ul>
       <div id="pageJump">
@@ -90,6 +113,40 @@ function displayComments(postId) {
   
   let main = document.getElementsByTagName("main")[0];
   main.appendChild(displayPost(postData, true));
+  
+  let maxPage = comments[postId].findLastIndex(function(item) {
+    return item
+  });
+  let html = `
+    <dir-pagination-controls>
+      <ul class="pagination">
+        <li class=${commentPage == 1 ? "disabled" : ""}>
+          <a href="?post=${post}&page=${Math.max(commentPage-1,1)}">‹</a>
+        </li>
+  `;
+  for (let i = Math.max(1, commentPage - 4); i <= Math.min(maxPage, commentPage + 4); i++) {
+    html += `
+      <li class=${commentPage == i ? "active" : ""}>
+        <a href="?post=${post}&page=${i}">${i}</a>
+      </li>
+    `;
+  }
+  html += `
+        <li>
+          <a href="?post=${post}&page=${Math.min(commentPage+1,maxPage)}">›</a>
+        </li>
+      </ul>
+    <div id="pageJump">
+        <input id="pageJumpPage" placeholder="1">
+      <button id="pageJumpGo">&#8631;</button>
+    </div>
+    </dir-pagination-controls>
+  `;
+  let footer = document.getElementsByTagName("footer")[0].innerHTML = html;
+  document.getElementById("pageJumpGo").addEventListener("click", function() {
+      let input = document.getElementById("pageJumpPage").value;
+      if (input >= 1 && input <= maxPage) window.location.href = `?post=${post}&page=${input}`;
+  });
   
   let commentSection = document.createElement("div");
   commentSection.id = "tabs-and-content";
@@ -165,9 +222,9 @@ function displayPost(post, fully) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-        <img loading="lazy" src="${post.original_username !== username ? post.avatar_url : formatImageSource(post.avatar_url)}">
+        <img loading="lazy" src="${post.original_username && post.original_username !== username ? post.avatar_url : formatImageSource(post.avatar_url)}">
       </div>
-    `;
+    `;//TODO alternative avatars dont display
     body.appendChild(avatar);
 
     let header = document.createElement("div");
@@ -277,7 +334,7 @@ function postBodyPicture(post, fully) {
   let media = document.createElement("div");
   media.classList.add("media");
   body.appendChild(media);
-  post.media.forEach(function(picture, index) {
+  if (post.media) post.media.forEach(function(picture, index) {
     let width = "full";
     if (post.media[index + 1] && post.media[index + 1].row === 1 || picture.col === 2) width = "half";
     let container = document.createElement("div");
