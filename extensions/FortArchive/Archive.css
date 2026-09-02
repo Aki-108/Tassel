@@ -147,7 +147,10 @@ nav {
       display: inline-block;
       height: 18px;
       filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);
-    }
+  }
+  & .nsfw-svg {
+    height: 18px;
+  }
   & .tags {
     font-family: "Nunito", sans-serif;
     background-color: var(--tag_bg);
@@ -246,6 +249,7 @@ nav {
     }
     & iframe {
       margin: 10px auto;
+      background-color: #BBB;
     }
   }
 }
@@ -366,6 +370,9 @@ ul.pagination {
     &.active a {
       text-decoration: underline;
     }
+  }
+  & .disabled a {
+    cursor: not-allowed;
   }
 }
 #pageJump {
