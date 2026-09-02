@@ -76,12 +76,12 @@ function displayFeed() {
       `;
     }
     html += `
-          <li>
+          <li class=${page == maxPage ? "disabled" : ""}>
             <a href="?p=${Math.min(page+1,maxPage)}">›</a>
           </li>
-          <li>
-            <a href="?p=${maxPage}">››</a>
-          </li>
+              
+                                              
+               
         </ul>
       <div id="pageJump">
           <input id="pageJumpPage" placeholder="1">
@@ -392,7 +392,7 @@ function postBodyEmbed(post, fully) {
   if (!post.media || !post.media[0]) return body;
   body.innerHTML = `
     <div class="media margin-auto">
-      <div>${post.media[0].embed_code}</div>
+      <div>${decodeURI(post.media[0].embed_code)}</div>
     </div>
   `;
   body.appendChild(postBodyText(post, fully));
