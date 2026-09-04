@@ -22,6 +22,7 @@ function init() {
     pages.forEach(function(pageData, index) {
         totalPosts += pageData.posts.length;
     });
+    document.getElementsByClassName("sidebar-footer")[0].children[0].href = "?"
     document.getElementsByClassName("sidebar-footer")[0].children[0].children[0].innerHTML = totalPosts;
     document.getElementsByTagName("main")[0].innerHTML = "";
     document.getElementsByTagName("footer")[0].innerHTML = "";
@@ -34,8 +35,7 @@ function init() {
     }
     if (post) displayComments(post);
     else if (page) displayFeed();
-    //TODO display post
-    //TODO display tags
+    //TODO display tags search
 }
 
 function displayFeed() {
@@ -79,9 +79,6 @@ function displayFeed() {
           <li class=${page == maxPage ? "disabled" : ""}>
             <a href="?p=${Math.min(page+1,maxPage)}">›</a>
           </li>
-              
-                                              
-               
         </ul>
       <div id="pageJump">
           <input id="pageJumpPage" placeholder="1">
@@ -114,6 +111,7 @@ function displayComments(postId) {
   let main = document.getElementsByTagName("main")[0];
   main.appendChild(displayPost(postData, true));
   
+  let minPage = 1;
   let maxPage = comments[postId].findLastIndex(function(item) {
     return item
   });
@@ -121,18 +119,38 @@ function displayComments(postId) {
     <dir-pagination-controls>
       <ul class="pagination">
         <li class=${commentPage == 1 ? "disabled" : ""}>
-          <a href="?post=${post}&page=${Math.max(commentPage-1,1)}">‹</a>
+          <a href="?post=${post}&page=${Math.max(commentPage-1,minPage)}">‹</a>
         </li>
   `;
-  for (let i = Math.max(1, commentPage - 4); i <= Math.min(maxPage, commentPage + 4); i++) {
+  if (commentPage - 2 > minPage) {
+    html += `
+      <li>
+        <a href="?p=${minPage}">${minPage}</a>
+      </li>
+      <li class="disabled">
+        <span>...</span>
+      </li>
+    `;
+  }
+  for (let i = Math.max(minPage, commentPage - 4); i <= Math.min(maxPage, commentPage + 4); i++) {
     html += `
       <li class=${commentPage == i ? "active" : ""}>
         <a href="?post=${post}&page=${i}">${i}</a>
       </li>
     `;
   }
+  if (commentPage + 2 < maxPage) {
+    html += `
+      <li class="disabled">
+        <span>...</span>
+      </li>
+      <li>
+        <a href="?p=${maxPage}">${maxPage}</a>
+      </li>
+    `;
+  }
   html += `
-        <li>
+        <li class=${commentPage == maxPage ? "disabled" : ""}>
           <a href="?post=${post}&page=${Math.min(commentPage+1,maxPage)}">›</a>
         </li>
       </ul>
@@ -159,7 +177,6 @@ function displayComments(postId) {
     </div>
   `;
   main.appendChild(commentSection);
-  //TODO display comments
   let commentsContainer = document.getElementById("comments").children[0];
   comments[postId][commentPage].comments.forEach(function(comment) {
     console.log(comment);
@@ -224,7 +241,7 @@ function displayPost(post, fully) {
       <div class="avatar">
         <img loading="lazy" src="${post.original_username && post.original_username !== username ? post.avatar_url : formatImageSource(post.avatar_url)}">
       </div>
-    `;//TODO alternative avatars dont display
+    `;
     body.appendChild(avatar);
 
     let header = document.createElement("div");
@@ -253,7 +270,7 @@ function displayPost(post, fully) {
 						</div>
 					</div>
 				</div>
-        ${post.original_post_id ? `<div class="citation"><span>Reblogged from <a href="">${post.original_username}</a>:</span></div>` : ``}
+        ${post.original_post_id ? `<div class="citation"><span>Reblogged from <a href="https://www.pillowfort.social/${post.original_username}">${post.original_username}</a>:</span></div>` : ``}
 			</div>
     `;
     body.appendChild(header);
@@ -436,6 +453,7 @@ function formatTextImage(input) {
 function formatImageSource(name) {
     let folder = document.location.pathname.substring(0, document.location.pathname.length - 4) + "_files/";
     let fileName = name.split(".");
+    if (fileName[1] === undefined) fileName[1] = "jpg";
     return folder + fileName[0] + imageSuffix + "." + fileName[1];
 }
 
