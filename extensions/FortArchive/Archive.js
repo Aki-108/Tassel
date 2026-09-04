@@ -48,7 +48,7 @@ function displayFeed() {
             <a href="?p=${Math.max(page-1,minPage)}">‹</a>
           </li>
     `;
-    if (page - 2 > minPage) {
+    if (page - 4 > minPage) {
       html += `
         <li>
           <a href="?p=${minPage}">${minPage}</a>
@@ -58,14 +58,14 @@ function displayFeed() {
         </li>
       `;
     }
-    for (let i = Math.max(minPage, page - 4); i <= Math.min(maxPage, page + 4); i++) {
+    for (let i = Math.max(minPage, page - (page - 4 > minPage ? 2 : 4)); i <= Math.min(maxPage, page + (page + 4 < maxPage ? 2 : 4)); i++) {
       html += `
         <li class=${page == i ? "active" : ""}>
           <a href="?p=${i}">${i}</a>
         </li>
       `;
     }
-    if (page + 2 < maxPage) {
+    if (page + 4 < maxPage) {
       html += `
         <li class="disabled">
           <span>...</span>
@@ -122,7 +122,7 @@ function displayComments(postId) {
           <a href="?post=${post}&page=${Math.max(commentPage-1,minPage)}">‹</a>
         </li>
   `;
-  if (commentPage - 2 > minPage) {
+  if (commentPage - 4 > minPage) {
     html += `
       <li>
         <a href="?p=${minPage}">${minPage}</a>
@@ -132,14 +132,14 @@ function displayComments(postId) {
       </li>
     `;
   }
-  for (let i = Math.max(minPage, commentPage - 4); i <= Math.min(maxPage, commentPage + 4); i++) {
+  for (let i = Math.max(minPage, commentPage - (commentPage - 4 > minPage ? 2 : 4)); i <= Math.min(maxPage, commentPage + (commentPage + 4 < maxPage ? 2 : 4)); i++) {
     html += `
       <li class=${commentPage == i ? "active" : ""}>
         <a href="?post=${post}&page=${i}">${i}</a>
       </li>
     `;
   }
-  if (commentPage + 2 < maxPage) {
+  if (commentPage + 4 < maxPage) {
     html += `
       <li class="disabled">
         <span>...</span>
