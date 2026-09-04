@@ -64,6 +64,12 @@ nav {
   }
   & .sidebar-expanded {
     padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 261px);
+    
+    & img {
+      max-width: 210px;
+    }
   }
   & .sidebar-footer {
     padding: 20px;
