@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.0
+// @version      1.1
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -22,15 +22,32 @@
     let pagesDisplayed = [];
     let maxSearchDepth = 1;
     let searchedCount = 0;
+    let downloadQueue = [];
+    let downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
+    let downloadFails = [];
+
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@200e6cf10b3611fbc2a319db6f322a1e88d73a68/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@939f5d1f8ca5700c8f0d5263bbbf4dba53a9f4d1/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="tasselFortArchive user-buttons svg-purple" width="20" height="20" viewBox="0 0 20 20">
+      <svg xmlns="http://www.w3.org/2000/svg" class="tasselFortArchive user-buttons svg-blue" width="20" height="20" viewBox="0 0 20 20">
         <title>Archive</title>
         <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.4px" d="
           M 16.5 6.5   L 10.5 0.5   L 3.5 0.5   L 3.5 19.5   L 16.5 19.5   L 16.5 6.5   L 10.5 6.5   L 10.5 0.5
         "/>
       </svg>`;
+
+    const loadScript_avytegoo = src => {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.onload = resolve
+            script.onerror = reject
+            script.src = src
+            document.head.append(script)
+        })
+    }
 
     init_avytegoo();
     function init_avytegoo() {
@@ -65,7 +82,7 @@
         loadPage_avytegoo(1);
 
         let pagination = document.getElementsByClassName("pagination")[0];
-        lastPage = pagination.children[pagination.children.length-2].textContent*1;
+        lastPage = pagination ? pagination.children[pagination.children.length-2].textContent*1 : 1;
         maxSearchDepth = Math.ceil(Math.log2(lastPage + 1));
 
         navigation.innerHTML = `
@@ -103,7 +120,9 @@
             </select>
             <button id="tasselFortArchiveNavigationSearch" class="tasselButton">Go</button>
             <button id="tasselFortArchiveNavigationReverse" class="tasselButton">Reverse</button>
-        `;
+            <span class="vr"></span>
+        `;//TODO vr
+        if (true || user.toUpperCase() == document.getElementsByClassName("navbar-right")[0].getElementsByTagName("a")[0].innerHTML.toUpperCase()) navigation.innerHTML += `<button id="tasselFortArchiveNavigationDownload" class="tasselButton">Download Fort</button>`;
         let years = document.getElementById("tasselFortArchiveNavigationYear");
         let start = pageTime[1][1].getFullYear();
         let end = pageTime[pageTime.length-1][0].getFullYear();
@@ -120,6 +139,9 @@
                 post.style.order *= -1;
             });
         });
+        if (document.getElementById("tasselFortArchiveNavigationDownload")) document.getElementById("tasselFortArchiveNavigationDownload").addEventListener("click", initDownloader_avytegoo);
+        loadScript_avytegoo("https://cdn.jsdelivr.net/gh/Stuk/jszip@cae55105f5e8bd37c270cdb76eab2cf40388dfd9/dist/jszip.min.js");
+        loadScript_avytegoo("https://cdn.jsdelivr.net/gh/Stuk/jszip@cae55105f5e8bd37c270cdb76eab2cf40388dfd9/vendor/FileSaver.js");
     }
 
     function findLastPage_avytegoo(minPage, maxPage, lastSuccessful, lastUnsuccessful) {
@@ -396,6 +418,332 @@
             yearFrame.getElementsByClassName("content")[0].appendChild(monthFrame);
         } else monthFrame = monthFrame[0];
         monthFrame.getElementsByClassName("content")[0].appendChild(frame);
+    }
+
+    function initDownloader_avytegoo() {
+        downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
+
+        let window = document.createElement("div");
+        window.id = "tasselFortArchiveDownloader";
+        document.getElementById("tasselFortArchive").innerHTML = "";
+        document.getElementById("tasselFortArchive").appendChild(window);
+        let exit = document.createElement("button");
+        exit.classList.add("tasselButton");
+        exit.innerHTML = "return";
+        exit.addEventListener("click", function() {
+            downloadQueue = [];
+            if (mainFrame) {
+                mainFrame.remove();
+                mainFrame = null;
+                navigation.remove();
+                navigation = null;
+                document.getElementById("userBlogPosts").style.display = "block";
+            } else initArchive_avytegoo();
+        });
+        document.getElementById("tasselFortArchiveNavigation").innerHTML = "";
+        document.getElementById("tasselFortArchiveNavigation").appendChild(exit);
+
+        let intro = document.createElement("section");
+        window.appendChild(intro);
+        intro.innerHTML = `
+            <div id="tasselFortArchiveBeforeStart">
+                <h1>Settings</h1>
+                <label class="tasselLabel">from page
+                    <input id="tasselFortArchiveStartPage" value="1" type="number" min="1" max="${lastPage}">
+                </label>
+                <label class="tasselLabel">to page
+                    <input id="tasselFortArchiveEndPage" value="${lastPage}" type="number" min="1" max="${lastPage}">
+                </label>
+                <label class="tasselCheckbox">
+                    <input id="tasselFortArchiveIncludeComments" type="checkbox" checked="">
+                    include comments
+                </label>
+                <button id="tasselFortArchiveStart" class="tasselButton">Start Download</button>
+            </div>
+            <div id="tasselFortArchiveAfterStart">
+                <h1>Preparing your Archive...</h1>
+                <div id="tasselFortArchiveProgress">
+                    <div id="tasselFortArchiveProgressBar">0%</div>
+                </div>
+                <div id="tasselFortArchiveStats">
+                    <p>files remaining: 0</p>
+                    <p>posts: 0</p>
+                    <p>images: 0</p>
+                    <p>comments: 0</p>
+                    <p>failed files: 0</p>
+                </div>
+            </div>
+            <hr>
+        `;
+        document.getElementById("tasselFortArchiveStart").addEventListener("click", function() {
+            let start = document.getElementById("tasselFortArchiveStartPage").value;
+            let end = document.getElementById("tasselFortArchiveEndPage").value;
+            if (start < 1 || end > lastPage || start > end) {
+                alert("Invalid input for start and end pages.");
+                return;
+            }
+            downloadQueue = [];
+            for (let i = start; i <= end; i++) {
+                downloadQueue.push(["page", i]);
+            }
+            downloadIcon_avytegoo();
+            document.getElementById("tasselFortArchiveBeforeStart").style.display = "none";
+            document.getElementById("tasselFortArchiveAfterStart").style.display = "flex";
+            nextDownload_avytegoo();
+        });
+
+        let instructions = document.createElement("section");
+        window.appendChild(instructions);
+        instructions.innerHTML = `
+            <h1>Download Instructions</h1>
+            <hr>
+        `;
+
+        let frame = document.createElement("iframe");
+        frame.id = "tasselFortArchiveFrame";
+        window.appendChild(frame);
+        let now = new Date();
+        frame.title = `Pillofort Archive ${now.getFullYear()}${now.getMonth() + 1 < 10 ? "0" : ""}${now.getMonth() + 1}${now.getDate() < 10 ? "0" : ""}${now.getDate()}`
+        let html = `
+            <head>
+                <title>${frame.title}</title>
+                <link rel="stylesheet" href="${styleURL}"></style>
+                <!-- TODO <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">-->
+                <script>var username = "${user}";</script>
+            </head>
+            <body style="${document.body.getAttribute("style")}">
+                <nav>
+                    <div class="sidebar-user">${user}</div>
+                    ${(document.getElementById("sidebar-user-content").innerHTML)}
+                    <div class="sidebar-footer"><a href="?">Posts<span>0</span></a></div>
+                </nav>
+                <main>
+                    <div class="post main" style="width: 300px;margin-left:290px">
+                        <div class="header"></div>
+                        <div class="post-content">
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                        </div>
+                        <div class="post-nav"></div>
+                    </div>
+                    <div class="post main" style="width: 300px;margin-left:290px">
+                        <div class="header"></div>
+                        <div class="post-content">
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                            <div style="width: ${Math.random()*8+8}em;height: 1em;margin: 10px 20px 1em 20px;background: var(--postFontColor);opacity: 0.6;"></div>
+                        </div>
+                        <div class="post-nav"></div>
+                    </div>
+                </main>
+                <footer>
+                    <dir-pagination-controls>
+                        <ul class="pagination">
+                            <li class="disabled">
+                                <a href="?p=1">‹</a>
+                            </li>
+                            <li class="active">
+                                <a href="?p=1">1</a>
+                            </li>
+                            <li>
+                                <a href="?p=1">›</a>
+                            </li>
+                        </ul>
+                    </dir-pagination-controls>
+                </footer>
+            </body>`;
+        frame.contentWindow.document.open();
+        frame.contentWindow.document.write(html);
+        frame.contentWindow.document.close();
+    }
+
+    function nextDownload_avytegoo() {
+        let total = downloadQueue.length+downloadsDone.total;
+        let percent = Math.min(Math.round(downloadsDone.total/total*100), 100);
+        document.getElementById("tasselFortArchiveProgressBar").style.width = percent + "%";
+        document.getElementById("tasselFortArchiveProgressBar").innerHTML = percent + "%";
+
+        document.getElementById("tasselFortArchiveStats").innerHTML = `
+            <p>files remaining: ${downloadQueue.length}</p>
+            <p>posts: ${downloadsDone.posts}</p>
+            <p>images: ${downloadsDone.images}</p>
+            <p>comments: ${downloadsDone.comments}</p>
+            <p>failed files: ${downloadFails.length}</p>
+        `;
+
+        if (downloadQueue.length > 0) {
+            if (downloadQueue[0][0] == "page") downloadPage_avytegoo(downloadQueue[0][1]);
+            else if (downloadQueue[0][0] == "image") downloadImage_avytegoo(downloadQueue[0][1]);
+            else if (downloadQueue[0][0] == "comments") downloadComments_avytegoo(downloadQueue[0][1]);
+        } else {
+            //TODO download done
+            if (downloadFails.length > 0) {
+                document.getElementById("tasselFortArchiveStats").innerHTML = `
+                    <p>files remaining: ${downloadQueue.length}</p>
+                    <p>posts: ${downloadsDone.posts}</p>
+                    <p>images: ${downloadsDone.images}</p>
+                    <p>comments: ${downloadsDone.comments}</p>
+                    <p>failed files: ${downloadFails.length} <button id="tasselFortArchiveRetryFails" class="tasselButton small">retry</button></p>
+                `;
+                document.getElementById("tasselFortArchiveRetryFails").addEventListener("click", function() {
+                    downloadQueue.push(...downloadFails);
+                    downloadFails = [];
+                    nextDownload_avytegoo();
+                });
+            }
+            let script = document.createElement("script");
+            script.src = scriptURL;
+            script.type = 'text/javascript';
+            let frame = document.getElementById("tasselFortArchiveFrame");
+            frame.contentWindow.document.body.appendChild(script);
+
+            document.getElementById("tasselFortArchiveProgressBar").innerHTML = "done";
+        }
+    }
+
+    function downloadPage_avytegoo(page) {
+        $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
+            data.posts.forEach(function(post) {
+                if (post.original_username && post.original_username != user) {
+                    delete post.title;
+                    delete post.content;
+                    delete post.comments_count;
+                    delete post.likes_count;
+                    delete post.reblogs_count;
+                    delete post.media;
+                    delete post.original_post;
+                    return;
+                } else {
+                    downloadQueue.push(["image", post.avatar_url]);
+                }
+                post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
+                if (post.media && post.media.length > 0) {
+                    post.media.forEach(function(media) {
+                        if (media.media_type == "picture") {
+                            downloadQueue.push(["image", media.url]);
+                            media.url = reformatImageURLs_avytegoo(media.url);
+                            media.small_image_url = media.url;
+                        } else if (media.embed_code) {
+                            media.embed_code = encodeURI(media.embed_code);
+                        }
+                    });
+                }
+                post.content = downloadFormatTextbody_avytegoo(post.content);
+                if (document.getElementById("tasselFortArchiveIncludeComments").checked && post.comments_count > 0) {
+                    downloadQueue.push(["comments", `${post.id},${1}`]);
+                }
+            });
+            let fileLink = document.createElement("script");
+            fileLink.type = "text/javascript";
+            fileLink.innerHTML = `
+                if (pages == undefined) var pages = [];
+                pages[${page}] = ${JSON.stringify(data)}
+            `;
+            let frame = document.getElementById("tasselFortArchiveFrame");
+            frame.contentWindow.document.head.appendChild(fileLink);
+            downloadsDone.total++;
+            downloadsDone.posts += data.posts.length;
+            downloadQueue.shift();
+            window.setTimeout(nextDownload_avytegoo, 1000);
+        }).fail(function() {
+            downloadFails.push(downloadQueue[0]);
+            downloadQueue.shift();
+            window.setTimeout(nextDownload_avytegoo, 1000);
+        });
+    }
+
+    function downloadImage_avytegoo(url) {
+        let id = reformatImageURLs_avytegoo(url);
+        if (!document.getElementById(id)) {
+            let fileLink = document.createElement("img");
+            fileLink.src = url;
+            fileLink.id = id;
+            fileLink.style.display = "none";
+            let frame = document.getElementById("tasselFortArchiveFrame");
+            frame.contentWindow.document.head.appendChild(fileLink);
+
+            downloadsDone.total++;
+            downloadsDone.images++;
+            downloadQueue.shift();
+            window.setTimeout(nextDownload_avytegoo, 500);
+        } else {
+            downloadQueue.shift();
+            nextDownload_avytegoo();
+        }
+    }
+
+    function downloadComments_avytegoo(url) {
+        let post = url.split(",")[0]*1;
+        let page = url.split(",")[1]*1;
+        $.getJSON(`https://www.pillowfort.social/posts/${post}/comments?pageNum=${page}`, function(data) {
+            if (data.comments.length > 0) {
+                data.comments.forEach(function(comment) {
+                    comment.body = downloadFormatTextbody_avytegoo(comment.body);
+                });
+                let fileLink = document.createElement("script");
+                fileLink.type = "text/javascript";
+                fileLink.innerHTML = `
+                    if (comments == undefined) var comments = [];
+                    if (comments[${post}] == undefined) comments[${post}] = [];
+                    comments[${post}][${page}] = ${JSON.stringify(data)}
+                `;
+                let frame = document.getElementById("tasselFortArchiveFrame");
+                frame.contentWindow.document.head.appendChild(fileLink);
+                downloadQueue.push(["comments", `${post},${page+1}`]);
+            }
+
+            downloadsDone.total++;
+            downloadsDone.comments += data.comments.length;
+            downloadQueue.shift();
+            window.setTimeout(nextDownload_avytegoo, 1000);
+        }).fail(function() {
+            downloadFails.push(downloadQueue[0]);
+            downloadQueue.shift();
+            window.setTimeout(nextDownload_avytegoo, 1000);
+        });
+    }
+
+    function downloadIcon_avytegoo() {
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8f35964f5cdb5721282723b2afd158deb1748e55/icons/user-badge.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8f35964f5cdb5721282723b2afd158deb1748e55/icons/lock.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8f35964f5cdb5721282723b2afd158deb1748e55/icons/nsfw.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/comment.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/reblog.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/like.svg"]);
+        downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a1b0fd5791107e84f128115ebab358d9f3bf0ab4/icons/liked.svg"]);
+    }
+
+    function downloadFormatTextbody_avytegoo(textBodyIn) {
+        let textBodyOut = "";
+        while (textBodyIn.search(`<img`) >= 0) {
+            textBodyOut += textBodyIn.substring(0, textBodyIn.search(`<img`)+4);
+            textBodyIn = textBodyIn.substring(textBodyIn.search(`<img`)+4);
+
+            textBodyOut += textBodyIn.substring(0, textBodyIn.search(`src="`)+5);
+            textBodyIn = textBodyIn.substring(textBodyIn.search(`src="`)+5);
+
+            let url = textBodyIn.substring(0, textBodyIn.search(`"`));
+            downloadQueue.push(["image", url]);
+            textBodyOut += reformatImageURLs_avytegoo(url);
+            textBodyIn = textBodyIn.substring(url.length);
+        }
+        textBodyOut += textBodyIn;
+        return textBodyOut;
+    }
+
+    function reformatImageURLs_avytegoo(url) {
+        if (!url) return url;
+        url = url.split("/");
+        return url[url.length - 1];
     }
 
     //src: https://stackoverflow.com/a/2159195
