@@ -3,6 +3,7 @@ let page = pages.findIndex(function(item) {
 });
 let post = null;
 let commentPage = 1;
+let tag = null;
 let totalPosts = 0;
 let minPage = pages.findIndex(function(item) {
     return item
@@ -15,27 +16,28 @@ let imageSuffix = "";
 init();
 
 function init() {
-    if (window.self !== window.top) return;
-    imageSuffix = document.getElementsByTagName("img")[0].src;
-    imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
+  if (window.self !== window.top) return;
+  imageSuffix = document.getElementsByTagName("img")[0].src;
+  imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
 
-    pages.forEach(function(pageData, index) {
-        totalPosts += pageData.posts.length;
-    });
-    document.getElementsByClassName("sidebar-footer")[0].children[0].href = "?"
-    document.getElementsByClassName("sidebar-footer")[0].children[0].children[0].innerHTML = totalPosts;
-    document.getElementsByTagName("main")[0].innerHTML = "";
-    document.getElementsByTagName("footer")[0].innerHTML = "";
-    
-    let queryString = new URLSearchParams(window.location.search.substring(1));
-    for (let pair of queryString.entries()) {
-        if (pair[0] === "p") page = pair[1] * 1;
-        if (pair[0] === "post") post = pair[1] * 1;
-        if (pair[0] === "page") commentPage = pair[1] * 1;
-    }
-    if (post) displayComments(post);
-    else if (page) displayFeed();
-    //TODO display tags search
+  pages.forEach(function(pageData, index) {
+    totalPosts += pageData.posts.length;
+  });
+  document.getElementsByClassName("sidebar-footer")[0].children[0].href = "?"
+  document.getElementsByClassName("sidebar-footer")[0].children[0].children[0].innerHTML = totalPosts;
+  document.getElementsByTagName("main")[0].innerHTML = "";
+  document.getElementsByTagName("footer")[0].innerHTML = "";
+  
+  let queryString = new URLSearchParams(window.location.search.substring(1));
+  for (let pair of queryString.entries()) {
+    if (pair[0] === "p") page = pair[1] * 1;
+    if (pair[0] === "post") post = pair[1] * 1;
+    if (pair[0] === "page") commentPage = pair[1] * 1;
+    if (pair[0] === "tag") tag = pair[1];
+  }
+  if (post) displayComments(post);
+  else if (tag) displaySearch();
+  else if (page) displayFeed();
 }
 
 function displayFeed() {
@@ -228,6 +230,93 @@ function displayComments(postId) {
       commentDiv.classList.add("child-comment");
       parent.appendChild(commentDiv);
     }
+  });
+}
+
+function displaySearch() {
+  if (!pages[page]) return;
+  let writePage = 1;
+  let searchResult = [];
+  pages.forEach(function(page) {
+    page.posts.forEach(function(post) {
+      if (post.tags.some(function(localTag) {
+        return localTag.toLowerCase() === tag.toLowerCase();
+      })) {
+        if (searchResult[writePage] === undefined) searchResult[writePage] = [];
+        searchResult[writePage].push(post);
+        if (searchResult[writePage].length >= 20) writePage++;
+      }
+    });
+  });
+  let minPage = searchResult.findIndex(function(item) {
+    return item
+  });
+  let maxPage = searchResult.findLastIndex(function(item) {
+    return item
+  });
+  
+  if (searchResult.length === 0) {
+    let message = document.createElement("p");
+    message.style = "text-align: center";
+    message.innerHTML = "There are no posts."
+    document.getElementsByTagName("main")[0].appendChild(message);
+    return;
+  }
+    
+  let html = `
+    <dir-pagination-controls>
+      <ul class="pagination">
+        <li class=${page == 1 ? "disabled" : ""}>
+          <a href="?tag=${tag}&p=${Math.max(page-1,minPage)}">‹</a>
+        </li>
+  `;
+  if (page - 4 > minPage) {
+    html += `
+      <li>
+        <a href="?tag=${tag}&p=${minPage}">${minPage}</a>
+      </li>
+      <li class="disabled">
+        <span>...</span>
+      </li>
+    `;
+  }
+  for (let i = Math.max(minPage, page - (page - 4 > minPage ? 2 : 4)); i <= Math.min(maxPage, page + (page + 4 < maxPage ? 2 : 4)); i++) {
+    html += `
+      <li class=${page == i ? "active" : ""}>
+        <a href="?tag=${tag}&p=${i}">${i}</a>
+      </li>
+    `;
+  }
+  if (page + 4 < maxPage) {
+    html += `
+      <li class="disabled">
+        <span>...</span>
+      </li>
+      <li>
+        <a href="?tag=${tag}&p=${maxPage}">${maxPage}</a>
+      </li>
+    `;
+  }
+  html += `
+        <li class=${page == maxPage ? "disabled" : ""}>
+          <a href="?tag=${tag}&p=${Math.min(page+1,maxPage)}">›</a>
+        </li>
+      </ul>
+    <div id="pageJump">
+        <input id="pageJumpPage" placeholder="1">
+      <button id="pageJumpGo">&#8631;</button>
+    </div>
+    </dir-pagination-controls>
+  `;
+  let footer = document.getElementsByTagName("footer")[0].innerHTML = html;
+  document.getElementById("pageJumpGo").addEventListener("click", function() {
+      let input = document.getElementById("pageJumpPage").value;
+      if (input >= minPage && input <= maxPage) window.location.href = `?tag=${tag}&p=${input}`;
+  });
+  
+  let main = document.getElementsByTagName("main")[0];
+  searchResult[page].forEach(function(post) {
+      main.appendChild(displayPost(post));
   });
 }
 
@@ -451,6 +540,7 @@ function formatTextImage(input) {
 }
 
 function formatImageSource(name) {
+    if (name === null) return "";
     let folder = document.location.pathname.substring(0, document.location.pathname.length - 4) + "_files/";
     let fileName = name.split(".");
     if (fileName[1] === undefined) fileName[1] = "jpg";
