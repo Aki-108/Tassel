@@ -173,18 +173,19 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "1.0",
+                "version": "1.1",
                 "created": 1696333244573,
-                "updated": 1727098281772,
+                "updated": 1788682896993,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf71ff236831db8fb1b441ca7a2cc21acf11303a/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@6a0ec29401820de373f5bb42ca67c82ec9c9b654/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7f64a859ac233305b7090ee4a879ee909c364abc/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470",
                 "features": [
                         "See small previous of posts.",
                         "Jump to any point in time.",
-                        "View the archive oldest posts first."
+                        "View the archive oldest posts first.",
+                        "Download your fort."
                 ]
         },
         {
