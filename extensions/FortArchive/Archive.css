@@ -152,7 +152,7 @@ nav {
   & .post-nav img {
       display: inline-block;
       height: 18px;
-      filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);
+      /*filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);*/
   }
   & .nsfw-svg {
     height: 18px;
@@ -196,7 +196,7 @@ nav {
       padding-top: 1px;
       font-family: "Nunito", sans-serif;
       font-size: 14px;
-      color: var(--postFontColor);
+      color: var(--postHeaderFont);
     }
   }
   & .title {
@@ -417,12 +417,12 @@ img {
 .svg-pink-light {
   filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%);
 }
-.post .svg-blue,
+/*.post .svg-blue,
 .user-sidebar .svg-blue,
 .post img[src$=".svg"],
 .user-sidebar img[src$=".svg"] {
   filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);
-}
+}*/
 .font-nunito-bold {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
