@@ -181,7 +181,6 @@ function displayComments(postId) {
   main.appendChild(commentSection);
   let commentsContainer = document.getElementById("comments").children[0];
   comments[postId][commentPage].comments.forEach(function(comment) {
-    console.log(comment);
     let commentDiv = document.createElement("div");
     commentDiv.classList.add("thread");
     commentDiv.innerHTML = `
@@ -541,10 +540,19 @@ function formatTextImage(input) {
 
 function formatImageSource(name) {
     if (name === null) return "";
-    let folder = document.location.pathname.substring(0, document.location.pathname.length - 4) + "_files/";
     let fileName = name.split(".");
-    if (fileName[1] === undefined) fileName[1] = "jpg";
-    return folder + fileName[0] + imageSuffix + "." + fileName[1];
+    let folder = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("."));
+    if (folder.search("_files")) {//Chromium
+      folder = folder.substring(0, folder.lastIndexOf("/") + 1)
+      if (fileName[1] === undefined) fileName[1] = "";
+      else fileName[1] = "." + fileName[1];
+    } else {//Firefox
+      folder += "_files/";
+      fileName[0] += imageSuffix;
+      if (fileName[1] === undefined) fileName[1] = ".jpg";
+      else fileName[1] = "." + fileName[1];
+    }
+    return folder + fileName[0] + fileName[1];
 }
 
 function formatDate(d) {
