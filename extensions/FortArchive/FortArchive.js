@@ -26,8 +26,8 @@
     let downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
     let downloadFails = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@200e6cf10b3611fbc2a319db6f322a1e88d73a68/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@939f5d1f8ca5700c8f0d5263bbbf4dba53a9f4d1/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0bc67fec09546f614d9314e642b3b487f3d6d538/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0bc67fec09546f614d9314e642b3b487f3d6d538/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -61,13 +61,17 @@
                 navigation.remove();
                 navigation = null;
                 document.getElementById("userBlogPosts").style.display = "block";
+                document.getElementById("user-sidebar-wrap").classList.remove("hidden");
             } else initArchive_avytegoo();
         });
         sidebar.appendChild(button);
     }
 
     function initArchive_avytegoo() {
-        document.getElementById("user-sidebar-navbutton").click();
+        document.getElementById("user-sidebar-navbutton").addEventListener("click", function() {
+            document.getElementById("user-sidebar-wrap").classList.remove("hidden");
+        });
+        document.getElementById("user-sidebar-wrap").classList.add("hidden");
         Object.values(document.getElementsByClassName("sidebar")).forEach(function(item) {item.style.zIndex = 99999;item.style.top = "54px"});
 
         mainFrame = document.createElement("main");
@@ -425,6 +429,7 @@
 
         let window = document.createElement("div");
         window.id = "tasselFortArchiveDownloader";
+        window.classList.add("beforeStart");
         document.getElementById("tasselFortArchive").innerHTML = "";
         document.getElementById("tasselFortArchive").appendChild(window);
         let exit = document.createElement("button");
@@ -487,15 +492,28 @@
                 downloadQueue.push(["page", i]);
             }
             downloadIcon_avytegoo();
-            document.getElementById("tasselFortArchiveBeforeStart").style.display = "none";
-            document.getElementById("tasselFortArchiveAfterStart").style.display = "flex";
+            document.getElementById("tasselFortArchiveDownloader").classList.remove("beforeStart");
             nextDownload_avytegoo();
         });
 
         let instructions = document.createElement("section");
+        instructions.id = "tasselFortArchiveInstruction";
         window.appendChild(instructions);
         instructions.innerHTML = `
             <h1>Download Instructions</h1>
+            <p>Your download is ready when the progress bar says "done". Follow the appropriate instructions below.
+            <h2>Firefox</h2>
+            <details>
+                <summary>
+                    More...
+                </summary>
+            </details>
+                    <h2>Chromium</h2>
+            <details>
+                <summary>
+                    More...
+                </summary>
+            </details>
             <hr>
         `;
 
