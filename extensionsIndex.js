@@ -152,7 +152,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b75ee32e426b11a3e2fc2ce5ee380794d1129188/extensions/SidebarCounts.js",
-                "post": "https://www.pillowfort.social/posts/3739972"
+                "post": "https://www.pillowfort.social/posts/8005671"
         },
         {
                 "name": "Read This",
