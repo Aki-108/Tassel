@@ -276,7 +276,7 @@ nav {
   word-wrap: break-word;
   
   & .header {
-    background-color: var(--postHeaderFooter);
+    background-color: var(--tag_bg);
     font-size: .9em;
     font-family: "Nunito", sans-serif;
     
