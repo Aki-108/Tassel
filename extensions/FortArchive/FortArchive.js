@@ -507,12 +507,28 @@
                 <summary>
                     More...
                 </summary>
+                <ul>
+                    <li>Right-click the fort preview below.</li>
+                    <li>Select "This Frame" \> "Save Frame As...".</li>
+                    <li>Save the file as a "Website, complete".</li>
+                    <li>A file and a folder of the same name apear in your selected location. They have to stay together, even when you move the file.</li>
+                    <li>Open the downloaded file to view your archive.</li>
+                </ul>
+                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d00efdc4de9466a70f3fdd5de12d53fcbf4d5dc/documents/images/ArchiveDownloaderFirefox1.png">
             </details>
-                    <h2>Chromium</h2>
+            <br>
+            <h2>Chromium</h2>
             <details>
                 <summary>
                     More...
                 </summary>
+                <ul>
+                    <li>Right-click this site.</li>
+                    <li>Select "Save As".</li>
+                    <li>Save the file as a "Webpage, complete".</li>
+                    <li>A file and a folder of the same name apear in your selected location. Open the folder.</li>
+                    <li>Open the file "saved_resource" to view your archive.</li>
+                </ul>
             </details>
             <hr>
         `;
@@ -526,7 +542,7 @@
             <head>
                 <title>${frame.title}</title>
                 <link rel="stylesheet" href="${styleURL}"></style>
-                <!-- TODO <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">-->
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">
                 <script>var username = "${user}";</script>
             </head>
             <body style="${document.body.getAttribute("style")}">
@@ -602,7 +618,6 @@
             else if (downloadQueue[0][0] == "image") downloadImage_avytegoo(downloadQueue[0][1]);
             else if (downloadQueue[0][0] == "comments") downloadComments_avytegoo(downloadQueue[0][1]);
         } else {
-            //TODO download done
             if (downloadFails.length > 0) {
                 document.getElementById("tasselFortArchiveStats").innerHTML = `
                     <p>files remaining: ${downloadQueue.length}</p>
@@ -624,6 +639,7 @@
             frame.contentWindow.document.body.appendChild(script);
 
             document.getElementById("tasselFortArchiveProgressBar").innerHTML = "done";
+            document.getElementById("tasselFortArchiveDownloader").classList.add("afterFinished");
         }
     }
 
