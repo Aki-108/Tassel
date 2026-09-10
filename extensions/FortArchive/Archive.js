@@ -542,7 +542,7 @@ function formatImageSource(name) {
     if (name === null) return "";
     let fileName = name.split(".");
     let folder = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("."));
-    if (folder.search("_files")) {//Chromium
+    if (folder.search("_files") >= 0) {//Chromium
       folder = folder.substring(0, folder.lastIndexOf("/") + 1)
       if (fileName[1] === undefined) fileName[1] = "";
       else fileName[1] = "." + fileName[1];
