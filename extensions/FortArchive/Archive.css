@@ -23,6 +23,22 @@ body {
   text-rendering: optimizeLegibility;
   image-rendering: auto;
 }
+body.dark-theme {
+  --pageBg: #23282E;
+  --postBgColor: #1B1D20;
+  --postBorderColor: #23282E;
+  --postFontColor: #d9dbe0;
+  --postHeaderFooter: #010102;
+  --postHeaderFont: #d9dbe0;
+  --linkColor: #6F96BC;
+  --iconColor: brightness(0) saturate(100%) invert(62%) sepia(76%) saturate(192%) hue-rotate(169deg) brightness(85%) contrast(95%);
+  --sidebarBgColor: #010102;
+  --sidebarFontColor: #d9dbe0;
+  --sidebarHeaderFooter: #1B1B20;
+  --tag_bg: #010102;
+  --blockquote_bg: #010102;
+  color: #d9dbe0;
+}
 nav {
   position: fixed;
   background-color: var(--sidebarBgColor);
@@ -426,6 +442,9 @@ img {
 .font-nunito-bold {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
+}
+a {
+  color: var(--linkColor);
 }
 p {
   margin: 0 0 1em 0;
