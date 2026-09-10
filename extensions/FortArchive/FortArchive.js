@@ -494,7 +494,7 @@
             downloadIcons_avytegoo();
             document.getElementById("tasselFortArchiveDownloader").classList.remove("beforeStart");
             let redirect = document.createElement("script");
-            redirect.innerHTML = `if (document.URL.search("file:///") === 0) window.location.href = document.URL.substring(0, document.URL.search("\\\.")) + "_files/saved_resource.html";`;
+            redirect.innerHTML = `if (document.URL.search("file:///") === 0) window.location.href = document.URL.substring(0, document.URL.search("\\\\.")) + "_files/saved_resource.html";`;
             document.head.appendChild(redirect);
             nextDownload_avytegoo();
         });
