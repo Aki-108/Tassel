@@ -168,7 +168,7 @@ nav {
   & .post-nav img {
       display: inline-block;
       height: 18px;
-      /*filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);*/
+      filter: var(--iconColor);
   }
   & .nsfw-svg {
     height: 18px;
@@ -414,6 +414,7 @@ ul.pagination {
     text-align: center;
     width: 4em;
     font-size: 16px;
+    color: var(--postFontColor);
   }
   & button {
     background: none;
@@ -421,13 +422,15 @@ ul.pagination {
     padding: 7px 10px;
     font-size: 16px;
     cursor: pointer;
+    color: var(--postFontColor);
   }
 }
 img {
   vertical-align: middle;
   image-orientation: from-image;
 }
-.svg-blue {
+.svg-blue,
+.post .post-nav img {
   filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);
 }
 .svg-pink-light {
