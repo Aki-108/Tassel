@@ -491,8 +491,11 @@
             for (let i = start; i <= end; i++) {
                 downloadQueue.push(["page", i]);
             }
-            downloadIcon_avytegoo();
+            downloadIcons_avytegoo();
             document.getElementById("tasselFortArchiveDownloader").classList.remove("beforeStart");
+            let redirect = document.createElement("script");
+            redirect.innerHTML = `if (document.URL.search("file:///") === 0) window.location.href = document.URL.substring(0, document.URL.search("\\.")) + "_files/saved_resource.html";`;
+            document.head.appendChild(redirect);
             nextDownload_avytegoo();
         });
 
@@ -745,7 +748,7 @@
         });
     }
 
-    function downloadIcon_avytegoo() {
+    function downloadIcons_avytegoo() {
         downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8f35964f5cdb5721282723b2afd158deb1748e55/icons/user-badge.svg"]);
         downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8f35964f5cdb5721282723b2afd158deb1748e55/icons/lock.svg"]);
         downloadQueue.push(["image", "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@8f35964f5cdb5721282723b2afd158deb1748e55/icons/nsfw.svg"]);
