@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.10.0
+// @version      1.10.2
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -14,22 +14,22 @@
 (function() {
     'use strict';
 
-    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e2b367146d71500d1edf6c59e51cfea3447c37a5/extensionsIndex.js";
+    let extensionsIndexURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@c89ddbd4e336b603ff8fac094c2fbd9f44da5389/extensionsIndex.js";
     let toastsURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@5716332e94d08b1a0662a799ac2dba905f8f1f11/toasts.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ad14993b51e95900df9de6bc8ccfd198bb4fee49/style.css";
-    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@655308423ebd0c0be0a60688c7d10aeba7ceb918/jsonManager.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@16776e3e55d4f69cd8b0aefdd947b8bd221f6259/style.css";
+    let jsonManager = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@653985879d77af7bd0c8c4dbaa6196b8b18eeee0/jsonManager.js";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="tasselIconColor" width="20" height="20" viewBox="0 0 20 20">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
         <title>Tassel</title>
-        <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#58b6dd;stroke-width:1.2px" d="
+        <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:var(--tasselIconBlue);stroke-width:1.2px" d="
           M 8 7        Q 6.5 8 6.5 12     Q 6.5 16 4 19
           M 12 7       Q 13.5 8 13.5 12   Q 13.5 16 16 19
           M 8 2.5      L 8 0.5            L 12 0.5            L 12 2.5
           M 6 16       L 8 18.5           L 10 16             L 12 18.5           L 14 16
         "/>
-        <circle cx="10" fill="none" stroke-width="1.2px" r="3" stroke="#58b6dd" cy="5"/>
+        <circle cx="10" fill="none" stroke-width="1.2px" r="3" stroke="var(--tasselIconBlue)" cy="5"/>
       </svg>`;
 
     let settings2 = (JSON.parse(localStorage.getItem("tasselSettings2")) || {
@@ -87,7 +87,7 @@
 
     /* Initialize */
     function init_xcajbuzn() {
-        loadStyle_xcajbuzn(styleURL);
+        //loadStyle_xcajbuzn(styleURL);
         loadAppearance_xcajbuzn();
         initJsonManager_xcajbuzn();
         loadScript_xcajbuzn(extensionsIndexURL)
@@ -124,7 +124,7 @@
                 link.classList.add("link_post", "svg-blue", "tasselPermalinked");
                 link.href = `/posts/${tasselJsonManager.modal.json.original_post_id || tasselJsonManager.modal.json.id}`;
                 link.style = "margin: 0 0 0 20px;";
-                link.innerHTML = `<img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg" style="height: 20px;">`;
+/*todo: icon style*/                link.innerHTML = `<img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@50f03c59507325d27ccf9adb1a6fa46cdb6c5604/icons/link.svg" style="height: 20px;">`;
                 item.appendChild(link);
                 item.classList.add("tasselPermalinked");
             });
@@ -204,7 +204,7 @@
         });
         settingsSmall.classList.add("sidebar-icon", "tasselSidebarSmall");
         settingsSmall.title = "Tassel";
-        let imageSmall = icon.cloneNode(true);
+        let imageSmall = icon.children[0].cloneNode(true);
         settingsSmall.appendChild(imageSmall);
         settingsSmall.addEventListener("click", openModal_xcajbuzn);
         sidebarSmall.appendChild(settingsSmall);
@@ -243,6 +243,7 @@
             sidebarBottom.children[6].style.display = "none";
             let button = document.createElement("button");
             button.id = "tasselExpandedSidebarExpander";
+            button.classList.add("tasselContrastButtonIcon");
             button.setAttribute("aria-label", "show hidden elements");
             button.innerHTML = `<div></div>`;
             sidebarBottom.appendChild(button);
@@ -253,6 +254,7 @@
             });
             let button2 = document.createElement("button");
             button2.id = "tasselCollapsedSidebarExpander";
+            button2.classList.add("tasselContrastButtonIcon");
             button2.setAttribute("aria-label", "show hidden elements");
             button2.innerHTML = `<div></div>`;
             sidebarBig.parentNode.getElementsByClassName("sidebar-collapsed")[1].appendChild(button2);
@@ -274,16 +276,16 @@
           <div id='tasselModalDialog1' class='modal-dialog'>
             <div id='tasselModalDialog2' class='modal-content'>
               <header id='tasselModalHeader'>
-                <button id='tasselModalClose' type='button' title='Close'>
+                <button id='tasselModalClose' class='tasselButtonIcon' type='button' title='Close'>
                   <svg xmlns='http://www.w3.org/2000/svg' class='tasselIconColor' width='20' height='20' viewBox='0 0 20 20'>
-                    <title>expand</title>
+                    <title>close</title>
                     <path xmlns='http://www.w3.org/2000/svg' style='fill:none;stroke:#000000;stroke-width:3px' d='
                       M 1 1 L 19 19
                       M 1 19 L 19 1
                     '/>
                   </svg>
                 </button>
-                <button id='tasselModalExpand' type='button' title='expand'>
+                <button id='tasselModalExpand' class='tasselButtonIcon' type='button' title='expand'>
                   <svg id='tasselModalExpandIcon' xmlns='http://www.w3.org/2000/svg' class='tasselIconColor' width='20' height='20' viewBox='0 0 20 20'>
                     <title>expand</title>
                     <path xmlns='http://www.w3.org/2000/svg' style='fill:none;stroke:#000000;stroke-width:3px' d='
@@ -440,6 +442,9 @@
         }
         if (settings2.sidebar.collapsedBlocklist) getSidebarElement_xcajbuzn("https://www.pillowfort.social/block_list", true).classList.add("tasselRemoveSidebarElement");
         if (settings2.sidebar.collapsedSettings) getSidebarElement_xcajbuzn("https://www.pillowfort.social/settings", true).classList.add("tasselRemoveSidebarElement");
+
+        //Debug
+        if (settings2.debug) document.body.classList.add("debug");
     }
 
     /* Create the basis for toasts */
@@ -618,24 +623,33 @@
 
             let search = document.createElement("label");
             search.id = "tasselModalContentExtensionsSearch";
+            search.classList.add("tasselLabel");
             search.innerHTML = "Search ";
             search.appendChild(document.createElement("input"));
+            search.children[0].placeholder = "features";
             search.children[0].addEventListener("keyup", listExtensions_xcajbuzn);
-            let close = document.createElement("div");
-            close.classList.add("close");
-            close.appendChild(document.createElement("button"));
-            close.children[0].innerHTML = "x";
-            close.children[0].addEventListener("click", function() {
+            let close = document.createElement("button");
+            close.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 20 20">
+                <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
+                  M 1 1 L 19 19
+                  M 1 19 L 19 1
+                "/>
+              </svg>`;
+            close.title = "clear";
+            close.classList.add("clear");
+            close.addEventListener("click", function() {
                 let input = document.getElementById("tasselModalContentExtensionsSearch").children[0];
                 input.value = "";
                 input.focus();
-                listExtensions_xcajbuzn()
+                listExtensions_xcajbuzn();
             });
             search.appendChild(close);
             header.appendChild(search);
 
             let sortLabel = document.createElement("label");
-            sortLabel.innerHTML = "Sort by ";
+            sortLabel.classList.add("tasselLabel");
+            sortLabel.innerHTML = "Sort by";
                 let sorter = document.createElement("select");
                 sorter.addEventListener("change", function() {
                     sortOrder = this.value;
@@ -716,19 +730,14 @@
                 let description = document.createElement("p");
                 description.innerHTML = data.description;
                 mark(description);
-                description.style.margin = "0";
                 info.appendChild(description);
 
                 if (data.features != null && data.features.length > 0) {
                     let details = document.createElement("details");
-                    details.style.margin = "10px 0 0 10px";
                     let summary = document.createElement("summary");
                     summary.innerHTML = "Features...";
-                    summary.style.marginBottom = ".5em";
                     details.appendChild(summary);
                     let list = document.createElement("ul");
-                    list.style.paddingLeft = "14px";
-                    list.style.margin = "0";
                     data.features.forEach(function(feature) {
                         let text = document.createElement("li");
                         text.innerHTML = feature;
@@ -744,7 +753,7 @@
                 sidebar.classList.add("tasselExtensionSidebar");
                 let checkbox = document.createElement("input");
                 checkbox.id = checkboxID;
-                checkbox.title = "activate";
+                checkbox.title = "active";
                 checkbox.type = "checkbox";
                 checkbox.setAttribute("extension", data.id);
                 checkbox.addEventListener("click", function() {
@@ -947,6 +956,7 @@
         });
         let section1 = document.createElement("details");
         section1.id = "tasselSettingsSidebarSection";
+        section1.classList.add("tasselDetails");
         content.appendChild(section1);
         section1.innerHTML = `<summary><h3>Sidebar</h3>${createTooltip_xcajbuzn("Click the arrow to view more sidebar options.").outerHTML}</summary>`;
         section1.appendChild(createSwitch_xcajbuzn("Shorten Expanded Sidebar", settings2.shortenSidebar ? "checked" : ""));
@@ -1107,6 +1117,7 @@
         });
         let section2 = document.createElement("details");
         section2.id = "tasselSettingsFooterSection";
+        section2.classList.add("tasselDetails");
         content.appendChild(section2);
         section2.innerHTML = `<summary><h3>Post Footer</h3>${createTooltip_xcajbuzn("Click the arrow to view more post footer options.").outerHTML}</summary>`;
         section2.appendChild(createSwitch_xcajbuzn("Swap left and right", settings2.postFooter.swapLeftRight ? "checked" : ""));
@@ -1121,32 +1132,32 @@
         heading3.innerHTML = 'Interaction Area'
         section2.appendChild(heading3);
         section2.appendChild(createNumericInput_xcajbuzn("Comment Position", settings2.postFooter.comments));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.comments = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Reblog Position", settings2.postFooter.reblog));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.reblog = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Like Position", settings2.postFooter.like));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.like = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Permalink Position" + createTooltip_xcajbuzn("This refers to the bottom permalink you can add with Tassel.").outerHTML, settings2.postFooter.permalink));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.permalink = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Subscribe Position" + createTooltip_xcajbuzn("Post subscribing is part of the Post Subscriber extension.").outerHTML, settings2.postFooter.subscribe));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.subscribe = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Activity Position" + createTooltip_xcajbuzn("The activity timestamp is part of the Time Format extension.").outerHTML, settings2.postFooter.activity));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.activity = this.value;
             saveSettings_xcajbuzn();
         });
@@ -1154,22 +1165,22 @@
         heading4.innerHTML = 'Flagging Area'
         section2.appendChild(heading4);
         section2.appendChild(createNumericInput_xcajbuzn("Flag Position", settings2.postFooter.flag));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.flag = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Edit Position", settings2.postFooter.edit));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.edit = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Delete Position", settings2.postFooter.delete));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.delete = this.value;
             saveSettings_xcajbuzn();
         });
         section2.appendChild(createNumericInput_xcajbuzn("Block Position" + createTooltip_xcajbuzn("Post blocking is part of the Advanced Blacklist extension.").outerHTML, settings2.postFooter.blockPost));
-        section2.lastChild.children[0].addEventListener("change", function() {
+        section2.lastChild.getElementsByTagName("input")[0].addEventListener("change", function() {
             settings2.postFooter.blockPost = this.value;
             saveSettings_xcajbuzn();
         });
@@ -1307,11 +1318,13 @@
             readFile_xcajbuzn(file);
         });
         grid3.appendChild(button6);
-        let label6 = document.createElement("label");
-        label6.style = "text-align: center;align-content: center;cursor: pointer;";
+        let label6 = document.createElement("button");
         label6.classList.add("tasselButton");
         label6.innerHTML = "import";
         label6.setAttribute("for", "tasselSettingsImport");
+        label6.addEventListener("click", function() {
+            document.getElementById(this.getAttribute("for")).click();
+        });
         label6.addEventListener("dragenter", function(e) {
             this.classList.add("dragenter");
         });
@@ -1474,38 +1487,36 @@
 
     /* Create an icon with hover popup */
     function createTooltip_xcajbuzn(content) {
-        let icon = document.createElement("div");
-        icon.classList.add("tasselInfo");
+        let id = "tasselTooltip" + Math.random();
+        let icon = document.createElement("button");
+        icon.classList.add("tasselInfoDot");
+        icon.setAttribute("popovertarget", id);
         icon.innerHTML = `
-            <div class='tasselTooltip'>
-                <div class='tasselTooltipBubble'>
-                    ${content}
-                </div>
-            </div>
+            <dialog id='${id}' popover='hint' class='tasselBoxShadow'>
+                ${content}
+            </dialog>
         `;
         return icon;
     }
 
     /* Create an HTML element of a checkbox with lable */
-    function createSwitch_xcajbuzn(title="", state="", _class=Math.random()) {
-        let id = "tasselSwitch" + Math.random();
-        let toggle = document.createElement("div");
-        toggle.classList.add("tasselToggle");
+    function createSwitch_xcajbuzn(title="", state="") {
+        let toggle = document.createElement("label");
+        toggle.classList.add("tasselCheckbox");
         toggle.innerHTML = `
-          <input id="${id}" type="checkbox" class="${_class}" ${state}>
-          <label for="${id}">${title}</label>
+          <input type="checkbox" ${state}>
+          ${title}
         `;
         return toggle;
     }
 
     /* Create an HTML element of a numeric input field with a label */
     function createNumericInput_xcajbuzn(title="", value=0, _class=Math.random()) {
-        let id = "tasselNumeric" + Math.random();
-        let frame = document.createElement("div");
-        frame.classList.add("tasselNumeric");
+        let frame = document.createElement("label");
+        frame.classList.add("tasselLabel");
         frame.innerHTML = `
-          <input id="${id}" type="number" class="${_class}" value="${value}">
-          <label for="${id}">${title}</label>
+          ${title}
+          <input type='number' value='${value}'>
         `;
         return frame;
     }
