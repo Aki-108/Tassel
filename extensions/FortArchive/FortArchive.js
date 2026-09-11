@@ -126,7 +126,7 @@
             <button id="tasselFortArchiveNavigationReverse" class="tasselButton">Reverse</button>
             <span class="vr"></span>
         `;//TODO vr
-        if (true || user.toUpperCase() == document.getElementsByClassName("navbar-right")[0].getElementsByTagName("a")[0].innerHTML.toUpperCase()) navigation.innerHTML += `<button id="tasselFortArchiveNavigationDownload" class="tasselButton">Download Fort</button>`;
+        if (user.toUpperCase() == document.getElementsByClassName("navbar-right")[0].getElementsByTagName("a")[0].innerHTML.toUpperCase()) navigation.innerHTML += `<button id="tasselFortArchiveNavigationDownload" class="tasselButton">Download Fort</button>`;
         let years = document.getElementById("tasselFortArchiveNavigationYear");
         let start = pageTime[1][1].getFullYear();
         let end = pageTime[pageTime.length-1][0].getFullYear();
