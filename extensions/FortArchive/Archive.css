@@ -122,6 +122,7 @@ nav {
 }
 .main {
   background-color: var(--postBgColor);
+  color: var(--postFontColor);
 }
 .post {
   margin: 20px auto 10px 95px;
@@ -332,6 +333,10 @@ nav {
       }
       & .comment-like-button {
         display: inline-block;
+      }
+      & .comment-imgs img,
+      & .comment-like-button img {
+        filter: brightness(0) saturate(100%) invert(36%) sepia(44%) saturate(754%) hue-rotate(149deg) brightness(95%) contrast(89%);
       }
     }
   }
