@@ -26,8 +26,8 @@
     let downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
     let downloadFails = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0bc67fec09546f614d9314e642b3b487f3d6d538/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0bc67fec09546f614d9314e642b3b487f3d6d538/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@15b18ebe7ee2c81f1f5962018a4fcdc65cae5156/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01558e909278f25f9edb8d09efed3f24ab6ad7e0/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -529,8 +529,8 @@
                     <li>Right-click this site.</li>
                     <li>Select "Save As".</li>
                     <li>Save the file as a "Webpage, complete".</li>
-                    <li>A file and a folder of the same name apear in your selected location. Open the folder.</li>
-                    <li>Open the file "saved_resource" to view your archive.</li>
+                    <li>A file and a folder of the same name apear in your selected location. They have to stay together, even when you move the file.</li>
+                    <li>Open the downloaded file to view your archive.</li>
                 </ul>
             </details>
             <hr>
@@ -548,7 +548,7 @@
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">
                 <script>var username = "${user}";</script>
             </head>
-            <body style="${document.body.getAttribute("style")}">
+            <body class="${document.body.getAttribute("class")}" style="${document.body.getAttribute("style")}">
                 <nav>
                     <div class="sidebar-user">${user}</div>
                     ${(document.getElementById("sidebar-user-content").innerHTML)}
