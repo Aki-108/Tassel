@@ -152,7 +152,7 @@ let extensionsIndex = [
                 "author": "Aki108",
                 "description": "Makes the Pillowfort followers/following/mutuals count be accurate",
                 "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b75ee32e426b11a3e2fc2ce5ee380794d1129188/extensions/SidebarCounts.js",
-                "post": "https://www.pillowfort.social/posts/3739972"
+                "post": "https://www.pillowfort.social/posts/8005671"
         },
         {
                 "name": "Read This",
@@ -173,18 +173,19 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "1.0",
+                "version": "1.1",
                 "created": 1696333244573,
-                "updated": 1727098281772,
+                "updated": 1789155502618,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@cf71ff236831db8fb1b441ca7a2cc21acf11303a/extensions/FortArchive/FortArchive.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7f64a859ac233305b7090ee4a879ee909c364abc/extensions/FortArchive/FortArchive.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f91adc1aa2a6ac8ee667132cbb07824ac870659c/extensions/FortArchive/FortArchive.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f91adc1aa2a6ac8ee667132cbb07824ac870659c/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470",
                 "features": [
                         "See small previous of posts.",
                         "Jump to any point in time.",
-                        "View the archive oldest posts first."
+                        "View the archive oldest posts first.",
+                        "Download your fort."
                 ]
         },
         {
