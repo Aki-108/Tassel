@@ -1,3 +1,65 @@
+:root {
+    --tasselBorderLight: #e3e3e3;
+	--tasselBorder: #2b2b2b;
+	--tasselBackground: #ffffff;
+	--tasselTextColor: #2b2b2b; /*232b40*/
+	--tasselDisabled: #ececec;
+	--tasselDisabledText: #636a82;
+	
+	--tasselContrastBorder: transparent;
+	--tasselContrastBackground: #2c405a;
+	--tasselContrastTextColor: #ffffff;
+	--tasselContrastDisabled: #3e3e3e;
+	--tasselContrastDisabledText: #a9a9a9;
+	
+	--tasselAccentLight: #58b6dd;
+	--tasselAccentStrong: #f377b3;
+	--tasselAccentText: #2b2b2b;
+    --tasselAccentGood: #55ce8a;
+	
+	--tasselShadow: rgba(0,0,0,0.2);
+	
+	--tasselIconBlue: #58b6dd;
+    --tasselIconDarkBlue: #1f738f;
+	--tasselIconPurple: #b498e4;
+	--tasselIconWhite: invert(100%);
+	--tasselIconWhiteHover: invert(80%);
+	--tasselIconGrey: contrast(10%);
+	--tasselIconGreyHover: contrast(50%);
+	
+	& body.dark-theme {
+        --tasselBorderLight: #3e3e3e;
+		--tasselBorder: #3a3e47;
+		--tasselBackground: #1b1d20;
+		--tasselTextColor: #d9d9d9; /*d9dbe0*/
+		--tasselDisabled: #26282c;
+		--tasselDisabledText: #b0b5c4;
+		
+		--tasselContrastBorder: transparent;
+		--tasselContrastBackground: #23282e;
+		--tasselContrastTextColor: #d9d9d9;
+		--tasselContrastDisabled: #3e3e3e;
+		--tasselContrastDisabledText: #a9a9a9;
+		
+		--tasselAccentLight: #6f96bc;
+		--tasselAccentStrong: #cf698f;
+		--tasselAccentText: #1b1d20;
+        --tasselAccentGood: #31734e;
+		
+		--tasselShadow: rgba(0,0,0,0.8);
+		
+		--tasselIconBlue: #6f96bc;
+        --tasselIconDarkBlue: #6f96bc;
+		--tasselIconPurple: #b295e0;
+        --tasselIconWhite: invert(100%);
+        --tasselIconWhiteHover: invert(80%);
+        --tasselIconGrey: contrast(10%);
+        --tasselIconGreyHover: contrast(50%);
+	}
+    
+    --pillowfortHeaderHeight: 50px;
+}
+
 /*/////////////////// custom elements ///////////////////*/
 .nowrap {
 	white-space: nowrap;
