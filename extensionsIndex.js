@@ -49,13 +49,13 @@ let extensionsIndex = [
         {
             "name": "Advanced Blacklist",
             "id": 4,
-            "version": "1.12",
+            "version": "1.13",
             "created": 1674907200000,
-            "updated": 1778602602695,
+            "updated": 1781451854455,
             "author": "Aki108",
             "description": "New and improved blacklist with lots of settings.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@2cb1e654a3a4e34b2da3f09035456f633ac01d4d/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ee662bcafd89de43840272c9f2106380c6fba579/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@593dc42d79f00e5ab88728bbf33d0839a63e69c5/extensions/AdvancedBlacklist/AdvancedBlacklist.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@593dc42d79f00e5ab88728bbf33d0839a63e69c5/extensions/AdvancedBlacklist/AdvancedBlacklist.css",
             "post": "https://www.pillowfort.social/posts/3273878",
             "features": [
                 "Block posts by tag, content, username or community.",
@@ -66,13 +66,13 @@ let extensionsIndex = [
         {
             "name": "Collapsible Threads",
             "id": 5,
-            "version": "1.7",
+            "version": "1.8",
             "created": 1674985800000,
-            "updated": 1774438546568,
+            "updated": 1781461299995,
             "author": "Aki108",
             "description": "Collapse comments and threads.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@302b9f2bf7f45a9776eebe9bbf740cbe046056b7/extensions/CollapsibleThreads/CollapsibleThreads.js",
-            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ceadc9675a31c0782d084e991db3f8876587f46b/extensions/CollapsibleThreads/CollapsibleThreads.css",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bb7ab0b523c7779df072ecdd9928c3d7403b33f4/extensions/CollapsibleThreads/CollapsibleThreads.js",
+            "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bb7ab0b523c7779df072ecdd9928c3d7403b33f4/extensions/CollapsibleThreads/CollapsibleThreads.css",
             "post": "https://www.pillowfort.social/posts/3161577"
         },
         {
@@ -241,13 +241,13 @@ let extensionsIndex = [
         {
                 "name": "Added Accessibility",
                 "id": 17,
-                "version": "1.3",
+                "version": "1.4",
                 "created": 1726413656706,
-                "updated": 1778604068947,
+                "updated": 1781215200000,
                 "author": "Aki108",
                 "description": "Better alt texts and clear fort themes.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@eb179ba5594b0ccd8b843816ccc52c82d249adfa/extensions/AddedAccessibility/AddedAccessibility.js",
-                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ec9860a4014072a89156fe811cd59d05781a4a83/extensions/AddedAccessibility/AddedAccessibility.css",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@7ee8ab19022c22c6b25f288d8b18ea70beffaba1/extensions/AddedAccessibility/AddedAccessibility.js",
+                "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@bf7c4879a556fbfbade28974091f1823342794b7/extensions/AddedAccessibility/AddedAccessibility.css",
                 "post": "https://www.pillowfort.social/posts/7498680",
                 "features": [
                         "Display alt text below a picture.",

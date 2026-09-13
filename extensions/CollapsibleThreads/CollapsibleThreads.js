@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Collapsible Threads
-// @version      1.7
+// @version      1.8
 // @description  Collapse Comments and Threads
 // @author       aki108
 // @match        https://www.pillowfort.social/*
@@ -39,8 +39,8 @@
             buttonComment.title = "collapse comment";
             buttonComment.classList.add("collapseButton", "tasselCollapsibleThreadsIcons");
             buttonComment.innerHTML = `
-                <svg class="svg-blue-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:var(--tasselIconDarkBlue);stroke-width:1.2px" d="
                         M 1 14   L 10 5   L 19 14
                     "/>
                 </svg>`;
@@ -53,7 +53,6 @@
                             item.classList.remove("collapsed");
                         }
                     });
-                    this.children[0].style.transform = "rotate(0deg)";
                     this.classList.remove("toggled");
                 } else {
                     //hide
@@ -62,7 +61,6 @@
                             item.classList.add("collapsed");
                         }
                     });
-                    this.children[0].style.transform = "rotate(180deg)";
                     this.classList.add("toggled");
                 }
             });
@@ -73,8 +71,8 @@
             buttonThread.title = "collapse thread";
             buttonThread.classList.add("collapseButton", "tasselCollapsibleThreadsIcons");
             buttonThread.innerHTML = `
-                <svg class="svg-blue-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:var(--tasselIconDarkBlue);stroke-width:1.2px" d="
                         M 1 12   L 10 3   L 19 12
                         M 1 20   L 10 11   L 19 20
                     "/>
@@ -91,7 +89,6 @@
                         });
                         Object.values(comment.getElementsByClassName("collapseButton")).forEach(function(item) {
                             item.classList.remove("toggled");
-                            item.children[0].style.transform = "rotate(0deg)";
                         });
                     }
                 } else {
@@ -104,7 +101,6 @@
                         });
                         Object.values(comment.getElementsByClassName("collapseButton")).forEach(function(item) {
                             item.classList.add("toggled");
-                            item.children[0].style.transform = "rotate(180deg)";
                         });
                     }
                 }
@@ -116,12 +112,13 @@
             buttonWidth.title = "widen comment";
             buttonWidth.classList.add("widenButton", "tasselCollapsibleThreadsIcons");
             buttonWidth.innerHTML = `
-                <svg class="svg-blue-dark" xmlns="http://www.w3.org/2000/svg" width="10" height="20" viewBox="0 0 10 20">
-                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:#000000;stroke-width:1.2px" d="
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="20" viewBox="0 0 10 20">
+                    <path xmlns="http://www.w3.org/2000/svg" style="fill:none;stroke:var(--tasselIconDarkBlue);stroke-width:1.2px" d="
                         M 9 1   L 1 10   L 9 19
                     "/>
                 </svg>`;
             buttonWidth.addEventListener("click", function() {
+                this.classList.add("toggled");
                 //find position in thread
                 let level = 0;
                 let el = this;
@@ -149,20 +146,24 @@
                 //reset and assign classes
                 let undo = comment.classList.contains("widened");
                 let widened = document.getElementsByClassName("widened");
-                for (let child of widened) child.classList.remove("widened");
+                for (let child of widened) {
+                    child.classList.remove("widened");
+                    Object.values(child.getElementsByClassName("widenButton")).forEach(function(item) {
+                        item.classList.remove("toggled");
+                    });
+                }
                 if (!undo) comment.classList.add("widened", `widened${level}`);
             });
             //add button to every child comment
-            let parent = el.parentNode;
-            for (let i = 0; i < 100; i++) {
-                if (parent.classList.contains("thread")) break;
-                if (parent.classList.contains("child-comment")) {
-                    let commentBody = el.parentNode.getElementsByClassName("body")[0];
+            for (let i = 0; i < 10; i++) {
+                if (el.classList.contains("child-comment")) {
+                    let commentBody = el.getElementsByClassName("body")[0];
                     commentBody.classList.add("tasselCollapsibleThreadsChild");
                     commentBody.appendChild(buttonWidth);
                     break;
+                } else {
+                    el = el.parentNode;
                 }
-                parent = parent.parentNode;
             }
         }
     }
@@ -204,6 +205,7 @@
         let button = document.createElement("button");
         button.classList.add("tasselModalSidebarEntry");
         button.id = "tasselModalSidebarCollapsibleThreads";
+        button.style.order = "0320";
         button.innerHTML = "Collapsible Threads";
         tasselSidebar.appendChild(button);
         document.getElementById("tasselModalSidebarCollapsibleThreads").addEventListener("click", tasselDisplaySettings_sicrjulu);
@@ -246,12 +248,11 @@
     }
 
     function createSwitch_sicrjulu(title="", state="") {
-        let id = "tasselSwitch" + Math.random();
-        let toggle = document.createElement("div");
-        toggle.classList.add("tasselToggle");
+        let toggle = document.createElement("label");
+        toggle.classList.add("tasselCheckbox");
         toggle.innerHTML = `
-          <input id="${id}" type="checkbox" ${state}>
-          <label for="${id}">${title}</label>
+          <input type="checkbox" ${state}>
+          ${title}
         `;
         return toggle;
     }

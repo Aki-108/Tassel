@@ -1,10 +1,22 @@
+.tasselAddedAccessibilityAltText {
+    background: var(--tag_bg);
+    padding: 0.5em;
+}
+
 .tasselAddedAccessiblityEditorInput {
     width: 100% !important;
     height: min-content;
     padding: 0.5em;
 }
 
-/*Unstyle*/
+.tasselAddedAccessibilityEye {
+    border: none;
+    background: none;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+}
 body.tasselAddedAccessibilityUnstyle {
     --pageBg: #2C405A !important;
     --postBorderColor: #2C405A !important;
@@ -44,7 +56,9 @@ body.tasselAddedAccessibilityUnstyle .user-sidebar .username {
 body.tasselAddedAccessibilityUnstyle .user-sidebar img[src$=".svg"] {
     filter: none !important;
 }
-body.tasselAddedAccessibilityUnstyle #user-sidebar-expanded .follow-btn .svg-blue {
+body.tasselAddedAccessibilityUnstyle #user-sidebar-expanded .follow-btn .svg-blue,
+body.tasselAddedAccessibilityUnstyle #user-sidebar-expanded .svg-blue,
+body.tasselAddedAccessibilityUnstyle #sidebar-collapsed .svg-blue {
     filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%) !important;
 }
 body.tasselAddedAccessibilityUnstyle #user-sidebar-expanded .svg-purple,

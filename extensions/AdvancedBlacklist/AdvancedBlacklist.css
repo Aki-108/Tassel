@@ -1,126 +1,174 @@
 /*////////////////// Blacklist View ////////////////////*/
-#tasselAdvancedBlacklistView {
-    display: grid;
-    grid-template-columns: 25% 25% auto auto auto auto 20% 30px;
-    grid-gap: 5px;
-    padding: 10px;
+#tasselAdvancedBlacklistPage {
+    max-width: 750px;
+    margin: auto;
+    margin-bottom: 50px;
     background: var(--postBgColor);
-}
+    
+    & header {
+        height: 50px;
+        border-bottom: 10px solid #e3e3e3;
+        background: #232b40;
+        padding: 20px 0 30px 20px;
+        font-variant: small-caps;
+        color: var(--tasselContrastTextColor);
+        body.dark-theme & {
+            border-color: #353840;
+            background: #010102;
+        }
+    }
+    #tasselAdvancedBlacklistSwitches {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 15px 10px 0;
+    }
+    #tasselAdvancedBlacklistButtons {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        & .tasselButton {
+            flex: 1 0 max-content;
+        }
+        & #tasselAdvancedBlacklistImportFrame {
+            width: 100%;
+            display: flex;
+            flex-flow: row wrap;
+            gap: 10px;
+            & .tasselLabelTextbox {
+                margin: 0;
+                width: 100%;
+                & textarea {
+                    height: 10em;
+                }
+            }
+            & p {
+                margin: 0;
+                width: 100%;
+                border-left: 1px solid var(--tasselBorder);
+                padding: 2px 0 2px 5px;
+                font-size: 0.8em;
+            }
+        }
+    }
+    #tasselAdvancedBlacklistView {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 5px;
+        padding: 0 10px;
+        
+        .header {
+            order: -1;
+            position: sticky;
+            top: 50px;
+            margin-bottom: 5px;
+            background: var(--postBgColor);
+            padding-top: 10px;
+            box-shadow: 0 10px 5px -5px var(--tasselShadow);
+            & .cell {
+                display: grid;
+                grid-template-columns: 100%;
+                grid-template-rows: auto auto;
+                gap: 5px;
+            }
+            & .title {
+                grid-area: 1 / 1 / span 1 / span 2;
+                text-align: center;
+                font-weight: bold;
+            }
+            & .controls {
+                display: flex;
+                flex-flow: row wrap;
+                gap: 5px;
+                justify-content: center;
+                width: 100%;
+                & .tasselInfoDot {
+                    padding: 0;
+                    & dialog {
+                        position-area: bottom;
+                        max-width: 500px;
+                    }
+                }
+                & div {
+                    display: flex;
+                    flex-flow: column nowrap;
+                    gap: 2px;
+                }
+                & .sortUp,
+                & .sortDown {
+                    width: 1em;
+                    height: 1em;
+                    border: none;
+                    border-radius: 100%;
+                    background: var(--tasselContrastBackground);
+                    text-align: center;
+                    font-family: monospace;
+                    font-weight: bold;
+                    color: var(--tasselContrastTextColor);
+                    &:focus {
+                        background: var(--tasselAccentLight);
+                        color: var(--tasselAccentText);
+                    }
+                }
+                & .sortDown {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        .line {
+            display: grid;
+            grid-template-columns: 25% 25% 1fr 1fr 1fr 1fr 20% 30px;
+            gap: 5px;
+        }
 
-#tasselAdvancedBlacklistView input[type="checkbox"] {
-    width: 1.5em;
-    margin: 2px auto;
-    transform: none;
-    accent-color: var(--pageBg);
-}
-
-#tasselAdvancedBlacklistView input[type="text"] {
-    width: auto;
-}
-
-.tasselAdvancedBlacklistHeader {
-    position: sticky;
-    top: 50px;
-    height: 2em;
-    display: grid;
-    align-items: center;
-    text-align: center;
-    font-weight: bold;
-    background: var(--postBgColor);
-    z-index: 1;
-}
-
-.tasselAdvancedBlacklistHeader:hover div {
-    overflow: visible !important;
-}
-
-.tasselAdvancedBlacklistHeaderTitle {
-    position: relative;
-    height: 10px;
-    z-index: 2;
-}
-
-.tasselAdvancedBlacklistHeaderTitle div {
-    width: 0;
-    height: 0;
-    margin-left: 50%;
-    overflow: hidden;
-}
-
-.tasselAdvancedBlacklistHeaderTitle div div {
-    width: 200px;
-    height: max-content;
-    margin-top: 20px;
-    margin-left: -100px;
-    padding: 5px;
-    background: var(--postBgColor);
-    font-weight: normal;
-    line-height: 1.2;
-    text-align: left;
-    box-shadow: 0 1px 5px 0 grey;
-}
-
-.tasselAdvancedBlacklistShadowCover {
-    position: absolute;
-    bottom: 0;
-    width: calc(100% + 5px);
-    height: 1em;
-    background: var(--postBgColor);
-}
-
-.tasselAdvancedBlacklistShadow {
-    position: sticky;
-    top: 98px;
-    height: 0;
-}
-
-.tasselAdvancedBlacklistShadow div {
-    position: relative;
-    width: calc(100% + 5px);
-    height: 1em;
-    top: -1em;
-    z-index: 0;
-    box-shadow: 0 10px 5px -10px grey inset;
-}
-
-#tasselAdvancedBlacklistSettings {
-    padding: 10px;
-    border-bottom: 1px solid grey;
-    background: var(--postBgColor);
-}
-
-#tasselAdvancedBlacklistSettings .btn {
-    width: auto;
-    margin: 10px 0;
-}
-
-#tasselAdvancedBlacklistSettings .btn:hover {
-    color: var(--postHeaderFont);
-}
-
-#tasselAdvancedBlacklistSettings .inline {
-    display: inline;
-}
-
-.tasselAdvancedBlacklistAddLine {
-    display: grid;
-    align-content: center;
-}
-
-.tasselAdvancedBlacklistAddLine button {
-    display: grid;
-    align-content: center;
-    width: 25px;
-    height: 25px;
-    margin-left: 5px;
-    padding: 0px 3px 2px 3px;
-    border: none;
-    border-radius: 100%;
-    color: white;
-    font-size: 2em;
-    font-weight: bold;
-    cursor: pointer;
-    background: var(--pageBg);
+        & .tasselLabelInline {
+            display: flex;
+            font-size: 0;
+            & input {
+                min-width: 2em;
+                margin: 0;
+                border-radius: 5px;
+                padding: 0 0.5em;
+                font-size: 16px;
+                &:focus {
+                    border-color: var(--tasselAccentLight) !important;
+                    outline: 1px solid var(--tasselAccentLight) !important;
+                }
+            }
+        }
+        & .tasselCheckbox {
+            display: flex;
+            font-size: 0;
+            & input {
+                margin: 2px auto;
+                width: 20px;
+                height: 20px;
+                transform: none;
+            }
+        }
+        .tasselAdvancedBlacklistAddLine button {
+            display: grid;
+            align-content: center;
+            margin-left: 5px;
+            width: 25px;
+            height: 25px;
+            border: none;
+            border-radius: 100%;
+            padding: 0px 3px 2px 3px;
+            background: var(--tasselContrastBackground);
+            color: var(--tasselContrastTextColor);
+            font-weight: bold;
+            font-size: 2em;
+            &:focus {
+                outline: 2px solid var(--tasselAccentLight);
+            }
+        }
+    }
+    & .save {
+        width: 10em;
+        margin: 1em calc(50% - 5em);
+    }
 }
 
 /*////////////////////////// Blocked Post //////////////////////*/
@@ -132,15 +180,15 @@
 
 .tasselAdvancedBlacklistBlockedHeader button {
     float: right;
-    width: 4em;
     margin: 6px 0px;
+    width: 4em;
     border: 1px solid var(--postFontColor);
     border-radius: 1.5px;
     background: var(--postBgColor);
 }
 
 .tasselAdvancedBlacklistBlockedHeader div {
-    width: calc(100% - 4em - 10px);
     margin: 6px 0;
+    width: calc(100% - 4em - 10px);
     line-height: 1.4em;
 }
