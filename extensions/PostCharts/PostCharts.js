@@ -49,8 +49,8 @@
 
         //funding progress
         //initFundingSidebar_gkgyjoep();
-        initFundingPage_gkgyjoep();
-        loadFundingData();
+        //initFundingPage_gkgyjoep();
+        //loadFundingData();
 
         //post charts
         if (document.URL.split("/")[3] !== "posts") return;
