@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tassel
-// @version      1.10.2
+// @version      1.10.3
 // @description  Pillowfort Extension Manager. Makes the use of a variety of extensions easier.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -87,6 +87,10 @@
 
     /* Initialize */
     function init_xcajbuzn() {
+        let eventFeed = document.createElement("div");
+        eventFeed.id = "tasselEvents";
+        document.getElementsByTagName("body")[0].appendChild(eventFeed);
+
         loadStyle_xcajbuzn(styleURL);
         loadAppearance_xcajbuzn();
         initJsonManager_xcajbuzn();
@@ -96,10 +100,6 @@
         createModal_xcajbuzn();
         waitForKeyElements(".sidebar-expanded", initSidebar_xcajbuzn);
         if (settings2.rememberPostSettings) setPrivacySettings_xcajbuzn();
-
-        let eventFeed = document.createElement("div");
-        eventFeed.id = "tasselEvents";
-        document.getElementsByTagName("body")[0].appendChild(eventFeed);
     }
 
     function initJsonManager_xcajbuzn() {
@@ -240,7 +240,7 @@
         if (anyHidden) {
             let sidebarBig = document.getElementById("expanded-bar-container");
             let sidebarBottom = sidebarBig.getElementsByClassName("sidebar-bottom")[0];
-            sidebarBottom.children[6].style.display = "none";
+            //sidebarBottom.children[6].style.display = "none";
             let button = document.createElement("button");
             button.id = "tasselExpandedSidebarExpander";
             button.setAttribute("aria-label", "show hidden elements");
@@ -425,8 +425,8 @@
         if (settings2.sidebar.expandedFollowers) getSidebarElement_xcajbuzn("https://www.pillowfort.social/followers").classList.add("tasselRemoveSidebarElement");
         if (settings2.sidebar.expandedFollowing) getSidebarElement_xcajbuzn("https://www.pillowfort.social/following").classList.add("tasselRemoveSidebarElement");
         if (settings2.sidebar.expandedMutuals) getSidebarElement_xcajbuzn("https://www.pillowfort.social/mutuals").classList.add("tasselRemoveSidebarElement");
-        if (settings2.sidebar.expandedInvites) getSidebarElement_xcajbuzn("https://www.pillowfort.social/generate_invites").classList.add("tasselRemoveSidebarElement");
-        if (settings2.sidebar.expandedDonations) getSidebarElement_xcajbuzn("https://www.pillowfort.social/donations").classList.add("tasselRemoveSidebarElement");
+        //if (settings2.sidebar.expandedInvites) getSidebarElement_xcajbuzn("https://www.pillowfort.social/generate_invites").classList.add("tasselRemoveSidebarElement");
+        //if (settings2.sidebar.expandedDonations) getSidebarElement_xcajbuzn("https://www.pillowfort.social/donations").classList.add("tasselRemoveSidebarElement");
         if (settings2.sidebar.expandedAbout) getSidebarElement_xcajbuzn("https://www.pillowfort.social/about").parentNode.classList.add("tasselRemoveSidebarElement");
 
         if (settings2.sidebar.collapsedPost) getSidebarElement_xcajbuzn("https://www.pillowfort.social/posts/new", true).classList.add("tasselRemoveSidebarElement");
