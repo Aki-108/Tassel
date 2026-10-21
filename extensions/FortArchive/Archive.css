@@ -437,7 +437,7 @@ img {
 }
 .svg-blue,
 .post .post-nav img {
-  filter: brightness(0) saturate(100%) invert(65%) sepia(86%) saturate(377%) hue-rotate(166deg) brightness(87%) contrast(98%);
+  filter: var(--iconColor);
 }
 .svg-pink-light {
   filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%);
