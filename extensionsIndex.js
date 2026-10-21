@@ -178,7 +178,7 @@ let extensionsIndex = [
                 "updated": 1792606657665,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ce275d03e6e9261b3b7f414cd111ae8d0c79f17f/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@03ab6b715a5dd7c6a0bcaffca62c3762eb0fd6fc/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f91adc1aa2a6ac8ee667132cbb07824ac870659c/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470",
                 "features": [
