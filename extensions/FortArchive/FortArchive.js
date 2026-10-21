@@ -484,7 +484,7 @@
             let start = document.getElementById("tasselFortArchiveStartPage").value;
             let end = document.getElementById("tasselFortArchiveEndPage").value;
             if (start < 1 || end > lastPage || start > end) {
-                alert("Invalid input for start and end pages.");
+                alert("Invalid input for start or end pages.");
                 return;
             }
             downloadQueue = [];
