@@ -127,19 +127,19 @@ let extensionsIndex = [
         {
             "name": "Post Charts",
             "id": 9,
-            "version": "1.6",
+            "version": "1.7",
             "created": 1693639280661,
-            "updated": 1777828518598,
+            "updated": 1792517727477,
             "author": "Aki108",
             "description": "Shows statistics of posts and feeds.",
-            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/extensions/PostCharts/PostCharts.js",
+            "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@1d5552c17d27c730b1ffa110948710ac9e06170c/extensions/PostCharts/PostCharts.js",
             "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@b58e6f71d0482e50e2256cc6c34349191c2d703d/extensions/PostCharts/PostCharts.css",
             "post": "https://www.pillowfort.social/posts/3682233",
             "features": [
                     "Shows a chart of how the notes on a post developed over time.",
                     "Shows a chart of notes on a post grouped by weekday or hour.",
                     "Shows a chart of likes on a post by the source they came from.",
-                    "Shows a chart for the funding progress of the month.",
+                    /*"Shows a chart for the funding progress of the month.",*/
                     "Shows charts for the composition of your feed."
             ]
         },
@@ -173,12 +173,12 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "1.1",
+                "version": "1.2",
                 "created": 1696333244573,
-                "updated": 1789155502618,
+                "updated": 1792606657665,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f91adc1aa2a6ac8ee667132cbb07824ac870659c/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@03ab6b715a5dd7c6a0bcaffca62c3762eb0fd6fc/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@f91adc1aa2a6ac8ee667132cbb07824ac870659c/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470",
                 "features": [

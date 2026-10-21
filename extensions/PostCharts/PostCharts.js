@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Post Charts
-// @version      1.6
+// @version      1.7
 // @description  Shows statistics of a post.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -48,9 +48,9 @@
         initTassel_gkgyjoep();
 
         //funding progress
-        initFundingSidebar_gkgyjoep();
-        initFundingPage_gkgyjoep();
-        loadFundingData();
+        //initFundingSidebar_gkgyjoep();
+        //initFundingPage_gkgyjoep();
+        //loadFundingData();
 
         //post charts
         if (document.URL.split("/")[3] !== "posts") return;
@@ -524,7 +524,6 @@
                 stackedGraph: false,
                 plotter: barChartPlotter_gkgyjoep,
                 dateWindow: [-0.5, 4.5],
-                /*interactionModel: {},*/
                 gridLineColor: gLineColor,
                 axisLineColor: gLineColor,
 
@@ -937,7 +936,7 @@
         let gColors = document.body.classList.contains("dark-theme") ? ["#6F96BC"] : ["#2C405A"],
             gLineColor = document.body.classList.contains("dark-theme") ? "#d9dbe0" : "#2b2b2b";
         let chartWidth = Math.min(document.body.clientWidth - 200, 800);
-        if (document.body.clientWidth <= 800) chartWidth = document.body.clientWidth - 100;
+        if (document.body.clientWidth <= 800) chartWidth = document.body.clientWidth - 20;
         let content = document.getElementById("tasselModalContent");
         let visiblePosts = tasselJsonManager.feed.posts.filter(function(post) {
             return !post.tassel || !post.tassel.hidden;// && !post.tassel.collapsed;

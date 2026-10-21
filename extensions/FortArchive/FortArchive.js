@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.1
+// @version      1.2
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -26,8 +26,8 @@
     let downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
     let downloadFails = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@15b18ebe7ee2c81f1f5962018a4fcdc65cae5156/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@01558e909278f25f9edb8d09efed3f24ab6ad7e0/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -484,7 +484,7 @@
             let start = document.getElementById("tasselFortArchiveStartPage").value;
             let end = document.getElementById("tasselFortArchiveEndPage").value;
             if (start < 1 || end > lastPage || start > end) {
-                alert("Invalid input for start and end pages.");
+                alert("Invalid input for start or end pages.");
                 return;
             }
             downloadQueue = [];
@@ -540,7 +540,7 @@
         frame.id = "tasselFortArchiveFrame";
         window.appendChild(frame);
         let now = new Date();
-        frame.title = `Pillofort Archive ${now.getFullYear()}${now.getMonth() + 1 < 10 ? "0" : ""}${now.getMonth() + 1}${now.getDate() < 10 ? "0" : ""}${now.getDate()}`
+        frame.title = `Pillowfort Archive ${now.getFullYear()}${now.getMonth() + 1 < 10 ? "0" : ""}${now.getMonth() + 1}${now.getDate() < 10 ? "0" : ""}${now.getDate()}`
         let html = `
             <head>
                 <title>${frame.title}</title>
