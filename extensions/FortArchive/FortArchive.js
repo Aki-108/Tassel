@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.2
+// @version      1.3
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -668,7 +668,8 @@
                             downloadQueue.push(["image", media.url]);
                             media.url = reformatImageURLs_avytegoo(media.url);
                             media.small_image_url = media.url;
-                        } else if (media.embed_code) {
+                        }
+                        if (media.embed_code) {
                             media.embed_code = encodeURI(media.embed_code);
                         }
                     });
