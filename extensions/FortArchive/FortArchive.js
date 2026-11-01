@@ -27,8 +27,8 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -549,7 +549,7 @@
         frame.title = `Pillowfort Archive ${now.getFullYear()}${now.getMonth() + 1 < 10 ? "0" : ""}${now.getMonth() + 1}${now.getDate() < 10 ? "0" : ""}${now.getDate()}`
         let html = `
             <head>
-                <title>${frame.title}</title>
+                <title><a href="?">${frame.title}</a></title>
                 <link rel="stylesheet" href="${styleURL}"></style>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">
                 <script>var username = "${user}";</script>
@@ -558,7 +558,10 @@
                 <nav>
                     <div class="sidebar-user">${user}</div>
                     ${(document.getElementById("sidebar-user-content").innerHTML)}
-                    <div class="sidebar-footer"><a href="?">Posts<span>0</span></a></div>
+                    <div class="sidebar-footer">
+                        <a href="?">Original Posts<span>0</span></a>
+                        <a href="?">Reblogs<span>0</span></a>
+                    </div>
                 </nav>
                 <main>
                     <div class="post main" style="width: 300px;margin-left:290px">
@@ -672,8 +675,8 @@
                     post.media.forEach(function(media) {
                         if (media.media_type == "picture") {
                             let url = media.url || media.b2_lg_url;
-                            media.url = reformatImageURLs_avytegoo(url);
                             if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
+                                media.url = reformatImageURLs_avytegoo(url);
                                 downloadQueue.push(["image", url]);
                             }
                         }
@@ -787,8 +790,10 @@
                 if (!downloadedImages.includes(url)) {
                     downloadQueue.push(["image", url]);
                 }
+                textBodyOut += reformatImageURLs_avytegoo(url);
+            } else {
+                textBodyOut += url;
             }
-            textBodyOut += reformatImageURLs_avytegoo(url);
             textBodyIn = textBodyIn.substring(url.length);
         }
         textBodyOut += textBodyIn;
