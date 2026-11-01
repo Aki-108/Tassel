@@ -734,10 +734,10 @@
             if (data.comments.length > 0) {
                 data.comments.forEach(function(comment) {
                     comment.body = downloadFormatTextbody_avytegoo(comment.body);
-                    if (!downloadedImages.includes(post.avatar_url)) {
-                        downloadQueue.push(["image", post.avatar_url]);
+                    if (!downloadedImages.includes(comment.avatar_url)) {
+                        downloadQueue.push(["image", comment.avatar_url]);
                     }
-                    post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
+                    comment.avatar_url = reformatImageURLs_avytegoo(comment.avatar_url);
                 });
                 let fileLink = document.createElement("script");
                 fileLink.type = "text/javascript";
