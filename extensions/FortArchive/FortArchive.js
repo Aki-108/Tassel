@@ -518,7 +518,7 @@
                     <li>A file and a folder of the same name apear in your selected location. They have to stay together, even when you move the file.</li>
                     <li>Open the downloaded file to view your archive.</li>
                 </ul>
-                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d00efdc4de9466a70f3fdd5de12d53fcbf4d5dc/documents/images/ArchiveDownloaderFirefox1.png">
+                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d00efdc4de9466a70f3fdd5de12d53fcbf4d5dc/documents/images/ArchiveDownloaderFirefox1.png" oncontextmenu="alert('This is just an image. Right-click in the frame below.');">
             </details>
             <br>
             <h2>Chromium/Other</h2>
@@ -664,9 +664,9 @@
                 if (post.media && post.media.length > 0) {
                     post.media.forEach(function(media) {
                         if (media.media_type == "picture") {
-                            downloadQueue.push(["image", media.url]);
-                            media.url = reformatImageURLs_avytegoo(media.url);
-                            media.small_image_url = media.url;
+                            let url = media.url || media.b2_lg_url;
+                            downloadQueue.push(["image", url]);
+                            media.url = reformatImageURLs_avytegoo(url);
                         }
                         if (media.embed_code) {
                             media.embed_code = encodeURI(media.embed_code);
