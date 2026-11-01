@@ -25,6 +25,7 @@
     let downloadQueue = [];
     let downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
     let downloadFails = [];
+    let downloadedImages = [];
 
     let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.css";
@@ -654,7 +655,9 @@
     function downloadPage_avytegoo(page) {
         $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
             data.posts.forEach(function(post) {
-                downloadQueue.push(["image", post.avatar_url]);
+                if (!downloadedImages.includes(post.avatar_url)) {
+                    downloadQueue.push(["image", post.avatar_url]);
+                }
                 post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.original_username && post.original_username != user) {
                     delete post.title;
@@ -705,7 +708,7 @@
 
     function downloadImage_avytegoo(url) {
         let id = reformatImageURLs_avytegoo(url);
-        if (!document.getElementById(id)) {
+        if (!downloadedImages.includes(url)) {
             let fileLink = document.createElement("img");
             fileLink.src = url;
             fileLink.id = id;
@@ -713,6 +716,7 @@
             let frame = document.getElementById("tasselFortArchiveFrame");
             frame.contentWindow.document.head.appendChild(fileLink);
 
+            downloadedImages.push(url);
             downloadsDone.total++;
             downloadsDone.images++;
             downloadQueue.shift();
@@ -730,6 +734,10 @@
             if (data.comments.length > 0) {
                 data.comments.forEach(function(comment) {
                     comment.body = downloadFormatTextbody_avytegoo(comment.body);
+                    if (!downloadedImages.includes(post.avatar_url)) {
+                        downloadQueue.push(["image", post.avatar_url]);
+                    }
+                    post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 });
                 let fileLink = document.createElement("script");
                 fileLink.type = "text/javascript";
@@ -776,7 +784,9 @@
 
             let url = textBodyIn.substring(0, textBodyIn.search(`"`));
             if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
-                downloadQueue.push(["image", url]);
+                if (!downloadedImages.includes(url)) {
+                    downloadQueue.push(["image", url]);
+                }
             }
             textBodyOut += reformatImageURLs_avytegoo(url);
             textBodyIn = textBodyIn.substring(url.length);
