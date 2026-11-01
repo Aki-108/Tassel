@@ -506,6 +506,7 @@
             <h1>Download Instructions</h1>
             <p>Your download is ready when the progress bar says "done". Follow the appropriate instructions below.
             <h2>Firefox</h2>
+            <p>! currently broken !</p>
             <details>
                 <summary>
                     More...
@@ -649,6 +650,8 @@
     function downloadPage_avytegoo(page) {
         $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
             data.posts.forEach(function(post) {
+                downloadQueue.push(["image", post.avatar_url]);
+                post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.original_username && post.original_username != user) {
                     delete post.title;
                     delete post.content;
@@ -657,11 +660,7 @@
                     delete post.reblogs_count;
                     delete post.media;
                     delete post.original_post;
-                    return;
-                } else {
-                    downloadQueue.push(["image", post.avatar_url]);
                 }
-                post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.media && post.media.length > 0) {
                     post.media.forEach(function(media) {
                         if (media.media_type == "picture") {
@@ -674,7 +673,7 @@
                         }
                     });
                 }
-                post.content = downloadFormatTextbody_avytegoo(post.content);
+                if (post.content) post.content = downloadFormatTextbody_avytegoo(post.content);
                 if (document.getElementById("tasselFortArchiveIncludeComments").checked && post.comments_count > 0) {
                     downloadQueue.push(["comments", `${post.id},${1}`]);
                 }
