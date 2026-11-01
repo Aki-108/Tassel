@@ -91,6 +91,8 @@ nav {
     padding: 20px;
     background-color: var(--sidebarHeaderFooter);
     color: var(--sidebarFontColor);
+    display: flex;
+    flex-flow: column nowrap;
     
     & span {
       float: right;
