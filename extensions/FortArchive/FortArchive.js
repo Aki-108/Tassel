@@ -27,7 +27,7 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.js";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4d3499a8d0c8aafcbbb83f66398ae3095b7930b3/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
@@ -549,14 +549,14 @@
         frame.title = `Pillowfort Archive ${now.getFullYear()}${now.getMonth() + 1 < 10 ? "0" : ""}${now.getMonth() + 1}${now.getDate() < 10 ? "0" : ""}${now.getDate()}`
         let html = `
             <head>
-                <title><a href="?">${frame.title}</a></title>
+                <title>${frame.title}</title>
                 <link rel="stylesheet" href="${styleURL}"></style>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">
                 <script>var username = "${user}";</script>
             </head>
             <body class="${document.body.getAttribute("class")}" style="${document.body.getAttribute("style")}">
                 <nav>
-                    <div class="sidebar-user">${user}</div>
+                    <div class="sidebar-user"><a href="?">${user}</a></div>
                     ${(document.getElementById("sidebar-user-content").innerHTML)}
                     <div class="sidebar-footer">
                         <a href="?">Original Posts<span>0</span></a>
