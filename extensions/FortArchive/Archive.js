@@ -31,8 +31,8 @@ function init() {
     totalPosts.total += pageData.posts.length;
   });
   document.getElementsByClassName("sidebar-footer")[0].innerHTML = `
-    <a href="?filter=original">Original Posts<span>${totalPosts.own}</span></a>
-    <a href="?filter=reblog">Reblogs<span>${totalPosts.reblog}</span></a>
+    <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
+    <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
   `;
   document.getElementsByTagName("main")[0].innerHTML = "";
   document.getElementsByTagName("footer")[0].innerHTML = "";
@@ -243,7 +243,6 @@ function displayComments(postId) {
 }
 
 function displaySearch() {
-  if (!pages[page]) return;
   let writePage = 1;
   let searchResult = [];
   pages.forEach(function(page) {
@@ -267,6 +266,7 @@ function displaySearch() {
   let maxPage = searchResult.findLastIndex(function(item) {
     return item
   });
+  console.log(minPage, maxPage);
   
   if (searchResult.length === 0) {
     let message = document.createElement("p");
@@ -333,7 +333,8 @@ function displaySearch() {
   
   let main = document.getElementsByTagName("main")[0];
   searchResult[page].forEach(function(post) {
-      main.appendChild(displayPost(post));
+    if (!post) return;
+    main.appendChild(displayPost(post));
   });
 }
 
@@ -562,6 +563,7 @@ function formatTextImage(input) {
 
 function formatImageSource(name) {
     if (name === null) return "";
+    if (name.search("http") === 0) return name;
     let fileName = name.split(".");
     let folder = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("."));
     if (folder.search("_files") >= 0) {//Chromium
