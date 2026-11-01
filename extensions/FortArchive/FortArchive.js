@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.2
+// @version      1.3
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -506,6 +506,7 @@
             <h1>Download Instructions</h1>
             <p>Your download is ready when the progress bar says "done". Follow the appropriate instructions below.
             <h2>Firefox</h2>
+            <p>! currently broken !</p>
             <details>
                 <summary>
                     More...
@@ -517,7 +518,7 @@
                     <li>A file and a folder of the same name apear in your selected location. They have to stay together, even when you move the file.</li>
                     <li>Open the downloaded file to view your archive.</li>
                 </ul>
-                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d00efdc4de9466a70f3fdd5de12d53fcbf4d5dc/documents/images/ArchiveDownloaderFirefox1.png">
+                <img src="https://cdn.jsdelivr.net/gh/Aki-108/Tassel@0d00efdc4de9466a70f3fdd5de12d53fcbf4d5dc/documents/images/ArchiveDownloaderFirefox1.png" oncontextmenu="alert('This is just an image. Right-click in the frame below.');">
             </details>
             <br>
             <h2>Chromium/Other</h2>
@@ -649,6 +650,8 @@
     function downloadPage_avytegoo(page) {
         $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
             data.posts.forEach(function(post) {
+                downloadQueue.push(["image", post.avatar_url]);
+                post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.original_username && post.original_username != user) {
                     delete post.title;
                     delete post.content;
@@ -657,23 +660,20 @@
                     delete post.reblogs_count;
                     delete post.media;
                     delete post.original_post;
-                    return;
-                } else {
-                    downloadQueue.push(["image", post.avatar_url]);
                 }
-                post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.media && post.media.length > 0) {
                     post.media.forEach(function(media) {
                         if (media.media_type == "picture") {
-                            downloadQueue.push(["image", media.url]);
-                            media.url = reformatImageURLs_avytegoo(media.url);
-                            media.small_image_url = media.url;
-                        } else if (media.embed_code) {
+                            let url = media.url || media.b2_lg_url;
+                            downloadQueue.push(["image", url]);
+                            media.url = reformatImageURLs_avytegoo(url);
+                        }
+                        if (media.embed_code) {
                             media.embed_code = encodeURI(media.embed_code);
                         }
                     });
                 }
-                post.content = downloadFormatTextbody_avytegoo(post.content);
+                if (post.content) post.content = downloadFormatTextbody_avytegoo(post.content);
                 if (document.getElementById("tasselFortArchiveIncludeComments").checked && post.comments_count > 0) {
                     downloadQueue.push(["comments", `${post.id},${1}`]);
                 }
