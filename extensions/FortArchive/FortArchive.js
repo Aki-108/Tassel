@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.3
+// @version      1.4
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -460,6 +460,10 @@
                     <input id="tasselFortArchiveEndPage" value="${lastPage}" type="number" min="1" max="${lastPage}">
                 </label>
                 <label class="tasselCheckbox">
+                    <input id="tasselFortArchiveIncludeImages" type="checkbox" checked="">
+                    include images
+                </label>
+                <label class="tasselCheckbox">
                     <input id="tasselFortArchiveIncludeComments" type="checkbox" checked="">
                     include comments
                 </label>
@@ -665,8 +669,10 @@
                     post.media.forEach(function(media) {
                         if (media.media_type == "picture") {
                             let url = media.url || media.b2_lg_url;
-                            downloadQueue.push(["image", url]);
                             media.url = reformatImageURLs_avytegoo(url);
+                            if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
+                                downloadQueue.push(["image", url]);
+                            }
                         }
                         if (media.embed_code) {
                             media.embed_code = encodeURI(media.embed_code);
@@ -769,7 +775,9 @@
             textBodyIn = textBodyIn.substring(textBodyIn.search(`src="`)+5);
 
             let url = textBodyIn.substring(0, textBodyIn.search(`"`));
-            downloadQueue.push(["image", url]);
+            if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
+                downloadQueue.push(["image", url]);
+            }
             textBodyOut += reformatImageURLs_avytegoo(url);
             textBodyIn = textBodyIn.substring(url.length);
         }
