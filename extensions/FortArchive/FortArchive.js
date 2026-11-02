@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.3
+// @version      1.4
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -25,9 +25,10 @@
     let downloadQueue = [];
     let downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
     let downloadFails = [];
+    let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@587afa0f1d9558f17c3b5a5f36c9fad09ac50453/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4d3499a8d0c8aafcbbb83f66398ae3095b7930b3/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -460,6 +461,10 @@
                     <input id="tasselFortArchiveEndPage" value="${lastPage}" type="number" min="1" max="${lastPage}">
                 </label>
                 <label class="tasselCheckbox">
+                    <input id="tasselFortArchiveIncludeImages" type="checkbox" checked="">
+                    include images
+                </label>
+                <label class="tasselCheckbox">
                     <input id="tasselFortArchiveIncludeComments" type="checkbox" checked="">
                     include comments
                 </label>
@@ -551,9 +556,12 @@
             </head>
             <body class="${document.body.getAttribute("class")}" style="${document.body.getAttribute("style")}">
                 <nav>
-                    <div class="sidebar-user">${user}</div>
+                    <div class="sidebar-user"><a href="?">${user}</a></div>
                     ${(document.getElementById("sidebar-user-content").innerHTML)}
-                    <div class="sidebar-footer"><a href="?">Posts<span>0</span></a></div>
+                    <div class="sidebar-footer">
+                        <a href="?">Original Posts<span>0</span></a>
+                        <a href="?">Reblogs<span>0</span></a>
+                    </div>
                 </nav>
                 <main>
                     <div class="post main" style="width: 300px;margin-left:290px">
@@ -650,7 +658,9 @@
     function downloadPage_avytegoo(page) {
         $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
             data.posts.forEach(function(post) {
-                downloadQueue.push(["image", post.avatar_url]);
+                if (!downloadedImages.includes(post.avatar_url)) {
+                    downloadQueue.push(["image", post.avatar_url]);
+                }
                 post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.original_username && post.original_username != user) {
                     delete post.title;
@@ -665,8 +675,10 @@
                     post.media.forEach(function(media) {
                         if (media.media_type == "picture") {
                             let url = media.url || media.b2_lg_url;
-                            downloadQueue.push(["image", url]);
-                            media.url = reformatImageURLs_avytegoo(url);
+                            if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
+                                media.url = reformatImageURLs_avytegoo(url);
+                                downloadQueue.push(["image", url]);
+                            }
                         }
                         if (media.embed_code) {
                             media.embed_code = encodeURI(media.embed_code);
@@ -699,7 +711,7 @@
 
     function downloadImage_avytegoo(url) {
         let id = reformatImageURLs_avytegoo(url);
-        if (!document.getElementById(id)) {
+        if (!downloadedImages.includes(url)) {
             let fileLink = document.createElement("img");
             fileLink.src = url;
             fileLink.id = id;
@@ -707,6 +719,7 @@
             let frame = document.getElementById("tasselFortArchiveFrame");
             frame.contentWindow.document.head.appendChild(fileLink);
 
+            downloadedImages.push(url);
             downloadsDone.total++;
             downloadsDone.images++;
             downloadQueue.shift();
@@ -724,6 +737,10 @@
             if (data.comments.length > 0) {
                 data.comments.forEach(function(comment) {
                     comment.body = downloadFormatTextbody_avytegoo(comment.body);
+                    if (!downloadedImages.includes(comment.avatar_url)) {
+                        downloadQueue.push(["image", comment.avatar_url]);
+                    }
+                    comment.avatar_url = reformatImageURLs_avytegoo(comment.avatar_url);
                 });
                 let fileLink = document.createElement("script");
                 fileLink.type = "text/javascript";
@@ -769,8 +786,14 @@
             textBodyIn = textBodyIn.substring(textBodyIn.search(`src="`)+5);
 
             let url = textBodyIn.substring(0, textBodyIn.search(`"`));
-            downloadQueue.push(["image", url]);
-            textBodyOut += reformatImageURLs_avytegoo(url);
+            if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
+                if (!downloadedImages.includes(url)) {
+                    downloadQueue.push(["image", url]);
+                }
+                textBodyOut += reformatImageURLs_avytegoo(url);
+            } else {
+                textBodyOut += url;
+            }
             textBodyIn = textBodyIn.substring(url.length);
         }
         textBodyOut += textBodyIn;

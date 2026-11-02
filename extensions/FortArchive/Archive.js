@@ -3,8 +3,8 @@ let page = pages.findIndex(function(item) {
 });
 let post = null;
 let commentPage = 1;
-let tag = null;
-let totalPosts = 0;
+let tag = null, filter = null;
+let totalPosts = {"total": 0, "own": 0, "reblog": 0};
 let minPage = pages.findIndex(function(item) {
     return item
 });
@@ -21,10 +21,19 @@ function init() {
   imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
 
   pages.forEach(function(pageData, index) {
-    totalPosts += pageData.posts.length;
+    pageData.posts.forEach(function(post) {
+      if (post.original_post_id === null) {
+        totalPosts.own++;
+      } else {
+        totalPosts.reblog++;
+      }
+    });
+    totalPosts.total += pageData.posts.length;
   });
-  document.getElementsByClassName("sidebar-footer")[0].children[0].href = "?"
-  document.getElementsByClassName("sidebar-footer")[0].children[0].children[0].innerHTML = totalPosts;
+  document.getElementsByClassName("sidebar-footer")[0].innerHTML = `
+    <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
+    <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
+  `;
   document.getElementsByTagName("main")[0].innerHTML = "";
   document.getElementsByTagName("footer")[0].innerHTML = "";
   
@@ -34,9 +43,10 @@ function init() {
     if (pair[0] === "post") post = pair[1] * 1;
     if (pair[0] === "page") commentPage = pair[1] * 1;
     if (pair[0] === "tag") tag = pair[1];
+    if (pair[0] === "filter") filter = pair[1];
   }
   if (post) displayComments(post);
-  else if (tag) displaySearch();
+  else if (tag || filter) displaySearch();
   else if (page) displayFeed();
 }
 
@@ -233,14 +243,17 @@ function displayComments(postId) {
 }
 
 function displaySearch() {
-  if (!pages[page]) return;
   let writePage = 1;
   let searchResult = [];
   pages.forEach(function(page) {
     page.posts.forEach(function(post) {
-      if (post.tags.some(function(localTag) {
+      if (filter !== null) {
+        if (filter === "original" && post.original_post_id !== null) return;
+        else if (filter === "reblog" && post.original_post_id === null) return;
+      }
+      if ((tag !== null && post.tags.some(function(localTag) {
         return localTag.toLowerCase() === tag.toLowerCase();
-      })) {
+      })) || tag === null) {
         if (searchResult[writePage] === undefined) searchResult[writePage] = [];
         searchResult[writePage].push(post);
         if (searchResult[writePage].length >= 20) writePage++;
@@ -253,6 +266,7 @@ function displaySearch() {
   let maxPage = searchResult.findLastIndex(function(item) {
     return item
   });
+  console.log(minPage, maxPage);
   
   if (searchResult.length === 0) {
     let message = document.createElement("p");
@@ -262,17 +276,21 @@ function displaySearch() {
     return;
   }
     
+  let tagFilter = "";
+  if (filter !== null) tagFilter += "filter=" + filter;
+  if (filter !== null && tag !== null) tagFilter += "&";
+  if (tag !== null) tagFilter += "tag=" + tag;
   let html = `
     <dir-pagination-controls>
       <ul class="pagination">
         <li class=${page == 1 ? "disabled" : ""}>
-          <a href="?tag=${tag}&p=${Math.max(page-1,minPage)}">‹</a>
+          <a href="?${tagFilter}&p=${Math.max(page-1,minPage)}">‹</a>
         </li>
   `;
   if (page - 4 > minPage) {
     html += `
       <li>
-        <a href="?tag=${tag}&p=${minPage}">${minPage}</a>
+        <a href="?${tagFilter}&p=${minPage}">${minPage}</a>
       </li>
       <li class="disabled">
         <span>...</span>
@@ -282,7 +300,7 @@ function displaySearch() {
   for (let i = Math.max(minPage, page - (page - 4 > minPage ? 2 : 4)); i <= Math.min(maxPage, page + (page + 4 < maxPage ? 2 : 4)); i++) {
     html += `
       <li class=${page == i ? "active" : ""}>
-        <a href="?tag=${tag}&p=${i}">${i}</a>
+        <a href="?${tagFilter}&p=${i}">${i}</a>
       </li>
     `;
   }
@@ -292,13 +310,13 @@ function displaySearch() {
         <span>...</span>
       </li>
       <li>
-        <a href="?tag=${tag}&p=${maxPage}">${maxPage}</a>
+        <a href="?${tagFilter}&p=${maxPage}">${maxPage}</a>
       </li>
     `;
   }
   html += `
         <li class=${page == maxPage ? "disabled" : ""}>
-          <a href="?tag=${tag}&p=${Math.min(page+1,maxPage)}">›</a>
+          <a href="?${tagFilter}&p=${Math.min(page+1,maxPage)}">›</a>
         </li>
       </ul>
     <div id="pageJump">
@@ -315,7 +333,8 @@ function displaySearch() {
   
   let main = document.getElementsByTagName("main")[0];
   searchResult[page].forEach(function(post) {
-      main.appendChild(displayPost(post));
+    if (!post) return;
+    main.appendChild(displayPost(post));
   });
 }
 
@@ -376,8 +395,12 @@ function displayPost(post, fully) {
     `;
     header.appendChild(tags);
     post.tags.forEach(function(tag, index) {
+      let tagFilter = "";
+      if (filter !== null) tagFilter += "filter=" + filter;
+      if (filter !== null && tag !== null) tagFilter += "&";
+      if (tag !== null) tagFilter += "tag=" + tag;
       let span = document.createElement("span");
-      span.innerHTML = `<a class="tag-item" href="?tag=${tag}">${tag}</a>`;
+      span.innerHTML = `<a class="tag-item" href="?${tagFilter}">${tag}</a>`;
       if (index < post.tags.length - 1) span.innerHTML += `<span>, </span>`;
       tags.children[0].appendChild(span);
     });
@@ -540,6 +563,7 @@ function formatTextImage(input) {
 
 function formatImageSource(name) {
     if (name === null) return "";
+    if (name.search("http") === 0) return name;
     let fileName = name.split(".");
     let folder = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("."));
     if (folder.search("_files") >= 0) {//Chromium
