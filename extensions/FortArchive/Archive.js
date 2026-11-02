@@ -30,6 +30,7 @@ function init() {
     });
     totalPosts.total += pageData.posts.length;
   });
+  document.getElementsByClassName("sidebar-user")[0].children[0].href = "?";
   document.getElementsByClassName("sidebar-footer")[0].innerHTML = `
     <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
     <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
@@ -198,7 +199,7 @@ function displayComments(postId) {
         <div id="${comment.id}" class="main comment">
           <div class="header">
             <div class="avatar-container">
-              <img class="avatar" src="${comment.avatar_url}">
+              <img class="avatar" src="${formatImageSource(comment.avatar_url)}">
             </div>
             <div class="comment-subheader">
               <span>
@@ -266,7 +267,6 @@ function displaySearch() {
   let maxPage = searchResult.findLastIndex(function(item) {
     return item
   });
-  console.log(minPage, maxPage);
   
   if (searchResult.length === 0) {
     let message = document.createElement("p");
@@ -346,7 +346,7 @@ function displayPost(post, fully) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-        <img loading="lazy" src="${post.original_username && post.original_username !== username ? post.avatar_url : formatImageSource(post.avatar_url)}">
+        <img loading="lazy" src="${formatImageSource(post.avatar_url)}">
       </div>
     `;
     body.appendChild(avatar);
