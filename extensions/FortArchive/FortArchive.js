@@ -486,8 +486,8 @@
             <hr>
         `;
         document.getElementById("tasselFortArchiveStart").addEventListener("click", function() {
-            let start = document.getElementById("tasselFortArchiveStartPage").value;
-            let end = document.getElementById("tasselFortArchiveEndPage").value;
+            let start = parseInt(document.getElementById("tasselFortArchiveStartPage").value);
+            let end = parseInt(document.getElementById("tasselFortArchiveEndPage").value);
             if (start < 1 || end > lastPage || start > end) {
                 alert("Invalid input for start or end pages.");
                 return;
