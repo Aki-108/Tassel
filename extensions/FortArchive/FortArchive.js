@@ -511,7 +511,6 @@
             <h1>Download Instructions</h1>
             <p>Your download is ready when the progress bar says "done". Follow the appropriate instructions below.
             <h2>Firefox</h2>
-            <p>! currently broken !</p>
             <details>
                 <summary>
                     More...
