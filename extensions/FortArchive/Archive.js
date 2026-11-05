@@ -199,7 +199,7 @@ function displayComments(postId) {
         <div id="${comment.id}" class="main comment">
           <div class="header">
             <div class="avatar-container">
-              <img class="avatar" src="${formatImageSource(comment.avatar_url, "avatar")}">
+              <img class="avatar" src="${formatImageSource(comment.avatar_url, "avatar")}" onerror="tryPNG(this, '${comment.avatar_url}')">
             </div>
             <div class="comment-subheader">
               <span>
@@ -346,7 +346,7 @@ function displayPost(post, fully) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-        <img loading="lazy" src="${formatImageSource(post.avatar_url, "avatar")}">
+        <img loading="lazy" src="${formatImageSource(post.avatar_url, "avatar")}" onerror="tryPNG(this, '${post.avatar_url}')">
       </div>
     `;
     body.appendChild(avatar);
@@ -435,7 +435,7 @@ function displayPost(post, fully) {
         </span>
       </div>
     `;
-    if (!post.original_post_id) header.appendChild(nav);
+    if (!post.original_post_id || post.username === post.original_username) header.appendChild(nav);
     return body;
 }
 
@@ -571,7 +571,7 @@ function formatImageSource(name, usage) {
     } else {
       fileName = [name.substring(0, fileExtension), name.substring(fileExtension)];
     }
-    if (usage === "avatar" && fileName[1] === ".png") fileName[1] = ".jpg";
+    if (usage === "avatar" && fileName[1] && fileName[1].toLowerCase() === ".png") fileName[1] = ".jpg";
     let folder = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("."));
     if (folder.search("_files") >= 0) {//Chromium
       folder = folder.substring(0, folder.lastIndexOf("/") + 1)
@@ -582,6 +582,12 @@ function formatImageSource(name, usage) {
       if (fileName[1] === undefined) fileName[1] = ".jpg";
     }
     return folder + fileName[0] + fileName[1];
+}
+
+function tryPNG(el, name) {
+  if (name.search(".") < 0) return;
+  el.src = formatImageSource(name + ".png");
+  el.removeAttribute("onerror")
 }
 
 function formatDate(d) {
