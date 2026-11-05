@@ -27,7 +27,7 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@84c3cbe6d6a2a81e5ce48bd0aec3032818fc3641/extensions/FortArchive/Archive.js";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e47d2cac4756b84730ffd2c503212a974cb3e605/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
