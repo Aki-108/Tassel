@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.4
+// @version      1.5
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -27,7 +27,7 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4d3499a8d0c8aafcbbb83f66398ae3095b7930b3/extensions/FortArchive/Archive.js";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e47d2cac4756b84730ffd2c503212a974cb3e605/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
@@ -486,8 +486,8 @@
             <hr>
         `;
         document.getElementById("tasselFortArchiveStart").addEventListener("click", function() {
-            let start = document.getElementById("tasselFortArchiveStartPage").value;
-            let end = document.getElementById("tasselFortArchiveEndPage").value;
+            let start = parseInt(document.getElementById("tasselFortArchiveStartPage").value);
+            let end = parseInt(document.getElementById("tasselFortArchiveEndPage").value);
             if (start < 1 || end > lastPage || start > end) {
                 alert("Invalid input for start or end pages.");
                 return;
@@ -511,7 +511,6 @@
             <h1>Download Instructions</h1>
             <p>Your download is ready when the progress bar says "done". Follow the appropriate instructions below.
             <h2>Firefox</h2>
-            <p>! currently broken !</p>
             <details>
                 <summary>
                     More...

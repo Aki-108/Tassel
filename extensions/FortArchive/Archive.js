@@ -30,6 +30,7 @@ function init() {
     });
     totalPosts.total += pageData.posts.length;
   });
+  document.getElementsByClassName("sidebar-user")[0].children[0].href = "?";
   document.getElementsByClassName("sidebar-footer")[0].innerHTML = `
     <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
     <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
@@ -198,7 +199,7 @@ function displayComments(postId) {
         <div id="${comment.id}" class="main comment">
           <div class="header">
             <div class="avatar-container">
-              <img class="avatar" src="${comment.avatar_url}">
+              <img class="avatar" src="${formatImageSource(comment.avatar_url, "avatar")}" onerror="tryPNG(this, '${comment.avatar_url}')">
             </div>
             <div class="comment-subheader">
               <span>
@@ -209,11 +210,11 @@ function displayComments(postId) {
             </div>
             <div class="comment-buttons">
               <a class="comment-imgs" title="Link" href="https://www.pillowfort.social/posts/${comment.post_id}?page=${comment.page_number}&comment=${comment.id}">
-                <img class="svg-blue-dark" src="${formatImageSource("link.svg")}" style="height: 17px;">
+                <img class="svg-blue-dark" src="${formatImageSource("link.svg", "icon")}" style="height: 17px;">
               </a>
               <div class="nav-tab comment-like-button">
                 <span>
-                  <img class="svg-pink-dark" src="${formatImageSource(comment.liked ? "liked.svg" : "like.svg")}" style="height: 19px;">
+                  <img class="svg-pink-dark" src="${formatImageSource(comment.liked ? "liked.svg" : "like.svg", "icon")}" style="height: 19px;">
                 </span>
                 <span style="font-size: 14px;">${comment.likes_count}</span>
               </div>
@@ -266,7 +267,6 @@ function displaySearch() {
   let maxPage = searchResult.findLastIndex(function(item) {
     return item
   });
-  console.log(minPage, maxPage);
   
   if (searchResult.length === 0) {
     let message = document.createElement("p");
@@ -346,7 +346,7 @@ function displayPost(post, fully) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-        <img loading="lazy" src="${post.original_username && post.original_username !== username ? post.avatar_url : formatImageSource(post.avatar_url)}">
+        <img loading="lazy" src="${formatImageSource(post.avatar_url, "avatar")}" onerror="tryPNG(this, '${post.avatar_url}')">
       </div>
     `;
     body.appendChild(avatar);
@@ -361,17 +361,17 @@ function displayPost(post, fully) {
 							${formatDate(post.publish_at)}
 						</div>
 						<div class="post-header-icons">
-              ${post.privacy === "users" ? `<span class="priv-icon" title="This post is only visible to logged in users"><img class="priv-svg svg-pink-light" src="${formatImageSource("user-badge.svg")}"></span>` : ``}
-              ${post.mine === false && post.community_id === null && post.user_concealed ? `<span class="priv-icon" title="This post is only visible to certain users"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
-              ${post.community_id === null && post.mine === true && post.user_concealed ? `<span class="priv-icon" title="This post is only visible to users you are following because you are in Concealed Mode."><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
-              ${post.mine === true && post.privacy === 'followers' ? `<span class="priv-icon" title="This post is only visible to your followers"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
-              ${post.mine === true && post.privacy === 'mutuals' ? `<span class="priv-icon" title="This post is only visible to your mutual followers"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
-              ${post.privacy === "members-only" ? `<span class="priv-icon" title="This post is only visible to members of this community"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
-              ${post.mine === true && post.privacy === 'private' ? `<span class="priv-icon" title="This post is only visible to you"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg")}"></span>` : ``}
-              ${post.nsfw === true ? `<span class="priv-icon" title="This post has been marked as NSFW"><img class="nsfw-svg svg-pink-light" src="${formatImageSource("nsfw.svg")}"></span>` : ``}
+              ${post.privacy === "users" ? `<span class="priv-icon" title="This post is only visible to logged in users"><img class="priv-svg svg-pink-light" src="${formatImageSource("user-badge.svg", "icon")}"></span>` : ``}
+              ${post.mine === false && post.community_id === null && post.user_concealed ? `<span class="priv-icon" title="This post is only visible to certain users"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg", "icon")}"></span>` : ``}
+              ${post.community_id === null && post.mine === true && post.user_concealed ? `<span class="priv-icon" title="This post is only visible to users you are following because you are in Concealed Mode."><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg", "icon")}"></span>` : ``}
+              ${post.mine === true && post.privacy === 'followers' ? `<span class="priv-icon" title="This post is only visible to your followers"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg", "icon")}"></span>` : ``}
+              ${post.mine === true && post.privacy === 'mutuals' ? `<span class="priv-icon" title="This post is only visible to your mutual followers"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg", "icon")}"></span>` : ``}
+              ${post.privacy === "members-only" ? `<span class="priv-icon" title="This post is only visible to members of this community"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg", "icon")}"></span>` : ``}
+              ${post.mine === true && post.privacy === 'private' ? `<span class="priv-icon" title="This post is only visible to you"><img class="priv-svg svg-pink-light" src="${formatImageSource("lock.svg", "icon")}"></span>` : ``}
+              ${post.nsfw === true ? `<span class="priv-icon" title="This post has been marked as NSFW"><img class="nsfw-svg svg-pink-light" src="${formatImageSource("nsfw.svg", "icon")}"></span>` : ``}
 							<span>
 								<a target="_blank" title="link to post" class="link_post svg-blue" href="https://www.pillowfort.social/posts/${post.id}">
-									<img src="${formatImageSource("link.svg")}">
+									<img src="${formatImageSource("link.svg", "icon")}">
 								</a>
 							</span>
 						</div>
@@ -410,14 +410,14 @@ function displayPost(post, fully) {
     nav.innerHTML = `
       <div class="post-nav-left">
         <a class="nav-tab pointer-cursor" href="?post=${post.id}">
-          <img src="${formatImageSource("comment.svg")}">
+          <img src="${formatImageSource("comment.svg", "icon")}">
           <div class="tag-text">
             ${post.comments_count}
           </div>
         </a>
         <span>
           <div class="nav-tab pointer-cursor">
-            <img src="${formatImageSource("reblog.svg")}">
+            <img src="${formatImageSource("reblog.svg", "icon")}">
             <div class="tag-text">
               ${post.reblogs_count}
             </div>
@@ -426,7 +426,7 @@ function displayPost(post, fully) {
         <span>
           <span>
             <div class="nav-tab like-button">
-              <img class="svg-blue" style="width:22px" src="${formatImageSource("like.svg")}">
+              <img class="svg-blue" style="width:22px" src="${formatImageSource("like.svg", "icon")}">
               <div class="tag-text">
                 ${post.likes_count}
               </div>
@@ -435,7 +435,7 @@ function displayPost(post, fully) {
         </span>
       </div>
     `;
-    if (!post.original_post_id) header.appendChild(nav);
+    if (!post.original_post_id || post.username === post.original_username) header.appendChild(nav);
     return body;
 }
 
@@ -470,7 +470,7 @@ function postBodyPicture(post, fully) {
     if (picture.col === 2) container.classList.add("second-col");
     if (picture.row === post.pic_row_last) container.classList.add("pic-row-last");
     container.innerHTML = `
-      <img class="${width}" src="${formatImageSource(picture.url)}">
+      <img class="${width}" src="${formatImageSource(picture.url, "picture")}">
     `;
     media.appendChild(container);
   });
@@ -554,29 +554,40 @@ function formatTextImage(input) {
     input = input.substring(input.search(`src="`)+5);
 
     let url = input.substring(0, input.search(`"`));
-    output += formatImageSource(url);
+    output += formatImageSource(url, "picture");
     input = input.substring(url.length);
   }
   output += input;
   return output;
 }
 
-function formatImageSource(name) {
+function formatImageSource(name, usage) {
     if (name === null) return "";
     if (name.search("http") === 0) return name;
-    let fileName = name.split(".");
+    let fileExtension = name.lastIndexOf(".");
+    let fileName = [];
+    if (fileExtension < 0) {
+      fileName = [name, undefined];
+    } else {
+      fileName = [name.substring(0, fileExtension), name.substring(fileExtension)];
+    }
+    if (usage === "avatar" && fileName[1] && fileName[1].toLowerCase() === ".png") fileName[1] = ".jpg";
     let folder = document.location.pathname.substring(0, document.location.pathname.lastIndexOf("."));
     if (folder.search("_files") >= 0) {//Chromium
       folder = folder.substring(0, folder.lastIndexOf("/") + 1)
       if (fileName[1] === undefined) fileName[1] = "";
-      else fileName[1] = "." + fileName[1];
     } else {//Firefox
       folder += "_files/";
       fileName[0] += imageSuffix;
       if (fileName[1] === undefined) fileName[1] = ".jpg";
-      else fileName[1] = "." + fileName[1];
     }
     return folder + fileName[0] + fileName[1];
+}
+
+function tryPNG(el, name) {
+  if (name.search(".") < 0) return;
+  el.src = formatImageSource(name + ".png");
+  el.removeAttribute("onerror")
 }
 
 function formatDate(d) {
