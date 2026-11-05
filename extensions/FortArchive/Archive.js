@@ -435,7 +435,7 @@ function displayPost(post, fully) {
         </span>
       </div>
     `;
-    if (!post.original_post_id || post.username === post.original_username) header.appendChild(nav);
+    if (!post.original_post_id) header.appendChild(nav);
     return body;
 }
 
