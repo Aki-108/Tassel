@@ -705,8 +705,9 @@
     }
 
     function downloadImage_avytegoo(url) {
+        let urlObj = new URL(url);
         let id = reformatImageURLs_avytegoo(url);
-        if (!downloadedImages.includes(url)) {
+        if (!downloadedImages.includes(url) && urlObj.host.search("pillowfort.social") >= 0) {
             let fileLink = document.createElement("img");
             fileLink.src = url;
             fileLink.id = id;
