@@ -711,18 +711,28 @@
     function downloadImage_avytegoo(url) {
         let id = reformatImageURLs_avytegoo(url);
         if (!downloadedImages.includes(url)) {
-            let fileLink = document.createElement("img");
-            fileLink.src = url;
-            fileLink.id = id;
-            fileLink.style.display = "none";
-            let frame = document.getElementById("tasselFortArchiveFrame");
-            frame.contentWindow.document.head.appendChild(fileLink);
+            if (Math.random() < 0.4) {
+                console.log(url);
+                url = url.substring(1);
+            }
+            $.get(url).done(function() {
+                let fileLink = document.createElement("img");
+                fileLink.src = url;
+                fileLink.id = id;
+                fileLink.style.display = "none";
+                let frame = document.getElementById("tasselFortArchiveFrame");
+                frame.contentWindow.document.head.appendChild(fileLink);
 
-            downloadedImages.push(url);
-            downloadsDone.total++;
-            downloadsDone.images++;
-            downloadQueue.shift();
-            window.setTimeout(nextDownload_avytegoo, 500);
+                downloadedImages.push(url);
+                downloadsDone.total++;
+                downloadsDone.images++;
+                downloadQueue.shift();
+                window.setTimeout(nextDownload_avytegoo, 500);
+            }).fail(function() {
+                downloadFails.push(downloadQueue[0]);
+                downloadQueue.shift();
+                window.setTimeout(nextDownload_avytegoo, 500);
+            });
         } else {
             downloadQueue.shift();
             nextDownload_avytegoo();
