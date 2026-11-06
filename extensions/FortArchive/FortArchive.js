@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.5
+// @version      1.6
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -206,12 +206,10 @@
             if (date >= pageTime[minPage][0].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(minPage);
-                //if (minPage > 1) addLoadPage(minPage-1, true);
                 return;
             } else if (date <= pageTime[pivot][1].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(pivot);
-                //if (pivot > 1) addLoadPage(pivot-1, true);
                 return;
             } else {
                 findDate_avytegoo(minPage, pivot);
@@ -222,12 +220,10 @@
             if (date >= pageTime[pivot][0].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(pivot);
-                // if (pivot > 1) addLoadPage(pivot-1, true);
                 return;
             } else if (date <= pageTime[maxPage][1].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(maxPage);
-                //if (maxPage > 1) addLoadPage(maxPage-1, true);
                 return;
             } else {
                 findDate_avytegoo(pivot, maxPage);
@@ -711,28 +707,19 @@
     function downloadImage_avytegoo(url) {
         let id = reformatImageURLs_avytegoo(url);
         if (!downloadedImages.includes(url)) {
-            if (Math.random() < 0.4) {
-                console.log(url);
-                url = url.substring(1);
-            }
-            $.get(url).done(function() {
-                let fileLink = document.createElement("img");
-                fileLink.src = url;
-                fileLink.id = id;
-                fileLink.style.display = "none";
-                let frame = document.getElementById("tasselFortArchiveFrame");
-                frame.contentWindow.document.head.appendChild(fileLink);
+            let fileLink = document.createElement("img");
+            fileLink.src = url;
+            fileLink.id = id;
+            fileLink.style.display = "none";
+            let frame = document.getElementById("tasselFortArchiveFrame");
+            frame.contentWindow.document.head.appendChild(fileLink);
+            fileLink.addEventListener("error", function() {console.log(this.src)});
 
-                downloadedImages.push(url);
-                downloadsDone.total++;
-                downloadsDone.images++;
-                downloadQueue.shift();
-                window.setTimeout(nextDownload_avytegoo, 500);
-            }).fail(function() {
-                downloadFails.push(downloadQueue[0]);
-                downloadQueue.shift();
-                window.setTimeout(nextDownload_avytegoo, 500);
-            });
+            downloadedImages.push(url);
+            downloadsDone.total++;
+            downloadsDone.images++;
+            downloadQueue.shift();
+            window.setTimeout(nextDownload_avytegoo, 500);
         } else {
             downloadQueue.shift();
             nextDownload_avytegoo();
