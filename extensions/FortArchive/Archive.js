@@ -470,7 +470,7 @@ function postBodyPicture(post, fully) {
     if (picture.col === 2) container.classList.add("second-col");
     if (picture.row === post.pic_row_last) container.classList.add("pic-row-last");
     container.innerHTML = `
-      <img class="${width}" src="${formatImageSource(picture.url, "picture")}">
+      <img class="${width}" src="${formatImageSource(picture.url, "picture")}" onerror="tryPNG(this, '${picture.url}')">
     `;
     media.appendChild(container);
   });
@@ -556,6 +556,8 @@ function formatTextImage(input) {
     let url = input.substring(0, input.search(`"`));
     output += formatImageSource(url, "picture");
     input = input.substring(url.length);
+    
+    output += `" onerror="tryPNG(this, '${url}')`;
   }
   output += input;
   return output;
@@ -586,8 +588,17 @@ function formatImageSource(name, usage) {
 
 function tryPNG(el, name) {
   if (name.search(".") < 0) return;
-  el.src = formatImageSource(name + ".png");
+  let fileExtension = name.lastIndexOf(".");
+  el.src = formatImageSource(name.substring(0, fileExtension), ".png");
   el.removeAttribute("onerror")
+  el.addEventListener("error", tryJPG);
+}
+
+function tryJPG(el, name) {
+  if (name.toLowerCase().search(".png") < 0) return;
+  let fileExtension = name.lastIndexOf(".");
+  el.src = formatImageSource(name.substring(0, fileExtension), ".jpg");
+  el.removeEventListener("error", tryJPG);
 }
 
 function formatDate(d) {
