@@ -199,7 +199,7 @@ function displayComments(postId) {
         <div id="${comment.id}" class="main comment">
           <div class="header">
             <div class="avatar-container">
-              <img class="avatar" src="${formatImageSource(comment.avatar_url, "avatar")}" onerror="tryPNG(this, '${comment.avatar_url}')">
+              <img class="avatar" src="${formatImageSource(comment.avatar_url, "avatar")}" onerror="tryType(this, '${comment.avatar_url}')">
             </div>
             <div class="comment-subheader">
               <span>
@@ -346,7 +346,7 @@ function displayPost(post, fully) {
     avatar.classList.add("side-info");
     avatar.innerHTML = `
       <div class="avatar">
-        <img loading="lazy" src="${formatImageSource(post.avatar_url, "avatar")}" onerror="tryPNG(this, '${post.avatar_url}')">
+        <img loading="lazy" src="${formatImageSource(post.avatar_url, "avatar")}" onerror="tryType(this, '${post.avatar_url}')">
       </div>
     `;
     body.appendChild(avatar);
@@ -470,7 +470,7 @@ function postBodyPicture(post, fully) {
     if (picture.col === 2) container.classList.add("second-col");
     if (picture.row === post.pic_row_last) container.classList.add("pic-row-last");
     container.innerHTML = `
-      <img class="${width}" src="${formatImageSource(picture.url, "picture")}" onerror="tryPNG(this, '${picture.url}')">
+      <img class="${width}" src="${formatImageSource(picture.url, "picture")}" onerror="tryType(this, '${picture.url}')">
     `;
     media.appendChild(container);
   });
@@ -557,7 +557,7 @@ function formatTextImage(input) {
     output += formatImageSource(url, "picture");
     input = input.substring(url.length);
     
-    output += `" onerror="tryPNG(this, '${url}')`;
+    output += `" onerror="tryType(this, '${url}')`;
   }
   output += input;
   return output;
@@ -586,19 +586,18 @@ function formatImageSource(name, usage) {
     return folder + fileName[0] + fileName[1];
 }
 
-function tryPNG(el, name) {
+function tryType(el, name) {
   if (name.search(".") < 0) return;
+  let type = el.getAttribute("type");
+  if (!type) {
+    type = ".jpg";
+    el.setAttribute("type", ".png");
+  }
   let fileExtension = name.lastIndexOf(".");
-  el.src = formatImageSource(name.substring(0, fileExtension), ".png");
-  el.removeAttribute("onerror")
-  el.addEventListener("error", tryJPG);
-}
-
-function tryJPG(el, name) {
-  if (name.toLowerCase().search(".png") < 0) return;
-  let fileExtension = name.lastIndexOf(".");
-  el.src = formatImageSource(name.substring(0, fileExtension), ".jpg");
-  el.removeEventListener("error", tryJPG);
+  el.src = formatImageSource(name.substring(0, fileExtension), type);
+  if (type === ".jpg") el.setAttribute("type", ".png");
+  else if (type === ".png") el.setAttribute("type", ".gif");
+  else if (type === ".gif") el.removeAttribute("onerror")
 }
 
 function formatDate(d) {
