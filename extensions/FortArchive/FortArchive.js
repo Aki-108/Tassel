@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.5
+// @version      1.6
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -27,7 +27,7 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@e47d2cac4756b84730ffd2c503212a974cb3e605/extensions/FortArchive/Archive.js";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@485189d59d8134509b57a2e15699258498dc2a05/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
@@ -206,12 +206,10 @@
             if (date >= pageTime[minPage][0].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(minPage);
-                //if (minPage > 1) addLoadPage(minPage-1, true);
                 return;
             } else if (date <= pageTime[pivot][1].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(pivot);
-                //if (pivot > 1) addLoadPage(pivot-1, true);
                 return;
             } else {
                 findDate_avytegoo(minPage, pivot);
@@ -222,12 +220,10 @@
             if (date >= pageTime[pivot][0].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(pivot);
-                // if (pivot > 1) addLoadPage(pivot-1, true);
                 return;
             } else if (date <= pageTime[maxPage][1].getTime()) {
                 clearPage_avytegoo();
                 loadPage_avytegoo(maxPage);
-                //if (maxPage > 1) addLoadPage(maxPage-1, true);
                 return;
             } else {
                 findDate_avytegoo(pivot, maxPage);
@@ -657,10 +653,12 @@
     function downloadPage_avytegoo(page) {
         $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
             data.posts.forEach(function(post) {
-                if (!downloadedImages.includes(post.avatar_url)) {
-                    downloadQueue.push(["image", post.avatar_url]);
+                if (imageWhitelist_avytegoo(post.avatar_url)) {
+                    if (!downloadedImages.includes(post.avatar_url)) {
+                        downloadQueue.push(["image", post.avatar_url]);
+                    }
+                    post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 }
-                post.avatar_url = reformatImageURLs_avytegoo(post.avatar_url);
                 if (post.original_username && post.original_username != user) {
                     delete post.title;
                     delete post.content;
@@ -672,16 +670,14 @@
                 }
                 if (post.media && post.media.length > 0) {
                     post.media.forEach(function(media) {
-                        if (media.media_type == "picture") {
-                            let url = media.url || media.b2_lg_url;
-                            if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
-                                media.url = reformatImageURLs_avytegoo(url);
-                                downloadQueue.push(["image", url]);
-                            }
+                        let url = media.url || media.b2_lg_url;
+                        if (media.media_type == "picture"
+                            && document.getElementById("tasselFortArchiveIncludeImages").checked
+                            && imageWhitelist_avytegoo(url)) {
+                            media.url = reformatImageURLs_avytegoo(url);
+                            downloadQueue.push(["image", url]);
                         }
-                        if (media.embed_code) {
-                            media.embed_code = encodeURI(media.embed_code);
-                        }
+                        if (media.embed_code) media.embed_code = encodeURI(media.embed_code);
                     });
                 }
                 if (post.content) post.content = downloadFormatTextbody_avytegoo(post.content);
@@ -717,6 +713,12 @@
             fileLink.style.display = "none";
             let frame = document.getElementById("tasselFortArchiveFrame");
             frame.contentWindow.document.head.appendChild(fileLink);
+            fileLink.addEventListener("error", function() {
+                console.log("error:", this.src);
+                this.remove();
+                downloadsDone.total--;
+                downloadsDone.images--;
+            });
 
             downloadedImages.push(url);
             downloadsDone.total++;
@@ -729,6 +731,16 @@
         }
     }
 
+    function imageWhitelist_avytegoo(url) {
+        let urlObj = new URL(url || "a:");
+        let whitelisted = ["cdn.jsdelivr.net",
+                          "pillowfort.social",
+                          "media.tumblr.com"].some(function(item) {
+            return urlObj.host.search(item) >= 0;
+        });
+        return whitelisted;
+    }
+
     function downloadComments_avytegoo(url) {
         let post = url.split(",")[0]*1;
         let page = url.split(",")[1]*1;
@@ -736,10 +748,12 @@
             if (data.comments.length > 0) {
                 data.comments.forEach(function(comment) {
                     comment.body = downloadFormatTextbody_avytegoo(comment.body);
-                    if (!downloadedImages.includes(comment.avatar_url)) {
-                        downloadQueue.push(["image", comment.avatar_url]);
+                    if (imageWhitelist_avytegoo(comment.avatar_url)) {
+                        if (!downloadedImages.includes(comment.avatar_url)) {
+                            downloadQueue.push(["image", comment.avatar_url]);
+                        }
+                        comment.avatar_url = reformatImageURLs_avytegoo(comment.avatar_url);
                     }
-                    comment.avatar_url = reformatImageURLs_avytegoo(comment.avatar_url);
                 });
                 let fileLink = document.createElement("script");
                 fileLink.type = "text/javascript";
@@ -785,7 +799,7 @@
             textBodyIn = textBodyIn.substring(textBodyIn.search(`src="`)+5);
 
             let url = textBodyIn.substring(0, textBodyIn.search(`"`));
-            if (document.getElementById("tasselFortArchiveIncludeImages").checked) {
+            if (document.getElementById("tasselFortArchiveIncludeImages").checked && imageWhitelist_avytegoo(url)) {
                 if (!downloadedImages.includes(url)) {
                     downloadQueue.push(["image", url]);
                 }
@@ -807,32 +821,32 @@
 
     //src: https://stackoverflow.com/a/2159195
     function VisibilityMonitor_avytegoo(element, showfn, hidefn) {
-        let isshown= false;
+        let isshown = false;
         function check() {
             if (rectsIntersect_avytegoo(getPageRect_avytegoo(), getElementRect_avytegoo(element)) !== isshown) {
-                isshown= !isshown;
-                isshown? showfn() : hidefn();
+                isshown = !isshown;
+                isshown ? showfn() : hidefn();
             }
         };
-        window.onscroll=window.onresize= check;
+        window.onscroll = window.onresize = check;
         check();
     }
     function getPageRect_avytegoo() {
-        let isquirks= document.compatMode!=='BackCompat';
-        let page= isquirks? document.documentElement : document.body;
-        let x= page.scrollLeft;
-        let y= page.scrollTop;
-        let w= 'innerWidth' in window? window.innerWidth : page.clientWidth;
-        let h= 'innerHeight' in window? window.innerHeight : page.clientHeight;
+        let isquirks = document.compatMode !== 'BackCompat';
+        let page = isquirks ? document.documentElement : document.body;
+        let x = page.scrollLeft;
+        let y = page.scrollTop;
+        let w = 'innerWidth' in window ? window.innerWidth : page.clientWidth;
+        let h = 'innerHeight' in window ? window.innerHeight : page.clientHeight;
         return [x, y, x+w, y+h];
     }
     function getElementRect_avytegoo(element) {
-        let x= 0, y= 0;
-        let w= element.offsetWidth, h= element.offsetHeight;
-        while (element.offsetParent!==null) {
-            x+= element.offsetLeft;
-            y+= element.offsetTop;
-            element= element.offsetParent;
+        let x = 0, y = 0;
+        let w = element.offsetWidth, h = element.offsetHeight;
+        while (element.offsetParent !== null) {
+            x += element.offsetLeft;
+            y += element.offsetTop;
+            element = element.offsetParent;
         }
         return [x, y, x+w, y+h];
     }
