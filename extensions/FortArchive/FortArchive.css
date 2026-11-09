@@ -323,6 +323,22 @@ body.dark-theme .tasselFortArchivePostDisplay {
         display: flex;
         flex-flow: column nowrap;
         gap: 0.5em;
+        & h2 {
+            font-size: 1.5em;
+        }
+        & p {
+            margin-bottom: 0;
+        }
+        & hr {
+            width: 100%;
+        }
+        & label {
+            line-height: 2em;
+            & input {
+                margin-left: 0;
+                margin-right: 0.5em;
+            }
+        }
     }
     &.beforeStart {
         #tasselFortArchiveAfterStart,
@@ -345,6 +361,9 @@ body.dark-theme .tasselFortArchivePostDisplay {
     }
 }
 
+
+
+
 #tasselFortArchiveProgress {
     width:100%;
     background-color:#ddd;
@@ -352,10 +371,11 @@ body.dark-theme .tasselFortArchivePostDisplay {
     margin-bottom: 1em;
     border-radius: 0.5em;
     overflow:hidden;
-    body.dark-theme & {
-      background-color: #23282e;
-    }
 }
+body.dark-theme #tasselFortArchiveProgress {
+    background-color: #23282e;
+}
+
 #tasselFortArchiveProgressBar {
     width:0;
     height: 38px;
@@ -365,7 +385,7 @@ body.dark-theme .tasselFortArchivePostDisplay {
     color: var(--tasselAccentText);
     transition:width 0.5s ease-out;
     font-size:24px;
-    body.dark-theme & {
-      background-color: #31734e;
-    }
+}
+body.dark-theme #tasselFortArchiveProgressBar {
+    background-color: #31734e;
 }
