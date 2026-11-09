@@ -4,7 +4,7 @@ let page = pages.findIndex(function(item) {
 let post = null;
 let commentPage = 1;
 let tag = null, filter = null;
-let totalPosts = {"total": 0, "own": 0, "reblog": 0};
+let totalPosts = {"total": 0, "own": 0, "reblog": 0, "community": 0};
 let minPage = pages.findIndex(function(item) {
     return item
 });
@@ -30,10 +30,15 @@ function init() {
     });
     totalPosts.total += pageData.posts.length;
   });
+  comm.forEach(function(pageData, index) {
+    totalPosts.community += pageData.posts.length;
+    totalPosts.total += pageData.posts.length;
+  });
   document.getElementsByClassName("sidebar-user")[0].children[0].href = "?";
   document.getElementsByClassName("sidebar-footer")[0].innerHTML = `
     <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
     <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
+    <a href="?filter=community&p=1">Community Posts<span>${totalPosts.community}</span></a>
   `;
   document.getElementsByTagName("main")[0].innerHTML = "";
   document.getElementsByTagName("footer")[0].innerHTML = "";
@@ -246,7 +251,9 @@ function displayComments(postId) {
 function displaySearch() {
   let writePage = 1;
   let searchResult = [];
-  pages.forEach(function(page) {
+  let data = pages;
+  if (filter === "community") data = comm;
+  data.forEach(function(page) {
     page.posts.forEach(function(post) {
       if (filter !== null) {
         if (filter === "original" && post.original_post_id !== null) return;
@@ -400,7 +407,7 @@ function displayPost(post, fully) {
       if (filter !== null && tag !== null) tagFilter += "&";
       if (tag !== null) tagFilter += "tag=" + tag;
       let span = document.createElement("span");
-      span.innerHTML = `<a class="tag-item" href="?${tagFilter}">${tag}</a>`;
+      span.innerHTML = `<a class="tag-item" href="?${tagFilter}&p=1">${tag}</a>`;
       if (index < post.tags.length - 1) span.innerHTML += `<span>, </span>`;
       tags.children[0].appendChild(span);
     });
