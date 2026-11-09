@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.6
+// @version      1.7
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -16,7 +16,7 @@
     user = user[0].id;
     let pageTime = [];
     let pageJson = [];
-    let lastPage = 1;
+    let lastPage = -1, lastPageComm = -1;
     let mainFrame;
     let navigation;
     let pagesDisplayed = [];
@@ -27,8 +27,8 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@485189d59d8134509b57a2e15699258498dc2a05/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@396af7e471a6c579fd05c1860c394ecb7969fd75/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@174eb224d88b92e1e8d2cc494c2a69511c16e63a/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@174eb224d88b92e1e8d2cc494c2a69511c16e63a/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -144,7 +144,7 @@
                 post.style.order *= -1;
             });
         });
-        if (document.getElementById("tasselFortArchiveNavigationDownload")) document.getElementById("tasselFortArchiveNavigationDownload").addEventListener("click", initDownloader_avytegoo);
+        if (document.getElementById("tasselFortArchiveNavigationDownload")) document.getElementById("tasselFortArchiveNavigationDownload").addEventListener("click", prepareDownloader_avytegoo);
         loadScript_avytegoo("https://cdn.jsdelivr.net/gh/Stuk/jszip@cae55105f5e8bd37c270cdb76eab2cf40388dfd9/dist/jszip.min.js");
         loadScript_avytegoo("https://cdn.jsdelivr.net/gh/Stuk/jszip@cae55105f5e8bd37c270cdb76eab2cf40388dfd9/vendor/FileSaver.js");
     }
@@ -172,6 +172,36 @@
             } else {
                 lastUnsuccessful = lastUnsuccessful > pivot || lastUnsuccessful === undefined ? pivot : lastUnsuccessful;
                 findLastPage_avytegoo(minPage, pivot-1, lastSuccessful, lastUnsuccessful);
+            }
+        });
+    }
+
+    function findLastPage2_avytegoo(url, initial, page, lastSuccessful, lastUnsuccessful) {
+        if (page === 1) return;
+        if (page === undefined || isNaN(page)) page = 1;
+        $.getJSON(`${url}?p=${page}`, function(data) {
+            if (data.posts.length) {
+                lastSuccessful = lastSuccessful < page || lastSuccessful === undefined ? page : lastSuccessful;
+                if (initial) {
+                    //continue expanding
+                    findLastPage2_avytegoo(url, initial, page + 50, lastSuccessful);
+                } else {
+                    if (lastSuccessful === lastUnsuccessful-1) {
+                        //done
+                        if (url.search("community_posts") > 0) lastPageComm = lastSuccessful;
+                        else lastPage = lastSuccessful;
+                    } else {
+                        //continue closing in
+                        findLastPage2_avytegoo(url, false, Math.ceil((lastSuccessful+lastUnsuccessful)/2), lastSuccessful, lastUnsuccessful);
+                    }
+                }
+            } else if (data.total_count === 0) {
+                //done with no pages
+                if (url.search("community_posts") > 0) lastPageComm = 0;
+                else lastPage = lastSuccessful;
+            } else {
+                lastUnsuccessful = lastUnsuccessful > page || lastUnsuccessful === undefined ? page : lastUnsuccessful;
+                findLastPage2_avytegoo(url, false, Math.ceil((lastSuccessful+lastUnsuccessful)/2), lastSuccessful, lastUnsuccessful);
             }
         });
     }
@@ -421,6 +451,20 @@
         monthFrame.getElementsByClassName("content")[0].appendChild(frame);
     }
 
+    function prepareDownloader_avytegoo() {
+        this.innerHTML = "loading...";
+        //findLastPage2_avytegoo(`${document.URL}/json/`, true);
+        findLastPage2_avytegoo(`${document.URL}/community_posts/json/`, true);
+        initDownloaderRec_avytegoo();
+    }
+
+    function initDownloaderRec_avytegoo() {
+        window.setTimeout(function() {
+            if (lastPage >= 0 && lastPageComm >= 0) initDownloader_avytegoo();
+            else initDownloaderRec_avytegoo();
+        }, 1000);
+    }
+
     function initDownloader_avytegoo() {
         downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
 
@@ -450,12 +494,22 @@
         intro.innerHTML = `
             <div id="tasselFortArchiveBeforeStart">
                 <h1>Settings</h1>
+                <h2>Fort</h2>
                 <label class="tasselLabel">from page
-                    <input id="tasselFortArchiveStartPage" value="1" type="number" min="1" max="${lastPage}">
+                    <input id="tasselFortArchiveStartPage" value="${Math.min(1, lastPage)}" type="number" min="0" max="${lastPage}">
                 </label>
                 <label class="tasselLabel">to page
-                    <input id="tasselFortArchiveEndPage" value="${lastPage}" type="number" min="1" max="${lastPage}">
+                    <input id="tasselFortArchiveEndPage" value="${lastPage}" type="number" min="0" max="${lastPage}">
                 </label>
+                <h2>Community Posts</h2>
+                <label class="tasselLabel">from page
+                    <input id="tasselFortArchiveStartPageComm" value="${Math.min(1, lastPageComm)}" type="number" min="0" max="${lastPageComm}">
+                </label>
+                <label class="tasselLabel">to page
+                    <input id="tasselFortArchiveEndPageComm" value="${lastPageComm}" type="number" min="0" max="${lastPageComm}">
+                </label>
+                <p>Set "from page" and "to page" to 0 to not download.</p>
+                <hr>
                 <label class="tasselCheckbox">
                     <input id="tasselFortArchiveIncludeImages" type="checkbox" checked="">
                     include images
@@ -463,6 +517,10 @@
                 <label class="tasselCheckbox">
                     <input id="tasselFortArchiveIncludeComments" type="checkbox" checked="">
                     include comments
+                </label>
+                <label class="tasselCheckbox">
+                    <input id="tasselFortArchiveExcludeLinked" type="checkbox">
+                    exclude external image sources (This will download less images. Check this, if your download cancels.)
                 </label>
                 <button id="tasselFortArchiveStart" class="tasselButton">Start Download</button>
             </div>
@@ -484,13 +542,19 @@
         document.getElementById("tasselFortArchiveStart").addEventListener("click", function() {
             let start = parseInt(document.getElementById("tasselFortArchiveStartPage").value);
             let end = parseInt(document.getElementById("tasselFortArchiveEndPage").value);
-            if (start < 1 || end > lastPage || start > end) {
+            let startComm = parseInt(document.getElementById("tasselFortArchiveStartPageComm").value);
+            let endComm = parseInt(document.getElementById("tasselFortArchiveEndPageComm").value);
+            if ((start < 1 || end > lastPage || start > end) && !(start === 0 && end === 0)
+               || (startComm < 1 || endComm > lastPageComm || startComm > endComm) && !(startComm === 0 && endComm === 0)) {
                 alert("Invalid input for start or end pages.");
                 return;
             }
             downloadQueue = [];
-            for (let i = start; i <= end; i++) {
+            if (end > 0) for (let i = start; i <= end; i++) {
                 downloadQueue.push(["page", i]);
+            }
+            if (endComm > 0) for (let i = startComm; i <= endComm; i++) {
+                downloadQueue.push(["comm", i]);
             }
             downloadIcons_avytegoo();
             document.getElementById("tasselFortArchiveDownloader").classList.remove("beforeStart");
@@ -547,7 +611,7 @@
                 <title>${frame.title}</title>
                 <link rel="stylesheet" href="${styleURL}"></style>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">
-                <script>var username = "${user}";</script>
+                <script>var username = "${user}";var pages = [];var comm = [];</script>
             </head>
             <body class="${document.body.getAttribute("class")}" style="${document.body.getAttribute("style")}">
                 <nav>
@@ -556,6 +620,7 @@
                     <div class="sidebar-footer">
                         <a href="?">Original Posts<span>0</span></a>
                         <a href="?">Reblogs<span>0</span></a>
+                        <a href="?">Community Posts<span>0</span></a>
                     </div>
                 </nav>
                 <main>
@@ -621,7 +686,8 @@
         `;
 
         if (downloadQueue.length > 0) {
-            if (downloadQueue[0][0] == "page") downloadPage_avytegoo(downloadQueue[0][1]);
+            if (downloadQueue[0][0] == "page") downloadPage_avytegoo(downloadQueue[0][1], false);
+            else if (downloadQueue[0][0] == "comm") downloadPage_avytegoo(downloadQueue[0][1], true);
             else if (downloadQueue[0][0] == "image") downloadImage_avytegoo(downloadQueue[0][1]);
             else if (downloadQueue[0][0] == "comments") downloadComments_avytegoo(downloadQueue[0][1]);
         } else {
@@ -650,8 +716,10 @@
         }
     }
 
-    function downloadPage_avytegoo(page) {
-        $.getJSON(`https://www.pillowfort.social/${user}/json/?p=${page}`, function(data) {
+    function downloadPage_avytegoo(page, comm) {
+        let url = `https://www.pillowfort.social/${user}/json/?p=${page}`;
+        if (comm) url = `https://www.pillowfort.social/${user}/community_posts/json/?p=${page}`;
+        $.getJSON(url, function(data) {
             data.posts.forEach(function(post) {
                 if (imageWhitelist_avytegoo(post.avatar_url)) {
                     if (!downloadedImages.includes(post.avatar_url)) {
@@ -687,10 +755,8 @@
             });
             let fileLink = document.createElement("script");
             fileLink.type = "text/javascript";
-            fileLink.innerHTML = `
-                if (pages == undefined) var pages = [];
-                pages[${page}] = ${JSON.stringify(data)}
-            `;
+            if (comm) fileLink.innerHTML = `comm[${page}] = ${JSON.stringify(data)}`;
+            else fileLink.innerHTML = `pages[${page}] = ${JSON.stringify(data)}`;
             let frame = document.getElementById("tasselFortArchiveFrame");
             frame.contentWindow.document.head.appendChild(fileLink);
             downloadsDone.total++;
@@ -732,6 +798,7 @@
     }
 
     function imageWhitelist_avytegoo(url) {
+        if (document.getElementById("tasselFortArchiveExcludeLinked").checked) return true;
         let urlObj = new URL(url || "a:");
         let whitelisted = ["cdn.jsdelivr.net",
                           "pillowfort.social",
