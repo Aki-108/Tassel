@@ -389,3 +389,20 @@ body.dark-theme #tasselFortArchiveProgress {
 body.dark-theme #tasselFortArchiveProgressBar {
     background-color: #31734e;
 }
+
+.tasselFortArchiveLoading div {
+    width: 40px;
+    height: 40px;
+    border: 7px solid var(--tasselTextColor);
+    border-radius: 100%;
+    border-right-color: transparent;
+    animation-name: tasselFortArchiveLoading;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes tasselFortArchiveLoading {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
