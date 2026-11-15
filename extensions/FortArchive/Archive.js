@@ -255,19 +255,29 @@ function displaySearch() {
   let searchResult = [];
   let data = pages;
   if (filter === "community") data = comm;
+  let tags = [];
+  if (tag !== null) tags = tag.split(",").map(function(word) {
+    return word.trim().toLowerCase();
+  });
   data.forEach(function(page) {
     page.posts.forEach(function(post) {
       if (filter !== null) {
         if (filter === "original" && post.original_post_id !== null) return;
         else if (filter === "reblog" && post.original_post_id === null) return;
       }
-      if ((tag !== null && post.tags.some(function(localTag) {
-        return localTag.toLowerCase() === tag.toLowerCase();
-      })) || tag === null) {
+      if (tag === null) {
         if (searchResult[writePage] === undefined) searchResult[writePage] = [];
         searchResult[writePage].push(post);
         if (searchResult[writePage].length >= 20) writePage++;
-      }
+      } else tags.forEach(function(tag) {
+        if (post.tags.some(function(localTag) {
+          return localTag.toLowerCase() === tag;
+        })) {
+          if (searchResult[writePage] === undefined) searchResult[writePage] = [];
+          searchResult[writePage].push(post);
+          if (searchResult[writePage].length >= 20) writePage++;
+        }
+      });
     });
   });
   let minPage = searchResult.findIndex(function(item) {
