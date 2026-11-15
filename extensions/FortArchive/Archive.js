@@ -265,19 +265,21 @@ function displaySearch() {
         if (filter === "original" && post.original_post_id !== null) return;
         else if (filter === "reblog" && post.original_post_id === null) return;
       }
+      let tagsValid = 0;
       if (tag === null) {
-        if (searchResult[writePage] === undefined) searchResult[writePage] = [];
-        searchResult[writePage].push(post);
-        if (searchResult[writePage].length >= 20) writePage++;
+        tagsValid++;
       } else tags.forEach(function(tag) {
         if (post.tags.some(function(localTag) {
           return localTag.toLowerCase() === tag;
         })) {
-          if (searchResult[writePage] === undefined) searchResult[writePage] = [];
-          searchResult[writePage].push(post);
-          if (searchResult[writePage].length >= 20) writePage++;
+          tagsValid++;
         }
       });
+      if (tagsValid >= tags.length) {
+        if (searchResult[writePage] === undefined) searchResult[writePage] = [];
+        searchResult[writePage].push(post);
+        if (searchResult[writePage].length >= 20) writePage++;
+      }
     });
   });
   let minPage = searchResult.findIndex(function(item) {
