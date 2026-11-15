@@ -18,7 +18,9 @@ init();
 function init() {
   if (window.self !== window.top) return;
   imageSuffix = document.getElementsByTagName("img")[0].src;
-  imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
+  imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("/")+1)
+  if (imageSuffix.search("_") >= 0) imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
+  else imageSuffix = "";
 
   pages.forEach(function(pageData, index) {
     pageData.posts.forEach(function(post) {
@@ -253,15 +255,27 @@ function displaySearch() {
   let searchResult = [];
   let data = pages;
   if (filter === "community") data = comm;
+  let tags = [];
+  if (tag !== null) tags = tag.split(",").map(function(word) {
+    return word.trim().toLowerCase();
+  });
   data.forEach(function(page) {
     page.posts.forEach(function(post) {
       if (filter !== null) {
         if (filter === "original" && post.original_post_id !== null) return;
         else if (filter === "reblog" && post.original_post_id === null) return;
       }
-      if ((tag !== null && post.tags.some(function(localTag) {
-        return localTag.toLowerCase() === tag.toLowerCase();
-      })) || tag === null) {
+      let tagsValid = 0;
+      if (tag === null) {
+        tagsValid++;
+      } else tags.forEach(function(tag) {
+        if (post.tags.some(function(localTag) {
+          return localTag.toLowerCase() === tag;
+        })) {
+          tagsValid++;
+        }
+      });
+      if (tagsValid >= tags.length) {
         if (searchResult[writePage] === undefined) searchResult[writePage] = [];
         searchResult[writePage].push(post);
         if (searchResult[writePage].length >= 20) writePage++;
