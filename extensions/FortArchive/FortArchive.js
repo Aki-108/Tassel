@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.7
+// @version      1.8
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -27,7 +27,7 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@174eb224d88b92e1e8d2cc494c2a69511c16e63a/extensions/FortArchive/Archive.js";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@d62852d3fe9ffca15cd23e9f4b64416550cb207e/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@174eb224d88b92e1e8d2cc494c2a69511c16e63a/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
@@ -188,8 +188,17 @@
                 } else {
                     if (lastSuccessful === lastUnsuccessful-1) {
                         //done
-                        if (url.search("community_posts") > 0) lastPageComm = lastSuccessful;
-                        else lastPage = lastSuccessful;
+                        if (url.search("community_posts") > 0) {
+                            lastPageComm = lastSuccessful;
+                            let frame = document.getElementById("tasselFortArchiveBeforeStart");
+                            frame.getElementsByTagName("input")[2].value = 1;
+                            frame.getElementsByTagName("input")[2].max = lastPageComm;
+                            frame.getElementsByTagName("input")[2].parentNode.classList.remove("hidden");
+                            frame.getElementsByTagName("input")[3].value = lastPageComm;
+                            frame.getElementsByTagName("input")[3].max = lastPageComm;
+                            frame.getElementsByTagName("input")[3].parentNode.classList.remove("hidden");
+                            frame.getElementsByClassName("tasselFortArchiveLoading")[0].classList.add("hidden");
+                        } else lastPage = lastSuccessful;
                     } else {
                         //continue closing in
                         findLastPage2_avytegoo(url, false, Math.ceil((lastSuccessful+lastUnsuccessful)/2), lastSuccessful, lastUnsuccessful);
@@ -197,8 +206,13 @@
                 }
             } else if (data.total_count === 0) {
                 //done with no pages
-                if (url.search("community_posts") > 0) lastPageComm = 0;
-                else lastPage = lastSuccessful;
+                if (url.search("community_posts") > 0) {
+                    lastPageComm = 0;
+                    let frame = document.getElementById("tasselFortArchiveBeforeStart");
+                    frame.getElementsByTagName("input")[2].value = 0;
+                    frame.getElementsByTagName("input")[3].value = 0;
+                    frame.getElementsByClassName("tasselFortArchiveLoading")[0].innerHTML = "<p><b>none</b></p><br>";
+                } else lastPage = lastSuccessful;
             } else {
                 lastUnsuccessful = lastUnsuccessful > page || lastUnsuccessful === undefined ? page : lastUnsuccessful;
                 findLastPage2_avytegoo(url, false, Math.ceil((lastSuccessful+lastUnsuccessful)/2), lastSuccessful, lastUnsuccessful);
@@ -452,18 +466,16 @@
     }
 
     function prepareDownloader_avytegoo() {
-        this.innerHTML = "loading...";
-        //findLastPage2_avytegoo(`${document.URL}/json/`, true);
         findLastPage2_avytegoo(`${document.URL}/community_posts/json/`, true);
-        initDownloaderRec_avytegoo();
+        initDownloader_avytegoo();
     }
 
-    function initDownloaderRec_avytegoo() {
+    /*function initDownloaderRec_avytegoo() {
         window.setTimeout(function() {
             if (lastPage >= 0 && lastPageComm >= 0) initDownloader_avytegoo();
             else initDownloaderRec_avytegoo();
         }, 1000);
-    }
+    }*/
 
     function initDownloader_avytegoo() {
         downloadsDone = {total: 0, posts: 0, images: 0, comments: 0};
@@ -502,12 +514,15 @@
                     <input id="tasselFortArchiveEndPage" value="${lastPage}" type="number" min="0" max="${lastPage}">
                 </label>
                 <h2>Community Posts</h2>
-                <label class="tasselLabel">from page
+                <label class="tasselLabel hidden">from page
                     <input id="tasselFortArchiveStartPageComm" value="${Math.min(1, lastPageComm)}" type="number" min="0" max="${lastPageComm}">
                 </label>
-                <label class="tasselLabel">to page
+                <label class="tasselLabel hidden">to page
                     <input id="tasselFortArchiveEndPageComm" value="${lastPageComm}" type="number" min="0" max="${lastPageComm}">
                 </label>
+                <div class="tasselFortArchiveLoading">
+                    <div></div>
+                </div>
                 <p>Set "from page" and "to page" to 0 to not download.</p>
                 <hr>
                 <label class="tasselCheckbox">
@@ -544,8 +559,8 @@
             let end = parseInt(document.getElementById("tasselFortArchiveEndPage").value);
             let startComm = parseInt(document.getElementById("tasselFortArchiveStartPageComm").value);
             let endComm = parseInt(document.getElementById("tasselFortArchiveEndPageComm").value);
-            if ((start < 1 || end > lastPage || start > end) && !(start === 0 && end === 0)
-               || (startComm < 1 || endComm > lastPageComm || startComm > endComm) && !(startComm === 0 && endComm === 0)) {
+            if ((start < 1 || end > lastPage || start > end) && !(start <= 0 && end <= 0)
+               || (startComm < 1 || endComm > lastPageComm || startComm > endComm) && !(startComm <= 0 && endComm <= 0)) {
                 alert("Invalid input for start or end pages.");
                 return;
             }
