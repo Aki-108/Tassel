@@ -18,7 +18,9 @@ init();
 function init() {
   if (window.self !== window.top) return;
   imageSuffix = document.getElementsByTagName("img")[0].src;
-  imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
+  imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("/")+1)
+  if (imageSuffix.search("_") >= 0) imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
+  else imageSuffix = "";
 
   pages.forEach(function(pageData, index) {
     pageData.posts.forEach(function(post) {
