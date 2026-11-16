@@ -608,16 +608,16 @@ function formatImageSource(name, usage) {
 }
 
 function tryType(el, name) {
-  if (name.search(".") < 0) return;
-  let type = el.getAttribute("type");
-  if (!type) {
+  let type = el.getAttribute("ftype");
+  if (type === null) {
     type = ".jpg";
-    el.setAttribute("type", ".png");
+    el.setAttribute("ftype", ".png");
   }
   let fileExtension = name.lastIndexOf(".");
-  el.src = formatImageSource(name.substring(0, fileExtension), type);
-  if (type === ".jpg") el.setAttribute("type", ".png");
-  else if (type === ".png") el.setAttribute("type", ".gif");
+  if (fileExtension < 0) fileExtension = name.length;
+  el.src = formatImageSource(name.substring(0, fileExtension) + type);
+  if (type === ".jpg") el.setAttribute("ftype", ".png");
+  else if (type === ".png") el.setAttribute("ftype", ".gif");
   else if (type === ".gif") el.removeAttribute("onerror")
 }
 
