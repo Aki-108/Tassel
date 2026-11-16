@@ -173,12 +173,12 @@ let extensionsIndex = [
         {
                 "name": "Fort Archive",
                 "id": 12,
-                "version": "1.8",
+                "version": "1.9",
                 "created": 1696333244573,
-                "updated": 1794765392734,
+                "updated": 1794855367652,
                 "author": "Aki108",
                 "description": "See many posts at once.",
-                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@ced6b95534019db16e0f5346f8ea3346efc8d1e8/extensions/FortArchive/FortArchive.js",
+                "src": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@637b8004ac9ae5334cc8ccfe008c80a646905c76/extensions/FortArchive/FortArchive.js",
                 "css": "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@be8cfe3365025c24192f84d7f27dc9587ff04537/extensions/FortArchive/FortArchive.css",
                 "post": "https://www.pillowfort.social/posts/3798470",
                 "features": [
