@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Fort Archive
-// @version      1.8
+// @version      1.9
 // @description  View lots of posts at once.
 // @author       Aki108
 // @match        https://www.pillowfort.social/*
@@ -27,7 +27,7 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@a53a9264677bce4c82ce5fabb324ca62cb8a349d/extensions/FortArchive/Archive.js";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@19d14cf4708083f3c220a0355d5c21cb899f84af/extensions/FortArchive/Archive.js";
     let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@174eb224d88b92e1e8d2cc494c2a69511c16e63a/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
@@ -564,6 +564,10 @@
                 alert("Invalid input for start or end pages.");
                 return;
             }
+            Object.values(document.getElementsByTagName("iframe")).forEach(function(frame) {
+                if (frame.id === "tasselFortArchiveFrame") return;
+                frame.remove();
+            });
             downloadQueue = [];
             if (end > 0) for (let i = start; i <= end; i++) {
                 downloadQueue.push(["page", i]);
