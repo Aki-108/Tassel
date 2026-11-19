@@ -127,8 +127,21 @@ function displayComments(postId) {
     });
     if (find) postData = find;
   });
+  if (postData === undefined) {
+    comm.forEach(function(page) {
+      if (postData) return;
+      let find = page.posts.find(function(post) {
+        return post.id == postId;
+      });
+      if (find) postData = find;
+    });
+  }
   
   let main = document.getElementsByTagName("main")[0];
+  if (postData === undefined) {
+    main.innerHTML = `<p style="text-align: center;">Post can't be found.</p>`;
+    return;
+  }
   main.appendChild(displayPost(postData, true));
   
   let minPage = 1;
