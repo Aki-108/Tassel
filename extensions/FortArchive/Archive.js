@@ -1,9 +1,11 @@
 let page = pages.findIndex(function(item) {
     return item
 });
+if (page === -1) page = null;
 let post = null;
 let commentPage = 1;
 let tag = null, filter = null;
+let messageThread = null;
 let totalPosts = {"total": 0, "own": 0, "reblog": 0, "community": 0};
 let minPage = pages.findIndex(function(item) {
     return item
@@ -41,21 +43,24 @@ function init() {
     <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
     <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
     <a href="?filter=community&p=1">Community Posts<span>${totalPosts.community}</span></a>
+    <a href="?messages=0">Messages</a>
   `;
   document.getElementsByTagName("main")[0].innerHTML = "";
   document.getElementsByTagName("footer")[0].innerHTML = "";
   
   let queryString = new URLSearchParams(window.location.search.substring(1));
   for (let pair of queryString.entries()) {
-    if (pair[0] === "p") page = pair[1] * 1;
-    if (pair[0] === "post") post = pair[1] * 1;
-    if (pair[0] === "page") commentPage = pair[1] * 1;
+    if (pair[0] === "p") page = parseInt(pair[1]);
+    if (pair[0] === "post") post = parseInt(pair[1]);
+    if (pair[0] === "page") commentPage = parseInt(pair[1]);
     if (pair[0] === "tag") tag = pair[1];
     if (pair[0] === "filter") filter = pair[1];
+    if (pair[0] === "messages") messageThread = parseInt(pair[1]);
   }
   if (post) displayComments(post);
   else if (tag || filter) displaySearch();
   else if (page) displayFeed();
+  else if (messageThread !== null) displayMessages();
 }
 
 function displayFeed() {
@@ -370,6 +375,46 @@ function displaySearch() {
     if (!post) return;
     main.appendChild(displayPost(post));
   });
+}
+
+function displayMessages() {
+    let main = document.getElementsByTagName("main")[0];
+    if (messageThread === 0) {
+      //overview
+      let list = document.createElement("div");
+      list.id = "messagesOverview";
+      main.appendChild(list);
+      let threads = messages.map(function(thread,index) {
+        return index;
+      });
+      threads.forEach(function(threadId) {
+        let box = document.createElement("div");
+        box.innerHTML = `<a href="?messages=${threadId}">${messages[threadId].user.username}</a>`;
+        list.appendChild(box);
+      });
+    } else if (!messages[messageThread]) {
+      main.innerHTML = "No messages found.";
+      return;
+    }
+    
+    let list = document.createElement("div");
+    list.id = "messagesOverview";
+    main.appendChild(list);
+    list.innerHTML = `<div>Conversation with ${messages[messageThread].user.username}</div>`;
+    messages[messageThread].messages.forEach(function(message) {
+        let box = document.createElement("div");
+        box.innerHTML = `
+            <div>
+                <div>
+                    ${message.yours ? "You" : messages[messageThread].user.username} at ${message.sent_at}
+                </div>
+                <div>
+                    ${message.content}
+                </div>
+            </div>
+        `;
+        list.appendChild(box);
+    });
 }
 
 function displayPost(post, fully) {
