@@ -53,6 +53,7 @@ nav {
   
   &:has(button.closed) {
     width: 50px;
+    background: var(--sidebarHeaderFooter);
     & .sidebar-expanded,
     & .sidebar-footer {
       display: none;
