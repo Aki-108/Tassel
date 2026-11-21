@@ -18,6 +18,7 @@ let imageSuffix = "";
 init();
 
 function init() {
+  if (document.body.clientWidth < 1300) document.getElementsByTagName("nav")[0].getElementsByTagName("button")[0].classList.add("closed");
   if (window.self !== window.top) return;
   imageSuffix = document.getElementsByTagName("img")[0].src;
   imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("/")+1)
@@ -379,20 +380,32 @@ function displaySearch() {
 
 function displayMessages() {
     let main = document.getElementsByTagName("main")[0];
+    main.innerHTML = "";
     if (messageThread === 0) {
       //overview
       let list = document.createElement("div");
       list.id = "messagesOverview";
       main.appendChild(list);
       let threads = messages.map(function(thread,index) {
-        return index;
+        return [index, new Date(thread.messages[thread.messages.length - 1].created_at).getTime()];
+      }).sort(function(a, b) {
+        return b[1] - a[1];
       });
-      threads.forEach(function(threadId) {
+      threads.forEach(function(thread) {
         let box = document.createElement("div");
-        box.innerHTML = `<a href="?messages=${threadId}">${messages[threadId].user.username}</a>`;
+        box.classList.add("listing");
+        box.innerHTML = `
+            <a href="?messages=${thread[0]}">
+                ${messages[thread[0]].user.username}
+            </a>
+            <span>
+                ${messages[thread[0]].messages[messages[thread[0]].messages.length-1].sent_at}
+            </span>
+        `;
         list.appendChild(box);
       });
-    } else if (!messages[messageThread]) {
+      return;
+    } else if (messages[messageThread] === undefined) {
       main.innerHTML = "No messages found.";
       return;
     }
@@ -400,12 +413,12 @@ function displayMessages() {
     let list = document.createElement("div");
     list.id = "messagesOverview";
     main.appendChild(list);
-    list.innerHTML = `<div>Conversation with ${messages[messageThread].user.username}</div>`;
+    list.innerHTML = `<div class="title">Conversation with ${messages[messageThread].user.username}</div>`;
     messages[messageThread].messages.forEach(function(message) {
         let box = document.createElement("div");
         box.innerHTML = `
             <div>
-                <div>
+                <div class="header">
                     ${message.yours ? "You" : messages[messageThread].user.username} at ${message.sent_at}
                 </div>
                 <div>
@@ -695,4 +708,9 @@ function formatDate(d) {
     string += date.getMinutes() < 10 ? "0" : "";
     string += date.getMinutes();
     return string;
+}
+
+function sidebarToggle(el) {
+  if (el.classList.contains('closed')) el.classList.remove('closed');
+  else el.classList.add('closed');
 }
