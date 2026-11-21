@@ -60,8 +60,8 @@ function init() {
   }
   if (post) displayComments(post);
   else if (tag || filter) displaySearch();
-  else if (page) displayFeed();
   else if (messageThread !== null) displayMessages();
+  else if (page) displayFeed();
 }
 
 function displayFeed() {
@@ -387,7 +387,9 @@ function displayMessages() {
       list.id = "messagesOverview";
       main.appendChild(list);
       let threads = messages.map(function(thread,index) {
-        return [index, new Date(thread.messages[thread.messages.length - 1].created_at).getTime()];
+        let message = thread.messages[thread.messages.length - 1];
+        let date = message ? new Date(message.created_at).getTime() : 0;
+        return [index, date];
       }).sort(function(a, b) {
         return b[1] - a[1];
       });
@@ -399,7 +401,7 @@ function displayMessages() {
                 ${messages[thread[0]].user.username}
             </a>
             <span>
-                ${messages[thread[0]].messages[messages[thread[0]].messages.length-1].sent_at}
+                ${(messages[thread[0]].messages[messages[thread[0]].messages.length-1] || {"sent_at": ""}).sent_at}
             </span>
         `;
         list.appendChild(box);
