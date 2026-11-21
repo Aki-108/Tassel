@@ -484,9 +484,11 @@ ul.pagination {
   & .title {
     background: var(--postHeaderFooter);
     padding: 10px;
+    color: var(--postHeaderFont);
   }
   & .header {
     background: var(--postHeaderFooter);
+    color: var(--postHeaderFont);
   }
   & img {
     max-width: 720px;
