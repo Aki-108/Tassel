@@ -20,6 +20,7 @@ init();
 function init() {
   if (window.self !== window.top) return;
   if (document.body.clientWidth < 1300) document.getElementsByTagName("nav")[0].getElementsByTagName("button")[0].classList.add("closed");
+  Object.values(document.head.getElementsByTagName("img")).forEach(function(item) {item.remove()});
   imageSuffix = document.getElementsByTagName("img")[0].src;
   imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("/")+1)
   if (imageSuffix.search("_") >= 0) imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
@@ -449,6 +450,9 @@ function displayPost(post, fully) {
     header.classList.add("post", "main");
     header.innerHTML = `
       <div class="header">
+        <div class="community">
+          ${post.comm_name ? "in " + post.comm_name : ""}
+        </div>
 				<div class="post-perma-link">
 					<div class="post-right">
 						<div class="timestamp2">
@@ -689,7 +693,8 @@ function tryType(el, name) {
   let fileExtension = name.lastIndexOf(".");
   if (fileExtension < 0) fileExtension = name.length;
   el.src = formatImageSource(name.substring(0, fileExtension) + type);
-  if (type === ".jpg") el.setAttribute("ftype", ".png");
+  if (type === ".jpg") el.setAttribute("ftype", ".jpeg");
+  else if (type === ".jpeg") el.setAttribute("ftype", ".png");
   else if (type === ".png") el.setAttribute("ftype", ".gif");
   else if (type === ".gif") el.removeAttribute("onerror")
 }
