@@ -27,8 +27,8 @@
     let downloadFails = [];
     let downloadedImages = [];
 
-    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@4d14aaf5277d7bf22fb88acd931903bb8c510438/extensions/FortArchive/Archive.js";
-    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@174eb224d88b92e1e8d2cc494c2a69511c16e63a/extensions/FortArchive/Archive.css";
+    let scriptURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3630892a9ea51eeb4a610b718c19c0b723645e66/extensions/FortArchive/Archive.js";
+    let styleURL = "https://cdn.jsdelivr.net/gh/Aki-108/Tassel@3630892a9ea51eeb4a610b718c19c0b723645e66/extensions/FortArchive/Archive.css";
 
     let icon = document.createElement("div");
     icon.innerHTML = `
@@ -633,6 +633,7 @@
             </head>
             <body class="${document.body.getAttribute("class")}" style="${document.body.getAttribute("style")}">
                 <nav>
+                    <button onclick="sidebarToggle(this)"><div></div></button>
                     <div class="sidebar-user"><a href="?">${user}</a></div>
                     ${(document.getElementById("sidebar-user-content").innerHTML)}
                     <div class="sidebar-footer">
@@ -741,7 +742,7 @@
     }
 
     function downloadTime_avytegoo() {
-        let s = downloadQueue.length * 0.5;
+        let s = downloadQueue.length * 0.7;
         if (s < 120) return `(${Math.ceil(s)} s)`;
         else if (s < 7200) return `(${Math.ceil(s/60)} min)`;
         else if (s < 172800) {
@@ -906,6 +907,7 @@
         $.getJSON(url, function(data) {
             data.messages = data.messages.map(function(message) {
                 if (message.content) message.content = downloadFormatTextbody_avytegoo(message.content);
+                return message;
             });
             let fileLink = document.createElement("script");
             fileLink.type = "text/javascript";
