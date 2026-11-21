@@ -18,8 +18,8 @@ let imageSuffix = "";
 init();
 
 function init() {
-  if (document.body.clientWidth < 1300) document.getElementsByTagName("nav")[0].getElementsByTagName("button")[0].classList.add("closed");
   if (window.self !== window.top) return;
+  if (document.body.clientWidth < 1300) document.getElementsByTagName("nav")[0].getElementsByTagName("button")[0].classList.add("closed");
   imageSuffix = document.getElementsByTagName("img")[0].src;
   imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("/")+1)
   if (imageSuffix.search("_") >= 0) imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
@@ -424,7 +424,7 @@ function displayMessages() {
                     ${message.yours ? "You" : messages[messageThread].user.username} at ${message.sent_at}
                 </div>
                 <div>
-                    ${message.content}
+                    ${formatTextImage(message.content)}
                 </div>
             </div>
         `;
