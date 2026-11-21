@@ -50,7 +50,40 @@ nav {
   width: 250px;
   color: var(--sidebarFontColor);
   z-index: 7;
+  
+  &:has(button.closed) {
+    width: 50px;
+    & .sidebar-expanded,
+    & .sidebar-footer {
+      display: none;
+    }
+    & .sidebar-user {
+      transform: rotate(-90deg);
+      width: 10px;
+      height: 10px;
+      margin: 170px 0 0 0;
+    }
+    & button div {
+      transform: rotate(225deg);
+    }
+  }
 
+  & button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    & div {
+      float: right;
+      border-style: solid;
+      border-color: var(--sidebarFontColor);
+      border-width: 0 0 3px 3px;
+      width: 10px;
+      height: 10px;
+      transform: rotate(45deg);
+    }
+  }
   & .sidebar-user {
     padding: 20px;
     background-color: var(--sidebarHeaderFooter);
@@ -433,6 +466,31 @@ ul.pagination {
     color: var(--postFontColor);
   }
 }
+#messagesOverview {
+  width: 740px;
+  margin: auto;
+  & > div {
+    background: var(--postBgColor);
+    color: var(--postFontColor);
+    border-bottom: 1px solid var(--postFontColor);
+  }
+  & > div > div > div {
+    padding: 10px;
+  }
+  & .listing {
+    padding: 10px;
+  }
+  & .title {
+    background: var(--postHeaderFooter);
+    padding: 10px;
+  }
+  & .header {
+    background: var(--postHeaderFooter);
+  }
+  & img {
+    max-width: 720px;
+  }
+}
 img {
   vertical-align: middle;
   image-orientation: from-image;
@@ -444,12 +502,6 @@ img {
 .svg-pink-light {
   filter: brightness(0) saturate(100%) invert(67%) sepia(96%) saturate(1357%) hue-rotate(288deg) brightness(100%) contrast(103%);
 }
-/*.post .svg-blue,
-.user-sidebar .svg-blue,
-.post img[src$=".svg"],
-.user-sidebar img[src$=".svg"] {
-  filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(66deg) brightness(93%) contrast(106%);
-}*/
 .font-nunito-bold {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
