@@ -177,6 +177,9 @@ nav {
     padding: 10px;
     box-sizing: border-box;
 
+    & .community {
+      float: left;
+    }
     & .post-perma-link {
       float: right;
       font-size: 20px;
