@@ -630,6 +630,10 @@
                 <link rel="stylesheet" href="${styleURL}"></style>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i">
                 <script>var username = "${user}";var pages = [];var comm = [];var messages = [];</script>
+                <meta id="tasselFortArchiveFramePages"></meta>
+                <meta id="tasselFortArchiveFrameComments"></meta>
+                <meta id="tasselFortArchiveFrameMessages"></meta>
+                <meta id="tasselFortArchiveFrameImages"></meta>
             </head>
             <body class="${document.body.getAttribute("class")}" style="${document.body.getAttribute("style")}">
                 <nav>
@@ -794,10 +798,14 @@
             });
             let fileLink = document.createElement("script");
             fileLink.type = "text/javascript";
-            if (comm) fileLink.innerHTML = `comm[${page}] = ${JSON.stringify(data)}`;
-            else fileLink.innerHTML = `pages[${page}] = ${JSON.stringify(data)}`;
+            if (comm) fileLink.innerHTML = `
+                comm[${page}] = ${JSON.stringify(data)}
+            `;
+            else fileLink.innerHTML = `
+                pages[${page}] = ${JSON.stringify(data)}
+            `;
             let frame = document.getElementById("tasselFortArchiveFrame");
-            frame.contentWindow.document.head.appendChild(fileLink);
+            frame.contentWindow.document.getElementById("tasselFortArchiveFramePages").appendChild(fileLink);
             downloadsDone.total++;
             downloadsDone.posts += data.posts.length;
             downloadQueue.shift();
@@ -815,9 +823,10 @@
             let fileLink = document.createElement("img");
             fileLink.src = url;
             fileLink.id = id;
+            fileLink.loading = "lazy";
             fileLink.style.display = "none";
             let frame = document.getElementById("tasselFortArchiveFrame");
-            frame.contentWindow.document.head.appendChild(fileLink);
+            frame.contentWindow.document.getElementById("tasselFortArchiveFrameImages").appendChild(fileLink);
             fileLink.addEventListener("error", function() {
                 console.log("error:", this.src);
                 this.remove();
@@ -838,7 +847,15 @@
 
     function imageWhitelist_avytegoo(url) {
         if (document.getElementById("tasselFortArchiveExcludeLinked").checked) return true;
-        let urlObj = new URL(url || "a:");
+        if (url === null || url === undefined) return false;
+        let urlObj = new URL("a:");
+        try {
+            urlObj = new URL(url);
+        } catch (e) {
+            console.log("invalid URL:", url);
+            console.log(e);
+            return false;
+        }
         let whitelisted = ["cdn.jsdelivr.net",
                           "pillowfort.social",
                           "media.tumblr.com"].some(function(item) {
@@ -869,7 +886,7 @@
                     comments[${post}][${page}] = ${JSON.stringify(data)}
                 `;
                 let frame = document.getElementById("tasselFortArchiveFrame");
-                frame.contentWindow.document.head.appendChild(fileLink);
+                frame.contentWindow.document.getElementById("tasselFortArchiveFrameComments").appendChild(fileLink);
                 downloadQueue.push(["comments", `${post},${page+1}`]);
             }
 
@@ -911,9 +928,11 @@
             });
             let fileLink = document.createElement("script");
             fileLink.type = "text/javascript";
-            fileLink.innerHTML = `messages[${id}] = ${JSON.stringify(data)}`;
+            fileLink.innerHTML = `
+                messages[${id}] = ${JSON.stringify(data)}
+            `;
             let frame = document.getElementById("tasselFortArchiveFrame");
-            frame.contentWindow.document.head.appendChild(fileLink);
+            frame.contentWindow.document.getElementById("tasselFortArchiveFrameMessages").appendChild(fileLink);
 
             downloadsDone.total++;
             downloadsDone.messages += data.messages.length;
