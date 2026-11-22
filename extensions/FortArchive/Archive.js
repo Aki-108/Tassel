@@ -1,9 +1,11 @@
 let page = pages.findIndex(function(item) {
     return item
 });
+if (page === -1) page = null;
 let post = null;
 let commentPage = 1;
 let tag = null, filter = null;
+let messageThread = null;
 let totalPosts = {"total": 0, "own": 0, "reblog": 0, "community": 0};
 let minPage = pages.findIndex(function(item) {
     return item
@@ -17,6 +19,8 @@ init();
 
 function init() {
   if (window.self !== window.top) return;
+  if (document.body.clientWidth < 1300) document.getElementsByTagName("nav")[0].getElementsByTagName("button")[0].classList.add("closed");
+  Object.values(document.head.getElementsByTagName("img")).forEach(function(item) {item.remove()});
   imageSuffix = document.getElementsByTagName("img")[0].src;
   imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("/")+1)
   if (imageSuffix.search("_") >= 0) imageSuffix = imageSuffix.substring(imageSuffix.lastIndexOf("_"), imageSuffix.lastIndexOf("."));
@@ -41,20 +45,23 @@ function init() {
     <a href="?filter=original&p=1">Original Posts<span>${totalPosts.own}</span></a>
     <a href="?filter=reblog&p=1">Reblogs<span>${totalPosts.reblog}</span></a>
     <a href="?filter=community&p=1">Community Posts<span>${totalPosts.community}</span></a>
+    <a href="?messages=0">Messages</a>
   `;
   document.getElementsByTagName("main")[0].innerHTML = "";
   document.getElementsByTagName("footer")[0].innerHTML = "";
   
   let queryString = new URLSearchParams(window.location.search.substring(1));
   for (let pair of queryString.entries()) {
-    if (pair[0] === "p") page = pair[1] * 1;
-    if (pair[0] === "post") post = pair[1] * 1;
-    if (pair[0] === "page") commentPage = pair[1] * 1;
+    if (pair[0] === "p") page = parseInt(pair[1]);
+    if (pair[0] === "post") post = parseInt(pair[1]);
+    if (pair[0] === "page") commentPage = parseInt(pair[1]);
     if (pair[0] === "tag") tag = pair[1];
     if (pair[0] === "filter") filter = pair[1];
+    if (pair[0] === "messages") messageThread = parseInt(pair[1]);
   }
   if (post) displayComments(post);
   else if (tag || filter) displaySearch();
+  else if (messageThread !== null) displayMessages();
   else if (page) displayFeed();
 }
 
@@ -127,8 +134,21 @@ function displayComments(postId) {
     });
     if (find) postData = find;
   });
+  if (postData === undefined) {
+    comm.forEach(function(page) {
+      if (postData) return;
+      let find = page.posts.find(function(post) {
+        return post.id == postId;
+      });
+      if (find) postData = find;
+    });
+  }
   
   let main = document.getElementsByTagName("main")[0];
+  if (postData === undefined) {
+    main.innerHTML = `<p style="text-align: center;">Post can't be found.</p>`;
+    return;
+  }
   main.appendChild(displayPost(postData, true));
   
   let minPage = 1;
@@ -359,6 +379,60 @@ function displaySearch() {
   });
 }
 
+function displayMessages() {
+    let main = document.getElementsByTagName("main")[0];
+    main.innerHTML = "";
+    if (messageThread === 0) {
+      //overview
+      let list = document.createElement("div");
+      list.id = "messagesOverview";
+      main.appendChild(list);
+      let threads = messages.map(function(thread,index) {
+        let message = thread.messages[thread.messages.length - 1];
+        let date = message ? new Date(message.created_at).getTime() : 0;
+        return [index, date];
+      }).sort(function(a, b) {
+        return b[1] - a[1];
+      });
+      threads.forEach(function(thread) {
+        let box = document.createElement("div");
+        box.classList.add("listing");
+        box.innerHTML = `
+            <a href="?messages=${thread[0]}">
+                ${messages[thread[0]].user.username}
+            </a>
+            <span>
+                ${(messages[thread[0]].messages[messages[thread[0]].messages.length-1] || {"sent_at": ""}).sent_at}
+            </span>
+        `;
+        list.appendChild(box);
+      });
+      return;
+    } else if (messages[messageThread] === undefined) {
+      main.innerHTML = "No messages found.";
+      return;
+    }
+    
+    let list = document.createElement("div");
+    list.id = "messagesOverview";
+    main.appendChild(list);
+    list.innerHTML = `<div class="title">Conversation with ${messages[messageThread].user.username}</div>`;
+    messages[messageThread].messages.forEach(function(message) {
+        let box = document.createElement("div");
+        box.innerHTML = `
+            <div>
+                <div class="header">
+                    ${message.yours ? "You" : messages[messageThread].user.username} at ${message.sent_at}
+                </div>
+                <div>
+                    ${formatTextImage(message.content)}
+                </div>
+            </div>
+        `;
+        list.appendChild(box);
+    });
+}
+
 function displayPost(post, fully) {
     let body = document.createElement("div");
     body.classList.add("post-container");
@@ -376,6 +450,9 @@ function displayPost(post, fully) {
     header.classList.add("post", "main");
     header.innerHTML = `
       <div class="header">
+        <div class="community">
+          ${post.comm_name ? "in " + post.comm_name : ""}
+        </div>
 				<div class="post-perma-link">
 					<div class="post-right">
 						<div class="timestamp2">
@@ -616,7 +693,8 @@ function tryType(el, name) {
   let fileExtension = name.lastIndexOf(".");
   if (fileExtension < 0) fileExtension = name.length;
   el.src = formatImageSource(name.substring(0, fileExtension) + type);
-  if (type === ".jpg") el.setAttribute("ftype", ".png");
+  if (type === ".jpg") el.setAttribute("ftype", ".jpeg");
+  else if (type === ".jpeg") el.setAttribute("ftype", ".png");
   else if (type === ".png") el.setAttribute("ftype", ".gif");
   else if (type === ".gif") el.removeAttribute("onerror")
 }
@@ -637,4 +715,9 @@ function formatDate(d) {
     string += date.getMinutes() < 10 ? "0" : "";
     string += date.getMinutes();
     return string;
+}
+
+function sidebarToggle(el) {
+  if (el.classList.contains('closed')) el.classList.remove('closed');
+  else el.classList.add('closed');
 }
